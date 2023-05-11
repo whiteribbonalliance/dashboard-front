@@ -53,3 +53,17 @@ npm run format
 ## Deployment
 
 TODO
+
+## Docker
+
+Build container:
+
+```bash
+docker build -t wra-dashboards .
+```
+
+Run container:
+
+```bash
+docker run -p 3000:3000 wra-dashboards
+```
