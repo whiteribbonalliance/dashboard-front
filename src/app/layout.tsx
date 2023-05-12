@@ -1,18 +1,19 @@
 import '@styles/globals.scss'
 import { ReactNode } from 'react'
+import { config as fontAwesomeConfig } from '@fortawesome/fontawesome-svg-core'
+
+fontAwesomeConfig.autoAddCss = false
 
 interface IDashboardLayoutProps {
     children: ReactNode
 }
 
-const DashboardLayout = ({ children }: IDashboardLayoutProps) => {
+const Layout = ({ children }: IDashboardLayoutProps) => {
     return (
         <html lang="en">
-            <body>
-                <main>{children}</main>
-            </body>
+            <body>{children}</body>
         </html>
     )
 }
 
-export default DashboardLayout
+export default Layout

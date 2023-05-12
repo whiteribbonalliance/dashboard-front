@@ -1,18 +1,22 @@
 import { dashboards } from '@constants'
 import { notFound } from 'next/navigation'
-import { Dashboard } from '@page-components/Dashboard'
+import { NextPage } from 'next'
 
 interface IDashboardProps {
     params: { dashboard: string }
 }
 
-export const DashboardWrapper = ({ params }: IDashboardProps) => {
+export const Dashboard: NextPage<IDashboardProps> = ({ params }: IDashboardProps) => {
     const { dashboard } = params
 
-    // Fire notFound() if subdomain is not an existing dashboard
+    // Fire notFound() if subdomain/dashboard requested is not an existing dashboard
     if (!dashboards.some((d) => d === dashboard)) {
         notFound()
     }
 
-    return <Dashboard />
+    return (
+        <div className="mx-3 my-5 text-xl">
+            Active dashboard: <span className="font-bold">{dashboard}</span>
+        </div>
+    )
 }

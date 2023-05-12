@@ -1,1 +1,1 @@
-export { DashboardWrapper } from '@components/server/DashboardWrapper/DashboardWrapper'
+export { Dashboard } from '@page-components/Dashboard/Dashboard'
