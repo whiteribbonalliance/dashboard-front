@@ -30,12 +30,9 @@ module.exports = {
             },
         },
         fontFamily: {
-            'default-family': {
-                'open-sans': ['Open Sans', 'Helvetica', 'Arial', 'sans-serif'],
-            },
-            'pmnch-family': {
-                'noto-sans-regular': ['Noto Sans Regular', 'Helvetica', 'Arial', 'sans-serif'],
-            },
+            'open-sans': ['Open Sans', 'Helvetica', 'Arial', 'sans-serif'],
+            'noto-sans-regular': ['var(--font-noto-sans-regular)', 'Helvetica', 'Arial', 'sans-serif'],
+            '1point8': ['var(--font-1-point-8)', 'sans-serif'],
         },
     },
     plugins: [],

@@ -15,20 +15,20 @@ const DashboardLayout = ({ children, params }: IDashboardLayoutProps) => {
     let fontClassName = ''
     switch (dashboard) {
         case Dashboards.PMNCH:
-            fontClassName = 'font-pmnch-family'
+            fontClassName = 'noto-sans-regular'
             break
         default:
-            fontClassName = 'font-default-family'
+            fontClassName = 'open-sans'
     }
 
     // Set color
     let colorClassName = ''
     switch (dashboard) {
         case Dashboards.PMNCH:
-            colorClassName = 'text-pmnch-font-color'
+            colorClassName = 'noto-sans-regular'
             break
         default:
-            colorClassName = 'text-default-font-color'
+            colorClassName = 'font-open-sans'
     }
 
     return (
