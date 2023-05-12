@@ -12,6 +12,12 @@ interface IHeaderProps {
     dashboard: string
 }
 
+const menuButtons = [
+    { id: '1', title: '  [Language selector here]', url: '' },
+    { id: '2', title: 'About Us', url: 'https://whiteribbonalliance.org/campaigns/what-women-want' },
+    { id: '3', title: 'Show Video', url: 'https://www.youtube.com/watch?v=nBzide5J3Hk' },
+]
+
 export const Header = ({ dashboard }: IHeaderProps) => {
     const [displayFiltersPanel, setDisplayfiltersPanel] = useState<boolean>(false)
 
@@ -27,14 +33,14 @@ export const Header = ({ dashboard }: IHeaderProps) => {
 
     return (
         <>
-            <Disclosure as="header" className="shadow-gray-200 sticky z-50 shadow-md">
+            <Disclosure as="header" className="shadow-gray-200 sticky z-50 shadow-md xl:shadow-none">
                 {({ open }) => (
                     <>
-                        <div className="flex items-center justify-between py-5 pl-3 pr-5">
+                        <div className="flex items-center justify-between py-6 pl-4 pr-7">
                             <div className="flex items-center">
                                 {/* Button to display filters panel */}
                                 <div
-                                    className={`flex cursor-pointer transition duration-100 ease-in-out ${
+                                    className={`flex cursor-pointer transition duration-100 ease-in-out xl:hidden ${
                                         displayFiltersPanel ? 'rotate-180' : ''
                                     }`}
                                     onClick={() => setDisplayfiltersPanel((prev) => !prev)}
@@ -57,6 +63,30 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                                 </div>
                             </div>
 
+                            {/* Menu buttons */}
+                            <div className="hidden gap-x-3 xl:flex">
+                                {menuButtons.map((menuButton) => {
+                                    if (menuButton.url) {
+                                        return (
+                                            <Link key={menuButton.id} href={menuButton.url} target="_blank">
+                                                <button className="flex items-center rounded-md border border-default-font-color px-3 py-2.5 text-xl font-bold hover:bg-default-primary-color hover:text-white">
+                                                    {menuButton.title}
+                                                </button>
+                                            </Link>
+                                        )
+                                    } else {
+                                        return (
+                                            <button
+                                                key={menuButton.id}
+                                                className="flex items-center rounded-md border border-default-font-color px-3 py-2.5 text-xl font-bold hover:bg-default-primary-color hover:text-white"
+                                            >
+                                                {menuButton.title}
+                                            </button>
+                                        )
+                                    }
+                                })}
+                            </div>
+
                             {/* Button to display mobile dropdown */}
                             <Disclosure.Button className="xl:hidden">
                                 <span className="sr-only">Open main menu</span>
@@ -74,22 +104,26 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                                 as="ul"
                                 className={`${mobileDropdownBackgroundColorClass} absolute w-full xl:hidden`}
                             >
-                                <li className="cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white hover:text-default-font-color">
-                                    [Language selector here]
-                                </li>
-                                <li className="cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white hover:text-default-font-color">
-                                    <Link
-                                        href={'https://whiteribbonalliance.org/campaigns/what-women-want/'}
-                                        target="_blank"
-                                    >
-                                        About Us
-                                    </Link>
-                                </li>
-                                <li className="cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white hover:text-default-font-color">
-                                    <Link href={'https://www.youtube.com/watch?v=nBzide5J3Hk'} target="_blank">
-                                        Show Video
-                                    </Link>
-                                </li>
+                                {menuButtons.map((menuButton) => {
+                                    if (menuButton.url) {
+                                        return (
+                                            <Link key={menuButton.id} href={menuButton.url} target="_blank">
+                                                <li className="cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white hover:text-default-font-color">
+                                                    {menuButton.title}
+                                                </li>
+                                            </Link>
+                                        )
+                                    } else {
+                                        return (
+                                            <li
+                                                key={menuButton.id}
+                                                className="cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white hover:text-default-font-color"
+                                            >
+                                                {menuButton.title}
+                                            </li>
+                                        )
+                                    }
+                                })}
                             </Disclosure.Panel>
                         </Transition>
                     </>
@@ -98,7 +132,9 @@ export const Header = ({ dashboard }: IHeaderProps) => {
 
             {/* Filters panel */}
             {displayFiltersPanel && (
-                <div className="fixed flex min-h-full w-full justify-center bg-white px-2 py-2">[FILTERS PANEL]</div>
+                <div className="fixed flex min-h-full w-full justify-center bg-white px-2 py-2 xl:hidden">
+                    [FILTERS PANEL]
+                </div>
             )}
         </>
     )
