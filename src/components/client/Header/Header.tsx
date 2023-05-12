@@ -5,12 +5,23 @@ import { faBars, faChevronLeft, faXmark } from '@fortawesome/free-solid-svg-icon
 import Image from 'next/image'
 import { Disclosure } from '@headlessui/react'
 import Link from 'next/link'
+import { Dashboards } from '@enums'
 
 interface IHeaderProps {
     dashboard: string
 }
 
 export const Header = ({ dashboard }: IHeaderProps) => {
+    // Set mobile dropdown background color
+    let mobileDropdownBackgroundColorClass = ''
+    switch (dashboard) {
+        case Dashboards.PMNCH:
+            mobileDropdownBackgroundColorClass = 'bg-pmnch-primary-color'
+            break
+        default:
+            mobileDropdownBackgroundColorClass = 'bg-default-primary-color'
+    }
+
     return (
         <Disclosure as="header" className="shadow-gray-200 shadow-md">
             {({ open }) => (
@@ -49,7 +60,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                     </div>
 
                     {/* Mobile dropdown */}
-                    <Disclosure.Panel as="ul" className="bg-default-primary-color xl:hidden">
+                    <Disclosure.Panel as="ul" className={`${mobileDropdownBackgroundColorClass} xl:hidden`}>
                         <li className="cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white hover:text-default-font-color">
                             [Language selector here]
                         </li>
