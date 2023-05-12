@@ -21,14 +21,24 @@ const menuButtons = [
 export const Header = ({ dashboard }: IHeaderProps) => {
     const [displayFiltersPanel, setDisplayfiltersPanel] = useState<boolean>(false)
 
-    // Set mobile dropdown background color
-    let mobileDropdownBackgroundColorClass = ''
+    // Set mobile dropdown classes
+    let mobileDropdownClasses: string
     switch (dashboard) {
         case Dashboards.PMNCH:
-            mobileDropdownBackgroundColorClass = 'bg-pmnch-primary-color'
+            mobileDropdownClasses = 'bg-pmnch-primary-color'
             break
         default:
-            mobileDropdownBackgroundColorClass = 'bg-default-primary-color'
+            mobileDropdownClasses = 'bg-default-primary-color'
+    }
+
+    // Set menu button classes
+    let menuButtonClasses: string
+    switch (dashboard) {
+        case Dashboards.PMNCH:
+            menuButtonClasses = 'text-pmnch-primary-color hover:bg-pmnch-primary-color border-pmnch-primary-color'
+            break
+        default:
+            menuButtonClasses = 'text-default-primary-color hover:bg-default-primary-color border-default-color'
     }
 
     return (
@@ -69,7 +79,9 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                                     if (menuButton.url) {
                                         return (
                                             <Link key={menuButton.id} href={menuButton.url} target="_blank">
-                                                <button className="flex items-center rounded-md border border-default-font-color px-3 py-2.5 text-xl font-bold hover:bg-default-primary-color hover:text-white">
+                                                <button
+                                                    className={`flex items-center rounded-md border border-default-font-color px-3 py-2.5 text-xl font-bold ${menuButtonClasses} hover:text-white`}
+                                                >
                                                     {menuButton.title}
                                                 </button>
                                             </Link>
@@ -78,7 +90,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                                         return (
                                             <button
                                                 key={menuButton.id}
-                                                className="flex items-center rounded-md border border-default-font-color px-3 py-2.5 text-xl font-bold hover:bg-default-primary-color hover:text-white"
+                                                className={`flex items-center rounded-md border border-default-font-color px-3 py-2.5 text-xl font-bold ${menuButtonClasses} hover:text-white`}
                                             >
                                                 {menuButton.title}
                                             </button>
@@ -100,10 +112,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
 
                         {/* Mobile dropdown */}
                         <Transition>
-                            <Disclosure.Panel
-                                as="ul"
-                                className={`${mobileDropdownBackgroundColorClass} absolute w-full xl:hidden`}
-                            >
+                            <Disclosure.Panel as="ul" className={`${mobileDropdownClasses} absolute w-full xl:hidden`}>
                                 {menuButtons.map((menuButton) => {
                                     if (menuButton.url) {
                                         return (

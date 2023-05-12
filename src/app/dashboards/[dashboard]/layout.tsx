@@ -11,28 +11,18 @@ interface IDashboardLayoutProps {
 const DashboardLayout = ({ children, params }: IDashboardLayoutProps) => {
     const { dashboard } = params
 
-    // Set font
-    let fontClassName = ''
+    // Set layout classes
+    let layoutClasses: string
     switch (dashboard) {
         case Dashboards.PMNCH:
-            fontClassName = 'noto-sans-regular'
+            layoutClasses = 'noto-sans-regular text-pmnch-font-color'
             break
         default:
-            fontClassName = 'open-sans'
-    }
-
-    // Set color
-    let colorClassName = ''
-    switch (dashboard) {
-        case Dashboards.PMNCH:
-            colorClassName = 'noto-sans-regular'
-            break
-        default:
-            colorClassName = 'font-open-sans'
+            layoutClasses = 'open-sans text-default-font-color'
     }
 
     return (
-        <div className={`${fontClassName} ${colorClassName}`}>
+        <div className={`${layoutClasses}`}>
             <Header dashboard={dashboard} />
             <main>{children}</main>
             <Footer dashboard={dashboard} />
