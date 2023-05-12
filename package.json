@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "deploy": "yarn build && gcloud app deploy",
+    "deploy": "npm install && npm run build && gcloud app deploy",
     "lint": "next lint",
     "format": "npx prettier --write src"
   },

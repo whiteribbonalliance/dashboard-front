@@ -6,7 +6,11 @@ import Image from 'next/image'
 import { Disclosure } from '@headlessui/react'
 import Link from 'next/link'
 
-export const Header = () => {
+interface IHeaderProps {
+    dashboard: string
+}
+
+export const Header = ({ dashboard }: IHeaderProps) => {
     return (
         <Disclosure as="header" className="shadow-gray-200 shadow-md">
             {({ open }) => (
@@ -45,10 +49,16 @@ export const Header = () => {
                     </div>
 
                     {/* Mobile dropdown */}
-                    <Disclosure.Panel as="ul" className="bg-default-color-primary py-2 pl-3 pr-5 xl:hidden">
-                        <li className="cursor-pointer text-white">[Language selector here]</li>
-                        <li className="cursor-pointer text-white">About Us</li>
-                        <li className="cursor-pointer text-white">
+                    <Disclosure.Panel as="ul" className="bg-default-primary-color xl:hidden">
+                        <li className="cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white hover:text-default-font-color">
+                            [Language selector here]
+                        </li>
+                        <li className="cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white hover:text-default-font-color">
+                            <Link href={'https://whiteribbonalliance.org/campaigns/what-women-want/'} target="_blank">
+                                About Us
+                            </Link>
+                        </li>
+                        <li className="cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white hover:text-default-font-color">
                             <Link href={'https://www.youtube.com/watch?v=nBzide5J3Hk'} target="_blank">
                                 Show Video
                             </Link>
