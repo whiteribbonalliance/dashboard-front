@@ -12,7 +12,7 @@ export function middleware(req: NextRequest) {
     const prodDomain = process.env.PROD_DOMAIN as string
 
     // Get dev domain
-    const devDomain = (process.env.DEV_DOMAIN as string) || '.localhost:3000'
+    const devDomain = (process.env.DEV_DOMAIN as string) || '.localhost'
 
     // If localhost, assign the host value manually
     // If production, get the custom domain/subdomain value by removing the root URL

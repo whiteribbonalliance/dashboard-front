@@ -1,11 +1,12 @@
 import { dashboards } from '@constants'
 import { notFound } from 'next/navigation'
+import { Dashboard } from '@page-components/Dashboard'
 
 interface IDashboardProps {
     params: { dashboard: string }
 }
 
-export const Dashboard = ({ params }: IDashboardProps) => {
+export const DashboardWrapper = ({ params }: IDashboardProps) => {
     const { dashboard } = params
 
     // Fire notFound() if subdomain is not an existing dashboard
@@ -13,5 +14,5 @@ export const Dashboard = ({ params }: IDashboardProps) => {
         notFound()
     }
 
-    return <div>{dashboard}</div>
+    return <Dashboard />
 }
