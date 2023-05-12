@@ -21,9 +21,6 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
-      with:
-        submodules: 'true'
-        token: ${{ secrets.PAT_TOKEN }}
         # Setup gcloud CLI
     - id: 'auth'
       uses: google-github-actions/auth@v1
@@ -43,19 +40,14 @@ jobs:
 
     - name: 'Configure Docker'
       run: 'gcloud auth configure-docker'
-      
-    - name: character-replacement-test
-      run: |
-        echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
 
     - name: Build & Push
       uses: docker/build-push-action@v2
       with:
-          context: .
           push: true
           build-args: |
-            version=${{ env.GITHUB_SHA_SHORT }}
-          tags: gcr.io/deft-stratum-290216/dashboardfrontend:${{ env.GITHUB_SHA_SHORT }}
+            version=${{ steps.tag.outputs.tag }}
+          tags: gcr.io/deft-stratum-290216/dashboardfrontend:${{ github.sha }}
 
     - name: Deploy
-      run: gcloud app deploy --image-url=gcr.io/deft-stratum-290216/dashboardfrontend:${{ env.GITHUB_SHA_SHORT }}
+      run: gcloud app deploy --image-url=gcr.io/deft-stratum-290216/dashboardfrontend:${{ github.sha }}
