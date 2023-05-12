@@ -1,5 +1,5 @@
-export const Dashboards = {
-    PMNCH: 'pmnch-dashboard',
-    WWW: 'www-dashboard',
-    MIDWIVES_VOICES: 'midwives-voices-dashboard',
-}
+export const Dashboards = Object.freeze({
+    PMNCH: 'whatyoungpeoplewant',
+    WWW: 'whatwomenwant',
+    MIDWIVES_VOICES: 'midwivesvoices',
+})

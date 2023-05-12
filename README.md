@@ -2,9 +2,9 @@
 
 This project contains multiple dashboards for WRA. Each dashboard is made accessible by navigating to a specific
 subdomain. `middleware.ts` is responsible for parsing the subdomain that is calling the app and rewrite the hostname
-as a parameter of `_dashboards`.
+as a parameter of route `dashboards`.
 
-The file at `_dashboards/[dashboard]/index.ts` contains the logic that decides which dashboard to load.
+The file at `app/dashboards/[dashboard]/page.tsx` contains the logic that decides which dashboard to load.
 
 ### Dependencies
 
