@@ -39,4 +39,4 @@ jobs:
       run: 'gcloud info'
 
     - name: Deploy
-      run: gcloud app deploy app.yaml
+      run: yarn build && gcloud app deploy app.yaml
