@@ -38,16 +38,5 @@ jobs:
     - name: 'Use gcloud CLI'
       run: 'gcloud info'
 
-    - name: 'Configure Docker'
-      run: 'gcloud auth configure-docker'
-
-    - name: Build & Push
-      uses: docker/build-push-action@v2
-      with:
-          push: true
-          build-args: |
-            version=${{ steps.tag.outputs.tag }}
-          tags: gcr.io/deft-stratum-290216/dashboardfrontend:${{ github.sha }}
-
     - name: Deploy
-      run: gcloud app deploy --image-url=gcr.io/deft-stratum-290216/dashboardfrontend:${{ github.sha }}
+      run: gcloud app deploy app.yaml
