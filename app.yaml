@@ -13,4 +13,4 @@ handlers:
   script: auto
 
 env_variables:
-  PROD_DOMAIN: ".freelancedatascientist.net"
+  NEXT_PUBLIC_PROD_DOMAIN: ".freelancedatascientist.net"

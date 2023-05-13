@@ -9,10 +9,10 @@ export function middleware(req: NextRequest) {
     const hostname = req.headers.get('host')
 
     // Get prod domain
-    const prodDomain = process.env.PROD_DOMAIN as string
+    const prodDomain = process.env.NEXT_PUBLIC_PROD_DOMAIN as string
 
     // Get dev domain
-    const devDomain = (process.env.DEV_DOMAIN as string) || '.localhost'
+    const devDomain = (process.env.NEXT_PUBLIC_DEV_DOMAIN as string) || '.localhost'
 
     // If localhost, assign the host value manually
     // If production, get the custom domain/subdomain value by removing the root URL
