@@ -8,15 +8,20 @@ import Link from 'next/link'
 import { Dashboards } from '@enums'
 import { useState } from 'react'
 import { Button } from '@components/server/Button/Button'
+import { FiltersPanel } from '@components/client/FiltersPanel'
 
 interface IHeaderProps {
     dashboard: string
 }
 
+interface ILogosProps {
+    dashboard: string
+}
+
 const menuItems = [
-    { id: '1', title: '  [Language selector here]', url: '' },
-    { id: '2', title: 'About Us', url: 'https://whiteribbonalliance.org/campaigns/what-women-want' },
-    { id: '3', title: 'Show Video', url: 'https://www.youtube.com/watch?v=nBzide5J3Hk' },
+    { id: 'language-selector', title: '  [Language selector here]', url: '' },
+    { id: 'about-us', title: 'About Us', url: 'https://whiteribbonalliance.org/campaigns/what-women-want' },
+    { id: 'show-video', title: 'Show Video', url: 'https://www.youtube.com/watch?v=nBzide5J3Hk' },
 ]
 
 export const Header = ({ dashboard }: IHeaderProps) => {
@@ -61,16 +66,8 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                                 </div>
 
                                 {/* Logo */}
-                                <div className="ml-2.5 ">
-                                    <Link href={'/'}>
-                                        <Image
-                                            className="w-full max-w-[17rem]"
-                                            src="/www_horizontal_logo.png"
-                                            alt="what women want logo"
-                                            width={1117}
-                                            height={200}
-                                        />
-                                    </Link>
+                                <div className="ml-3 flex items-center">
+                                    <HeaderLogos dashboard={dashboard} />
                                 </div>
                             </div>
 
@@ -135,11 +132,69 @@ export const Header = ({ dashboard }: IHeaderProps) => {
             </Disclosure>
 
             {/* Filters panel */}
-            {showFiltersPanel && (
-                <div className="fixed flex min-h-full w-full justify-center bg-white px-2 py-2 xl:hidden">
-                    [FILTERS PANEL]
-                </div>
-            )}
+            {showFiltersPanel && <FiltersPanel />}
         </>
     )
+}
+
+const HeaderLogos = ({ dashboard }: ILogosProps) => {
+    const WhatWomenWantLogo = () => {
+        return (
+            <div className="ml-2.5">
+                <Link href={'/'}>
+                    <Image
+                        className="w-full max-w-[17rem]"
+                        src="/logos/whatwomenwant/www_horizontal_logo.png"
+                        alt="what women want logo"
+                        width={1117}
+                        height={200}
+                    />
+                </Link>
+            </div>
+        )
+    }
+
+    const _1point8Logo = () => {
+        return (
+            <div className="ml-2.5">
+                <Image
+                    className="w-full max-w-[8rem]"
+                    src="/logos/whatyoungpeoplewant/1point8_logo.png"
+                    alt="1.8 logo"
+                    width={1117}
+                    height={200}
+                />
+            </div>
+        )
+    }
+
+    const PmnchLogo = () => {
+        return (
+            <div className="ml-2.5">
+                <Image
+                    className="w-full max-w-[9rem]"
+                    src="/logos/whatyoungpeoplewant/pmnch_logo.png"
+                    alt="pmnch logo"
+                    width={1117}
+                    height={200}
+                />
+            </div>
+        )
+    }
+
+    switch (dashboard) {
+        case Dashboards.WWW:
+            return <WhatWomenWantLogo />
+        case Dashboards.PMNCH:
+            return (
+                <>
+                    <_1point8Logo />
+                    <PmnchLogo />
+                </>
+            )
+        case Dashboards.MIDWIVES_VOICES:
+            return <WhatWomenWantLogo />
+        default:
+            return <WhatWomenWantLogo />
+    }
 }

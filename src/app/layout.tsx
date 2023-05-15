@@ -32,11 +32,11 @@ const proximaNova = localFont({
     variable: '--font-proxima-nova-regular',
 })
 
-interface IDashboardLayoutProps {
+interface IRootLayoutProps {
     children: ReactNode
 }
 
-const Layout = ({ children }: IDashboardLayoutProps) => {
+const RootLayout = ({ children }: IRootLayoutProps) => {
     return (
         <html
             lang="en"
@@ -47,4 +47,4 @@ const Layout = ({ children }: IDashboardLayoutProps) => {
     )
 }
 
-export default Layout
+export default RootLayout
