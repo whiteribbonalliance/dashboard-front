@@ -41,7 +41,7 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
         return (
             <div>
                 <Image
-                    className="max-h-[3rem] w-full max-w-[20rem] xl:max-h-[5rem]"
+                    className="my-[-17px] max-h-[5rem] w-full max-w-[20rem] xl:max-h-[5rem]"
                     src="/logos/whatyoungpeoplewant/pmnch_logo.png"
                     alt="pmnch logo"
                     width={1117}
