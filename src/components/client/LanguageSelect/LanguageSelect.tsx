@@ -25,7 +25,7 @@ const options: Option[] = [
 export const LanguageSelect = ({ dashboard }: ILanguageSelectProps) => {
     const [selectedOption, setSelectedOption] = useState<Option>(options[0])
 
-    // Set list box button classes
+    // Set listbox button classes
     let listboxButtonClasses: string
     switch (dashboard) {
         case Dashboards.PMNCH:
