@@ -9,13 +9,13 @@ import { Dashboards } from '@enums'
 import React, { useState } from 'react'
 import { Button } from '@components/server/Button/Button'
 import { FiltersPanel } from '@components/client/FiltersPanel'
+import { LanguageSelect } from '@components/client/LanguageSelect'
 
 interface IHeaderProps {
     dashboard: string
 }
 
 const menuItems = [
-    { id: 'language-selector', title: '  [Language selector here]', url: '' },
     { id: 'about-us', title: 'About Us', url: 'https://whiteribbonalliance.org/campaigns/what-women-want' },
     { id: 'show-video', title: 'Show Video', url: 'https://www.youtube.com/watch?v=nBzide5J3Hk' },
 ]
@@ -69,6 +69,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
 
                             {/* Menu items */}
                             <div className="hidden gap-x-3 xl:flex">
+                                <LanguageSelect dashboard={dashboard} />
                                 {menuItems.map((item) => {
                                     if (item.url) {
                                         return (
@@ -97,27 +98,34 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                         <Transition>
                             <Disclosure.Panel
                                 as="ul"
-                                className={`absolute w-full shadow-md xl:hidden ${mobileDropdownClasses}`}
+                                className={`absolute flex w-full flex-col items-center justify-center shadow-md xl:hidden ${mobileDropdownClasses}`}
                             >
+                                <div className="mt-3">
+                                    <LanguageSelect dashboard={dashboard} />
+                                </div>
                                 {menuItems.map((item) => {
                                     if (item.url) {
                                         return (
-                                            <Link key={item.id} href={item.url} target="_blank">
+                                            <div key={item.id} className="w-full">
+                                                <Link href={item.url} target="_blank">
+                                                    <li
+                                                        className={`cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white ${menuButtonItemClasses}`}
+                                                    >
+                                                        {item.title}
+                                                    </li>
+                                                </Link>
+                                            </div>
+                                        )
+                                    } else {
+                                        return (
+                                            <div key={item.id} className="w-full">
                                                 <li
+                                                    key={item.id}
                                                     className={`cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white ${menuButtonItemClasses}`}
                                                 >
                                                     {item.title}
                                                 </li>
-                                            </Link>
-                                        )
-                                    } else {
-                                        return (
-                                            <li
-                                                key={item.id}
-                                                className={`cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white ${menuButtonItemClasses}`}
-                                            >
-                                                {item.title}
-                                            </li>
+                                            </div>
                                         )
                                     }
                                 })}

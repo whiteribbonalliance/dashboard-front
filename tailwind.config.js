@@ -9,7 +9,7 @@ module.exports = {
         colors: {
             'white': '#FFFFFF',
             'black': '#000000',
-            'grey': '#DDDEDE',
+            'gray': '#DDDEDE',
             'default-colors': {
                 primary: '#202A44',
                 secondary: '#E22040',

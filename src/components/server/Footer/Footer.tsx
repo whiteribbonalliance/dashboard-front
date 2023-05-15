@@ -6,6 +6,24 @@ interface IFooterProps {
     dashboard: string
 }
 
+type OtherDashboardLink = { id: string; title: string; link: string }
+
+const whatWomenWantLink: OtherDashboardLink = {
+    id: 'whatwomenwant',
+    title: 'What Women Want',
+    link: 'https://whatwomenwant.whiteribbonalliance.org',
+}
+const healthLiteracyLink: OtherDashboardLink = {
+    id: 'healthliteracy',
+    title: 'Health Literacy',
+    link: 'https://wwwliteracydashboard.whiteribbonalliance.org',
+}
+const whatMidwivesWantLink: OtherDashboardLink = {
+    id: 'whatmidwiveswant',
+    title: 'What Midwives Want',
+    link: 'https://midwivesvoices.whiteribbonalliance.org',
+}
+
 export const Footer = ({ dashboard }: IFooterProps) => {
     // Set footer link classes
     let footerLinkClasses: string
@@ -67,24 +85,8 @@ export const Footer = ({ dashboard }: IFooterProps) => {
             break
     }
 
-    // Set dashboard links
-    type OtherDashboardLink = { id: string; title: string; link: string }
+    // Set other dashboard links
     let otherDashboardLinks: OtherDashboardLink[]
-    const whatWomenWantLink: OtherDashboardLink = {
-        id: 'whatwomenwant',
-        title: 'What Women Want',
-        link: 'https://whatwomenwant.whiteribbonalliance.org',
-    }
-    const healthLiteracyLink: OtherDashboardLink = {
-        id: 'healthliteracy',
-        title: 'Health Literacy',
-        link: 'https://wwwliteracydashboard.whiteribbonalliance.org',
-    }
-    const whatMidwivesWantLink: OtherDashboardLink = {
-        id: 'whatmidwiveswant',
-        title: 'What Midwives Want',
-        link: 'https://midwivesvoices.whiteribbonalliance.org',
-    }
     switch (dashboard) {
         case Dashboards.WWW:
             otherDashboardLinks = [whatMidwivesWantLink, healthLiteracyLink]
@@ -100,7 +102,7 @@ export const Footer = ({ dashboard }: IFooterProps) => {
     }
 
     return (
-        <footer className="mx-7 mt-3 flex flex-col gap-y-5">
+        <footer className="mx-7 my-3 flex flex-col gap-y-5">
             <div>
                 <p>* All {respondents} participating in the campaign provided informed consent.</p>
                 {footerNote && footerNote}
