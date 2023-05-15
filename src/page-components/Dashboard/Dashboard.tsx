@@ -15,7 +15,7 @@ export const Dashboard: NextPage<IDashboardProps> = ({ params }: IDashboardProps
     }
 
     return (
-        <div className="mx-3 my-5 text-xl">
+        <div className="mx-7 my-5 text-xl">
             Active dashboard: <span className="font-bold">{dashboard}</span>
         </div>
     )
