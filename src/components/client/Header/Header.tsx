@@ -74,7 +74,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                             </div>
 
                             {/* Menu items */}
-                            <div className="hidden gap-x-3 xl:flex">
+                            <nav className="hidden gap-x-3 xl:flex">
                                 <LanguageSelect dashboard={dashboard} />
                                 {menuItems.map((item) => {
                                     if (item.url) {
@@ -87,7 +87,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                                         return <Button dashboard={dashboard} key={item.id} text={item.title} />
                                     }
                                 })}
-                            </div>
+                            </nav>
 
                             {/* Button to display mobile dropdown */}
                             <Disclosure.Button className="xl:hidden">
@@ -102,39 +102,40 @@ export const Header = ({ dashboard }: IHeaderProps) => {
 
                         {/* Mobile dropdown */}
                         <Transition>
-                            <Disclosure.Panel
-                                as="ul"
-                                className={`absolute flex w-full flex-col items-center justify-center shadow-md xl:hidden ${mobileDropdownClasses}`}
-                            >
-                                <div className="mt-3">
-                                    <LanguageSelect dashboard={dashboard} />
-                                </div>
-                                {menuItems.map((item) => {
-                                    if (item.url) {
-                                        return (
-                                            <div key={item.id} className="w-full">
-                                                <Link href={item.url} target="_blank">
+                            <Disclosure.Panel as="nav">
+                                <ul
+                                    className={`absolute flex w-full flex-col items-center justify-center shadow-md xl:hidden ${mobileDropdownClasses}`}
+                                >
+                                    <div className="mt-3">
+                                        <LanguageSelect dashboard={dashboard} />
+                                    </div>
+                                    {menuItems.map((item) => {
+                                        if (item.url) {
+                                            return (
+                                                <div key={item.id} className="w-full">
+                                                    <Link href={item.url} target="_blank">
+                                                        <li
+                                                            className={`cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white ${menuButtonItemClasses}`}
+                                                        >
+                                                            {item.title}
+                                                        </li>
+                                                    </Link>
+                                                </div>
+                                            )
+                                        } else {
+                                            return (
+                                                <div key={item.id} className="w-full">
                                                     <li
+                                                        key={item.id}
                                                         className={`cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white ${menuButtonItemClasses}`}
                                                     >
                                                         {item.title}
                                                     </li>
-                                                </Link>
-                                            </div>
-                                        )
-                                    } else {
-                                        return (
-                                            <div key={item.id} className="w-full">
-                                                <li
-                                                    key={item.id}
-                                                    className={`cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white ${menuButtonItemClasses}`}
-                                                >
-                                                    {item.title}
-                                                </li>
-                                            </div>
-                                        )
-                                    }
-                                })}
+                                                </div>
+                                            )
+                                        }
+                                    })}
+                                </ul>
                             </Disclosure.Panel>
                         </Transition>
                     </>
