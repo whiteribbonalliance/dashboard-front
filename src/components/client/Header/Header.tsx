@@ -46,7 +46,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
 
     return (
         <>
-            <Disclosure as="header" className="shadow-gray-200 sticky z-50 shadow-md xl:shadow-none">
+            <Disclosure as="header" className="sticky top-0 z-50 bg-white shadow-md xl:shadow-none">
                 {({ open }) => (
                     <>
                         <div className="flex items-center justify-between py-6 pl-4 pr-7">
@@ -143,7 +143,11 @@ export const Header = ({ dashboard }: IHeaderProps) => {
             </Disclosure>
 
             {/* Filters panel */}
-            {showFiltersPanel && <FiltersPanel />}
+            {showFiltersPanel && (
+                <div className="fixed flex min-h-full w-full flex-col items-center bg-white px-8 pt-3 xl:hidden">
+                    <FiltersPanel dashboard={dashboard} />
+                </div>
+            )}
         </>
     )
 }

@@ -64,7 +64,9 @@ export const LanguageSelect = ({ dashboard }: ILanguageSelectProps) => {
                                 <Listbox.Option
                                     key={option.id}
                                     className={({ active }) =>
-                                        `relative cursor-pointer select-none py-2 pl-10 pr-4 ${active ? 'bg-gray' : ''}`
+                                        `relative cursor-pointer select-none py-2 pl-10 pr-4 ${
+                                            active ? 'bg-gray-light' : ''
+                                        }`
                                     }
                                     value={option}
                                 >

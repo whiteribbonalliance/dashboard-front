@@ -9,7 +9,9 @@ module.exports = {
         colors: {
             'white': '#FFFFFF',
             'black': '#000000',
-            'gray': '#DDDEDE',
+            'gray-lighter': '#f9f9f9',
+            'gray-light': '#DDDEDE',
+            'transparent': 'transparent',
             'default-colors': {
                 primary: '#202A44',
                 secondary: '#E22040',

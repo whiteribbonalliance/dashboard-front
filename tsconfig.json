@@ -43,6 +43,9 @@
       ],
       "@configurations": [
         "configurations"
+      ],
+      "@utils": [
+        "utils"
       ]
     },
     "plugins": [
