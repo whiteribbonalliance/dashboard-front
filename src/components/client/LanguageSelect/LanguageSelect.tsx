@@ -1,6 +1,6 @@
 'use client'
 
-import React, { Fragment, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Dashboards } from '@enums'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
@@ -12,14 +12,15 @@ interface ILanguageSelectProps {
 }
 
 type Option = {
+    id: string
     value: string
     label: string
 }
 
 const options: Option[] = [
-    { value: 'en', label: 'English' },
-    { value: 'es', label: 'Spanish' },
-    { value: 'nl', label: 'Dutch' },
+    { id: 'en', value: 'en', label: 'English' },
+    { id: 'es', value: 'es', label: 'Spanish' },
+    { id: 'nl', value: 'nl', label: 'Dutch' },
 ]
 
 export const LanguageSelect = ({ dashboard }: ILanguageSelectProps) => {
@@ -59,9 +60,9 @@ export const LanguageSelect = ({ dashboard }: ILanguageSelectProps) => {
                         leaveTo="opacity-0"
                     >
                         <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
-                            {options.map((option, index) => (
+                            {options.map((option) => (
                                 <Listbox.Option
-                                    key={index}
+                                    key={option.id}
                                     className={({ active }) =>
                                         `relative cursor-pointer select-none py-2 pl-10 pr-4 ${active ? 'bg-gray' : ''}`
                                     }

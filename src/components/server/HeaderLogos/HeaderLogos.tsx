@@ -52,8 +52,6 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
     }
 
     switch (dashboard) {
-        case Dashboards.WWW:
-            return <WhatWomenWantLogo />
         case Dashboards.PMNCH:
             return (
                 <div className="flex items-center gap-x-2.5">
@@ -61,8 +59,6 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
                     <PmnchLogo />
                 </div>
             )
-        case Dashboards.MIDWIVES_VOICES:
-            return <WhatWomenWantLogo />
         default:
             return <WhatWomenWantLogo />
     }
