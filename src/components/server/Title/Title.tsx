@@ -21,5 +21,5 @@ export const Title = ({ dashboard }: ITitleProps) => {
             title = ''
     }
 
-    return <h1 className="font-proxima-nova text-4xl font-bold">{title}</h1>
+    return <h1 className="mx-2 text-center font-proxima-nova text-4xl font-bold">{title}</h1>
 }

@@ -23,6 +23,22 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
         )
     }
 
+    const PushWithWomenLogo = () => {
+        return (
+            <div>
+                <Link href={'/'}>
+                    <Image
+                        className="max-h-[3rem] w-full max-w-[17rem] xl:max-h-[4rem]"
+                        src="/logos/midwivesvoices/push_with_women.png"
+                        alt="push with women logo"
+                        width={1117}
+                        height={200}
+                    />
+                </Link>
+            </div>
+        )
+    }
+
     const _1point8Logo = () => {
         return (
             <div>
@@ -57,6 +73,13 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
                 <div className="flex items-center gap-x-2.5">
                     <_1point8Logo />
                     <PmnchLogo />
+                </div>
+            )
+        case Dashboards.MIDWIVES_VOICES:
+            return (
+                <div className="flex items-center gap-x-2.5">
+                    <WhatWomenWantLogo />
+                    <PushWithWomenLogo />
                 </div>
             )
         default:
