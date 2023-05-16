@@ -10,6 +10,7 @@ import React, { useState } from 'react'
 import { Button } from '@components/server/Button/Button'
 import { FiltersPanel } from '@components/client/FiltersPanel'
 import { LanguageSelect } from '@components/client/LanguageSelect'
+import { Title } from '@components/server/Title'
 
 interface IHeaderProps {
     dashboard: string
@@ -65,6 +66,11 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                                 <div className="ml-3 flex items-center">
                                     <HeaderLogos dashboard={dashboard} />
                                 </div>
+                            </div>
+
+                            {/* Title */}
+                            <div className="hidden xl:flex">
+                                <Title dashboard={dashboard} />
                             </div>
 
                             {/* Menu items */}

@@ -27,9 +27,12 @@ const helvetica = localFont({
 })
 
 const proximaNova = localFont({
-    src: './fonts/Proxima Nova/ProximaNova-Regular.otf',
+    src: [
+        { path: './fonts/Proxima Nova/Proxima Nova Regular.otf', weight: '400', style: 'normal' },
+        { path: './fonts/Proxima Nova/Proxima Nova Bold.otf', weight: '700', style: 'bold' },
+    ],
     display: 'swap',
-    variable: '--font-proxima-nova-regular',
+    variable: '--font-proxima-nova',
 })
 
 interface IRootLayoutProps {

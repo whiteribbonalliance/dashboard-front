@@ -1,6 +1,8 @@
 import { dashboards } from '@constants'
 import { notFound } from 'next/navigation'
 import { NextPage } from 'next'
+import { Title } from '@components/server/Title'
+import React from 'react'
 
 interface IDashboardProps {
     params: { dashboard: string }
@@ -16,7 +18,10 @@ export const Dashboard: NextPage<IDashboardProps> = ({ params }: IDashboardProps
 
     return (
         <div className="mx-7 my-5 text-xl">
-            Active dashboard: <span className="font-bold">{dashboard}</span>
+            {/* Title */}
+            <div className="flex justify-center xl:hidden">
+                <Title dashboard={dashboard} />
+            </div>
         </div>
     )
 }
