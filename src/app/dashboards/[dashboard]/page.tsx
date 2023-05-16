@@ -1,6 +1,7 @@
 import { Dashboard } from 'page-components/Dashboard'
-import { dashboards } from '@constants'
+import { dashboards, seoMainTitle } from '@constants'
 import { Dashboards } from '@enums'
+import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
 
 export default Dashboard
 
@@ -18,26 +19,24 @@ export async function generateStaticParams() {
 // Set page title and description
 export async function generateMetadata({ params }: IGenerateMetadataProps) {
     switch (params.dashboard) {
-        case Dashboards.WWW:
+        case Dashboards.WHAT_WOMEN_WANT:
             return {
-                title: 'What Women Want | White Ribbon Alliance',
-                description:
-                    'What Women Want: What Midwives Want, led by White Ribbon Alliance (WRA) in collaboration with the International Confederation of Midwives (ICM), is a key companion to the What Women Want (WWW) campaign, which asked 1.2 million women and girls their top demand for quality reproductive and maternal healthcare.',
+                title: whatWomenWantConfig.seoTitle,
+                description: whatWomenWantConfig.seoMetaDescription,
             }
-        case Dashboards.PMNCH:
+        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
             return {
-                title: 'What Young People Want | White Ribbon Alliance',
-                description: 'What Young People Want Interactive Dashboard',
+                title: whatYoungPeopleWantConfig.seoTitle,
+                description: whatYoungPeopleWantConfig.seoMetaDescription,
             }
         case Dashboards.MIDWIVES_VOICES:
             return {
-                title: 'What Midwives Want | White Ribbon Alliance',
-                description:
-                    'What Women Want: What Midwives Want, led by White Ribbon Alliance (WRA) in collaboration with the International Confederation of Midwives (ICM), is a key companion to the What Women Want (WWW) campaign, which asked 1.2 million women and girls their top demand for quality reproductive and maternal healthcare.',
+                title: midwivesVoicesConfig.seoTitle,
+                description: midwivesVoicesConfig.seoMetaDescription,
             }
         default:
             return {
-                title: 'White Ribbon Alliance',
+                title: seoMainTitle,
                 description: '',
             }
     }

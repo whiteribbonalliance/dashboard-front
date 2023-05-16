@@ -68,7 +68,7 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
     }
 
     switch (dashboard) {
-        case Dashboards.PMNCH:
+        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
             return (
                 <div className="flex items-center gap-x-2.5">
                     <_1point8Logo />

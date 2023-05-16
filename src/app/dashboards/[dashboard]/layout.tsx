@@ -14,7 +14,7 @@ const DashboardLayout = ({ children, params }: IDashboardLayoutProps) => {
     // Set layout classes
     let layoutClasses: string
     switch (dashboard) {
-        case Dashboards.PMNCH:
+        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
             layoutClasses = 'font-noto-sans-regular text-pmnch-colors-font'
             break
         default:

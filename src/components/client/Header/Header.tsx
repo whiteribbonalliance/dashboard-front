@@ -27,7 +27,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
     // Set mobile dropdown classes
     let mobileDropdownClasses: string
     switch (dashboard) {
-        case Dashboards.PMNCH:
+        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
             mobileDropdownClasses = 'bg-pmnch-colors-primary'
             break
         default:
@@ -37,7 +37,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
     // Set menu button item classes
     let menuButtonItemClasses: string
     switch (dashboard) {
-        case Dashboards.PMNCH:
+        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
             menuButtonItemClasses = 'hover:text-pmnch-colors-font'
             break
         default:

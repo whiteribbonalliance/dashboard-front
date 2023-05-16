@@ -37,6 +37,12 @@
       ],
       "@contexts/*": [
         "contexts/*"
+      ],
+      "@interfaces/*": [
+        "interfaces/*"
+      ],
+      "@configurations": [
+        "configurations"
       ]
     },
     "plugins": [

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { NextPage } from 'next'
 import { Title } from '@components/server/Title'
 import React from 'react'
-import { SubText } from '@components/server/SubText'
+import { Subtext } from 'components/server/Subtext'
 
 interface IDashboardProps {
     params: { dashboard: string }
@@ -24,9 +24,9 @@ export const Dashboard: NextPage<IDashboardProps> = ({ params }: IDashboardProps
                 <Title dashboard={dashboard} />
             </div>
 
-            {/* Sub text */}
+            {/* Subtext */}
             <div className="flex justify-center">
-                <SubText dashboard={dashboard} />
+                <Subtext dashboard={dashboard} />
             </div>
         </div>
     )

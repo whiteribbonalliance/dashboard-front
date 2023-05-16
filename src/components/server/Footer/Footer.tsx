@@ -1,34 +1,18 @@
 import Link from 'next/link'
 import { Dashboards } from '@enums'
 import React from 'react'
+import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
+import { IDashboardLink } from '@interfaces/dashboard-link'
 
 interface IFooterProps {
     dashboard: string
-}
-
-type OtherDashboardLink = { id: string; title: string; link: string }
-
-const whatWomenWantLink: OtherDashboardLink = {
-    id: 'whatwomenwant',
-    title: 'What Women Want',
-    link: 'https://whatwomenwant.whiteribbonalliance.org',
-}
-const healthLiteracyLink: OtherDashboardLink = {
-    id: 'healthliteracy',
-    title: 'Health Literacy',
-    link: 'https://wwwliteracydashboard.whiteribbonalliance.org',
-}
-const whatMidwivesWantLink: OtherDashboardLink = {
-    id: 'whatmidwiveswant',
-    title: 'What Midwives Want',
-    link: 'https://midwivesvoices.whiteribbonalliance.org',
 }
 
 export const Footer = ({ dashboard }: IFooterProps) => {
     // Set footer link classes
     let footerLinkClasses: string
     switch (dashboard) {
-        case Dashboards.PMNCH:
+        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
             footerLinkClasses = 'text-pmnch-colors-secondary'
             break
         default:
@@ -38,8 +22,14 @@ export const Footer = ({ dashboard }: IFooterProps) => {
     // Set respondents
     let respondents: string
     switch (dashboard) {
-        case Dashboards.WWW:
-            respondents = 'women'
+        case Dashboards.WHAT_WOMEN_WANT:
+            respondents = whatWomenWantConfig.respondentsNoun
+            break
+        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
+            respondents = whatYoungPeopleWantConfig.respondentsNoun
+            break
+        case Dashboards.MIDWIVES_VOICES:
+            respondents = midwivesVoicesConfig.respondentsNoun
             break
         default:
             respondents = 'respondents'
@@ -48,7 +38,7 @@ export const Footer = ({ dashboard }: IFooterProps) => {
     // Set footer note
     let footerNote: React.JSX.Element | undefined
     switch (dashboard) {
-        case Dashboards.WWW:
+        case Dashboards.WHAT_WOMEN_WANT:
             footerNote = (
                 <p>
                     The 143556 responses from the original{' '}
@@ -62,7 +52,7 @@ export const Footer = ({ dashboard }: IFooterProps) => {
                 </p>
             )
             break
-        case Dashboards.PMNCH:
+        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
             footerNote = undefined
             break
         case Dashboards.MIDWIVES_VOICES:
@@ -74,16 +64,16 @@ export const Footer = ({ dashboard }: IFooterProps) => {
     }
 
     // Set other dashboard links
-    let otherDashboardLinks: OtherDashboardLink[]
+    let otherDashboardLinks: IDashboardLink[]
     switch (dashboard) {
-        case Dashboards.WWW:
-            otherDashboardLinks = [whatMidwivesWantLink, healthLiteracyLink]
+        case Dashboards.WHAT_WOMEN_WANT:
+            otherDashboardLinks = whatWomenWantConfig.dashboardLinksFooter
             break
-        case Dashboards.PMNCH:
-            otherDashboardLinks = [whatWomenWantLink, healthLiteracyLink, whatMidwivesWantLink]
+        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
+            otherDashboardLinks = whatYoungPeopleWantConfig.dashboardLinksFooter
             break
         case Dashboards.MIDWIVES_VOICES:
-            otherDashboardLinks = [whatWomenWantLink, healthLiteracyLink]
+            otherDashboardLinks = midwivesVoicesConfig.dashboardLinksFooter
             break
         default:
             otherDashboardLinks = []

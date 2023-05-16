@@ -1,26 +1,26 @@
 import { Dashboards } from '@enums'
 import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
 
-interface ITitleProps {
+interface ISubtextProps {
     dashboard: string
 }
 
-export const Title = ({ dashboard }: ITitleProps) => {
-    // Set title
-    let title: string
+export const Subtext = ({ dashboard }: ISubtextProps) => {
+    // Set subtext
+    let subText: string
     switch (dashboard) {
         case Dashboards.WHAT_WOMEN_WANT:
-            title = whatWomenWantConfig.title
+            subText = whatWomenWantConfig.subtext
             break
         case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
-            title = whatYoungPeopleWantConfig.title
+            subText = whatYoungPeopleWantConfig.subtext
             break
         case Dashboards.MIDWIVES_VOICES:
-            title = midwivesVoicesConfig.title
+            subText = midwivesVoicesConfig.subtext
             break
         default:
-            title = ''
+            subText = ''
     }
 
-    return <h1 className="mx-2 text-center font-proxima-nova text-4xl font-bold">{title}</h1>
+    return <p className="max-w-6xl text-center text-lg">{subText}</p>
 }
