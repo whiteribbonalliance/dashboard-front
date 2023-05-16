@@ -28,14 +28,8 @@ export const Footer = ({ dashboard }: IFooterProps) => {
     // Set footer link classes
     let footerLinkClasses: string
     switch (dashboard) {
-        case Dashboards.WWW:
-            footerLinkClasses = 'text-default-colors-secondary'
-            break
         case Dashboards.PMNCH:
             footerLinkClasses = 'text-pmnch-colors-secondary'
-            break
-        case Dashboards.MIDWIVES_VOICES:
-            footerLinkClasses = 'text-default-colors-secondary'
             break
         default:
             footerLinkClasses = 'text-default-colors-secondary'
@@ -46,12 +40,6 @@ export const Footer = ({ dashboard }: IFooterProps) => {
     switch (dashboard) {
         case Dashboards.WWW:
             respondents = 'women'
-            break
-        case Dashboards.PMNCH:
-            respondents = 'respondents'
-            break
-        case Dashboards.MIDWIVES_VOICES:
-            respondents = 'respondents'
             break
         default:
             respondents = 'respondents'
@@ -114,7 +102,7 @@ export const Footer = ({ dashboard }: IFooterProps) => {
                     Other dashboards:{' '}
                     {otherDashboardLinks.map((otherDashboardLink, index) => {
                         return (
-                            <>
+                            <span key={otherDashboardLink.id}>
                                 <Link
                                     key={otherDashboardLink.id}
                                     href={otherDashboardLink.link}
@@ -123,7 +111,7 @@ export const Footer = ({ dashboard }: IFooterProps) => {
                                     {otherDashboardLink.title}
                                 </Link>
                                 {index + 1 < otherDashboardLinks.length && <> • </>}
-                            </>
+                            </span>
                         )
                     })}
                 </p>
