@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
-import { Header } from 'components/client/Header'
-import { Footer } from '@components/server/Footer'
+import { Header } from 'components/Header'
+import { Footer } from 'components/Footer'
 import { Dashboards } from '@enums'
 
 interface IDashboardLayoutProps {

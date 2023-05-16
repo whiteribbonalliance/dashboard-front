@@ -2,15 +2,15 @@
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faChevronLeft, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { HeaderLogos } from '@components/server/HeaderLogos'
+import { HeaderLogos } from 'components/HeaderLogos'
 import { Disclosure, Transition } from '@headlessui/react'
 import Link from 'next/link'
 import { Dashboards } from '@enums'
 import React, { useState } from 'react'
-import { Button } from '@components/server/Button/Button'
-import { FiltersPanel } from '@components/client/FiltersPanel'
-import { LanguageSelect } from '@components/client/LanguageSelect'
-import { Title } from '@components/server/Title'
+import { Button } from '@components/Button/Button'
+import { FiltersPanel } from '@components/FiltersPanel'
+import { LanguageSelect } from '@components/LanguageSelect'
+import { Title } from 'components/Title'
 
 interface IHeaderProps {
     dashboard: string

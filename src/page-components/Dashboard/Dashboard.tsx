@@ -1,9 +1,9 @@
 import { dashboards } from '@constants'
 import { notFound } from 'next/navigation'
 import { NextPage } from 'next'
-import { Title } from '@components/server/Title'
+import { Title } from 'components/Title'
 import React from 'react'
-import { Subtext } from 'components/server/Subtext'
+import { Subtext } from 'components/Subtext'
 
 interface IDashboardProps {
     params: { dashboard: string }
@@ -28,6 +28,9 @@ export const Dashboard: NextPage<IDashboardProps> = ({ params }: IDashboardProps
             <div className="flex justify-center">
                 <Subtext dashboard={dashboard} />
             </div>
+
+            {/* Graphs */}
+            <div></div>
         </div>
     )
 }

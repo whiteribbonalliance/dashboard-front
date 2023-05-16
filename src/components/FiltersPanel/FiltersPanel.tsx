@@ -7,15 +7,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import React, { useState } from 'react'
 import Select from 'react-select'
-import { Box } from '@components/server/Box'
+import { Box } from '@components/Box'
 
 interface IFiltersPanelProps {
     dashboard: string
 }
 
 const tabs = [
-    { id: 'drill-down', title: 'Drill Down' },
-    { id: 'compare-to', title: 'Compare To...' },
+    { id: 'drill-down', title: 'Drill down' },
+    { id: 'compare-to', title: 'Compare to...' },
 ]
 
 const options = [
