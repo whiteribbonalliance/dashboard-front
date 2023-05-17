@@ -4,7 +4,12 @@ import { Title } from 'components/Title'
 import React from 'react'
 import { Subtext } from 'components/Subtext'
 import { FiltersPanel } from '@components/FiltersPanel'
-import { Box } from '@components/Box'
+import { ResponsesBreakdownGraph } from '@graph-components/ResponsesBreakdownGraph'
+import { TopWordsAndPhrasesGraph } from '@graph-components/TopWordsAndPhrasesGraph'
+import { ResponsesSampleGraph } from '@graph-components/ResponsesSampleGraph'
+import { LocationGraph } from '@graph-components/LocationGraph'
+import { ThePeopleGraph } from '@graph-components/ThePeopleGraph'
+import { Dashboards } from '@enums'
 
 interface IDashboardProps {
     params: { dashboard: string }
@@ -39,11 +44,20 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
 
                 {/* Graphs */}
                 <div className="grid grid-cols-1 gap-y-[200px]">
-                    <Box>123</Box>
-                    <Box>123</Box>
-                    <Box>123</Box>
-                    <Box>123</Box>
-                    <Box>123</Box>
+                    {/* Top words and phrases graph */}
+                    <TopWordsAndPhrasesGraph dashboard={dashboard} />
+
+                    {/* Responses sample graph */}
+                    <ResponsesSampleGraph dashboard={dashboard} />
+
+                    {/* Location graph */}
+                    <LocationGraph dashboard={dashboard} />
+
+                    {/* Responses breakdown graph */}
+                    <ResponsesBreakdownGraph dashboard={dashboard} />
+
+                    {/* The people graph */}
+                    <ThePeopleGraph dashboard={dashboard} />
                 </div>
             </div>
         </div>
