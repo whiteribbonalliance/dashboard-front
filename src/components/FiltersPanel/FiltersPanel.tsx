@@ -40,6 +40,16 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
             selectedTabClasses = 'border-t-default-colors-tertiary'
     }
 
+    // Set topics text
+    let topicsText: string
+    switch (dashboard) {
+        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
+            topicsText = 'domains'
+            break
+        default:
+            topicsText = 'topics'
+    }
+
     // Whether the PMNCH QR code should be displayed
     const displayPmnchQrCode = dashboard === Dashboards.WHAT_YOUNG_PEOPLE_WANT
 
@@ -89,7 +99,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
                                         {/* Select response topics */}
                                         <div>
-                                            <div>Select response topics</div>
+                                            <div>Select response {topicsText}</div>
                                             <Select options={options} />
                                         </div>
                                     </div>
