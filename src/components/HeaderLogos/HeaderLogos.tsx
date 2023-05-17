@@ -13,7 +13,7 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
                 <Link href={'/'}>
                     <Image
                         className="max-h-[3rem] w-full max-w-[17rem] xl:max-h-[5rem]"
-                        src="/logos/whatwomenwant/www_horizontal_logo.png"
+                        src="/whatwomenwant/www_horizontal_logo.png"
                         alt="what women want logo"
                         width={1117}
                         height={200}
@@ -29,7 +29,7 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
                 <Link href={'/'}>
                     <Image
                         className="max-h-[3rem] w-full max-w-[17rem] xl:max-h-[4rem]"
-                        src="/logos/midwivesvoices/push_with_women.png"
+                        src="/midwivesvoices/push_with_women.png"
                         alt="push with women logo"
                         width={1117}
                         height={200}
@@ -44,7 +44,7 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
             <div>
                 <Image
                     className="max-h-[3rem] w-full max-w-[17rem] xl:max-h-[4rem]"
-                    src="/logos/whatyoungpeoplewant/1point8_logo.png"
+                    src="/whatyoungpeoplewant/1point8_logo.png"
                     alt="1.8 logo"
                     width={1117}
                     height={200}
@@ -58,7 +58,7 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
             <div>
                 <Image
                     className="my-[-17px] max-h-[5rem] w-full max-w-[20rem] xl:max-h-[5rem]"
-                    src="/logos/whatyoungpeoplewant/pmnch_logo.png"
+                    src="/whatyoungpeoplewant/pmnch_logo.png"
                     alt="pmnch logo"
                     width={1117}
                     height={200}
