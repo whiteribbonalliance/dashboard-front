@@ -1,4 +1,5 @@
 const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL
+const headers = { 'Content-Type': 'application/json' }
 
 /**
  * Get data
@@ -6,6 +7,7 @@ const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL
 export async function getData() {
     const response = await fetch(`${apiUrl}/todos/1`, {
         method: 'GET',
+        headers: headers,
     })
 
     if (!response.ok) {

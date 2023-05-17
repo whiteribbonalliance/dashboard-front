@@ -1,7 +1,7 @@
 import '@styles/globals.scss'
 import { ReactNode } from 'react'
-import { config as fontAwesomeConfig } from '@fortawesome/fontawesome-svg-core'
 import localFont from 'next/font/local'
+import { config as fontAwesomeConfig } from '@fortawesome/fontawesome-svg-core'
 
 fontAwesomeConfig.autoAddCss = false
 

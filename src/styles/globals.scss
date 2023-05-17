@@ -1,3 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Import FontAwesome styles here to fix oversizing icons issue on page refresh */
+@import 'node_modules/@fortawesome/fontawesome-svg-core/styles';
