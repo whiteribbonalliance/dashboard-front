@@ -16,6 +16,14 @@ interface IHeaderProps {
     dashboard: string
 }
 
+interface IChevronsLeftProps {
+    open: boolean
+}
+
+interface IHamburgerMenuProps {
+    open: boolean
+}
+
 const menuItems = [
     { id: 'about-us', title: 'About Us', url: 'https://whiteribbonalliance.org/campaigns/what-women-want' },
     { id: 'show-video', title: 'Show Video', url: 'https://www.youtube.com/watch?v=nBzide5J3Hk' },
@@ -52,14 +60,8 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                         <div className="flex items-center justify-between py-6 pl-4 pr-7">
                             <div className="flex items-center">
                                 {/* Button to display filters panel */}
-                                <div
-                                    className={`flex cursor-pointer transition duration-100 ease-in-out xl:hidden ${
-                                        showFiltersPanel ? 'rotate-180' : ''
-                                    }`}
-                                    onClick={() => setShowFiltersPanel((prev) => !prev)}
-                                >
-                                    <FontAwesomeIcon className="text-3xl" icon={faChevronLeft} />
-                                    <FontAwesomeIcon className="ml-[-0.6rem] text-3xl" icon={faChevronLeft} />
+                                <div onClick={() => setShowFiltersPanel((prev) => !prev)}>
+                                    <ChevronsLeft open={showFiltersPanel} />
                                 </div>
 
                                 {/* Logo */}
@@ -92,11 +94,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                             {/* Button to display mobile dropdown */}
                             <Disclosure.Button className="xl:hidden">
                                 <span className="sr-only">Open mobile menu dropdown</span>
-                                {open ? (
-                                    <FontAwesomeIcon className="text-4xl" icon={faXmark} />
-                                ) : (
-                                    <FontAwesomeIcon className="text-3xl" icon={faBars} />
-                                )}
+                                <HamburgerMenu open={open} />
                             </Disclosure.Button>
                         </div>
 
@@ -151,4 +149,19 @@ export const Header = ({ dashboard }: IHeaderProps) => {
             )}
         </>
     )
+}
+
+const ChevronsLeft = ({ open }: IChevronsLeftProps) => {
+    return (
+        <div
+            className={`flex cursor-pointer transition duration-100 ease-in-out xl:hidden ${open ? 'rotate-180' : ''}`}
+        >
+            <FontAwesomeIcon className="text-3xl" icon={faChevronLeft} />
+            <FontAwesomeIcon className="ml-[-0.6rem] text-3xl" icon={faChevronLeft} />
+        </div>
+    )
+}
+
+const HamburgerMenu = ({ open }: IHamburgerMenuProps) => {
+    return <FontAwesomeIcon className={open ? 'text-4xl' : 'text-3xl'} icon={open ? faXmark : faBars} />
 }
