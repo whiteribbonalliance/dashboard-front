@@ -10,6 +10,7 @@ import { ResponsesSampleGraph } from '@graph-components/ResponsesSampleGraph'
 import { LocationGraph } from '@graph-components/LocationGraph'
 import { ThePeopleGraph } from '@graph-components/ThePeopleGraph'
 import { Dashboards } from '@enums'
+import { GenderBreakdownGraph } from '@graph-components/GenderBreakdownGraph'
 
 interface IDashboardProps {
     params: { dashboard: string }
@@ -44,20 +45,24 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
 
                 {/* Graphs */}
                 <div className="grid grid-cols-1 gap-y-[200px]">
-                    {/* Top words and phrases graph */}
-                    <TopWordsAndPhrasesGraph dashboard={dashboard} />
-
-                    {/* Responses sample graph */}
-                    <ResponsesSampleGraph dashboard={dashboard} />
-
-                    {/* Location graph */}
-                    <LocationGraph dashboard={dashboard} />
-
-                    {/* Responses breakdown graph */}
-                    <ResponsesBreakdownGraph dashboard={dashboard} />
-
-                    {/* The people graph */}
-                    <ThePeopleGraph dashboard={dashboard} />
+                    {Dashboards.WHAT_YOUNG_PEOPLE_WANT === dashboard ? (
+                        <>
+                            <ResponsesBreakdownGraph dashboard={dashboard} />
+                            <LocationGraph dashboard={dashboard} />
+                            <ThePeopleGraph dashboard={dashboard} />
+                            <GenderBreakdownGraph dashboard={dashboard} />
+                            <TopWordsAndPhrasesGraph dashboard={dashboard} />
+                            <ResponsesSampleGraph dashboard={dashboard} />
+                        </>
+                    ) : (
+                        <>
+                            <TopWordsAndPhrasesGraph dashboard={dashboard} />
+                            <ResponsesSampleGraph dashboard={dashboard} />
+                            <LocationGraph dashboard={dashboard} />
+                            <ResponsesBreakdownGraph dashboard={dashboard} />
+                            <ThePeopleGraph dashboard={dashboard} />
+                        </>
+                    )}
                 </div>
             </div>
         </div>
