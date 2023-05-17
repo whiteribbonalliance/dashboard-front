@@ -54,7 +54,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
 
     return (
         <>
-            <Disclosure as="header" className="sticky top-0 z-50 bg-white shadow-md xl:shadow-none">
+            <Disclosure as="header" className="sticky top-0 z-50 bg-white shadow-md xl:static xl:shadow-none">
                 {({ open }) => (
                     <>
                         <div className="flex items-center justify-between py-6 pl-4 pr-7">

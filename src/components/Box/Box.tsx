@@ -5,5 +5,5 @@ interface IBoxProps {
 }
 
 export const Box = ({ children }: IBoxProps) => {
-    return <div className="rounded-md bg-gray-light p-4">{children}</div>
+    return <div className="h-fit rounded-md bg-gray-light p-4">{children}</div>
 }

@@ -22,7 +22,7 @@ const DashboardLayout = ({ children, params }: IDashboardLayoutProps) => {
     }
 
     return (
-        <div className={`${layoutClasses}`}>
+        <div className={`text-xl ${layoutClasses}`}>
             <Header dashboard={dashboard} />
             <main>{children}</main>
             <Footer dashboard={dashboard} />

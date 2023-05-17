@@ -5,7 +5,7 @@ import { classNames } from '@utils'
 import { Dashboards } from '@enums'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
-import React, { useState } from 'react'
+import React from 'react'
 import Select from 'react-select'
 import { Box } from '@components/Box'
 import Image from 'next/image'
@@ -30,8 +30,6 @@ const options = [
 ]
 
 export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
-    const [showAdvancedMode, setShowAdvancedMode] = useState<boolean>(false)
-
     // Set selected tab classes
     let selectedTabClasses: string
     switch (dashboard) {
@@ -101,7 +99,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                         {({ open }) => (
                                             <>
                                                 {/* Button to display advanced mode */}
-                                                <Disclosure.Button className="flex items-center justify-end font-bold xl:hidden">
+                                                <Disclosure.Button className="flex items-center justify-end font-bold">
                                                     <span className="sr-only">Open advanced mode</span>
                                                     <span className="mr-2">Advanced mode</span>
                                                     <ChevronsDown open={open} />
@@ -190,11 +188,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
 const ChevronsDown = ({ open }: IChevronsDownProps) => {
     return (
-        <div
-            className={`flex cursor-pointer flex-col transition duration-100 ease-in-out xl:hidden ${
-                open ? 'rotate-180' : ''
-            }`}
-        >
+        <div className={`flex cursor-pointer flex-col transition duration-100 ease-in-out ${open ? 'rotate-180' : ''}`}>
             <FontAwesomeIcon className="text-lg" icon={faChevronDown} />
             <FontAwesomeIcon className="mt-[-0.6rem] text-lg" icon={faChevronDown} />
         </div>

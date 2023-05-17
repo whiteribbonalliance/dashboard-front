@@ -56,13 +56,15 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
     const PmnchLogo = () => {
         return (
             <div>
-                <Image
-                    className="my-[-17px] max-h-[5rem] w-full max-w-[20rem] xl:max-h-[5rem]"
-                    src="/whatyoungpeoplewant/pmnch_logo.png"
-                    alt="pmnch logo"
-                    width={1117}
-                    height={200}
-                />
+                <Link href={'/'}>
+                    <Image
+                        className="my-[-17px] max-h-[5rem] w-full max-w-[20rem] xl:max-h-[5rem]"
+                        src="/whatyoungpeoplewant/pmnch_logo.png"
+                        alt="pmnch logo"
+                        width={1117}
+                        height={200}
+                    />
+                </Link>
             </div>
         )
     }
