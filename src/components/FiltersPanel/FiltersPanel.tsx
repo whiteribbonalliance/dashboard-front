@@ -47,14 +47,14 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
             <div className="mb-5 w-full">
                 <Box>
                     <Tab.Group>
-                        <Tab.List className="mb-2 flex p-1">
+                        <Tab.List className="mb-2 flex p-1 flex-col sm:flex-row">
                             {tabs.map((tab) => (
                                 <Tab
                                     key={tab.id}
                                     className={({ selected }) =>
                                         classNames(
-                                            'w-full bg-gray-lighter py-2.5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
-                                            selected ? `border-t-2 bg-white py-5 ${selectedTabClasses}` : ''
+                                            'w-full bg-gray-lighter py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
+                                            selected ? `border-t-2 bg-white ${selectedTabClasses}` : ''
                                         )
                                     }
                                 >
