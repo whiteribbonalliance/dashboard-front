@@ -91,7 +91,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
 
                             {/* Button to display mobile dropdown */}
                             <Disclosure.Button className="xl:hidden">
-                                <span className="sr-only">Open main menu</span>
+                                <span className="sr-only">Open mobile menu dropdown</span>
                                 {open ? (
                                     <FontAwesomeIcon className="text-4xl" icon={faXmark} />
                                 ) : (
@@ -144,7 +144,8 @@ export const Header = ({ dashboard }: IHeaderProps) => {
 
             {/* Filters panel */}
             {showFiltersPanel && (
-                <div className="fixed flex min-h-full w-full flex-col items-center bg-white px-8 pt-3 xl:hidden">
+                // height = 100vh - (height of header)
+                <div className="fixed flex h-[calc(100vh-96px)] w-full flex-col overflow-y-auto bg-white px-8 py-3 xl:hidden">
                     <FiltersPanel dashboard={dashboard} />
                 </div>
             )}

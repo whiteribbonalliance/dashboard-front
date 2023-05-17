@@ -1,6 +1,6 @@
 'use client'
 
-import { Tab } from '@headlessui/react'
+import { Disclosure, Tab, Transition } from '@headlessui/react'
 import { classNames } from '@utils'
 import { Dashboards } from '@enums'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,6 +11,10 @@ import { Box } from '@components/Box'
 
 interface IFiltersPanelProps {
     dashboard: string
+}
+
+interface IChevronsDownProps {
+    open: boolean
 }
 
 const tabs = [
@@ -38,7 +42,8 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     }
 
     return (
-        <>
+        <div>
+            {/* Filters */}
             <div className="mb-5 w-full">
                 <Box>
                     <Tab.Group>
@@ -57,6 +62,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                 </Tab>
                             ))}
                         </Tab.List>
+
                         <Tab.Panels>
                             {tabs.map((tab) => (
                                 <Tab.Panel
@@ -65,37 +71,77 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                         'flex flex-col p-3 ring-transparent ring-offset-2 focus:outline-none'
                                     )}
                                 >
-                                    {/* Select countries */}
-                                    <div className="mb-3 flex flex-col">
-                                        <div className="mb-1">Select countries</div>
-                                        <Select options={options} />
-                                    </div>
+                                    {/* Normal mode */}
+                                    <div className="mb-5 flex flex-col gap-y-3">
+                                        {/* Select countries */}
+                                        <div>
+                                            <div className="mb-1">Select countries</div>
+                                            <Select options={options} />
+                                        </div>
 
-                                    {/* Select regions */}
-                                    <div className="mb-3">
-                                        <div className="mb-1">Select regions</div>
-                                        <Select options={options} />
-                                    </div>
+                                        {/* Select regions */}
+                                        <div>
+                                            <div className="mb-1">Select regions</div>
+                                            <Select options={options} />
+                                        </div>
 
-                                    {/* Select response topics */}
-                                    <div className="mb-5">
-                                        <div className="mb-1">Select response topics</div>
-                                        <Select options={options} />
+                                        {/* Select response topics */}
+                                        <div>
+                                            <div>Select response topics</div>
+                                            <Select options={options} />
+                                        </div>
                                     </div>
 
                                     {/* Advanced mode */}
-                                    <div className="flex items-center justify-end font-bold">
-                                        <span className="mr-2">Advanced mode</span>
-                                        <div
-                                            className={`flex cursor-pointer flex-col transition duration-100 ease-in-out xl:hidden ${
-                                                showAdvancedMode ? 'rotate-180' : ''
-                                            }`}
-                                            onClick={() => setShowAdvancedMode((prev) => !prev)}
-                                        >
-                                            <FontAwesomeIcon className="text-lg" icon={faChevronDown} />
-                                            <FontAwesomeIcon className="mt-[-0.6rem] text-lg" icon={faChevronDown} />
-                                        </div>
-                                    </div>
+                                    <Disclosure as="div" className="flex flex-col justify-end">
+                                        {({ open }) => (
+                                            <>
+                                                {/* Button to display advanced mode */}
+                                                <Disclosure.Button className="flex items-center justify-end font-bold xl:hidden">
+                                                    <span className="sr-only">Open advanced mode</span>
+                                                    <span className="mr-2">Advanced mode</span>
+                                                    <ChevronsDown open={open} />
+                                                </Disclosure.Button>
+
+                                                {/* Advanced mode panel */}
+                                                <Transition>
+                                                    <Disclosure.Panel as="div" className="flex flex-col gap-y-3">
+                                                        {/* Select regions */}
+                                                        <div>
+                                                            <div className="mb-1">Show responses from categories</div>
+                                                            <Select options={options} />
+                                                        </div>
+
+                                                        {/* Filter by age */}
+                                                        <div>
+                                                            <div className="mb-1">
+                                                                Filter by age (or select range in histogram)
+                                                            </div>
+                                                            <Select options={options} />
+                                                        </div>
+
+                                                        {/* Filter by keyword / Exclude keyword */}
+                                                        <div className="flex gap-x-3">
+                                                            <div className="flex basis-1/2 flex-col">
+                                                                <div className="mb-1">Filter by keyword</div>
+                                                                <Select options={options} />
+                                                            </div>
+                                                            <div className="flex basis-1/2 flex-col">
+                                                                <div className="mb-1">Exclude keyword</div>
+                                                                <Select options={options} />
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Show multi-word phrases */}
+                                                        <div className="flex flex-col">
+                                                            <div className="mb-1">Show multi-word phrases</div>
+                                                            <Select options={options} />
+                                                        </div>
+                                                    </Disclosure.Panel>
+                                                </Transition>
+                                            </>
+                                        )}
+                                    </Disclosure>
                                 </Tab.Panel>
                             ))}
                         </Tab.Panels>
@@ -104,7 +150,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
             </div>
 
             {/* Respondents and average age */}
-            <div className="flex w-full gap-x-3">
+            <div className="flex w-full flex-row gap-x-3">
                 <div className="flex basis-1/2 flex-col">
                     <Box>
                         <div className="text-2xl">0</div>
@@ -118,6 +164,19 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                     </Box>
                 </div>
             </div>
-        </>
+        </div>
+    )
+}
+
+const ChevronsDown = ({ open }: IChevronsDownProps) => {
+    return (
+        <div
+            className={`flex cursor-pointer flex-col transition duration-100 ease-in-out xl:hidden ${
+                open ? 'rotate-180' : ''
+            }`}
+        >
+            <FontAwesomeIcon className="text-lg" icon={faChevronDown} />
+            <FontAwesomeIcon className="mt-[-0.6rem] text-lg" icon={faChevronDown} />
+        </div>
     )
 }

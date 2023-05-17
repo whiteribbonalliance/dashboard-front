@@ -1,6 +1,5 @@
 import { dashboards } from '@constants'
 import { notFound } from 'next/navigation'
-import { NextPage } from 'next'
 import { Title } from 'components/Title'
 import React from 'react'
 import { Subtext } from 'components/Subtext'
@@ -9,7 +8,7 @@ interface IDashboardProps {
     params: { dashboard: string }
 }
 
-export const Dashboard: NextPage<IDashboardProps> = ({ params }: IDashboardProps) => {
+export const Dashboard = async ({ params }: IDashboardProps) => {
     const { dashboard } = params
 
     // Fire notFound() if subdomain/dashboard requested is not an existing dashboard
