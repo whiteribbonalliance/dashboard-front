@@ -8,6 +8,7 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import React, { useState } from 'react'
 import Select from 'react-select'
 import { Box } from '@components/Box'
+import Image from 'next/image'
 
 interface IFiltersPanelProps {
     dashboard: string
@@ -41,13 +42,16 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
             selectedTabClasses = 'border-t-default-colors-tertiary'
     }
 
+    // Whether the PMNCH QR code should be displayed
+    const displayPmnchQrCode = dashboard === Dashboards.WHAT_YOUNG_PEOPLE_WANT
+
     return (
         <div>
             {/* Filters */}
             <div className="mb-5 w-full">
                 <Box>
                     <Tab.Group>
-                        <Tab.List className="mb-2 flex p-1 flex-col sm:flex-row">
+                        <Tab.List className="mb-2 flex flex-col p-1 sm:flex-row">
                             {tabs.map((tab) => (
                                 <Tab
                                     key={tab.id}
@@ -150,20 +154,36 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
             </div>
 
             {/* Respondents and average age */}
-            <div className="flex w-full flex-row gap-x-3">
+            <div className="mb-5 flex w-full flex-row gap-x-3">
                 <div className="flex basis-1/2 flex-col">
                     <Box>
-                        <div className="text-2xl">0</div>
+                        <div className="text-2xl">0,000</div>
                         <div>All respondents</div>
                     </Box>
                 </div>
                 <div className="flex basis-1/2 flex-col">
                     <Box>
-                        <div className="text-2xl">0</div>
+                        <div className="text-2xl">0-0</div>
                         <div>Average age</div>
                     </Box>
                 </div>
             </div>
+
+            {/* PMNCH QR code */}
+            {displayPmnchQrCode && (
+                <div className="flex flex-col items-center">
+                    <Image
+                        className="w-full max-w-[24rem]"
+                        src="/whatyoungpeoplewant/pmnch_qr_code.png"
+                        alt="PMNCH QR code"
+                        width={1117}
+                        height={200}
+                    />
+                    <div className="font-1point8 text-4xl uppercase text-pmnch-colors-primary">
+                        Scan, share, and be heard!
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
