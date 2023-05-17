@@ -8,7 +8,7 @@ interface IDashboardLayoutProps {
     params: { dashboard: string }
 }
 
-const DashboardLayout = ({ children, params }: IDashboardLayoutProps) => {
+const DashboardLayout = async ({ children, params }: IDashboardLayoutProps) => {
     const { dashboard } = params
 
     // Set layout classes

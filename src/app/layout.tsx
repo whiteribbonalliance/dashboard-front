@@ -39,7 +39,7 @@ interface IRootLayoutProps {
     children: ReactNode
 }
 
-const RootLayout = ({ children }: IRootLayoutProps) => {
+const RootLayout = async ({ children }: IRootLayoutProps) => {
     return (
         <html
             lang="en"

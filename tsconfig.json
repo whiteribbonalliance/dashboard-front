@@ -47,6 +47,9 @@
       "@graph-components/*": [
         "graph-components/*"
       ],
+      "@services/*": [
+        "services/*"
+      ],
       "@utils": [
         "utils"
       ]
