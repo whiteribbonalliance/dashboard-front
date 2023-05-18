@@ -44,6 +44,7 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
                 </aside>
 
                 {/* Graphs */}
+                {/* TODO: Display the ages as numbers instead of ranges for PMNCH only */}
                 <section className="col-span-2 grid grid-cols-1 gap-y-[200px]">
                     {Dashboards.WHAT_YOUNG_PEOPLE_WANT === dashboard ? (
                         <>
