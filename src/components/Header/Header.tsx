@@ -65,7 +65,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                                 </div>
 
                                 {/* Logo */}
-                                <div className="ml-3 flex items-center">
+                                <div className="mx-3 flex items-center">
                                     <HeaderLogos dashboard={dashboard} />
                                 </div>
                             </div>

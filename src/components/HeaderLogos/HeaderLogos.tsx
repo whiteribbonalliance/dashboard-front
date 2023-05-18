@@ -7,6 +7,22 @@ interface IHeaderLogosProps {
 }
 
 export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
+    const WhiteRibbonAllianceLogo = () => {
+        return (
+            <div>
+                <Link href={'/'}>
+                    <Image
+                        className="max-h-[3rem] w-full max-w-[17rem] xl:max-h-[5rem]"
+                        src="/wra_logo.png"
+                        alt="white ribbon alliance logo"
+                        width={1117}
+                        height={200}
+                    />
+                </Link>
+            </div>
+        )
+    }
+
     const WhatWomenWantLogo = () => {
         return (
             <div>
@@ -73,6 +89,7 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
         case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
             return (
                 <div className="flex items-center gap-x-2.5">
+                    <WhiteRibbonAllianceLogo />
                     <_1point8Logo />
                     <PmnchLogo />
                 </div>
@@ -82,9 +99,15 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
                 <div className="flex items-center gap-x-2.5">
                     <WhatWomenWantLogo />
                     <PushWithWomenLogo />
+                    <WhiteRibbonAllianceLogo />
                 </div>
             )
         default:
-            return <WhatWomenWantLogo />
+            return (
+                <div className="flex items-center gap-x-2.5">
+                    <WhiteRibbonAllianceLogo />
+                    <WhatWomenWantLogo />
+                </div>
+            )
     }
 }
