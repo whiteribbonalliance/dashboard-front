@@ -72,7 +72,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
 
                             {/* Title */}
                             <div className="hidden xl:flex">
-                                <Title dashboard={dashboard} />
+                                <Title dashboard={dashboard} renderAsDiv />
                             </div>
 
                             {/* Menu items */}

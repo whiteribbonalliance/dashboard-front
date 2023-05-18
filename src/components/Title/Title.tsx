@@ -3,9 +3,10 @@ import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } 
 
 interface ITitleProps {
     dashboard: string
+    renderAsDiv?: boolean
 }
 
-export const Title = ({ dashboard }: ITitleProps) => {
+export const Title = ({ dashboard, renderAsDiv }: ITitleProps) => {
     // Set title
     let title: string
     switch (dashboard) {
@@ -22,5 +23,14 @@ export const Title = ({ dashboard }: ITitleProps) => {
             title = ''
     }
 
-    return <h1 className="mx-2 text-center font-proxima-nova text-4xl font-bold">{title}</h1>
+    // When using the title at multiple places, use renderAsDiv to prevent multiple h1 tags
+    return (
+        <>
+            {!renderAsDiv ? (
+                <h1 className="mx-2 text-center font-proxima-nova text-4xl font-bold">{title}</h1>
+            ) : (
+                <div className="mx-2 text-center font-proxima-nova text-4xl font-bold">{title}</div>
+            )}
+        </>
+    )
 }
