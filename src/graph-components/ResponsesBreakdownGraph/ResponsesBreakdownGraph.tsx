@@ -17,9 +17,19 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
             topicText = 'topic'
     }
 
+    // Set respondents text
+    let respondentsText: string
+    switch (dashboard) {
+        case Dashboards.WHAT_WOMEN_WANT:
+            respondentsText = "women's"
+            break
+        default:
+            respondentsText = "respondents'"
+    }
+
     return (
         <Box>
-            <GraphTitle dashboard={dashboard} text={`Breakdown of women's responses by ${topicText}`} />
+            <GraphTitle dashboard={dashboard} text={`Breakdown of ${respondentsText} responses by ${topicText}`} />
             <div>123</div>
         </Box>
     )
