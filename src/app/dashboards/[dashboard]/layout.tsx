@@ -26,7 +26,7 @@ const DashboardLayout = async ({ children, params }: IDashboardLayoutProps) => {
     return (
         <body className={`text-lg ${layoutClasses}`}>
             <Header dashboard={dashboard} />
-            <main className="mx-7 mb-12 mt-6">{children}</main>
+            <main className="mx-7 my-7">{children}</main>
             <Footer dashboard={dashboard} />
         </body>
     )

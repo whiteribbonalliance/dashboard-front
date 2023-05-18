@@ -57,7 +57,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
             <Disclosure as="header" className="sticky top-0 z-50 bg-white shadow-md xl:static xl:shadow-none">
                 {({ open }) => (
                     <>
-                        <div className="flex items-center justify-between px-7 py-6">
+                        <div className="flex items-center justify-between px-7 py-7">
                             <div className="flex items-center">
                                 {/* Button to display filters panel */}
                                 <div onClick={() => setShowFiltersPanel((prev) => !prev)}>

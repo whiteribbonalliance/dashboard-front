@@ -80,7 +80,7 @@ export const Footer = ({ dashboard }: IFooterProps) => {
     }
 
     return (
-        <footer className="mx-7 my-3 flex flex-col gap-y-5">
+        <footer className="mx-7 my-7 flex flex-col gap-y-5">
             <div>
                 <p>* All {respondents} participating in the campaign provided informed consent.</p>
                 {footerNote && footerNote}
