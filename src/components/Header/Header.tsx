@@ -60,7 +60,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                         <div className="flex items-center justify-between px-7 py-7">
                             <div className="flex items-center">
                                 {/* Button to display filters panel */}
-                                <div onClick={() => setShowFiltersPanel((prev) => !prev)}>
+                                <div onClick={() => setShowFiltersPanel((prev) => !prev)} title="Filters">
                                     <ChevronsLeft open={showFiltersPanel} />
                                 </div>
 
@@ -92,7 +92,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                             </nav>
 
                             {/* Button to display mobile dropdown */}
-                            <Disclosure.Button className="xl:hidden">
+                            <Disclosure.Button className="xl:hidden" title="Menu">
                                 <span className="sr-only">Open mobile menu dropdown</span>
                                 <HamburgerMenu open={open} />
                             </Disclosure.Button>
