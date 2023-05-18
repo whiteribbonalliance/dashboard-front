@@ -24,7 +24,7 @@ const DashboardLayout = async ({ children, params }: IDashboardLayoutProps) => {
     }
 
     return (
-        <body className={`text-xl ${layoutClasses}`}>
+        <body className={`text-lg ${layoutClasses}`}>
             <Header dashboard={dashboard} />
             <main className="mx-7 mb-12 mt-6">{children}</main>
             <Footer dashboard={dashboard} />
