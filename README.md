@@ -54,7 +54,7 @@ npm run format
 
 This repo has continuous deployment/continuous integration set up.
 
-There is a Github action defined in `.github/workflows/deploy_google_app_engine.yaml` which deploys to Google App Engine when you push or merge to `main`, except `README.md`. The app will deploy to https://dashboard-frontend-dot-deft-stratum-290216.uc.r.appspot.com plus any other domains that are pointing there.
+There is a GitHub action defined in `.github/workflows/deploy_google_app_engine.yaml` which deploys to Google App Engine when you push or merge to `main`, except `README.md`. The app will deploy to https://dashboard-frontend-dot-deft-stratum-290216.uc.r.appspot.com plus any other domains that are pointing there.
 
 This script builds a Docker image and pushes to Google Container Registry and then deploys. In future we may change to a direct Dockerless deployment which would use `app.yaml`. No authentication is needed because authentication is provided via the Google App Engine service account, whose credentials are stored in the Github secret `GOOGLE_CREDENTIALS` (to change this, go to the Github web interface and got o Settings -> Secrets and variables -> Actions. You will need to be an administrator on the Github repo to modify these credentials).
 

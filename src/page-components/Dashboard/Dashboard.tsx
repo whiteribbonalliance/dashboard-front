@@ -37,14 +37,14 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
             </div>
 
             {/* Content */}
-            <div className="grid grid-cols-1 gap-x-[10%] xl:grid-cols-2">
+            <div className="grid grid-cols-1 gap-x-[10%] xl:grid-cols-3">
                 {/* Filters panel */}
-                <aside className="hidden xl:sticky xl:top-5 xl:block xl:h-fit">
+                <aside className="hidden xl:sticky xl:top-5 xl:col-span-1 xl:block xl:h-fit">
                     <FiltersPanel dashboard={dashboard} />
                 </aside>
 
                 {/* Graphs */}
-                <section className="grid grid-cols-1 gap-y-[200px]">
+                <section className="col-span-2 grid grid-cols-1 gap-y-[200px]">
                     {Dashboards.WHAT_YOUNG_PEOPLE_WANT === dashboard ? (
                         <>
                             <ResponsesBreakdownGraph dashboard={dashboard} />
