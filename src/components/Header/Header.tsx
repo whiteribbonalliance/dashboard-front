@@ -143,7 +143,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
             {/* Filters panel */}
             {showFiltersPanel && (
                 // height = 100vh - (height of header)
-                <div className="fixed flex h-[calc(100vh-96px)] w-full flex-col overflow-y-auto bg-white px-8 py-3 xl:hidden">
+                <div className="fixed flex h-[calc(100vh-96px)] w-full flex-col overflow-y-auto bg-white px-8 pb-3 pt-6 xl:hidden">
                     <FiltersPanel dashboard={dashboard} />
                 </div>
             )}

@@ -45,7 +45,7 @@ const RootLayout = async ({ children }: IRootLayoutProps) => {
             lang="en"
             className={`${notoSansRegular.variable} ${_1point8.variable} ${helvetica.variable} ${proximaNova.variable}`}
         >
-            <body>{children}</body>
+            {children}
         </html>
     )
 }

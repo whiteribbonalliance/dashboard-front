@@ -54,7 +54,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     const displayPmnchQrCode = dashboard === Dashboards.WHAT_YOUNG_PEOPLE_WANT
 
     return (
-        <div>
+        <aside>
             {/* Filters */}
             <div className="mb-5 w-full">
                 <Box>
@@ -192,6 +192,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
             {/* PMNCH QR code */}
             {displayPmnchQrCode && (
                 <div className="flex flex-col items-center">
+                    {/* TODO: Make smaller */}
                     <Image
                         className="w-full max-w-[24rem]"
                         src="/whatyoungpeoplewant/pmnch_qr_code.png"
@@ -204,7 +205,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                     </div>
                 </div>
             )}
-        </div>
+        </aside>
     )
 }
 

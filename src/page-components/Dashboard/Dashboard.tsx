@@ -25,7 +25,7 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
     }
 
     return (
-        <div className="mx-7 mb-12 mt-7 text-xl">
+        <>
             {/* Title */}
             <div className="mb-3 flex justify-center xl:hidden">
                 <Title dashboard={dashboard} />
@@ -39,12 +39,12 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
             {/* Content */}
             <div className="grid grid-cols-1 gap-x-[10%] xl:grid-cols-2">
                 {/* Filters panel */}
-                <div className="hidden xl:sticky xl:top-5 xl:block xl:h-fit">
+                <aside className="hidden xl:sticky xl:top-5 xl:block xl:h-fit">
                     <FiltersPanel dashboard={dashboard} />
-                </div>
+                </aside>
 
                 {/* Graphs */}
-                <div className="grid grid-cols-1 gap-y-[200px]">
+                <section className="grid grid-cols-1 gap-y-[200px]">
                     {Dashboards.WHAT_YOUNG_PEOPLE_WANT === dashboard ? (
                         <>
                             <ResponsesBreakdownGraph dashboard={dashboard} />
@@ -63,8 +63,8 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
                             <ThePeopleGraph dashboard={dashboard} />
                         </>
                     )}
-                </div>
+                </section>
             </div>
-        </div>
+        </>
     )
 }
