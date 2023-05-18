@@ -192,9 +192,8 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
             {/* PMNCH QR code */}
             {displayPmnchQrCode && (
                 <div className="flex flex-col items-center">
-                    {/* TODO: Make smaller */}
                     <Image
-                        className="w-full max-w-[24rem]"
+                        className="w-full max-w-[24rem] xl:max-w-[18rem]"
                         src="/whatyoungpeoplewant/pmnch_qr_code.png"
                         alt="PMNCH QR code"
                         width={1117}
