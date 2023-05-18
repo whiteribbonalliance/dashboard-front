@@ -199,7 +199,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                         width={1117}
                         height={200}
                     />
-                    <div className="font-1point8 text-4xl uppercase text-pmnch-colors-primary">
+                    <div className="text-center font-1point8 text-4xl uppercase text-pmnch-colors-primary">
                         Scan, share, and be heard!
                     </div>
                 </div>
