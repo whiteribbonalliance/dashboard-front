@@ -1,17 +1,18 @@
 # How to deploy:
 # gcloud app deploy app.yaml
 
-
-service: dashboardfrontend
+service: default
 runtime: nodejs16
 
 # Force https and redirect http to https
 handlers:
-- url: /.*
-  secure: always
-  redirect_http_response_code: 301
-  script: auto
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    script: auto
 
 env_variables:
   NEXT_PUBLIC_PROD_DOMAIN: ".freelancedatascientist.net"
+
+build_env_variables:
   NEXT_PUBLIC_WRA_DASHBOARD_API_URL: "https://www-dashboard-api-dot-deft-stratum-290216.uc.r.appspot.com/api/v1"
