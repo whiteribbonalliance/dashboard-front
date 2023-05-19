@@ -13,5 +13,5 @@ handlers:
   script: auto
 
 env_variables:
-  NEXT_PUBLIC_PROD_DOMAIN: .freelancedatascientist.net
-  NEXT_PUBLIC_WRA_DASHBOARD_API_URL: https://www-dashboard-api-dot-deft-stratum-290216.uc.r.appspot.com/api/v1
+  NEXT_PUBLIC_PROD_DOMAIN: ".freelancedatascientist.net"
+  NEXT_PUBLIC_WRA_DASHBOARD_API_URL: "https://www-dashboard-api-dot-deft-stratum-290216.uc.r.appspot.com/api/v1"

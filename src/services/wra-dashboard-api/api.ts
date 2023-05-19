@@ -2,7 +2,6 @@ import { ICampaignFilterOptions } from '@interfaces/wra-dashboard-api/campaign/f
 import { getDashboardCampaign } from '@utils'
 import { ICampaignCountryRegions } from '@interfaces/wra-dashboard-api/campaign/country-regions'
 
-const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL as string
 const headers = { 'Content-Type': 'application/json' }
 
 /**
@@ -11,6 +10,8 @@ const headers = { 'Content-Type': 'application/json' }
  * @param dashboard The dashboard
  */
 export async function getCampaignFilterOptions(dashboard: string) {
+    const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL as string
+
     const campaign = getDashboardCampaign(dashboard)
     const response = await fetch(`${apiUrl}/campaigns/${campaign}/filter-options`, {
         method: 'GET',
@@ -33,6 +34,8 @@ export async function getCampaignFilterOptions(dashboard: string) {
  * @param country The country
  */
 export async function getCampaignCountryRegions(dashboard: string, country: string) {
+    const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL as string
+
     const campaign = getDashboardCampaign(dashboard)
     const response = await fetch(`${apiUrl}/campaigns/${campaign}/countries/${country}/regions`, {
         method: 'GET',
