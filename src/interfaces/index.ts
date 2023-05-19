@@ -1,2 +1,7 @@
+// App
 export type { IConfiguration } from './configuration'
 export type { IDashboardLink } from './dashboard-link'
+
+// WRA Dashboard API
+export type { ICampaignFilterOptions } from './wra-dashboard-api/campaign/filter-options'
+export type { ICampaignCountryRegions } from './wra-dashboard-api/campaign/country-regions'

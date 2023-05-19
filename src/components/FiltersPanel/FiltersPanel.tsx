@@ -5,10 +5,11 @@ import { classNames } from '@utils'
 import { Dashboards } from '@enums'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 import { Box } from '@components/Box'
 import Image from 'next/image'
+import { getCampaignFilterOptions } from '@services/wra-dashboard-api/api'
 
 interface IFiltersPanelProps {
     dashboard: string
@@ -18,19 +19,42 @@ interface IChevronsDownProps {
     open: boolean
 }
 
+interface ISelectProps {
+    options: Option[]
+}
+
 const tabs = [
     { id: 'drill-down', title: 'Drill down' },
     { id: 'compare-to', title: 'Compare to...' },
 ]
 
-const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-]
+type Option = {
+    value: string
+    label: string
+}
 
 export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
-    // TODO: Add more select options for pmnch
+    // TODO: display regions based on the selected country
+    const [countryOptions, setCountryOptions] = useState<Option[]>([])
+
+    // Fetch countries
+    useEffect(() => {
+        getCampaignFilterOptions(dashboard)
+            .then((filterOptions) => {
+                // Countries
+                const countryOptions: Option[] = filterOptions.countries.map((country) => {
+                    return {
+                        value: country,
+                        label: country,
+                    }
+                })
+                setCountryOptions(countryOptions)
+            })
+            .catch(() => {})
+    }, [dashboard])
+
+    // Fetch regions
+    useEffect(() => {}, [countryOptions])
 
     // Set selected tab classes
     let selectedTabClasses: string
@@ -90,19 +114,19 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                         {/* Select countries */}
                                         <div>
                                             <div className="mb-1">Select countries</div>
-                                            <SelectCountries />
+                                            <SelectCountries options={countryOptions} />
                                         </div>
 
                                         {/* Select regions */}
                                         <div>
                                             <div className="mb-1">Select regions</div>
-                                            <SelectRegions />
+                                            <SelectRegions options={[]} />
                                         </div>
 
                                         {/* Select response topics */}
                                         <div>
                                             <div>Select response {topicsText}</div>
-                                            <SelectResponseTopics />
+                                            <SelectResponseTopics options={[]} />
                                         </div>
                                     </div>
 
@@ -123,15 +147,15 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                         {/* Show responses from categories */}
                                                         <div>
                                                             <div className="mb-1">Show responses from categories</div>
-                                                            <SelectShowResponsesCategories />
+                                                            <SelectShowResponsesCategories options={[]} />
                                                         </div>
 
                                                         {/* Filter by age */}
                                                         <div>
                                                             <div className="mb-1">
                                                                 Filter by age (or select range in histogram)
+                                                                <SelectFilterAge options={[]} />
                                                             </div>
-                                                            <Select instanceId="select-filter-age" options={options} />
                                                         </div>
 
                                                         {/* For whatyoungpeoplewant show select gender */}
@@ -142,7 +166,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                     {/* Filter by gender */}
                                                                     <div className="flex basis-1/2 flex-col">
                                                                         <div className="mb-1">Filter by gender</div>
-                                                                        <SelectGender />
+                                                                        <SelectGender options={[]} />
                                                                     </div>
                                                                 </div>
                                                             </>
@@ -156,12 +180,12 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                     {/* Filter by gender */}
                                                                     <div className="flex basis-1/2 flex-col">
                                                                         <div className="mb-1">Filter by gender</div>
-                                                                        <SelectGender />
+                                                                        <SelectGender options={[]} />
                                                                     </div>
                                                                     {/* Select profession */}
                                                                     <div className="flex basis-1/2 flex-col">
                                                                         <div className="mb-1">Select profession</div>
-                                                                        <SelectProfession />
+                                                                        <SelectProfession options={[]} />
                                                                     </div>
                                                                 </div>
                                                             </>
@@ -172,19 +196,19 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                             {/* Filter by keyword */}
                                                             <div className="flex basis-1/2 flex-col">
                                                                 <div className="mb-1">Filter by keyword</div>
-                                                                <SelectKeyword />
+                                                                <SelectKeyword options={[]} />
                                                             </div>
                                                             {/* Exclude keyword */}
                                                             <div className="flex basis-1/2 flex-col">
                                                                 <div className="mb-1">Exclude keyword</div>
-                                                                <SelectExcludeKeyword />
+                                                                <SelectExcludeKeyword options={[]} />
                                                             </div>
                                                         </div>
 
                                                         {/* Show multi-word phrases */}
                                                         <div className="flex flex-col">
                                                             <div className="mb-1">Show multi-word phrases</div>
-                                                            <SelectShowMultiWordPhrases />
+                                                            <SelectShowMultiWordPhrases options={[]} />
                                                         </div>
                                                     </Disclosure.Panel>
                                                 </Transition>
@@ -242,38 +266,42 @@ const ChevronsDown = ({ open }: IChevronsDownProps) => {
     )
 }
 
-const SelectKeyword = () => {
+const SelectKeyword = ({ options }: ISelectProps) => {
     return <Select instanceId="select-keyword" options={options} />
 }
 
-const SelectExcludeKeyword = () => {
+const SelectExcludeKeyword = ({ options }: ISelectProps) => {
     return <Select instanceId="select-exclude-keyword" options={options} />
 }
 
-const SelectShowMultiWordPhrases = () => {
+const SelectShowMultiWordPhrases = ({ options }: ISelectProps) => {
     return <Select instanceId="select-show-multi-word-phrases" options={options} />
 }
 
-const SelectProfession = () => {
+const SelectProfession = ({ options }: ISelectProps) => {
     return <Select instanceId="select-profession" options={options} />
 }
 
-const SelectGender = () => {
+const SelectGender = ({ options }: ISelectProps) => {
     return <Select instanceId="select-gender" options={options} />
 }
 
-const SelectShowResponsesCategories = () => {
+const SelectShowResponsesCategories = ({ options }: ISelectProps) => {
     return <Select instanceId="select-show-responses-categories" options={options} />
 }
 
-const SelectResponseTopics = () => {
+const SelectResponseTopics = ({ options }: ISelectProps) => {
     return <Select instanceId="select-response-topics" options={options} />
 }
 
-const SelectRegions = () => {
+const SelectRegions = ({ options }: ISelectProps) => {
     return <Select instanceId="select-regions" options={options} />
 }
 
-const SelectCountries = () => {
+const SelectCountries = ({ options }: ISelectProps) => {
     return <Select instanceId="select-countries" options={options} />
+}
+
+const SelectFilterAge = ({ options }: ISelectProps) => {
+    return <Select instanceId="select-filter-age" options={options} />
 }
