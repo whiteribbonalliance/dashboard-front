@@ -37,11 +37,11 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
             </div>
 
             {/* Content */}
-            <div className="grid grid-cols-1 gap-x-[10%] xl:grid-cols-3">
+            <div className="grid grid-cols-1 items-start gap-x-[10%] xl:grid-cols-3">
                 {/* Filters panel */}
-                <aside className="hidden xl:sticky xl:top-5 xl:col-span-1 xl:block xl:h-fit">
+                <section className="hidden xl:sticky xl:top-5 xl:col-span-1 xl:block">
                     <FiltersPanel dashboard={dashboard} />
-                </aside>
+                </section>
 
                 {/* Graphs */}
                 {/* TODO: Display the ages as numbers instead of ranges for PMNCH only */}

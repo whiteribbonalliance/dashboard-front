@@ -30,6 +30,8 @@ const options = [
 ]
 
 export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
+    // TODO: Add more select options for pmnch
+
     // Set selected tab classes
     let selectedTabClasses: string
     switch (dashboard) {
@@ -88,19 +90,19 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                         {/* Select countries */}
                                         <div>
                                             <div className="mb-1">Select countries</div>
-                                            <Select instanceId="select-countries" options={options} />
+                                            <SelectCountries />
                                         </div>
 
                                         {/* Select regions */}
                                         <div>
                                             <div className="mb-1">Select regions</div>
-                                            <Select instanceId="select-regios" options={options} />
+                                            <SelectRegions />
                                         </div>
 
                                         {/* Select response topics */}
                                         <div>
                                             <div>Select response {topicsText}</div>
-                                            <Select instanceId="select-response-topics" options={options} />
+                                            <SelectResponseTopics />
                                         </div>
                                     </div>
 
@@ -121,10 +123,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                         {/* Show responses from categories */}
                                                         <div>
                                                             <div className="mb-1">Show responses from categories</div>
-                                                            <Select
-                                                                instanceId="select-show-responses-categories"
-                                                                options={options}
-                                                            />
+                                                            <SelectShowResponsesCategories />
                                                         </div>
 
                                                         {/* Filter by age */}
@@ -135,31 +134,57 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                             <Select instanceId="select-filter-age" options={options} />
                                                         </div>
 
-                                                        {/* Filter by keyword / Exclude keyword */}
+                                                        {/* For whatyoungpeoplewant show select gender */}
+                                                        {dashboard === Dashboards.WHAT_YOUNG_PEOPLE_WANT && (
+                                                            <>
+                                                                {/* Filter by gender */}
+                                                                <div className="flex gap-x-3">
+                                                                    {/* Filter by gender */}
+                                                                    <div className="flex basis-1/2 flex-col">
+                                                                        <div className="mb-1">Filter by gender</div>
+                                                                        <SelectGender />
+                                                                    </div>
+                                                                </div>
+                                                            </>
+                                                        )}
+
+                                                        {/* For midwivesvoices show select gender and select profession */}
+                                                        {dashboard === Dashboards.MIDWIVES_VOICES && (
+                                                            <>
+                                                                {/* Filter by gender & filter by profession */}
+                                                                <div className="flex gap-x-3">
+                                                                    {/* Filter by gender */}
+                                                                    <div className="flex basis-1/2 flex-col">
+                                                                        <div className="mb-1">Filter by gender</div>
+                                                                        <SelectGender />
+                                                                    </div>
+                                                                    {/* Select profession */}
+                                                                    <div className="flex basis-1/2 flex-col">
+                                                                        <div className="mb-1">Select profession</div>
+                                                                        <SelectProfession />
+                                                                    </div>
+                                                                </div>
+                                                            </>
+                                                        )}
+
+                                                        {/* Filter by keyword & exclude keyword */}
                                                         <div className="flex gap-x-3">
+                                                            {/* Filter by keyword */}
                                                             <div className="flex basis-1/2 flex-col">
                                                                 <div className="mb-1">Filter by keyword</div>
-                                                                <Select
-                                                                    instanceId="select-filter-keyword"
-                                                                    options={options}
-                                                                />
+                                                                <SelectKeyword />
                                                             </div>
+                                                            {/* Exclude keyword */}
                                                             <div className="flex basis-1/2 flex-col">
                                                                 <div className="mb-1">Exclude keyword</div>
-                                                                <Select
-                                                                    instanceId="select-exclude-keyword"
-                                                                    options={options}
-                                                                />
+                                                                <SelectExcludeKeyword />
                                                             </div>
                                                         </div>
 
                                                         {/* Show multi-word phrases */}
                                                         <div className="flex flex-col">
                                                             <div className="mb-1">Show multi-word phrases</div>
-                                                            <Select
-                                                                instanceId="select-show-multi-word-phrases"
-                                                                options={options}
-                                                            />
+                                                            <SelectShowMultiWordPhrases />
                                                         </div>
                                                     </Disclosure.Panel>
                                                 </Transition>
@@ -215,4 +240,40 @@ const ChevronsDown = ({ open }: IChevronsDownProps) => {
             <FontAwesomeIcon className="mt-[-0.6rem] text-lg" icon={faChevronDown} />
         </div>
     )
+}
+
+const SelectKeyword = () => {
+    return <Select instanceId="select-keyword" options={options} />
+}
+
+const SelectExcludeKeyword = () => {
+    return <Select instanceId="select-exclude-keyword" options={options} />
+}
+
+const SelectShowMultiWordPhrases = () => {
+    return <Select instanceId="select-show-multi-word-phrases" options={options} />
+}
+
+const SelectProfession = () => {
+    return <Select instanceId="select-profession" options={options} />
+}
+
+const SelectGender = () => {
+    return <Select instanceId="select-gender" options={options} />
+}
+
+const SelectShowResponsesCategories = () => {
+    return <Select instanceId="select-show-responses-categories" options={options} />
+}
+
+const SelectResponseTopics = () => {
+    return <Select instanceId="select-response-topics" options={options} />
+}
+
+const SelectRegions = () => {
+    return <Select instanceId="select-regions" options={options} />
+}
+
+const SelectCountries = () => {
+    return <Select instanceId="select-countries" options={options} />
 }
