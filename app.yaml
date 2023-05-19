@@ -1,7 +1,7 @@
 # How to deploy:
 # gcloud app deploy app.yaml
 
-service: default
+service: dashboardfrontend
 runtime: nodejs16
 
 # Force https and redirect http to https
