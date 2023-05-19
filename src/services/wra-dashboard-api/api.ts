@@ -2,7 +2,7 @@ import { ICampaignFilterOptions } from '@interfaces/wra-dashboard-api/campaign/f
 import { getDashboardCampaign } from '@utils'
 import { ICampaignCountryRegions } from '@interfaces/wra-dashboard-api/campaign/country-regions'
 
-const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL
+const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL as string
 const headers = { 'Content-Type': 'application/json' }
 
 /**
