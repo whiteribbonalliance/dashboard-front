@@ -38,8 +38,11 @@
       "@contexts/*": [
         "contexts/*"
       ],
-      "@interfaces/*": [
-        "interfaces/*"
+      "@interfaces": [
+        "interfaces"
+      ],
+      "@types": [
+        "types"
       ],
       "@configurations": [
         "configurations"

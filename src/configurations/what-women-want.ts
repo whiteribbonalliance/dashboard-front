@@ -1,4 +1,4 @@
-import { IConfiguration } from '@interfaces/configuration'
+import { IConfiguration } from '@interfaces'
 import { healthLiteracyLink, midwivesVoicesLink, seoMainTitle } from '@constants'
 import { Dashboards } from '@enums'
 

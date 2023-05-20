@@ -10,6 +10,7 @@ import Select from 'react-select'
 import { Box } from '@components/Box'
 import Image from 'next/image'
 import { getCampaignFilterOptions } from '@services/wra-dashboard-api/api'
+import { Option } from '@types'
 
 interface IFiltersPanelProps {
     dashboard: string
@@ -28,33 +29,28 @@ const tabs = [
     { id: 'compare-to', title: 'Compare to...' },
 ]
 
-type Option = {
-    value: string
-    label: string
-}
-
 export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
-    // TODO: display regions based on the selected country
     const [countryOptions, setCountryOptions] = useState<Option[]>([])
+    const [regionOptions, setRegionOptions] = useState<Option[]>([])
+    const [responseTopicOptions, setResponseTopicOptions] = useState<Option[]>([])
 
-    // Fetch countries
+    // Fetch filter options
     useEffect(() => {
         getCampaignFilterOptions(dashboard)
             .then((filterOptions) => {
                 // Countries
-                const countryOptions: Option[] = filterOptions.countries.map((country) => {
-                    return {
-                        value: country,
-                        label: country,
-                    }
-                })
+                const countryOptions = filterOptions.countries
                 setCountryOptions(countryOptions)
+
+                // Response topics
+                const responseTopicOptions = filterOptions.response_topics
+                setResponseTopicOptions(responseTopicOptions)
             })
             .catch(() => {})
     }, [dashboard])
 
     // Fetch regions
-    useEffect(() => {}, [countryOptions])
+    useEffect(() => {}, [])
 
     // Set selected tab classes
     let selectedTabClasses: string
@@ -120,13 +116,13 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                         {/* Select regions */}
                                         <div>
                                             <div className="mb-1">Select regions</div>
-                                            <SelectRegions options={[]} />
+                                            <SelectRegions options={regionOptions} />
                                         </div>
 
                                         {/* Select response topics */}
                                         <div>
                                             <div>Select response {topicsText}</div>
-                                            <SelectResponseTopics options={[]} />
+                                            <SelectResponseTopics options={responseTopicOptions} />
                                         </div>
                                     </div>
 
@@ -291,17 +287,17 @@ const SelectShowResponsesCategories = ({ options }: ISelectProps) => {
 }
 
 const SelectResponseTopics = ({ options }: ISelectProps) => {
-    return <Select instanceId="select-response-topics" options={options} />
+    return <Select instanceId="select-response-topics" options={options} isMulti />
 }
 
 const SelectRegions = ({ options }: ISelectProps) => {
-    return <Select instanceId="select-regions" options={options} />
+    return <Select instanceId="select-regions" options={options} isMulti />
 }
 
 const SelectCountries = ({ options }: ISelectProps) => {
-    return <Select instanceId="select-countries" options={options} />
+    return <Select instanceId="select-countries" options={options} isMulti />
 }
 
 const SelectFilterAge = ({ options }: ISelectProps) => {
-    return <Select instanceId="select-filter-age" options={options} />
+    return <Select instanceId="select-filter-age" options={options} isMulti />
 }

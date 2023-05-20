@@ -1,6 +1,6 @@
-import { ICampaignFilterOptions } from '@interfaces/wra-dashboard-api/campaign/filter-options'
+import { ICampaignFilterOptions } from '@interfaces'
 import { getDashboardCampaign } from '@utils'
-import { ICampaignCountryRegions } from '@interfaces/wra-dashboard-api/campaign/country-regions'
+import { ICampaignCountryRegions } from '@interfaces'
 
 const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL as string
 const headers = { 'Content-Type': 'application/json' }

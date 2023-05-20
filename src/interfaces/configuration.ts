@@ -1,4 +1,4 @@
-import { IDashboardLink } from '@interfaces/dashboard-link'
+import { IDashboardLink } from '@interfaces'
 
 export interface IConfiguration {
     id: string

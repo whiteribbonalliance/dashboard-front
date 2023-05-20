@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Dashboards } from '@enums'
 import React from 'react'
 import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
-import { IDashboardLink } from '@interfaces/dashboard-link'
+import { IDashboardLink } from '@interfaces'
 
 interface IFooterProps {
     dashboard: string

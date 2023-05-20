@@ -1,5 +1,5 @@
 import { Dashboards } from '@enums'
-import { IDashboardLink } from '@interfaces/dashboard-link'
+import { IDashboardLink } from '@interfaces'
 
 export const dashboards = [Dashboards.WHAT_YOUNG_PEOPLE_WANT, Dashboards.WHAT_WOMEN_WANT, Dashboards.MIDWIVES_VOICES]
 

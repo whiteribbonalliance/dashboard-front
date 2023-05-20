@@ -1,3 +1,6 @@
+import { Option } from '@types'
+
 export interface ICampaignFilterOptions {
-    countries: string[]
+    countries: Option[]
+    response_topics: Option[]
 }
