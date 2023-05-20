@@ -44,11 +44,15 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
         getCampaignFilterOptions(dashboard)
             .then((filterOptions) => {
                 // Countries
-                const countryOptions = filterOptions.countries
+                const countryOptions = filterOptions.countries.map((country) => {
+                    return { value: country.alpha2_code, label: country.name }
+                })
                 setCountryOptions(countryOptions)
 
                 // Response topics
-                const responseTopicOptions = filterOptions.response_topics
+                const responseTopicOptions = filterOptions.response_topics.map((responseTopic) => {
+                    return { value: responseTopic.code, label: responseTopic.name }
+                })
                 setResponseTopicOptions(responseTopicOptions)
             })
             .catch(() => {})
@@ -59,8 +63,16 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
         ;(async () => {
             const regionOptions: Option[] = []
             for (const countryOption of selectedCountryOptions) {
-                const country = await getCountry(dashboard, countryOption.value)
-                regionOptions.push(...country.regions)
+                try {
+                    const country = await getCountry(dashboard, countryOption.value)
+                    const countryRegionOptions = country.regions.map((region) => {
+                        return { value: `${country.alpha2_code}:${region}`, label: region }
+                    })
+                    regionOptions.push(...countryRegionOptions)
+                } catch (error) {
+                    // TODO:
+                    console.log(error)
+                }
             }
             setRegionOptions(
                 regionOptions.map((regionOption) => {
