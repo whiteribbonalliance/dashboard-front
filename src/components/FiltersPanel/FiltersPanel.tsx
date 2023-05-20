@@ -6,10 +6,10 @@ import { Dashboards } from '@enums'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect, useState } from 'react'
-import Select from 'react-select'
+import Select, { MultiValue } from 'react-select'
 import { Box } from '@components/Box'
 import Image from 'next/image'
-import { getCampaignFilterOptions } from '@services/wra-dashboard-api/api'
+import { getCampaignFilterOptions, getCountry } from '@services/wra-dashboard-api/api'
 import { Option } from '@types'
 
 interface IFiltersPanelProps {
@@ -24,6 +24,10 @@ interface ISelectProps {
     options: Option[]
 }
 
+interface ISelectCountriesProps extends ISelectProps {
+    handleSelectedCountries: (options: MultiValue<Option>) => void
+}
+
 const tabs = [
     { id: 'drill-down', title: 'Drill down' },
     { id: 'compare-to', title: 'Compare to...' },
@@ -31,6 +35,7 @@ const tabs = [
 
 export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     const [countryOptions, setCountryOptions] = useState<Option[]>([])
+    const [selectedCountryOptions, setSelectedCountryOptions] = useState<MultiValue<Option>>([])
     const [regionOptions, setRegionOptions] = useState<Option[]>([])
     const [responseTopicOptions, setResponseTopicOptions] = useState<Option[]>([])
 
@@ -50,7 +55,25 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     }, [dashboard])
 
     // Fetch regions
-    useEffect(() => {}, [])
+    useEffect(() => {
+        ;(async () => {
+            const regionOptions: Option[] = []
+            for (const countryOption of selectedCountryOptions) {
+                const country = await getCountry(dashboard, countryOption.value)
+                regionOptions.push(...country.regions)
+            }
+            setRegionOptions(
+                regionOptions.map((regionOption) => {
+                    return { value: regionOption.value, label: regionOption.label }
+                })
+            )
+        })()
+    }, [dashboard, selectedCountryOptions])
+
+    // Handle selected countries
+    function handleSelectedCountries(options: MultiValue<Option>) {
+        setSelectedCountryOptions(options)
+    }
 
     // Set selected tab classes
     let selectedTabClasses: string
@@ -110,7 +133,10 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                         {/* Select countries */}
                                         <div>
                                             <div className="mb-1">Select countries</div>
-                                            <SelectCountries options={countryOptions} />
+                                            <SelectCountries
+                                                options={countryOptions}
+                                                handleSelectedCountries={handleSelectedCountries}
+                                            />
                                         </div>
 
                                         {/* Select regions */}
@@ -294,8 +320,15 @@ const SelectRegions = ({ options }: ISelectProps) => {
     return <Select instanceId="select-regions" options={options} isMulti />
 }
 
-const SelectCountries = ({ options }: ISelectProps) => {
-    return <Select instanceId="select-countries" options={options} isMulti />
+const SelectCountries = ({ options, handleSelectedCountries }: ISelectCountriesProps) => {
+    return (
+        <Select
+            instanceId="select-countries"
+            options={options}
+            isMulti
+            onChange={(options) => handleSelectedCountries(options)}
+        />
+    )
 }
 
 const SelectFilterAge = ({ options }: ISelectProps) => {

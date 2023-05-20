@@ -1,6 +1,5 @@
-import { ICampaignFilterOptions } from '@interfaces'
+import { ICampaignCountry, ICampaignFilterOptions } from '@interfaces'
 import { getDashboardCampaign } from '@utils'
-import { ICampaignCountryRegions } from '@interfaces'
 
 const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL as string
 const headers = { 'Content-Type': 'application/json' }
@@ -27,14 +26,14 @@ export async function getCampaignFilterOptions(dashboard: string) {
 }
 
 /**
- * Get campaign country regions
+ * Get country
  *
  * @param dashboard The dashboard
- * @param country The country
+ * @param alpha2Code The country alpha 2 code
  */
-export async function getCampaignCountryRegions(dashboard: string, country: string) {
+export async function getCountry(dashboard: string, alpha2Code: string) {
     const campaign = getDashboardCampaign(dashboard)
-    const response = await fetch(`${apiUrl}/campaigns/${campaign}/countries/${country}/regions`, {
+    const response = await fetch(`${apiUrl}/campaigns/${campaign}/countries/${alpha2Code}`, {
         method: 'GET',
         headers: headers,
     })
@@ -43,7 +42,7 @@ export async function getCampaignCountryRegions(dashboard: string, country: stri
         throw new Error('Failed to fetch campaign country regions')
     }
 
-    const data: ICampaignCountryRegions = await response.json()
+    const data: ICampaignCountry = await response.json()
 
     return data
 }
