@@ -34,6 +34,11 @@ const tabs = [
     { id: 'compare-to', title: 'Compare to...' },
 ]
 
+const onlyShowResponsesCategoriesOptions: Option[] = [
+    { value: true, label: 'Only show responses which match all these categories' },
+    { value: false, label: 'Show responses in any of these categories' },
+]
+
 export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     const [campaignCountries, setCampaignCountries] = useState<ICampaignCountry[]>([])
 
@@ -185,7 +190,9 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                         {/* Show responses from categories */}
                                                         <div>
                                                             <div className="mb-1">Show responses from categories</div>
-                                                            <SelectShowResponsesCategories options={[]} />
+                                                            <SelectOnlyShowResponsesCategories
+                                                                options={onlyShowResponsesCategoriesOptions}
+                                                            />
                                                         </div>
 
                                                         {/* Filter by age */}
@@ -324,8 +331,8 @@ const SelectGender = ({ options }: ISelectProps) => {
     return <Select instanceId="select-gender" options={options} />
 }
 
-const SelectShowResponsesCategories = ({ options }: ISelectProps) => {
-    return <Select instanceId="select-show-responses-categories" options={options} />
+const SelectOnlyShowResponsesCategories = ({ options }: ISelectProps) => {
+    return <Select instanceId="select-only-show-responses-categories" options={options} />
 }
 
 const SelectResponseTopics = ({ options }: ISelectProps) => {
