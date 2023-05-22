@@ -225,8 +225,8 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                         <div>
                                                             <div className="mb-1">
                                                                 Filter by age (or select range in histogram)
-                                                                <SelectFilterAgeBucket options={ageBucketOptions} />
                                                             </div>
+                                                            <SelectFilterAgeBucket options={ageBucketOptions} />
                                                         </div>
 
                                                         {/* For whatyoungpeoplewant show select gender */}
@@ -249,12 +249,12 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                 {/* Filter by gender & filter by profession */}
                                                                 <div className="flex gap-x-3">
                                                                     {/* Filter by gender */}
-                                                                    <div className="flex basis-1/2 flex-col">
+                                                                    <div className="flex basis-1/2 flex-col justify-between">
                                                                         <div className="mb-1">Filter by gender</div>
                                                                         <SelectGender options={genderOptions} />
                                                                     </div>
                                                                     {/* Select profession */}
-                                                                    <div className="flex basis-1/2 flex-col">
+                                                                    <div className="flex basis-1/2 flex-col justify-between">
                                                                         <div className="mb-1">Select profession</div>
                                                                         <SelectProfession options={professionOptions} />
                                                                     </div>
@@ -342,11 +342,23 @@ const ChevronsDown = ({ open }: IChevronsDownProps) => {
 }
 
 const InputKeyword = () => {
-    return <input id="input-keyword" className="rounded-md border border-[#CCC] p-1.5" />
+    return (
+        <input
+            id="input-keyword"
+            className="w-0 min-w-full rounded-md border border-[#CCC] p-1.5"
+            placeholder="Enter keyword..."
+        />
+    )
 }
 
 const InputExcludeKeyword = () => {
-    return <input id="input-exclude-keyword" className="rounded-md border border-[#CCC] p-1.5" />
+    return (
+        <input
+            id="input-exclude-keyword"
+            className="w-0 min-w-full rounded-md border border-[#CCC] p-1.5"
+            placeholder="Enter keyword..."
+        />
+    )
 }
 
 const OnlyShowMultiWordPhrasesContainingFilterTerm = ({ options }: ISelectProps) => {
