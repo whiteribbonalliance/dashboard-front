@@ -46,6 +46,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     const [countryOptions, setCountryOptions] = useState<Option[]>([])
     const [regionOptions, setRegionOptions] = useState<Option[]>([])
     const [responseTopicOptions, setResponseTopicOptions] = useState<Option[]>([])
+    const [ageBucketOptions, setAgeBucketOptions] = useState<Option[]>([])
 
     // Selected option(s)
     const [selectedCountryOptions, setSelectedCountryOptions] = useState<MultiValue<Option>>([])
@@ -66,6 +67,12 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                     return { value: responseTopic.code, label: responseTopic.name }
                 })
                 setResponseTopicOptions(responseTopicOptions)
+
+                // Age buckets
+                const ageBucketOptions = filterOptions.age_buckets.map((ageBucket) => {
+                    return { value: ageBucket, label: ageBucket }
+                })
+                setAgeBucketOptions(ageBucketOptions)
             })
             .catch(() => {})
     }, [dashboard])
@@ -199,7 +206,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                         <div>
                                                             <div className="mb-1">
                                                                 Filter by age (or select range in histogram)
-                                                                <SelectFilterAge options={[]} />
+                                                                <SelectFilterAgeBucket options={ageBucketOptions} />
                                                             </div>
                                                         </div>
 
@@ -354,6 +361,6 @@ const SelectCountries = ({ options, handleSelectedCountries }: ISelectCountriesP
     )
 }
 
-const SelectFilterAge = ({ options }: ISelectProps) => {
-    return <Select instanceId="select-filter-age" options={options} isMulti />
+const SelectFilterAgeBucket = ({ options }: ISelectProps) => {
+    return <Select instanceId="select-filter-age-bucket" options={options} isMulti />
 }
