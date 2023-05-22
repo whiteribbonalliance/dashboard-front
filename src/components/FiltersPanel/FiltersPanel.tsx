@@ -39,6 +39,11 @@ const onlyShowResponsesCategoriesOptions: Option[] = [
     { value: false, label: 'Show responses in any of these categories' },
 ]
 
+const onlyShowMultiWordPhrasesContainingFilterTermOptions: Option[] = [
+    { value: false, label: 'Only show multi-word phrases containing filter term' },
+    { value: true, label: 'Show all multi-word phrases' },
+]
+
 export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     const [campaignCountries, setCampaignCountries] = useState<ICampaignCountry[]>([])
 
@@ -210,7 +215,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                     <Disclosure.Panel as="div" className="flex flex-col gap-y-3">
                                                         {/* Show responses from categories */}
                                                         <div>
-                                                            <div className="mb-1">Show responses from categories</div>
+                                                            <div className="mb-1">Responses from categories</div>
                                                             <SelectOnlyShowResponsesCategories
                                                                 options={onlyShowResponsesCategoriesOptions}
                                                             />
@@ -273,8 +278,12 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
                                                         {/* Show multi-word phrases */}
                                                         <div className="flex flex-col">
-                                                            <div className="mb-1">Show multi-word phrases</div>
-                                                            <SelectShowMultiWordPhrases options={[]} />
+                                                            <div className="mb-1">Multi-word phrases</div>
+                                                            <OnlyShowMultiWordPhrasesContainingFilterTerm
+                                                                options={
+                                                                    onlyShowMultiWordPhrasesContainingFilterTermOptions
+                                                                }
+                                                            />
                                                         </div>
                                                     </Disclosure.Panel>
                                                 </Transition>
@@ -340,7 +349,7 @@ const InputExcludeKeyword = () => {
     return <input id="input-exclude-keyword" className="rounded-md border border-[#CCC] p-1.5" />
 }
 
-const SelectShowMultiWordPhrases = ({ options }: ISelectProps) => {
+const OnlyShowMultiWordPhrasesContainingFilterTerm = ({ options }: ISelectProps) => {
     return <Select instanceId="select-show-multi-word-phrases" options={options} />
 }
 
