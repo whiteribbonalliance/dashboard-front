@@ -1,7 +1,7 @@
 'use client'
 
 import { Disclosure, Tab, Transition } from '@headlessui/react'
-import { classNames } from '@utils'
+import { classNames, titleCase } from '@utils'
 import { Dashboards } from '@enums'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
@@ -77,7 +77,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
                 // Age bucket options
                 const ageBucketOptions = filterOptions.age_buckets.map((ageBucket) => {
-                    return { value: ageBucket, label: ageBucket }
+                    return { value: ageBucket, label: titleCase(ageBucket) }
                 })
                 setAgeBucketOptions(ageBucketOptions)
 
@@ -89,7 +89,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
                 // Profession options
                 const professionOptions = filterOptions.professions.map((profession) => {
-                    return { value: profession, label: profession }
+                    return { value: profession, label: titleCase(profession) }
                 })
                 setProfessionOptions(professionOptions)
             })
