@@ -248,12 +248,12 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                             {/* Filter by keyword */}
                                                             <div className="flex basis-1/2 flex-col">
                                                                 <div className="mb-1">Filter by keyword</div>
-                                                                <SelectKeyword options={[]} />
+                                                                <InputKeyword />
                                                             </div>
                                                             {/* Exclude keyword */}
                                                             <div className="flex basis-1/2 flex-col">
                                                                 <div className="mb-1">Exclude keyword</div>
-                                                                <SelectExcludeKeyword options={[]} />
+                                                                <InputExcludeKeyword />
                                                             </div>
                                                         </div>
 
@@ -318,12 +318,12 @@ const ChevronsDown = ({ open }: IChevronsDownProps) => {
     )
 }
 
-const SelectKeyword = ({ options }: ISelectProps) => {
-    return <Select instanceId="select-keyword" options={options} />
+const InputKeyword = () => {
+    return <input id="input-keyword" className="rounded-md border border-[#CCC] p-1.5" />
 }
 
-const SelectExcludeKeyword = ({ options }: ISelectProps) => {
-    return <Select instanceId="select-exclude-keyword" options={options} />
+const InputExcludeKeyword = () => {
+    return <input id="input-exclude-keyword" className="rounded-md border border-[#CCC] p-1.5" />
 }
 
 const SelectShowMultiWordPhrases = ({ options }: ISelectProps) => {
