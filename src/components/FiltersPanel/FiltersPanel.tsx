@@ -9,8 +9,9 @@ import React, { useEffect, useState } from 'react'
 import Select, { MultiValue } from 'react-select'
 import { Box } from '@components/Box'
 import Image from 'next/image'
-import { getCampaignFilterOptions, getCountry } from '@services/wra-dashboard-api/api'
+import { getCampaignFilterOptions } from '@services/wra-dashboard-api/api'
 import { Option } from '@types'
+import { ICampaignCountry } from '@interfaces'
 
 interface IFiltersPanelProps {
     dashboard: string
@@ -34,10 +35,15 @@ const tabs = [
 ]
 
 export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
+    const [campaignCountries, setCampaignCountries] = useState<ICampaignCountry[]>([])
+
+    // Select options
     const [countryOptions, setCountryOptions] = useState<Option[]>([])
-    const [selectedCountryOptions, setSelectedCountryOptions] = useState<MultiValue<Option>>([])
     const [regionOptions, setRegionOptions] = useState<Option[]>([])
     const [responseTopicOptions, setResponseTopicOptions] = useState<Option[]>([])
+
+    // Selected option(s)
+    const [selectedCountryOptions, setSelectedCountryOptions] = useState<MultiValue<Option>>([])
 
     // Fetch filter options
     useEffect(() => {
@@ -48,6 +54,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                     return { value: country.alpha2_code, label: country.name }
                 })
                 setCountryOptions(countryOptions)
+                setCampaignCountries(filterOptions.countries)
 
                 // Response topics
                 const responseTopicOptions = filterOptions.response_topics.map((responseTopic) => {
@@ -58,20 +65,17 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
             .catch(() => {})
     }, [dashboard])
 
-    // Fetch regions
+    // Set regions of selected countries
     useEffect(() => {
         ;(async () => {
             const regionOptions: Option[] = []
             for (const countryOption of selectedCountryOptions) {
-                try {
-                    const country = await getCountry(dashboard, countryOption.value)
+                const country = campaignCountries.find((country) => country.alpha2_code === countryOption.value)
+                if (country) {
                     const countryRegionOptions = country.regions.map((region) => {
                         return { value: `${country.alpha2_code}:${region}`, label: region }
                     })
                     regionOptions.push(...countryRegionOptions)
-                } catch (error) {
-                    // TODO:
-                    console.log(error)
                 }
             }
             setRegionOptions(
@@ -80,7 +84,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                 })
             )
         })()
-    }, [dashboard, selectedCountryOptions])
+    }, [dashboard, campaignCountries, selectedCountryOptions])
 
     // Handle selected countries
     function handleSelectedCountries(options: MultiValue<Option>) {
@@ -159,7 +163,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
                                         {/* Select response topics */}
                                         <div>
-                                            <div>Select response {topicsText}</div>
+                                            <div className="mb-1">Select response {topicsText}</div>
                                             <SelectResponseTopics options={responseTopicOptions} />
                                         </div>
                                     </div>
