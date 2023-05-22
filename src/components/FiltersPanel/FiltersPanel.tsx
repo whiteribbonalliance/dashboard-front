@@ -40,8 +40,8 @@ const onlyShowResponsesCategoriesOptions: Option[] = [
 ]
 
 const onlyShowMultiWordPhrasesContainingFilterTermOptions: Option[] = [
-    { value: false, label: 'Only show multi-word phrases containing filter term' },
-    { value: true, label: 'Show all multi-word phrases' },
+    { value: true, label: 'Only show multi-word phrases containing filter term' },
+    { value: false, label: 'Show all multi-word phrases' },
 ]
 
 export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
@@ -237,7 +237,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                     {/* Filter by gender */}
                                                                     <div className="flex basis-1/2 flex-col">
                                                                         <div className="mb-1">Filter by gender</div>
-                                                                        <SelectGender options={[]} />
+                                                                        <SelectGender options={genderOptions} />
                                                                     </div>
                                                                 </div>
                                                             </>
