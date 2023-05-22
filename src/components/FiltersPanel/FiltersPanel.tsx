@@ -47,6 +47,8 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     const [regionOptions, setRegionOptions] = useState<Option[]>([])
     const [responseTopicOptions, setResponseTopicOptions] = useState<Option[]>([])
     const [ageBucketOptions, setAgeBucketOptions] = useState<Option[]>([])
+    const [genderOptions, setGenderOptions] = useState<Option[]>([])
+    const [professionOptions, setProfessionOptions] = useState<Option[]>([])
 
     // Selected option(s)
     const [selectedCountryOptions, setSelectedCountryOptions] = useState<MultiValue<Option>>([])
@@ -68,11 +70,23 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                 })
                 setResponseTopicOptions(responseTopicOptions)
 
-                // Age buckets
+                // Age bucket options
                 const ageBucketOptions = filterOptions.age_buckets.map((ageBucket) => {
                     return { value: ageBucket, label: ageBucket }
                 })
                 setAgeBucketOptions(ageBucketOptions)
+
+                // Gender options
+                const genderOptions = filterOptions.genders.map((gender) => {
+                    return { value: gender, label: gender }
+                })
+                setGenderOptions(genderOptions)
+
+                // Profession options
+                const professionOptions = filterOptions.professions.map((profession) => {
+                    return { value: profession, label: profession }
+                })
+                setProfessionOptions(professionOptions)
             })
             .catch(() => {})
     }, [dashboard])
@@ -232,12 +246,12 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                     {/* Filter by gender */}
                                                                     <div className="flex basis-1/2 flex-col">
                                                                         <div className="mb-1">Filter by gender</div>
-                                                                        <SelectGender options={[]} />
+                                                                        <SelectGender options={genderOptions} />
                                                                     </div>
                                                                     {/* Select profession */}
                                                                     <div className="flex basis-1/2 flex-col">
                                                                         <div className="mb-1">Select profession</div>
-                                                                        <SelectProfession options={[]} />
+                                                                        <SelectProfession options={professionOptions} />
                                                                     </div>
                                                                 </div>
                                                             </>
