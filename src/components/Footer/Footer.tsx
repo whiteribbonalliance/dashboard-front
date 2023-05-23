@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Dashboards } from '@enums'
+import { DashboardCode } from '@enums'
 import React from 'react'
 import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
 import { IDashboardLink } from '@interfaces'
@@ -12,7 +12,7 @@ export const Footer = ({ dashboard }: IFooterProps) => {
     // Set footer link classes
     let footerLinkClasses: string
     switch (dashboard) {
-        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
+        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
             footerLinkClasses = 'text-pmnch-colors-secondary'
             break
         default:
@@ -22,13 +22,13 @@ export const Footer = ({ dashboard }: IFooterProps) => {
     // Set respondents
     let respondents: string
     switch (dashboard) {
-        case Dashboards.WHAT_WOMEN_WANT:
+        case DashboardCode.WHAT_WOMEN_WANT:
             respondents = whatWomenWantConfig.respondentsNoun
             break
-        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
+        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
             respondents = whatYoungPeopleWantConfig.respondentsNoun
             break
-        case Dashboards.MIDWIVES_VOICES:
+        case DashboardCode.MIDWIVES_VOICES:
             respondents = midwivesVoicesConfig.respondentsNoun
             break
         default:
@@ -38,7 +38,7 @@ export const Footer = ({ dashboard }: IFooterProps) => {
     // Set footer note
     let footerNote: React.JSX.Element | undefined
     switch (dashboard) {
-        case Dashboards.WHAT_WOMEN_WANT:
+        case DashboardCode.WHAT_WOMEN_WANT:
             footerNote = (
                 <p>
                     The 143556 responses from the original{' '}
@@ -52,10 +52,10 @@ export const Footer = ({ dashboard }: IFooterProps) => {
                 </p>
             )
             break
-        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
+        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
             footerNote = undefined
             break
-        case Dashboards.MIDWIVES_VOICES:
+        case DashboardCode.MIDWIVES_VOICES:
             footerNote = undefined
             break
         default:
@@ -66,13 +66,13 @@ export const Footer = ({ dashboard }: IFooterProps) => {
     // Set other dashboard links
     let otherDashboardLinks: IDashboardLink[]
     switch (dashboard) {
-        case Dashboards.WHAT_WOMEN_WANT:
+        case DashboardCode.WHAT_WOMEN_WANT:
             otherDashboardLinks = whatWomenWantConfig.dashboardLinksFooter
             break
-        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
+        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
             otherDashboardLinks = whatYoungPeopleWantConfig.dashboardLinksFooter
             break
-        case Dashboards.MIDWIVES_VOICES:
+        case DashboardCode.MIDWIVES_VOICES:
             otherDashboardLinks = midwivesVoicesConfig.dashboardLinksFooter
             break
         default:

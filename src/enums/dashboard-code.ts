@@ -1,5 +1,5 @@
 // The values below will also be used to check the subdomain requesting a dashboard, do not change them
-export const Dashboards = Object.freeze({
+export const DashboardCode = Object.freeze({
     WHAT_YOUNG_PEOPLE_WANT: 'whatyoungpeoplewant',
     WHAT_WOMEN_WANT: 'whatwomenwant',
     MIDWIVES_VOICES: 'midwivesvoices',

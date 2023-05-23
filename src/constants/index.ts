@@ -1,7 +1,11 @@
-import { Dashboards } from '@enums'
+import { DashboardCode } from '@enums'
 import { IDashboardLink } from '@interfaces'
 
-export const dashboards = [Dashboards.WHAT_YOUNG_PEOPLE_WANT, Dashboards.WHAT_WOMEN_WANT, Dashboards.MIDWIVES_VOICES]
+export const dashboards = [
+    DashboardCode.WHAT_YOUNG_PEOPLE_WANT,
+    DashboardCode.WHAT_WOMEN_WANT,
+    DashboardCode.MIDWIVES_VOICES,
+]
 
 export const seoMainTitle = 'White Ribbon Alliance'
 

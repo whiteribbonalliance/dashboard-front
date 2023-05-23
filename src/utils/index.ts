@@ -1,4 +1,4 @@
-import { Campaigns, Dashboards } from '@enums'
+import { Campaign, DashboardCode } from '@enums'
 
 /**
  * Merge Tailwind CSS classes
@@ -16,12 +16,12 @@ export function classNames(...classes: string[]) {
  */
 export function getDashboardCampaign(dashboard: string) {
     switch (dashboard) {
-        case Dashboards.WHAT_WOMEN_WANT:
-            return Campaigns.WHAT_WOMEN_WANT
-        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
-            return Campaigns.WHAT_YOUNG_PEOPLE_WANT
-        case Dashboards.MIDWIVES_VOICES:
-            return Campaigns.MIDWIVES_VOICES
+        case DashboardCode.WHAT_WOMEN_WANT:
+            return Campaign.WHAT_WOMEN_WANT
+        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
+            return Campaign.WHAT_YOUNG_PEOPLE_WANT
+        case DashboardCode.MIDWIVES_VOICES:
+            return Campaign.MIDWIVES_VOICES
         default:
             return ''
     }

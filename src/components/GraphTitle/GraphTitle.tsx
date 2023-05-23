@@ -1,4 +1,4 @@
-import { Dashboards } from '@enums'
+import { DashboardCode } from '@enums'
 
 interface IGraphTitleProps {
     dashboard: string
@@ -8,7 +8,7 @@ interface IGraphTitleProps {
 export const GraphTitle = ({ dashboard, text }: IGraphTitleProps) => {
     let titleClasses: string
     switch (dashboard) {
-        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
+        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
             titleClasses = 'font-1point8 text-pmnch-colors-primary text-5xl'
             break
         default:

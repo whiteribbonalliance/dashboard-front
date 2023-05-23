@@ -5,7 +5,7 @@ import { faBars, faChevronLeft, faXmark } from '@fortawesome/free-solid-svg-icon
 import { HeaderLogos } from 'components/HeaderLogos'
 import { Disclosure, Transition } from '@headlessui/react'
 import Link from 'next/link'
-import { Dashboards } from '@enums'
+import { DashboardCode } from '@enums'
 import React, { useState } from 'react'
 import { Button } from '@components/Button/Button'
 import { FiltersPanel } from '@components/FiltersPanel'
@@ -35,7 +35,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
     // Set mobile dropdown classes
     let mobileDropdownClasses: string
     switch (dashboard) {
-        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
+        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
             mobileDropdownClasses = 'bg-pmnch-colors-primary'
             break
         default:
@@ -45,7 +45,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
     // Set menu button item classes
     let menuButtonItemClasses: string
     switch (dashboard) {
-        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
+        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
             menuButtonItemClasses = 'hover:text-pmnch-colors-font'
             break
         default:

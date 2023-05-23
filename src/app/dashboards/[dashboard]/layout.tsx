@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import { Header } from 'components/Header'
 import { Footer } from 'components/Footer'
-import { Dashboards } from '@enums'
+import { DashboardCode } from '@enums'
 
 interface IDashboardLayoutProps {
     children: ReactNode
@@ -14,7 +14,7 @@ const DashboardLayout = async ({ children, params }: IDashboardLayoutProps) => {
     // Set layout classes
     let layoutClasses: string
     switch (dashboard) {
-        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
+        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
             layoutClasses =
                 'font-noto-sans-regular text-pmnch-colors-font selection:bg-pmnch-colors-primary selection:text-white'
             break

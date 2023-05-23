@@ -1,6 +1,6 @@
 import { Box } from '@components/Box'
 import { GraphTitle } from '@components/GraphTitle'
-import { Dashboards } from '@enums'
+import { DashboardCode } from '@enums'
 
 interface IResponsesBreakdownGraphProps {
     dashboard: string
@@ -10,7 +10,7 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
     // Set topic text
     let topicText: string
     switch (dashboard) {
-        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
+        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
             topicText = 'domain'
             break
         default:
@@ -20,7 +20,7 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
     // Set respondents text
     let respondentsText: string
     switch (dashboard) {
-        case Dashboards.WHAT_WOMEN_WANT:
+        case DashboardCode.WHAT_WOMEN_WANT:
             respondentsText = "women's"
             break
         default:

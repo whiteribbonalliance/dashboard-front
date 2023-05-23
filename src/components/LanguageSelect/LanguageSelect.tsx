@@ -1,7 +1,7 @@
 'use client'
 
 import { Fragment, useState } from 'react'
-import { Dashboards } from '@enums'
+import { DashboardCode } from '@enums'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -29,7 +29,7 @@ export const LanguageSelect = ({ dashboard }: ILanguageSelectProps) => {
     // Set listbox button classes
     let listboxButtonClasses: string
     switch (dashboard) {
-        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
+        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
             listboxButtonClasses =
                 'px-1.5 py-1.5 border-pmnch-colors-primary text-white hover:bg-pmnch-colors-primary xl:text-pmnch-colors-primary xl:hover:text-white'
             break

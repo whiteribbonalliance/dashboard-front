@@ -1,4 +1,4 @@
-import { Dashboards } from '@enums'
+import { DashboardCode } from '@enums'
 import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
 
 interface ISubtextProps {
@@ -9,13 +9,13 @@ export const Subtext = ({ dashboard }: ISubtextProps) => {
     // Set subtext
     let subText: string
     switch (dashboard) {
-        case Dashboards.WHAT_WOMEN_WANT:
+        case DashboardCode.WHAT_WOMEN_WANT:
             subText = whatWomenWantConfig.subtext
             break
-        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
+        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
             subText = whatYoungPeopleWantConfig.subtext
             break
-        case Dashboards.MIDWIVES_VOICES:
+        case DashboardCode.MIDWIVES_VOICES:
             subText = midwivesVoicesConfig.subtext
             break
         default:

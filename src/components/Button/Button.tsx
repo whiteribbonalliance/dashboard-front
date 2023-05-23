@@ -1,4 +1,4 @@
-import { Dashboards } from '@enums'
+import { DashboardCode } from '@enums'
 
 interface IButtonProps {
     dashboard?: string
@@ -9,7 +9,7 @@ export const Button = ({ text, dashboard }: IButtonProps) => {
     // Set button classes
     let buttonClasses: string
     switch (dashboard) {
-        case Dashboards.WHAT_YOUNG_PEOPLE_WANT:
+        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
             buttonClasses = 'text-pmnch-colors-primary border-pmnch-colors-primary hover:bg-pmnch-colors-primary'
             break
         default:
