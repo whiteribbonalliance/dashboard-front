@@ -1,6 +1,6 @@
 import { Dashboard } from 'page-components/Dashboard'
 import { dashboards, seoMainTitle } from '@constants'
-import { DashboardCode } from '@enums'
+import { DashboardName } from '@enums'
 import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
 
 export default Dashboard
@@ -19,17 +19,17 @@ export async function generateStaticParams() {
 // Set page title and description
 export async function generateMetadata({ params }: IGenerateMetadataProps) {
     switch (params.dashboard) {
-        case DashboardCode.WHAT_WOMEN_WANT:
+        case DashboardName.WHAT_WOMEN_WANT:
             return {
                 title: whatWomenWantConfig.seoTitle,
                 description: whatWomenWantConfig.seoMetaDescription,
             }
-        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
             return {
                 title: whatYoungPeopleWantConfig.seoTitle,
                 description: whatYoungPeopleWantConfig.seoMetaDescription,
             }
-        case DashboardCode.MIDWIVES_VOICES:
+        case DashboardName.MIDWIVES_VOICES:
             return {
                 title: midwivesVoicesConfig.seoTitle,
                 description: midwivesVoicesConfig.seoMetaDescription,

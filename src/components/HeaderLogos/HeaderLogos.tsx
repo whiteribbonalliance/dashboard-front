@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { DashboardCode } from '@enums'
+import { DashboardName } from '@enums'
 
 interface IHeaderLogosProps {
     dashboard: string
@@ -86,7 +86,7 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
     }
 
     switch (dashboard) {
-        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
             return (
                 <div className="flex items-center gap-x-5 xl:gap-x-3">
                     <WhiteRibbonAllianceLogo />
@@ -94,7 +94,7 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
                     <PmnchLogo />
                 </div>
             )
-        case DashboardCode.MIDWIVES_VOICES:
+        case DashboardName.MIDWIVES_VOICES:
             return (
                 <div className="flex items-center gap-x-5 xl:gap-x-3">
                     <WhatWomenWantLogo />

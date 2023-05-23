@@ -1,2 +1,2 @@
-export { DashboardCode } from './dashboard-code'
-export { Campaign } from './campaign'
+export { DashboardName } from './dashboard-name'
+export { CampaignCode } from './campaign-code'

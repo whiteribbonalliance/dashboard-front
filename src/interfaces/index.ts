@@ -3,7 +3,9 @@ export type { IConfiguration } from './configuration'
 export type { IDashboardLink } from './dashboard-link'
 
 // WRA Dashboard API
-export type { ICampaignFilterOptions } from './wra-dashboard-api/campaign/filter-options'
-export type { ICampaignCountry } from './wra-dashboard-api/campaign/country'
-export type { ICampaignResponseTopic } from './wra-dashboard-api/campaign/response-topic'
-export type { ICampaignFilter } from './wra-dashboard-api/campaign/filter'
+export type { IFilterOptions } from './wra-dashboard-api/filter-options'
+export type { ICountry } from './wra-dashboard-api/country'
+export type { IResponseTopic } from './wra-dashboard-api/response-topic'
+export type { IFilter } from './wra-dashboard-api/filter'
+export type { ICampaignRequest } from './wra-dashboard-api/campaign-request'
+export type { ICampaign } from './wra-dashboard-api/campaign'

@@ -9,7 +9,7 @@ import { TopWordsAndPhrasesGraph } from '@graph-components/TopWordsAndPhrasesGra
 import { ResponsesSampleGraph } from '@graph-components/ResponsesSampleGraph'
 import { LocationGraph } from '@graph-components/LocationGraph'
 import { ThePeopleGraph } from '@graph-components/ThePeopleGraph'
-import { DashboardCode } from '@enums'
+import { DashboardName } from '@enums'
 import { GenderBreakdownGraph } from '@graph-components/GenderBreakdownGraph'
 
 interface IDashboardProps {
@@ -46,7 +46,7 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
                 {/* Graphs */}
                 {/* TODO: Display the ages as numbers instead of ranges for PMNCH only */}
                 <section className="col-span-2 grid grid-cols-1 gap-y-[200px]">
-                    {DashboardCode.WHAT_YOUNG_PEOPLE_WANT === dashboard ? (
+                    {DashboardName.WHAT_YOUNG_PEOPLE_WANT === dashboard ? (
                         <>
                             <ResponsesBreakdownGraph dashboard={dashboard} />
                             <LocationGraph dashboard={dashboard} />

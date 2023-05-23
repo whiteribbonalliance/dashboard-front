@@ -2,16 +2,16 @@
 
 import { Disclosure, Tab, Transition } from '@headlessui/react'
 import { classNames, titleCase } from '@utils'
-import { DashboardCode } from '@enums'
+import { DashboardName } from '@enums'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Select, { MultiValue } from 'react-select'
 import { Box } from '@components/Box'
 import Image from 'next/image'
-import { getCampaignFilterOptions } from '@services/wra-dashboard-api/api'
+import { getCampaign, getCampaignFilterOptions } from '@services/wra-dashboard-api/api'
 import { Option } from '@types'
-import { ICampaignCountry, ICampaignFilter } from '@interfaces'
+import { ICampaignRequest, ICountry, IFilter } from '@interfaces'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -49,10 +49,10 @@ const schema = yup.object().shape({
     genders: yup.array(),
     professions: yup.array(),
     response_topics: yup.array(),
-    responses_from_categories_or_any: yup.bool(),
+    only_responses_from_categories: yup.bool(),
+    only_multi_word_phrases_containing_filter_term: yup.bool(),
     keyword_filter: yup.string(),
     keyword_exclude: yup.string(),
-    multi_word_phrases_filter_term_or_any: yup.bool(),
 })
 
 const tabs = [
@@ -71,7 +71,7 @@ const multiWordPhrasesFilterTermOrAnyOptions: Option[] = [
 ]
 
 export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
-    const [campaignCountries, setCampaignCountries] = useState<ICampaignCountry[]>([])
+    const [campaignCountries, setCampaignCountries] = useState<ICountry[]>([])
 
     // Select options
     const [countryOptions, setCountryOptions] = useState<Option[]>([])
@@ -84,12 +84,15 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     // Selected countries option(s)
     const [selectedCountryOptions, setSelectedCountryOptions] = useState<MultiValue<Option>>([])
 
+    // Submit timeout
+    const submitTimeout = useRef<NodeJS.Timeout>()
+
     const {
         register,
         control,
         getValues,
         formState: { errors },
-    } = useForm<ICampaignFilter>({
+    } = useForm<IFilter>({
         resolver: yupResolver(schema),
     })
 
@@ -161,7 +164,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     // Set selected tab classes
     let selectedTabClasses: string
     switch (dashboard) {
-        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
             selectedTabClasses = 'border-t-pmnch-colors-septenary'
             break
         default:
@@ -171,7 +174,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     // Set topics text
     let topicsText: string
     switch (dashboard) {
-        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
             topicsText = 'domains'
             break
         default:
@@ -179,7 +182,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     }
 
     // Whether the PMNCH QR code should be displayed
-    const displayPmnchQrCode = dashboard === DashboardCode.WHAT_YOUNG_PEOPLE_WANT
+    const displayPmnchQrCode = dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT
 
     // Handle on change selected countries
     function handleOnChangeSelectedCountries(options: MultiValue<Option>) {
@@ -188,9 +191,32 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
     // Submit data
     function submitData() {
-        const data = getValues()
-        console.log(data)
+        // Clear the current submit timeout
+        if (submitTimeout.current) {
+            clearTimeout(submitTimeout.current)
+        }
+
+        // Add a small delay before submitting data
+        submitTimeout.current = setTimeout(() => {
+            const data = getValues()
+            // TODO: Set filter data for each tab
+            const campaignRequest: ICampaignRequest = { filter_1: data, filter_2: data }
+            getCampaign(dashboard, campaignRequest)
+                .then((campaign) => {
+                    console.log(campaign)
+                })
+                .catch(() => {})
+        }, 400)
     }
+
+    // Cleanup submit timeout
+    useEffect(() => {
+        return () => {
+            if (submitTimeout.current) {
+                clearTimeout(submitTimeout.current)
+            }
+        }
+    }, [submitTimeout])
 
     return (
         <div>
@@ -273,7 +299,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                         {/* Show responses from categories */}
                                                         <div>
                                                             <div className="mb-1">Responses from categories</div>
-                                                            <SelectResponsesFromCategoriesOrAny
+                                                            <SelectOnlyResponsesFromCategories
                                                                 options={responsesCategoriesOrAnyOptions}
                                                                 control={control}
                                                                 submitData={submitData}
@@ -293,7 +319,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                         </div>
 
                                                         {/* For whatyoungpeoplewant show select gender */}
-                                                        {dashboard === DashboardCode.WHAT_YOUNG_PEOPLE_WANT && (
+                                                        {dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT && (
                                                             <>
                                                                 {/* Filter by gender */}
                                                                 <div className="flex gap-x-3">
@@ -311,7 +337,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                         )}
 
                                                         {/* For midwivesvoices show select gender and select profession */}
-                                                        {dashboard === DashboardCode.MIDWIVES_VOICES && (
+                                                        {dashboard === DashboardName.MIDWIVES_VOICES && (
                                                             <>
                                                                 {/* Filter by gender & filter by profession */}
                                                                 <div className="flex gap-x-3">
@@ -360,7 +386,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                         {/* Show multi-word phrases */}
                                                         <div className="flex flex-col">
                                                             <div className="mb-1">Multi-word phrases</div>
-                                                            <SelectMultiWordPhrasesFilterTermOrAny
+                                                            <SelectOnlyMultiWordPhrasesContainingFilterTerm
                                                                 options={multiWordPhrasesFilterTermOrAnyOptions}
                                                                 control={control}
                                                                 submitData={submitData}
@@ -452,10 +478,10 @@ const InputExcludeKeyword = ({ submitData, register }: IInputProps) => {
     )
 }
 
-const SelectMultiWordPhrasesFilterTermOrAny = ({ submitData, options, control }: ISelectProps) => {
+const SelectOnlyMultiWordPhrasesContainingFilterTerm = ({ submitData, options, control }: ISelectProps) => {
     return (
         <Controller
-            name="multi_word_phrases_filter_term_or_any"
+            name="only_multi_word_phrases_containing_filter_term"
             control={control}
             defaultValue={false}
             render={({ field: { onChange } }) => (
@@ -520,10 +546,10 @@ const SelectGenders = ({ submitData, options, control }: ISelectProps) => {
     )
 }
 
-const SelectResponsesFromCategoriesOrAny = ({ submitData, options, control }: ISelectProps) => {
+const SelectOnlyResponsesFromCategories = ({ submitData, options, control }: ISelectProps) => {
     return (
         <Controller
-            name="responses_from_categories_or_any"
+            name="only_responses_from_categories"
             control={control}
             defaultValue={false}
             render={({ field: { onChange } }) => (

@@ -1,5 +1,5 @@
-import { ICampaignCountry, ICampaignFilterOptions } from '@interfaces'
-import { getDashboardCampaign } from '@utils'
+import { ICampaign, ICampaignRequest, IFilterOptions } from '@interfaces'
+import { getDashboardCampaignCode } from '@utils'
 
 const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL as string
 const headers = { 'Content-Type': 'application/json' }
@@ -10,7 +10,7 @@ const headers = { 'Content-Type': 'application/json' }
  * @param dashboard The dashboard
  */
 export async function getCampaignFilterOptions(dashboard: string) {
-    const campaign = getDashboardCampaign(dashboard)
+    const campaign = getDashboardCampaignCode(dashboard)
     const response = await fetch(`${apiUrl}/campaigns/${campaign}/filter-options`, {
         method: 'GET',
         headers: headers,
@@ -20,29 +20,30 @@ export async function getCampaignFilterOptions(dashboard: string) {
         throw new Error('Failed to fetch campaign filter options')
     }
 
-    const data: ICampaignFilterOptions = await response.json()
+    const data: IFilterOptions = await response.json()
 
     return data
 }
 
 /**
- * Get country
+ * Get campaign
  *
  * @param dashboard The dashboard
- * @param alpha2Code The country alpha 2 code
+ * @param campaignRequest The campaign request
  */
-export async function getCountry(dashboard: string, alpha2Code: string) {
-    const campaign = getDashboardCampaign(dashboard)
-    const response = await fetch(`${apiUrl}/campaigns/${campaign}/countries/${alpha2Code}`, {
-        method: 'GET',
+export async function getCampaign(dashboard: string, campaignRequest: ICampaignRequest) {
+    const campaign = getDashboardCampaignCode(dashboard)
+    const response = await fetch(`${apiUrl}/campaigns/${campaign}`, {
+        method: 'POST',
         headers: headers,
+        body: JSON.stringify(campaignRequest),
     })
 
     if (!response.ok) {
-        throw new Error('Failed to fetch campaign country regions')
+        throw new Error('Failed to fetch campaign')
     }
 
-    const data: ICampaignCountry = await response.json()
+    const data: ICampaign = await response.json()
 
     return data
 }

@@ -1,4 +1,4 @@
-import { DashboardCode } from '@enums'
+import { DashboardName } from '@enums'
 import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
 
 interface ITitleProps {
@@ -10,13 +10,13 @@ export const Title = ({ dashboard, renderAsDiv }: ITitleProps) => {
     // Set title
     let title: string
     switch (dashboard) {
-        case DashboardCode.WHAT_WOMEN_WANT:
+        case DashboardName.WHAT_WOMEN_WANT:
             title = whatWomenWantConfig.title
             break
-        case DashboardCode.WHAT_YOUNG_PEOPLE_WANT:
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
             title = whatYoungPeopleWantConfig.title
             break
-        case DashboardCode.MIDWIVES_VOICES:
+        case DashboardName.MIDWIVES_VOICES:
             title = midwivesVoicesConfig.title
             break
         default:

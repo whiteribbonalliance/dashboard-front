@@ -1,11 +1,11 @@
 import { IConfiguration } from '@interfaces'
 import { healthLiteracyLink, seoMainTitle, whatWomenWantLink } from '@constants'
-import { DashboardCode } from '@enums'
+import { DashboardName } from '@enums'
 
 const title = 'What Midwives Want'
 
 export const configuration: IConfiguration = {
-    id: DashboardCode.MIDWIVES_VOICES,
+    id: DashboardName.MIDWIVES_VOICES,
     title: title,
     seoTitle: `${title} | ${seoMainTitle}`,
     seoMetaDescription:
