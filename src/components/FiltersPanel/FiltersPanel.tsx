@@ -12,7 +12,7 @@ import Image from 'next/image'
 import { getCampaign, getCampaignFilterOptions } from '@services/wra-dashboard-api/api'
 import { Option } from '@types'
 import { ICampaignRequest, ICountry, IFilter } from '@interfaces'
-import { Controller, useForm } from 'react-hook-form'
+import { Control, Controller, useForm, UseFormRegister } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
@@ -31,11 +31,11 @@ interface IFieldProps {
 
 interface ISelectProps extends IFieldProps {
     options: Option[]
-    control: any
+    control: Control<IFilter, any>
 }
 
 interface IInputProps extends IFieldProps {
-    register: any
+    register: UseFormRegister<IFilter>
 }
 
 interface ISelectCountriesProps extends ISelectProps {
@@ -55,11 +55,6 @@ const schema = yup.object().shape({
     keyword_filter: yup.string(),
     keyword_exclude: yup.string(),
 })
-
-const tabs = [
-    { id: '1', title: 'Drill down' },
-    { id: '2', title: 'Compare to...' },
-]
 
 const onlyResponsesFromCategoriesOptions: Option[] = [
     { value: true, label: 'Only show responses which match all these categories' },
@@ -88,14 +83,21 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     // Submit timeout
     const submitTimeout = useRef<NodeJS.Timeout>()
 
-    const {
-        register,
-        control,
-        getValues,
-        formState: { errors },
-    } = useForm<IFilter>({
+    // Form: filter 1
+    const form_1 = useForm<IFilter>({
         resolver: yupResolver(schema),
     })
+
+    // Form: filter 2
+    const form_2 = useForm<IFilter>({
+        resolver: yupResolver(schema),
+    })
+
+    // Tabs
+    const tabs = [
+        { id: '1', title: 'Drill down', form: form_1 },
+        { id: '2', title: 'Compare to...', form: form_2 },
+    ]
 
     // Fetch filter options
     useEffect(() => {
@@ -199,7 +201,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
         // Add a small delay before submitting data
         submitTimeout.current = setTimeout(() => {
-            const data = getValues()
+            const data = form_1.getValues()
             // TODO: Set filter data for each tab
             const campaignRequest: ICampaignRequest = { filter_1: data, filter_2: data }
             getCampaign(dashboard, campaignRequest)
@@ -242,9 +244,9 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                         </Tab.List>
 
                         <Tab.Panels>
-                            {tabs.map((tab) => (
+                            {tabs.map(({ id, form }) => (
                                 <Tab.Panel
-                                    key={tab.id}
+                                    key={id}
                                     className={classNames(
                                         'flex flex-col p-3 ring-transparent ring-offset-2 focus:outline-none'
                                     )}
@@ -255,10 +257,10 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                         <div>
                                             <div className="mb-1">Select countries</div>
                                             <SelectCountries
-                                                id={`select-countries-${tab.id}`}
+                                                id={`select-countries-${id}`}
                                                 handleOnChangeSelectedCountries={handleOnChangeSelectedCountries}
                                                 options={countryOptions}
-                                                control={control}
+                                                control={form.control}
                                                 submitData={submitData}
                                             />
                                         </div>
@@ -267,9 +269,9 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                         <div>
                                             <div className="mb-1">Select regions</div>
                                             <SelectRegions
-                                                id={`select-regions-${tab.id}`}
+                                                id={`select-regions-${id}`}
                                                 options={regionOptions}
-                                                control={control}
+                                                control={form.control}
                                                 submitData={submitData}
                                             />
                                         </div>
@@ -278,9 +280,9 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                         <div>
                                             <div className="mb-1">Select response {topicsText}</div>
                                             <SelectResponseTopics
-                                                id={`select-response-topics-${tab.id}`}
+                                                id={`select-response-topics-${id}`}
                                                 options={responseTopicOptions}
-                                                control={control}
+                                                control={form.control}
                                                 submitData={submitData}
                                             />
                                         </div>
@@ -304,9 +306,9 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                         <div>
                                                             <div className="mb-1">Responses from categories</div>
                                                             <SelectOnlyResponsesFromCategories
-                                                                id={`select-only-responses-from-categories-${tab.id}`}
+                                                                id={`select-only-responses-from-categories-${id}`}
                                                                 options={onlyResponsesFromCategoriesOptions}
-                                                                control={control}
+                                                                control={form.control}
                                                                 submitData={submitData}
                                                             />
                                                         </div>
@@ -317,9 +319,9 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                 Filter by age (or select range in histogram)
                                                             </div>
                                                             <SelectAgeBuckets
-                                                                id={`select-age-buckets-${tab.id}`}
+                                                                id={`select-age-buckets-${id}`}
                                                                 options={ageBucketOptions}
-                                                                control={control}
+                                                                control={form.control}
                                                                 submitData={submitData}
                                                             />
                                                         </div>
@@ -333,9 +335,9 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                     <div className="flex basis-1/2 flex-col">
                                                                         <div className="mb-1">Filter by gender</div>
                                                                         <SelectGenders
-                                                                            id={`select-genders-${tab.id}`}
+                                                                            id={`select-genders-${id}`}
                                                                             options={genderOptions}
-                                                                            control={control}
+                                                                            control={form.control}
                                                                             submitData={submitData}
                                                                         />
                                                                     </div>
@@ -352,9 +354,9 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                     <div className="flex basis-1/2 flex-col justify-between">
                                                                         <div className="mb-1">Filter by gender</div>
                                                                         <SelectGenders
-                                                                            id={`select-genders-${tab.id}`}
+                                                                            id={`select-genders-${id}`}
                                                                             options={genderOptions}
-                                                                            control={control}
+                                                                            control={form.control}
                                                                             submitData={submitData}
                                                                         />
                                                                     </div>
@@ -362,9 +364,9 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                     <div className="flex basis-1/2 flex-col justify-between">
                                                                         <div className="mb-1">Select profession</div>
                                                                         <SelectProfessions
-                                                                            id={`select-professions-${tab.id}`}
+                                                                            id={`select-professions-${id}`}
                                                                             options={professionOptions}
-                                                                            control={control}
+                                                                            control={form.control}
                                                                             submitData={submitData}
                                                                         />
                                                                     </div>
@@ -378,8 +380,8 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                             <div className="flex basis-1/2 flex-col">
                                                                 <div className="mb-1">Filter by keyword</div>
                                                                 <InputKeyword
-                                                                    id={`input-keyword-${tab.id}`}
-                                                                    register={register}
+                                                                    id={`input-keyword-${id}`}
+                                                                    register={form.register}
                                                                     submitData={submitData}
                                                                 />
                                                             </div>
@@ -387,8 +389,8 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                             <div className="flex basis-1/2 flex-col">
                                                                 <div className="mb-1">Exclude keyword</div>
                                                                 <InputExcludeKeyword
-                                                                    id={`input-exclude-keyword-${tab.id}`}
-                                                                    register={register}
+                                                                    id={`input-exclude-keyword-${id}`}
+                                                                    register={form.register}
                                                                     submitData={submitData}
                                                                 />
                                                             </div>
@@ -398,11 +400,11 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                         <div className="flex flex-col">
                                                             <div className="mb-1">Multi-word phrases</div>
                                                             <SelectOnlyMultiWordPhrasesContainingFilterTerm
-                                                                id={`select-only-multi-word-phrases-containing-filter-term-${tab.id}`}
+                                                                id={`select-only-multi-word-phrases-containing-filter-term-${id}`}
                                                                 options={
                                                                     onlyMultiWordPhrasesContainingFilterTermOptions
                                                                 }
-                                                                control={control}
+                                                                control={form.control}
                                                                 submitData={submitData}
                                                             />
                                                         </div>
@@ -498,10 +500,11 @@ const SelectOnlyMultiWordPhrasesContainingFilterTerm = ({ id, submitData, option
             name="only_multi_word_phrases_containing_filter_term"
             control={control}
             defaultValue={false}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
                 <Select
                     instanceId={id}
                     options={options}
+                    value={options.find((option) => option.value === value)}
                     onChange={(singleValueOption) => {
                         if (singleValueOption) {
                             onChange(singleValueOption.value)
@@ -520,11 +523,18 @@ const SelectProfessions = ({ id, submitData, options, control }: ISelectProps) =
             name="professions"
             control={control}
             defaultValue={[]}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
                 <Select
                     isMulti
                     instanceId={id}
                     options={options}
+                    value={value.map((selectedVal) => {
+                        const option = options.find((option) => option.value === selectedVal) || {
+                            value: '',
+                            label: '',
+                        }
+                        return { value: option.value, label: option.label }
+                    })}
                     onChange={(multiValueOption) => {
                         if (multiValueOption) {
                             onChange(multiValueOption.map((option) => option.value))
@@ -543,11 +553,18 @@ const SelectGenders = ({ id, submitData, options, control }: ISelectProps) => {
             name="genders"
             control={control}
             defaultValue={[]}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
                 <Select
                     isMulti
                     instanceId={id}
                     options={options}
+                    value={value.map((selectedVal) => {
+                        const option = options.find((option) => option.value === selectedVal) || {
+                            value: '',
+                            label: '',
+                        }
+                        return { value: option.value, label: option.label }
+                    })}
                     onChange={(multiValueOption) => {
                         if (multiValueOption) {
                             onChange(multiValueOption.map((option) => option.value))
@@ -566,10 +583,11 @@ const SelectOnlyResponsesFromCategories = ({ id, submitData, options, control }:
             name="only_responses_from_categories"
             control={control}
             defaultValue={false}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
                 <Select
                     instanceId={id}
                     options={options}
+                    value={options.find((option) => option.value === value)}
                     onChange={(SingleValueOption) => {
                         if (SingleValueOption) {
                             onChange(SingleValueOption.value)
@@ -588,11 +606,18 @@ const SelectResponseTopics = ({ id, submitData, options, control }: ISelectProps
             name="response_topics"
             control={control}
             defaultValue={[]}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
                 <Select
                     isMulti
                     instanceId={id}
                     options={options}
+                    value={value.map((selectedVal) => {
+                        const option = options.find((option) => option.value === selectedVal) || {
+                            value: '',
+                            label: '',
+                        }
+                        return { value: option.value, label: option.label }
+                    })}
                     onChange={(multiValueOption) => {
                         if (multiValueOption) {
                             onChange(multiValueOption.map((option) => option.value))
@@ -611,11 +636,18 @@ const SelectRegions = ({ id, submitData, options, control }: ISelectProps) => {
             name="regions"
             control={control}
             defaultValue={[]}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
                 <Select
                     isMulti
                     instanceId={id}
                     options={options}
+                    value={value.map((selectedVal) => {
+                        const option = options.find((option) => option.value === selectedVal) || {
+                            value: '',
+                            label: '',
+                        }
+                        return { value: option.value, label: option.label }
+                    })}
                     onChange={(multiValueOption) => {
                         if (multiValueOption) {
                             onChange(multiValueOption.map((option) => option.value))
@@ -640,11 +672,18 @@ const SelectCountries = ({
             name="countries"
             control={control}
             defaultValue={[]}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
                 <Select
                     isMulti
                     instanceId={id}
                     options={options}
+                    value={value.map((selectedVal) => {
+                        const option = options.find((option) => option.value === selectedVal) || {
+                            value: '',
+                            label: '',
+                        }
+                        return { value: option.value, label: option.label }
+                    })}
                     onChange={(multiValueOption) => {
                         if (multiValueOption) {
                             onChange(multiValueOption.map((option) => option.value))
@@ -664,11 +703,18 @@ const SelectAgeBuckets = ({ id, submitData, options, control }: ISelectProps) =>
             name="age_buckets"
             control={control}
             defaultValue={[]}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
                 <Select
                     isMulti
                     instanceId={id}
                     options={options}
+                    value={value.map((selectedVal) => {
+                        const option = options.find((option) => option.value === selectedVal) || {
+                            value: '',
+                            label: '',
+                        }
+                        return { value: option.value, label: option.label }
+                    })}
                     onChange={(multiValueOption) => {
                         if (multiValueOption) {
                             onChange(multiValueOption.map((option) => option.value))
