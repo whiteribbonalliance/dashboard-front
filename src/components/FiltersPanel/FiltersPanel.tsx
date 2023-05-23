@@ -38,7 +38,7 @@ interface IInputProps extends IFieldProps {
 }
 
 interface ISelectCountriesProps extends ISelectProps {
-    handleSelectedCountries: (options: MultiValue<Option>) => void
+    handleOnChangeSelectedCountries: (options: MultiValue<Option>) => void
 }
 
 // Create the schema
@@ -133,6 +133,12 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
     // Set regions of selected countries
     useEffect(() => {
+        // Only display regions for 1 selected country
+        if (selectedCountryOptions.length !== 1) {
+            setRegionOptions([])
+            return
+        }
+
         ;(async () => {
             const regionOptions: Option[] = []
             for (const countryOption of selectedCountryOptions) {
@@ -175,8 +181,8 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     // Whether the PMNCH QR code should be displayed
     const displayPmnchQrCode = dashboard === DashboardCode.WHAT_YOUNG_PEOPLE_WANT
 
-    // Handle selected countries change
-    function handleSelectedCountriesChange(options: MultiValue<Option>) {
+    // Handle on change selected countries
+    function handleOnChangeSelectedCountries(options: MultiValue<Option>) {
         setSelectedCountryOptions(options)
     }
 
@@ -222,7 +228,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                         <div>
                                             <div className="mb-1">Select countries</div>
                                             <SelectCountries
-                                                handleSelectedCountries={handleSelectedCountriesChange}
+                                                handleOnChangeSelectedCountries={handleOnChangeSelectedCountries}
                                                 options={countryOptions}
                                                 control={control}
                                                 submitData={submitData}
@@ -582,7 +588,7 @@ const SelectRegions = ({ submitData, options, control }: ISelectProps) => {
     )
 }
 
-const SelectCountries = ({ submitData, options, control, handleSelectedCountries }: ISelectCountriesProps) => {
+const SelectCountries = ({ submitData, options, control, handleOnChangeSelectedCountries }: ISelectCountriesProps) => {
     return (
         <Controller
             name="countries"
@@ -597,7 +603,7 @@ const SelectCountries = ({ submitData, options, control, handleSelectedCountries
                         if (multiValueOption) {
                             onChange(multiValueOption.map((option) => option.value))
                         }
-                        handleSelectedCountries(options)
+                        handleOnChangeSelectedCountries(multiValueOption)
                         submitData()
                     }}
                 />
