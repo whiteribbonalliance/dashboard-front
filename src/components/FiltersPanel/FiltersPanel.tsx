@@ -25,6 +25,7 @@ interface IChevronsDownProps {
 }
 
 interface IFieldProps {
+    id: string
     submitData: () => void
 }
 
@@ -56,16 +57,16 @@ const schema = yup.object().shape({
 })
 
 const tabs = [
-    { id: 'drill-down', title: 'Drill down' },
-    { id: 'compare-to', title: 'Compare to...' },
+    { id: '1', title: 'Drill down' },
+    { id: '2', title: 'Compare to...' },
 ]
 
-const responsesCategoriesOrAnyOptions: Option[] = [
+const onlyResponsesFromCategoriesOptions: Option[] = [
     { value: true, label: 'Only show responses which match all these categories' },
     { value: false, label: 'Show responses in any of these categories' },
 ]
 
-const multiWordPhrasesFilterTermOrAnyOptions: Option[] = [
+const onlyMultiWordPhrasesContainingFilterTermOptions: Option[] = [
     { value: true, label: 'Only show multi-word phrases containing filter term' },
     { value: false, label: 'Show all multi-word phrases' },
 ]
@@ -254,6 +255,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                         <div>
                                             <div className="mb-1">Select countries</div>
                                             <SelectCountries
+                                                id={`select-countries-${tab.id}`}
                                                 handleOnChangeSelectedCountries={handleOnChangeSelectedCountries}
                                                 options={countryOptions}
                                                 control={control}
@@ -265,6 +267,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                         <div>
                                             <div className="mb-1">Select regions</div>
                                             <SelectRegions
+                                                id={`select-regions-${tab.id}`}
                                                 options={regionOptions}
                                                 control={control}
                                                 submitData={submitData}
@@ -275,6 +278,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                         <div>
                                             <div className="mb-1">Select response {topicsText}</div>
                                             <SelectResponseTopics
+                                                id={`select-response-topics-${tab.id}`}
                                                 options={responseTopicOptions}
                                                 control={control}
                                                 submitData={submitData}
@@ -300,7 +304,8 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                         <div>
                                                             <div className="mb-1">Responses from categories</div>
                                                             <SelectOnlyResponsesFromCategories
-                                                                options={responsesCategoriesOrAnyOptions}
+                                                                id={`select-only-responses-from-categories-${tab.id}`}
+                                                                options={onlyResponsesFromCategoriesOptions}
                                                                 control={control}
                                                                 submitData={submitData}
                                                             />
@@ -312,6 +317,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                 Filter by age (or select range in histogram)
                                                             </div>
                                                             <SelectAgeBuckets
+                                                                id={`select-age-buckets-${tab.id}`}
                                                                 options={ageBucketOptions}
                                                                 control={control}
                                                                 submitData={submitData}
@@ -327,6 +333,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                     <div className="flex basis-1/2 flex-col">
                                                                         <div className="mb-1">Filter by gender</div>
                                                                         <SelectGenders
+                                                                            id={`select-genders-${tab.id}`}
                                                                             options={genderOptions}
                                                                             control={control}
                                                                             submitData={submitData}
@@ -345,6 +352,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                     <div className="flex basis-1/2 flex-col justify-between">
                                                                         <div className="mb-1">Filter by gender</div>
                                                                         <SelectGenders
+                                                                            id={`select-genders-${tab.id}`}
                                                                             options={genderOptions}
                                                                             control={control}
                                                                             submitData={submitData}
@@ -354,6 +362,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                     <div className="flex basis-1/2 flex-col justify-between">
                                                                         <div className="mb-1">Select profession</div>
                                                                         <SelectProfessions
+                                                                            id={`select-professions-${tab.id}`}
                                                                             options={professionOptions}
                                                                             control={control}
                                                                             submitData={submitData}
@@ -369,6 +378,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                             <div className="flex basis-1/2 flex-col">
                                                                 <div className="mb-1">Filter by keyword</div>
                                                                 <InputKeyword
+                                                                    id={`input-keyword-${tab.id}`}
                                                                     register={register}
                                                                     submitData={submitData}
                                                                 />
@@ -377,6 +387,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                             <div className="flex basis-1/2 flex-col">
                                                                 <div className="mb-1">Exclude keyword</div>
                                                                 <InputExcludeKeyword
+                                                                    id={`input-exclude-keyword-${tab.id}`}
                                                                     register={register}
                                                                     submitData={submitData}
                                                                 />
@@ -387,7 +398,10 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                         <div className="flex flex-col">
                                                             <div className="mb-1">Multi-word phrases</div>
                                                             <SelectOnlyMultiWordPhrasesContainingFilterTerm
-                                                                options={multiWordPhrasesFilterTermOrAnyOptions}
+                                                                id={`select-only-multi-word-phrases-containing-filter-term-${tab.id}`}
+                                                                options={
+                                                                    onlyMultiWordPhrasesContainingFilterTermOptions
+                                                                }
                                                                 control={control}
                                                                 submitData={submitData}
                                                             />
@@ -448,10 +462,10 @@ const ChevronsDown = ({ open }: IChevronsDownProps) => {
     )
 }
 
-const InputKeyword = ({ submitData, register }: IInputProps) => {
+const InputKeyword = ({ id, submitData, register }: IInputProps) => {
     return (
         <input
-            id="input-keyword"
+            id={id}
             type="text"
             className="w-0 min-w-full rounded-md border border-[#CCC] p-1.5"
             placeholder="Enter keyword..."
@@ -463,10 +477,10 @@ const InputKeyword = ({ submitData, register }: IInputProps) => {
     )
 }
 
-const InputExcludeKeyword = ({ submitData, register }: IInputProps) => {
+const InputExcludeKeyword = ({ id, submitData, register }: IInputProps) => {
     return (
         <input
-            id="input-exclude-keyword"
+            id={id}
             type="text"
             className="w-0 min-w-full rounded-md border border-[#CCC] p-1.5"
             placeholder="Enter keyword..."
@@ -478,7 +492,7 @@ const InputExcludeKeyword = ({ submitData, register }: IInputProps) => {
     )
 }
 
-const SelectOnlyMultiWordPhrasesContainingFilterTerm = ({ submitData, options, control }: ISelectProps) => {
+const SelectOnlyMultiWordPhrasesContainingFilterTerm = ({ id, submitData, options, control }: ISelectProps) => {
     return (
         <Controller
             name="only_multi_word_phrases_containing_filter_term"
@@ -486,7 +500,7 @@ const SelectOnlyMultiWordPhrasesContainingFilterTerm = ({ submitData, options, c
             defaultValue={false}
             render={({ field: { onChange } }) => (
                 <Select
-                    instanceId="select-multi-word-phrases-filter-term-or-any"
+                    instanceId={id}
                     options={options}
                     onChange={(singleValueOption) => {
                         if (singleValueOption) {
@@ -500,7 +514,7 @@ const SelectOnlyMultiWordPhrasesContainingFilterTerm = ({ submitData, options, c
     )
 }
 
-const SelectProfessions = ({ submitData, options, control }: ISelectProps) => {
+const SelectProfessions = ({ id, submitData, options, control }: ISelectProps) => {
     return (
         <Controller
             name="professions"
@@ -509,7 +523,7 @@ const SelectProfessions = ({ submitData, options, control }: ISelectProps) => {
             render={({ field: { onChange } }) => (
                 <Select
                     isMulti
-                    instanceId="select-professions"
+                    instanceId={id}
                     options={options}
                     onChange={(multiValueOption) => {
                         if (multiValueOption) {
@@ -523,7 +537,7 @@ const SelectProfessions = ({ submitData, options, control }: ISelectProps) => {
     )
 }
 
-const SelectGenders = ({ submitData, options, control }: ISelectProps) => {
+const SelectGenders = ({ id, submitData, options, control }: ISelectProps) => {
     return (
         <Controller
             name="genders"
@@ -532,7 +546,7 @@ const SelectGenders = ({ submitData, options, control }: ISelectProps) => {
             render={({ field: { onChange } }) => (
                 <Select
                     isMulti
-                    instanceId="select-genders"
+                    instanceId={id}
                     options={options}
                     onChange={(multiValueOption) => {
                         if (multiValueOption) {
@@ -546,7 +560,7 @@ const SelectGenders = ({ submitData, options, control }: ISelectProps) => {
     )
 }
 
-const SelectOnlyResponsesFromCategories = ({ submitData, options, control }: ISelectProps) => {
+const SelectOnlyResponsesFromCategories = ({ id, submitData, options, control }: ISelectProps) => {
     return (
         <Controller
             name="only_responses_from_categories"
@@ -554,7 +568,7 @@ const SelectOnlyResponsesFromCategories = ({ submitData, options, control }: ISe
             defaultValue={false}
             render={({ field: { onChange } }) => (
                 <Select
-                    instanceId="select-responses-from-categories-or-any"
+                    instanceId={id}
                     options={options}
                     onChange={(SingleValueOption) => {
                         if (SingleValueOption) {
@@ -568,7 +582,7 @@ const SelectOnlyResponsesFromCategories = ({ submitData, options, control }: ISe
     )
 }
 
-const SelectResponseTopics = ({ submitData, options, control }: ISelectProps) => {
+const SelectResponseTopics = ({ id, submitData, options, control }: ISelectProps) => {
     return (
         <Controller
             name="response_topics"
@@ -577,7 +591,7 @@ const SelectResponseTopics = ({ submitData, options, control }: ISelectProps) =>
             render={({ field: { onChange } }) => (
                 <Select
                     isMulti
-                    instanceId="select-response-topics"
+                    instanceId={id}
                     options={options}
                     onChange={(multiValueOption) => {
                         if (multiValueOption) {
@@ -591,7 +605,7 @@ const SelectResponseTopics = ({ submitData, options, control }: ISelectProps) =>
     )
 }
 
-const SelectRegions = ({ submitData, options, control }: ISelectProps) => {
+const SelectRegions = ({ id, submitData, options, control }: ISelectProps) => {
     return (
         <Controller
             name="regions"
@@ -600,7 +614,7 @@ const SelectRegions = ({ submitData, options, control }: ISelectProps) => {
             render={({ field: { onChange } }) => (
                 <Select
                     isMulti
-                    instanceId="select-regions"
+                    instanceId={id}
                     options={options}
                     onChange={(multiValueOption) => {
                         if (multiValueOption) {
@@ -614,7 +628,13 @@ const SelectRegions = ({ submitData, options, control }: ISelectProps) => {
     )
 }
 
-const SelectCountries = ({ submitData, options, control, handleOnChangeSelectedCountries }: ISelectCountriesProps) => {
+const SelectCountries = ({
+    id,
+    submitData,
+    options,
+    control,
+    handleOnChangeSelectedCountries,
+}: ISelectCountriesProps) => {
     return (
         <Controller
             name="countries"
@@ -623,7 +643,7 @@ const SelectCountries = ({ submitData, options, control, handleOnChangeSelectedC
             render={({ field: { onChange } }) => (
                 <Select
                     isMulti
-                    instanceId="select-countries"
+                    instanceId={id}
                     options={options}
                     onChange={(multiValueOption) => {
                         if (multiValueOption) {
@@ -638,7 +658,7 @@ const SelectCountries = ({ submitData, options, control, handleOnChangeSelectedC
     )
 }
 
-const SelectAgeBuckets = ({ submitData, options, control }: ISelectProps) => {
+const SelectAgeBuckets = ({ id, submitData, options, control }: ISelectProps) => {
     return (
         <Controller
             name="age_buckets"
@@ -647,7 +667,7 @@ const SelectAgeBuckets = ({ submitData, options, control }: ISelectProps) => {
             render={({ field: { onChange } }) => (
                 <Select
                     isMulti
-                    instanceId="select-age-buckets"
+                    instanceId={id}
                     options={options}
                     onChange={(multiValueOption) => {
                         if (multiValueOption) {
