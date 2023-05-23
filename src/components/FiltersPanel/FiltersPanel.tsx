@@ -34,15 +34,31 @@ interface ISelectProps extends IFieldProps {
     control: Control<IFilter, any>
 }
 
+interface ISelectCountriesProps extends ISelectProps {
+    handleSelectedOptions: (options: MultiValue<Option>) => void
+}
+
 interface IInputProps extends IFieldProps {
     register: UseFormRegister<IFilter>
 }
 
-interface ISelectCountriesProps extends ISelectProps {
-    handleOnChangeSelectedCountries: (options: MultiValue<Option>) => void
+interface ISelectMultiValuesProps {
+    id: string
+    options: Option[]
+    value: string[]
+    onChange: (...event: any[]) => void
+    submitData: () => void
+    handleSelectedOptions?: (options: MultiValue<Option>) => void
 }
 
-// Create the schema
+interface ISelectSingleValueProps {
+    id: string
+    options: Option[]
+    value: string | boolean
+    onChange: (...event: any[]) => void
+    submitData: () => void
+}
+
 const schema = yup.object().shape({
     countries: yup.array(),
     regions: yup.array(),
@@ -55,6 +71,19 @@ const schema = yup.object().shape({
     keyword_filter: yup.string(),
     keyword_exclude: yup.string(),
 })
+
+const defaultFormValues: IFilter = {
+    countries: [],
+    regions: [],
+    age_buckets: [],
+    genders: [],
+    professions: [],
+    response_topics: [],
+    only_responses_from_categories: false,
+    only_multi_word_phrases_containing_filter_term: false,
+    keyword_filter: '',
+    keyword_exclude: '',
+}
 
 const onlyResponsesFromCategoriesOptions: Option[] = [
     { value: true, label: 'Only show responses which match all these categories' },
@@ -85,11 +114,13 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
     // Form: filter 1
     const form_1 = useForm<IFilter>({
+        defaultValues: defaultFormValues,
         resolver: yupResolver(schema),
     })
 
     // Form: filter 2
     const form_2 = useForm<IFilter>({
+        defaultValues: defaultFormValues,
         resolver: yupResolver(schema),
     })
 
@@ -201,15 +232,18 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
         // Add a small delay before submitting data
         submitTimeout.current = setTimeout(() => {
-            const data = form_1.getValues()
-            // TODO: Set filter data for each tab
-            const campaignRequest: ICampaignRequest = { filter_1: data, filter_2: data }
+            const filter_1 = form_1.getValues()
+            const filter_2 = form_2.getValues()
+            const campaignRequest: ICampaignRequest = { filter_1, filter_2 }
+
+            console.log(campaignRequest)
+
             getCampaign(dashboard, campaignRequest)
                 .then((campaign) => {
                     console.log(campaign)
                 })
                 .catch(() => {})
-        }, 400)
+        }, 375)
     }
 
     // Cleanup submit timeout
@@ -258,7 +292,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                             <div className="mb-1">Select countries</div>
                                             <SelectCountries
                                                 id={`select-countries-${id}`}
-                                                handleOnChangeSelectedCountries={handleOnChangeSelectedCountries}
+                                                handleSelectedOptions={handleOnChangeSelectedCountries}
                                                 options={countryOptions}
                                                 control={form.control}
                                                 submitData={submitData}
@@ -471,7 +505,6 @@ const InputKeyword = ({ id, submitData, register }: IInputProps) => {
             type="text"
             className="w-0 min-w-full rounded-md border border-[#CCC] p-1.5"
             placeholder="Enter keyword..."
-            defaultValue=""
             {...register('keyword_filter', {
                 onChange: () => submitData(),
             })}
@@ -486,7 +519,6 @@ const InputExcludeKeyword = ({ id, submitData, register }: IInputProps) => {
             type="text"
             className="w-0 min-w-full rounded-md border border-[#CCC] p-1.5"
             placeholder="Enter keyword..."
-            defaultValue=""
             {...register('keyword_exclude', {
                 onChange: () => submitData(),
             })}
@@ -499,18 +531,13 @@ const SelectOnlyMultiWordPhrasesContainingFilterTerm = ({ id, submitData, option
         <Controller
             name="only_multi_word_phrases_containing_filter_term"
             control={control}
-            defaultValue={false}
             render={({ field: { onChange, value } }) => (
-                <Select
-                    instanceId={id}
+                <SelectSingleValue
+                    id={id}
                     options={options}
-                    value={options.find((option) => option.value === value)}
-                    onChange={(singleValueOption) => {
-                        if (singleValueOption) {
-                            onChange(singleValueOption.value)
-                        }
-                        submitData()
-                    }}
+                    value={value}
+                    onChange={onChange}
+                    submitData={submitData}
                 />
             )}
         />
@@ -522,25 +549,13 @@ const SelectProfessions = ({ id, submitData, options, control }: ISelectProps) =
         <Controller
             name="professions"
             control={control}
-            defaultValue={[]}
             render={({ field: { onChange, value } }) => (
-                <Select
-                    isMulti
-                    instanceId={id}
+                <SelectMultiValues
+                    id={id}
+                    submitData={submitData}
                     options={options}
-                    value={value.map((selectedVal) => {
-                        const option = options.find((option) => option.value === selectedVal) || {
-                            value: '',
-                            label: '',
-                        }
-                        return { value: option.value, label: option.label }
-                    })}
-                    onChange={(multiValueOption) => {
-                        if (multiValueOption) {
-                            onChange(multiValueOption.map((option) => option.value))
-                        }
-                        submitData()
-                    }}
+                    onChange={onChange}
+                    value={value}
                 />
             )}
         />
@@ -552,25 +567,13 @@ const SelectGenders = ({ id, submitData, options, control }: ISelectProps) => {
         <Controller
             name="genders"
             control={control}
-            defaultValue={[]}
             render={({ field: { onChange, value } }) => (
-                <Select
-                    isMulti
-                    instanceId={id}
+                <SelectMultiValues
+                    id={id}
+                    submitData={submitData}
                     options={options}
-                    value={value.map((selectedVal) => {
-                        const option = options.find((option) => option.value === selectedVal) || {
-                            value: '',
-                            label: '',
-                        }
-                        return { value: option.value, label: option.label }
-                    })}
-                    onChange={(multiValueOption) => {
-                        if (multiValueOption) {
-                            onChange(multiValueOption.map((option) => option.value))
-                        }
-                        submitData()
-                    }}
+                    onChange={onChange}
+                    value={value}
                 />
             )}
         />
@@ -582,18 +585,13 @@ const SelectOnlyResponsesFromCategories = ({ id, submitData, options, control }:
         <Controller
             name="only_responses_from_categories"
             control={control}
-            defaultValue={false}
             render={({ field: { onChange, value } }) => (
-                <Select
-                    instanceId={id}
+                <SelectSingleValue
+                    id={id}
                     options={options}
-                    value={options.find((option) => option.value === value)}
-                    onChange={(SingleValueOption) => {
-                        if (SingleValueOption) {
-                            onChange(SingleValueOption.value)
-                        }
-                        submitData()
-                    }}
+                    value={value}
+                    onChange={onChange}
+                    submitData={submitData}
                 />
             )}
         />
@@ -605,25 +603,13 @@ const SelectResponseTopics = ({ id, submitData, options, control }: ISelectProps
         <Controller
             name="response_topics"
             control={control}
-            defaultValue={[]}
             render={({ field: { onChange, value } }) => (
-                <Select
-                    isMulti
-                    instanceId={id}
+                <SelectMultiValues
+                    id={id}
+                    submitData={submitData}
                     options={options}
-                    value={value.map((selectedVal) => {
-                        const option = options.find((option) => option.value === selectedVal) || {
-                            value: '',
-                            label: '',
-                        }
-                        return { value: option.value, label: option.label }
-                    })}
-                    onChange={(multiValueOption) => {
-                        if (multiValueOption) {
-                            onChange(multiValueOption.map((option) => option.value))
-                        }
-                        submitData()
-                    }}
+                    onChange={onChange}
+                    value={value}
                 />
             )}
         />
@@ -635,62 +621,32 @@ const SelectRegions = ({ id, submitData, options, control }: ISelectProps) => {
         <Controller
             name="regions"
             control={control}
-            defaultValue={[]}
             render={({ field: { onChange, value } }) => (
-                <Select
-                    isMulti
-                    instanceId={id}
+                <SelectMultiValues
+                    id={id}
+                    submitData={submitData}
                     options={options}
-                    value={value.map((selectedVal) => {
-                        const option = options.find((option) => option.value === selectedVal) || {
-                            value: '',
-                            label: '',
-                        }
-                        return { value: option.value, label: option.label }
-                    })}
-                    onChange={(multiValueOption) => {
-                        if (multiValueOption) {
-                            onChange(multiValueOption.map((option) => option.value))
-                        }
-                        submitData()
-                    }}
+                    onChange={onChange}
+                    value={value}
                 />
             )}
         />
     )
 }
 
-const SelectCountries = ({
-    id,
-    submitData,
-    options,
-    control,
-    handleOnChangeSelectedCountries,
-}: ISelectCountriesProps) => {
+const SelectCountries = ({ id, submitData, options, control, handleSelectedOptions }: ISelectCountriesProps) => {
     return (
         <Controller
             name="countries"
             control={control}
-            defaultValue={[]}
             render={({ field: { onChange, value } }) => (
-                <Select
-                    isMulti
-                    instanceId={id}
+                <SelectMultiValues
+                    id={id}
+                    submitData={submitData}
                     options={options}
-                    value={value.map((selectedVal) => {
-                        const option = options.find((option) => option.value === selectedVal) || {
-                            value: '',
-                            label: '',
-                        }
-                        return { value: option.value, label: option.label }
-                    })}
-                    onChange={(multiValueOption) => {
-                        if (multiValueOption) {
-                            onChange(multiValueOption.map((option) => option.value))
-                        }
-                        handleOnChangeSelectedCountries(multiValueOption)
-                        submitData()
-                    }}
+                    onChange={onChange}
+                    value={value}
+                    handleSelectedOptions={handleSelectedOptions}
                 />
             )}
         />
@@ -702,27 +658,62 @@ const SelectAgeBuckets = ({ id, submitData, options, control }: ISelectProps) =>
         <Controller
             name="age_buckets"
             control={control}
-            defaultValue={[]}
             render={({ field: { onChange, value } }) => (
-                <Select
-                    isMulti
-                    instanceId={id}
+                <SelectMultiValues
+                    id={id}
+                    submitData={submitData}
                     options={options}
-                    value={value.map((selectedVal) => {
-                        const option = options.find((option) => option.value === selectedVal) || {
-                            value: '',
-                            label: '',
-                        }
-                        return { value: option.value, label: option.label }
-                    })}
-                    onChange={(multiValueOption) => {
-                        if (multiValueOption) {
-                            onChange(multiValueOption.map((option) => option.value))
-                        }
-                        submitData()
-                    }}
+                    onChange={onChange}
+                    value={value}
                 />
             )}
+        />
+    )
+}
+
+const SelectMultiValues = ({
+    id,
+    options,
+    value,
+    onChange,
+    submitData,
+    handleSelectedOptions,
+}: ISelectMultiValuesProps) => {
+    return (
+        <Select
+            isMulti
+            instanceId={id}
+            options={options}
+            value={value.map((selectedVal) => {
+                const option = options.find((option) => option.value === selectedVal) || {
+                    value: '',
+                    label: '',
+                }
+                return { value: option.value, label: option.label }
+            })}
+            onChange={(multiValueOptions) => {
+                if (multiValueOptions) {
+                    onChange(multiValueOptions.map((option) => option.value))
+                }
+                if (handleSelectedOptions) handleSelectedOptions(multiValueOptions)
+                submitData()
+            }}
+        />
+    )
+}
+
+const SelectSingleValue = ({ id, options, value, onChange, submitData }: ISelectSingleValueProps) => {
+    return (
+        <Select
+            instanceId={id}
+            options={options}
+            value={options.find((option) => option.value === value)}
+            onChange={(SingleValueOption) => {
+                if (SingleValueOption) {
+                    onChange(SingleValueOption.value)
+                }
+                submitData()
+            }}
         />
     )
 }
