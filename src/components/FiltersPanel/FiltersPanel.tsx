@@ -6,7 +6,7 @@ import { DashboardName } from '@enums'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect, useRef, useState } from 'react'
-import Select, { MultiValue } from 'react-select'
+import { MultiValue } from 'react-select'
 import { Box } from '@components/Box'
 import Image from 'next/image'
 import { getCampaign, getCampaignFilterOptions } from '@services/wra-dashboard-api/api'
@@ -15,6 +15,8 @@ import { ICampaignRequest, ICountry, IFilter } from '@interfaces'
 import { Control, Controller, useForm, UseFormRegister } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { SelectMultiValues } from '@components/SelectMultiValues'
+import { SelectSingleValue } from '@components/SelectSingleValue'
 
 interface IFiltersPanelProps {
     dashboard: string
@@ -40,23 +42,6 @@ interface ISelectCountriesProps extends ISelectProps {
 
 interface IInputProps extends IFieldProps {
     register: UseFormRegister<IFilter>
-}
-
-interface ISelectMultiValuesProps {
-    id: string
-    options: Option[]
-    value: string[]
-    onChange: (...event: any[]) => void
-    submitData: () => void
-    handleOnChangeSelectedOptions?: (options: MultiValue<Option>) => void
-}
-
-interface ISelectSingleValueProps {
-    id: string
-    options: Option[]
-    value: string | boolean
-    onChange: (...event: any[]) => void
-    submitData: () => void
 }
 
 const schema = yup.object().shape({
@@ -106,21 +91,21 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     const submitTimeout = useRef<NodeJS.Timeout>()
 
     // Form: filter 1
-    const form_1 = useForm<IFilter>({
+    const form_filter_1 = useForm<IFilter>({
         defaultValues: defaultFormValues,
         resolver: yupResolver(schema),
     })
 
     // Form: filter 2
-    const form_2 = useForm<IFilter>({
+    const form_filter_2 = useForm<IFilter>({
         defaultValues: defaultFormValues,
         resolver: yupResolver(schema),
     })
 
     // Tabs
     const tabs = [
-        { id: '1', title: 'Drill down', form: form_1 },
-        { id: '2', title: 'Compare to...', form: form_2 },
+        { id: '1', title: 'Drill down', form: form_filter_1 },
+        { id: '2', title: 'Compare to...', form: form_filter_2 },
     ]
 
     // Fetch filter options
@@ -215,8 +200,8 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
         // Add a small delay before submitting data
         submitTimeout.current = setTimeout(() => {
-            const filter_1 = form_1.getValues()
-            const filter_2 = form_2.getValues()
+            const filter_1 = form_filter_1.getValues()
+            const filter_2 = form_filter_2.getValues()
             const campaignRequest: ICampaignRequest = { filter_1, filter_2 }
 
             console.log(campaignRequest)
@@ -656,53 +641,6 @@ const SelectAgeBuckets = ({ id, submitData, options, control }: ISelectProps) =>
                     value={value}
                 />
             )}
-        />
-    )
-}
-
-const SelectMultiValues = ({
-    id,
-    options,
-    value,
-    onChange,
-    submitData,
-    handleOnChangeSelectedOptions,
-}: ISelectMultiValuesProps) => {
-    return (
-        <Select
-            isMulti
-            instanceId={id}
-            options={options}
-            value={value.map((selectedVal) => {
-                const option = options.find((option) => option.value === selectedVal) || {
-                    value: '',
-                    label: '',
-                }
-                return { value: option.value, label: option.label }
-            })}
-            onChange={(multiValueOptions) => {
-                if (multiValueOptions) {
-                    onChange(multiValueOptions.map((option) => option.value))
-                }
-                if (handleOnChangeSelectedOptions) handleOnChangeSelectedOptions(multiValueOptions)
-                submitData()
-            }}
-        />
-    )
-}
-
-const SelectSingleValue = ({ id, options, value, onChange, submitData }: ISelectSingleValueProps) => {
-    return (
-        <Select
-            instanceId={id}
-            options={options}
-            value={options.find((option) => option.value === value)}
-            onChange={(SingleValueOption) => {
-                if (SingleValueOption) {
-                    onChange(SingleValueOption.value)
-                }
-                submitData()
-            }}
         />
     )
 }
