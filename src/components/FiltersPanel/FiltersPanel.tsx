@@ -3,8 +3,6 @@
 import { Disclosure, Tab, Transition } from '@headlessui/react'
 import { classNames } from '@utils'
 import { DashboardName } from '@enums'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect, useRef, useState } from 'react'
 import { MultiValue } from 'react-select'
 import { Box } from '@components/Box'
@@ -17,13 +15,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { SelectMultiValues } from '@components/SelectMultiValues'
 import { SelectSingleValue } from '@components/SelectSingleValue'
+import { ChevronsDown } from 'components/ChevronsDown'
 
 interface IFiltersPanelProps {
     dashboard: string
-}
-
-interface IChevronsDownProps {
-    open: boolean
 }
 
 interface IFieldProps {
@@ -127,8 +122,10 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                 // Profession options
                 setProfessionOptions(filterOptions.professions)
 
+                // Only responses from categories options
                 setOnlyResponsesFromCategoriesOptions(filterOptions.only_responses_from_categories)
 
+                // Only multi-word phrases containing filter term options
                 setOnlyMultiWordPhrasesContainingFilterTermOptions(
                     filterOptions.only_multi_word_phrases_containing_filter_term
                 )
@@ -203,8 +200,6 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
             const filter_1 = form_filter_1.getValues()
             const filter_2 = form_filter_2.getValues()
             const campaignRequest: ICampaignRequest = { filter_1, filter_2 }
-
-            console.log(campaignRequest)
 
             getCampaign(dashboard, campaignRequest)
                 .then((campaign) => {
@@ -453,15 +448,6 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                     </div>
                 </div>
             )}
-        </div>
-    )
-}
-
-const ChevronsDown = ({ open }: IChevronsDownProps) => {
-    return (
-        <div className={`flex cursor-pointer flex-col transition duration-100 ease-in-out ${open ? 'rotate-180' : ''}`}>
-            <FontAwesomeIcon className="text-lg" icon={faChevronDown} />
-            <FontAwesomeIcon className="mt-[-0.6rem] text-lg" icon={faChevronDown} />
         </div>
     )
 }
