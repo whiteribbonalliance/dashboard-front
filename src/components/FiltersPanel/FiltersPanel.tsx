@@ -1,7 +1,7 @@
 'use client'
 
 import { Disclosure, Tab, Transition } from '@headlessui/react'
-import { classNames, titleCase } from '@utils'
+import { classNames } from '@utils'
 import { DashboardName } from '@enums'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
@@ -35,7 +35,7 @@ interface ISelectProps extends IFieldProps {
 }
 
 interface ISelectCountriesProps extends ISelectProps {
-    handleSelectedOptions: (options: MultiValue<Option>) => void
+    handleOnChangeSelectedOptions: (options: MultiValue<Option>) => void
 }
 
 interface IInputProps extends IFieldProps {
@@ -48,7 +48,7 @@ interface ISelectMultiValuesProps {
     value: string[]
     onChange: (...event: any[]) => void
     submitData: () => void
-    handleSelectedOptions?: (options: MultiValue<Option>) => void
+    handleOnChangeSelectedOptions?: (options: MultiValue<Option>) => void
 }
 
 interface ISelectSingleValueProps {
@@ -85,16 +85,6 @@ const defaultFormValues: IFilter = {
     keyword_exclude: '',
 }
 
-const onlyResponsesFromCategoriesOptions: Option[] = [
-    { value: true, label: 'Only show responses which match all these categories' },
-    { value: false, label: 'Show responses in any of these categories' },
-]
-
-const onlyMultiWordPhrasesContainingFilterTermOptions: Option[] = [
-    { value: true, label: 'Only show multi-word phrases containing filter term' },
-    { value: false, label: 'Show all multi-word phrases' },
-]
-
 export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     const [campaignCountries, setCampaignCountries] = useState<ICountry[]>([])
 
@@ -105,6 +95,9 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     const [ageBucketOptions, setAgeBucketOptions] = useState<Option[]>([])
     const [genderOptions, setGenderOptions] = useState<Option[]>([])
     const [professionOptions, setProfessionOptions] = useState<Option[]>([])
+    const [onlyResponsesFromCategoriesOptions, setOnlyResponsesFromCategoriesOptions] = useState<Option[]>([])
+    const [onlyMultiWordPhrasesContainingFilterTermOptions, setOnlyMultiWordPhrasesContainingFilterTermOptions] =
+        useState<Option[]>([])
 
     // Selected countries option(s)
     const [selectedCountryOptions, setSelectedCountryOptions] = useState<MultiValue<Option>>([])
@@ -135,35 +128,25 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
         getCampaignFilterOptions(dashboard)
             .then((filterOptions) => {
                 // Countries
-                const countryOptions = filterOptions.countries.map((country) => {
-                    return { value: country.alpha2_code, label: country.name }
-                })
-                setCountryOptions(countryOptions)
-                setCampaignCountries(filterOptions.countries)
+                setCountryOptions(filterOptions.countries)
 
                 // Response topics
-                const responseTopicOptions = filterOptions.response_topics.map((responseTopic) => {
-                    return { value: responseTopic.code, label: responseTopic.name }
-                })
-                setResponseTopicOptions(responseTopicOptions)
+                setResponseTopicOptions(filterOptions.response_topics)
 
                 // Age bucket options
-                const ageBucketOptions = filterOptions.age_buckets.map((ageBucket) => {
-                    return { value: ageBucket, label: titleCase(ageBucket) }
-                })
-                setAgeBucketOptions(ageBucketOptions)
+                setAgeBucketOptions(filterOptions.age_buckets)
 
                 // Gender options
-                const genderOptions = filterOptions.genders.map((gender) => {
-                    return { value: gender, label: gender }
-                })
-                setGenderOptions(genderOptions)
+                setGenderOptions(filterOptions.genders)
 
                 // Profession options
-                const professionOptions = filterOptions.professions.map((profession) => {
-                    return { value: profession, label: titleCase(profession) }
-                })
-                setProfessionOptions(professionOptions)
+                setProfessionOptions(filterOptions.professions)
+
+                setOnlyResponsesFromCategoriesOptions(filterOptions.only_responses_from_categories)
+
+                setOnlyMultiWordPhrasesContainingFilterTermOptions(
+                    filterOptions.only_multi_word_phrases_containing_filter_term
+                )
             })
             .catch(() => {})
     }, [dashboard])
@@ -219,7 +202,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     const displayPmnchQrCode = dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT
 
     // Handle on change selected countries
-    function handleOnChangeSelectedCountries(options: MultiValue<Option>) {
+    function handleOnChangeSelectedCountriesOptions(options: MultiValue<Option>) {
         setSelectedCountryOptions(options)
     }
 
@@ -292,10 +275,10 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                             <div className="mb-1">Select countries</div>
                                             <SelectCountries
                                                 id={`select-countries-${id}`}
-                                                handleSelectedOptions={handleOnChangeSelectedCountries}
                                                 options={countryOptions}
                                                 control={form.control}
                                                 submitData={submitData}
+                                                handleOnChangeSelectedOptions={handleOnChangeSelectedCountriesOptions}
                                             />
                                         </div>
 
@@ -634,7 +617,13 @@ const SelectRegions = ({ id, submitData, options, control }: ISelectProps) => {
     )
 }
 
-const SelectCountries = ({ id, submitData, options, control, handleSelectedOptions }: ISelectCountriesProps) => {
+const SelectCountries = ({
+    id,
+    submitData,
+    options,
+    control,
+    handleOnChangeSelectedOptions,
+}: ISelectCountriesProps) => {
     return (
         <Controller
             name="countries"
@@ -646,7 +635,7 @@ const SelectCountries = ({ id, submitData, options, control, handleSelectedOptio
                     options={options}
                     onChange={onChange}
                     value={value}
-                    handleSelectedOptions={handleSelectedOptions}
+                    handleOnChangeSelectedOptions={handleOnChangeSelectedOptions}
                 />
             )}
         />
@@ -677,7 +666,7 @@ const SelectMultiValues = ({
     value,
     onChange,
     submitData,
-    handleSelectedOptions,
+    handleOnChangeSelectedOptions,
 }: ISelectMultiValuesProps) => {
     return (
         <Select
@@ -695,7 +684,7 @@ const SelectMultiValues = ({
                 if (multiValueOptions) {
                     onChange(multiValueOptions.map((option) => option.value))
                 }
-                if (handleSelectedOptions) handleSelectedOptions(multiValueOptions)
+                if (handleOnChangeSelectedOptions) handleOnChangeSelectedOptions(multiValueOptions)
                 submitData()
             }}
         />
