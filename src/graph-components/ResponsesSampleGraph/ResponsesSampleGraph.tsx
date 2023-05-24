@@ -120,11 +120,11 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             {/* Pagination */}
             <div className="flex justify-end">
                 <div className="flex items-center gap-x-3">
-                    {/* Go to first */}
+                    {/* Go to first page */}
                     <div className="text-sm" onClick={() => table.setPageIndex(0)}>
                         <Chevron double={true} direction="left" />
                     </div>
-                    {/* Go to previous */}
+                    {/* Go to previous page */}
                     <div className="text-sm" onClick={() => table.previousPage()}>
                         <Chevron direction="left" />
                     </div>
@@ -147,7 +147,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                     {/* Total pages */}
                     <span>{table.getPageCount()}</span>
 
-                    {/* Go to next */}
+                    {/* Go to next page */}
                     <div
                         className="text-sm"
                         onClick={() => {
@@ -158,7 +158,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                     >
                         <Chevron direction="right" />
                     </div>
-                    {/* Go to last */}
+                    {/* Go to last page */}
                     <div className="text-sm" onClick={() => table.setPageIndex(table.getPageCount() - 1)}>
                         <Chevron double={true} direction="right" />
                     </div>
