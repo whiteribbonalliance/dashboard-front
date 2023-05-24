@@ -1,7 +1,7 @@
 'use client'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faChevronLeft, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { HeaderLogos } from 'components/HeaderLogos'
 import { Disclosure, Transition } from '@headlessui/react'
 import Link from 'next/link'
@@ -62,7 +62,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                             <div className="flex items-center">
                                 {/* Button to display filters panel */}
                                 <div onClick={() => setShowFiltersPanel((prev) => !prev)} title="Filters">
-                                    <div className="text-3xl">
+                                    <div className="flex text-3xl xl:hidden">
                                         <Chevron direction="left" double={true} rotate={showFiltersPanel} />
                                     </div>
                                 </div>
@@ -151,17 +151,6 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                 </div>
             )}
         </>
-    )
-}
-
-const ChevronsLeft = ({ open }: IChevronsLeftProps) => {
-    return (
-        <div
-            className={`flex cursor-pointer transition duration-100 ease-in-out xl:hidden ${open ? 'rotate-180' : ''}`}
-        >
-            <FontAwesomeIcon className="text-3xl" icon={faChevronLeft} />
-            <FontAwesomeIcon className="ml-[-0.6rem] text-3xl" icon={faChevronLeft} />
-        </div>
     )
 }
 

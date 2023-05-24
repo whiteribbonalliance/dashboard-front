@@ -124,6 +124,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                     <div className="text-sm" onClick={() => table.setPageIndex(0)}>
                         <Chevron double={true} direction="left" />
                     </div>
+
                     {/* Go to previous page */}
                     <div className="text-sm" onClick={() => table.previousPage()}>
                         <Chevron direction="left" />
@@ -158,6 +159,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                     >
                         <Chevron direction="right" />
                     </div>
+
                     {/* Go to last page */}
                     <div className="text-sm" onClick={() => table.setPageIndex(table.getPageCount() - 1)}>
                         <Chevron double={true} direction="right" />
