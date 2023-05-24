@@ -8,4 +8,5 @@ export interface IConfiguration {
     subtext: string
     respondentsNoun: string
     dashboardLinksFooter: IDashboardLink[]
+    questionAsked: string
 }

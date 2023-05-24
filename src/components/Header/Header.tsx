@@ -11,6 +11,7 @@ import { Button } from '@components/Button/Button'
 import { FiltersPanel } from '@components/FiltersPanel'
 import { LanguageSelect } from '@components/LanguageSelect'
 import { Title } from 'components/Title'
+import { Chevron } from '@components/Chevron'
 
 interface IHeaderProps {
     dashboard: string
@@ -61,7 +62,9 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                             <div className="flex items-center">
                                 {/* Button to display filters panel */}
                                 <div onClick={() => setShowFiltersPanel((prev) => !prev)} title="Filters">
-                                    <ChevronsLeft open={showFiltersPanel} />
+                                    <div className="text-3xl">
+                                        <Chevron direction="left" double={true} rotate={showFiltersPanel} />
+                                    </div>
                                 </div>
 
                                 {/* Logo */}

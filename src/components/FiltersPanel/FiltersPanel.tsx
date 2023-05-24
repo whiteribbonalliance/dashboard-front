@@ -15,7 +15,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { SelectMultiValues } from '@components/SelectMultiValues'
 import { SelectSingleValue } from '@components/SelectSingleValue'
-import { ChevronsDown } from 'components/ChevronsDown'
+import { Chevron } from '@components/Chevron'
 
 interface IFiltersPanelProps {
     dashboard: string
@@ -293,7 +293,9 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                 <Disclosure.Button className="flex items-center justify-end font-bold">
                                                     <span className="sr-only">Open advanced mode</span>
                                                     <span className="mr-2">Advanced mode</span>
-                                                    <ChevronsDown open={open} />
+                                                    <span className="text-lg">
+                                                        <Chevron direction="down" rotate={open} double={true} />
+                                                    </span>
                                                 </Disclosure.Button>
 
                                                 {/* Advanced mode panel */}

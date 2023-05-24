@@ -13,4 +13,5 @@ export const configuration: IConfiguration = {
     subtext: 'We asked midwives around the world the question: “What do you want most in your role as a midwife?”',
     respondentsNoun: 'respondents',
     dashboardLinksFooter: [whatWomenWantLink, healthLiteracyLink],
+    questionAsked: 'What do you want most in your role as a midwife?',
 }

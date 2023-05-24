@@ -14,4 +14,5 @@ export const configuration: IConfiguration = {
         'Gain access to the 1.2 million open-ended responses through this interactive dashboard, a unique tool that connects women’s and girls’ voices with the almost infinite possibilities of digital analysis.',
     respondentsNoun: 'women',
     dashboardLinksFooter: [midwivesVoicesLink, healthLiteracyLink],
+    questionAsked: 'What is your one request for quality reproductive and maternal healthcare services?',
 }
