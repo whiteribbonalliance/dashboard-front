@@ -318,7 +318,6 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                     <span className="sr-only">Open advanced mode</span>
                                                     <span className="mr-2">Advanced mode</span>
                                                     <span className="text-lg">
-                                                        {/* TODO: Fix negative margin*/}
                                                         <Chevron direction="down" rotate={open} double={true} />
                                                     </span>
                                                 </Disclosure.Button>

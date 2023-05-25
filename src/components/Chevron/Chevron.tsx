@@ -17,12 +17,12 @@ export const Chevron = ({ direction, rotate, double, onClick }: IDoubleChevronsP
     switch (direction) {
         case 'up':
             icon = faChevronUp
-            secondIconClasses = 'mt-[-48%]'
+            secondIconClasses = 'mt-[-50%]'
             divWrapperClasses = 'flex-col items-center'
             break
         case 'down':
             icon = faChevronDown
-            secondIconClasses = 'mt-[-48%]'
+            secondIconClasses = 'mt-[-50%]'
             divWrapperClasses = 'flex-col items-center'
             break
         case 'left':
