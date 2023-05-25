@@ -16,7 +16,6 @@ import * as yup from 'yup'
 import { SelectMultiValues } from '@components/SelectMultiValues'
 import { SelectSingleValue } from '@components/SelectSingleValue'
 import { Chevron } from '@components/Chevron'
-import { useCampaignQuery } from '@hooks/use-campaign'
 import { IFiltersState, useFiltersStore } from '@stores/filters'
 import { defaultFilterValues } from '@constants'
 
@@ -83,9 +82,6 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
     // Submit timeout
     const refetchCampaignTimeout = useRef<NodeJS.Timeout>()
-
-    // Campaign query
-    const campaignQuery = useCampaignQuery(dashboard)
 
     // Form filter 1
     const form_filter_1 = useForm<IFilter>({
@@ -226,7 +222,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
         refetchCampaignTimeout.current = setTimeout(() => {
             // Update the filters store (when filters are updated, useCampaignQuery will refetch the campaign data)
             setFilters({ filter1: form_filter_1.getValues(), filter2: form_filter_2.getValues() })
-        }, 375)
+        }, 450)
     }
 
     return (

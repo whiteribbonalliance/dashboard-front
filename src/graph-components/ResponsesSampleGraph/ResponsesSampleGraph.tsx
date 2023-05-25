@@ -33,21 +33,21 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
     const [tableData, setTableData] = useState<ITableData>({ data: [], columns: [] })
 
     // Campaign query
-    const { data, isSuccess, isLoading, isFetching, error } = useCampaignQuery(dashboard)
+    const { data, isSuccess, isLoading, isError } = useCampaignQuery(dashboard)
 
     // Set table data
     useEffect(() => {
-        if (!data) return
-
-        const tmpColumns: ColumnDef<any, any>[] = []
-        for (const column of data.responses_sample.columns) {
-            tmpColumns.push(
-                columnHelper.accessor(column.id, {
-                    header: column.name,
-                })
-            )
+        if (data) {
+            const tmpColumns: ColumnDef<any, any>[] = []
+            for (const column of data.responses_sample.columns) {
+                tmpColumns.push(
+                    columnHelper.accessor(column.id, {
+                        header: column.name,
+                    })
+                )
+            }
+            setTableData({ data: data.responses_sample.data, columns: tmpColumns })
         }
-        setTableData({ data: data.responses_sample.data, columns: tmpColumns })
     }, [data])
 
     // Table
@@ -94,6 +94,9 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             <GraphTitle dashboard={dashboard} text="A sample of 1000 responses" />
             <p>Question asked: {questionAsked}</p>
 
+            {/* Error */}
+            {isError && <div className="my-5 flex">Could not load table</div>}
+
             {/* Loading */}
             {isLoading && (
                 <div className="my-5 flex items-center justify-center">
@@ -101,7 +104,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                 </div>
             )}
 
-            {/* Show data */}
+            {/* Success */}
             {isSuccess && (
                 <>
                     {/* Table */}
