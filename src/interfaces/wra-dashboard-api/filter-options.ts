@@ -2,6 +2,7 @@ import { Option } from '@types'
 
 export interface IFilterOptions {
     countries: Option[]
+    regions: Option[]
     response_topics: Option[]
     age_buckets: Option[]
     genders: Option[]

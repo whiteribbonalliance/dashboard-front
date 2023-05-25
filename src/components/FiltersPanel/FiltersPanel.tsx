@@ -3,14 +3,14 @@
 import { Disclosure, Tab, Transition } from '@headlessui/react'
 import { classNames } from '@utils'
 import { DashboardName } from '@enums'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import { MultiValue } from 'react-select'
 import { Box } from '@components/Box'
 import Image from 'next/image'
 import { getCampaign, getCampaignFilterOptions } from '@services/wra-dashboard-api/api'
 import { Option } from '@types'
-import { ICampaignRequest, ICountry, IFilter } from '@interfaces'
-import { Control, Controller, useForm, UseFormRegister } from 'react-hook-form'
+import { ICampaignRequest, IFilter } from '@interfaces'
+import { Control, Controller, useForm, UseFormRegister, UseFormReturn } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { SelectMultiValues } from '@components/SelectMultiValues'
@@ -66,11 +66,8 @@ const defaultFormValues: IFilter = {
 }
 
 export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
-    const [campaignCountries, setCampaignCountries] = useState<ICountry[]>([])
-
     // Select options
     const [countryOptions, setCountryOptions] = useState<Option[]>([])
-    const [regionOptions, setRegionOptions] = useState<Option[]>([])
     const [responseTopicOptions, setResponseTopicOptions] = useState<Option[]>([])
     const [ageBucketOptions, setAgeBucketOptions] = useState<Option[]>([])
     const [genderOptions, setGenderOptions] = useState<Option[]>([])
@@ -79,8 +76,15 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     const [onlyMultiWordPhrasesContainingFilterTermOptions, setOnlyMultiWordPhrasesContainingFilterTermOptions] =
         useState<Option[]>([])
 
-    // Selected countries option(s)
-    const [selectedCountryOptions, setSelectedCountryOptions] = useState<MultiValue<Option>>([])
+    // Selected countries option(s) for each filter
+    const [selectedCountryOptionsFilter1, setSelectedCountryOptionsFilter1] = useState<MultiValue<Option>>([])
+    const [selectedCountryOptionsFilter2, setSelectedCountryOptionsFilter2] = useState<MultiValue<Option>>([])
+
+    // Select regions options(s) for each filter
+    const [regionOptionsFilter1, setRegionOptionsFilter1] = useState<Option[]>([])
+    const [regionOptionsFilter2, setRegionOptionsFilter2] = useState<Option[]>([])
+
+    const allRegionOptions = useRef<Option[]>([])
 
     // Submit timeout
     const submitTimeout = useRef<NodeJS.Timeout>()
@@ -102,63 +106,6 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
         { id: '1', title: 'Drill down', form: form_filter_1 },
         { id: '2', title: 'Compare to...', form: form_filter_2 },
     ]
-
-    // Fetch filter options
-    useEffect(() => {
-        getCampaignFilterOptions(dashboard)
-            .then((filterOptions) => {
-                // Countries
-                setCountryOptions(filterOptions.countries)
-
-                // Response topics
-                setResponseTopicOptions(filterOptions.response_topics)
-
-                // Age bucket options
-                setAgeBucketOptions(filterOptions.age_buckets)
-
-                // Gender options
-                setGenderOptions(filterOptions.genders)
-
-                // Profession options
-                setProfessionOptions(filterOptions.professions)
-
-                // Only responses from categories options
-                setOnlyResponsesFromCategoriesOptions(filterOptions.only_responses_from_categories)
-
-                // Only multi-word phrases containing filter term options
-                setOnlyMultiWordPhrasesContainingFilterTermOptions(
-                    filterOptions.only_multi_word_phrases_containing_filter_term
-                )
-            })
-            .catch(() => {})
-    }, [dashboard])
-
-    // Set regions of selected countries
-    useEffect(() => {
-        // Only display regions for 1 selected country
-        if (selectedCountryOptions.length !== 1) {
-            setRegionOptions([])
-            return
-        }
-
-        ;(async () => {
-            const regionOptions: Option[] = []
-            for (const countryOption of selectedCountryOptions) {
-                const country = campaignCountries.find((country) => country.alpha2_code === countryOption.value)
-                if (country) {
-                    const countryRegionOptions = country.regions.map((region) => {
-                        return { value: `${country.alpha2_code}:${region}`, label: region }
-                    })
-                    regionOptions.push(...countryRegionOptions)
-                }
-            }
-            setRegionOptions(
-                regionOptions.map((regionOption) => {
-                    return { value: regionOption.value, label: regionOption.label }
-                })
-            )
-        })()
-    }, [dashboard, campaignCountries, selectedCountryOptions])
 
     // Set selected tab classes
     let selectedTabClasses: string
@@ -183,9 +130,91 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     // Whether the PMNCH QR code should be displayed
     const displayPmnchQrCode = dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT
 
-    // Handle on change selected countries
-    function handleOnChangeSelectedCountriesOptions(options: MultiValue<Option>) {
-        setSelectedCountryOptions(options)
+    // Fetch filter options
+    useEffect(() => {
+        getCampaignFilterOptions(dashboard)
+            .then((filterOptions) => {
+                // Country options
+                setCountryOptions(filterOptions.countries)
+
+                // Region options (store all options in a ref to access once a country is selected)
+                allRegionOptions.current = filterOptions.regions
+
+                // Response topic options
+                setResponseTopicOptions(filterOptions.response_topics)
+
+                // Age bucket options
+                setAgeBucketOptions(filterOptions.age_buckets)
+
+                // Gender options
+                setGenderOptions(filterOptions.genders)
+
+                // Profession options
+                setProfessionOptions(filterOptions.professions)
+
+                // Only responses from categories options
+                setOnlyResponsesFromCategoriesOptions(filterOptions.only_responses_from_categories)
+
+                // Only multi-word phrases containing filter term options
+                setOnlyMultiWordPhrasesContainingFilterTermOptions(
+                    filterOptions.only_multi_word_phrases_containing_filter_term
+                )
+            })
+            .catch(() => {})
+    }, [dashboard])
+
+    // Set regions of selected countries for filter 1
+    useEffect(() => {
+        SetRegionOptionsForFilter(selectedCountryOptionsFilter1, setRegionOptionsFilter1, form_filter_1)
+    }, [dashboard, selectedCountryOptionsFilter1])
+
+    // Set regions of selected countries for filter 2
+    useEffect(() => {
+        SetRegionOptionsForFilter(selectedCountryOptionsFilter2, setRegionOptionsFilter2, form_filter_2)
+    }, [dashboard, selectedCountryOptionsFilter2])
+
+    // Cleanup submit timeout
+    useEffect(() => {
+        return () => {
+            if (submitTimeout.current) {
+                clearTimeout(submitTimeout.current)
+            }
+        }
+    }, [submitTimeout])
+
+    // Set region options for filter
+    function SetRegionOptionsForFilter(
+        selectedCountryOptionsFilter: MultiValue<Option>,
+        setRegionOptionsFilter: Dispatch<SetStateAction<Option[]>>,
+        form: UseFormReturn<IFilter, any>
+    ) {
+        // Only display regions for 1 selected country
+        if (selectedCountryOptionsFilter.length !== 1) {
+            setRegionOptionsFilter([])
+            form.setValue('regions', [])
+            return
+        }
+
+        for (const selectedCountryOption of selectedCountryOptionsFilter) {
+            const regionOptions = allRegionOptions.current.filter((option) => {
+                // Get the country alpha2 code from region option: `ZW:Mashonaland East Province` -> `ZW`
+                // Then compare it to the selected country option alpha2 code
+                return (option.value as string).slice(0, 2) === selectedCountryOption.value
+            })
+            if (regionOptions) {
+                setRegionOptionsFilter(regionOptions)
+            }
+        }
+    }
+
+    // Handle on change selected countries for filter 1
+    function handleOnChangeSelectedCountriesOptionsFilter1(options: MultiValue<Option>) {
+        setSelectedCountryOptionsFilter1(options)
+    }
+
+    // Handle on change selected countries for filter 2
+    function handleOnChangeSelectedCountriesOptionsFilter2(options: MultiValue<Option>) {
+        setSelectedCountryOptionsFilter2(options)
     }
 
     // Submit data
@@ -208,15 +237,6 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                 .catch(() => {})
         }, 375)
     }
-
-    // Cleanup submit timeout
-    useEffect(() => {
-        return () => {
-            if (submitTimeout.current) {
-                clearTimeout(submitTimeout.current)
-            }
-        }
-    }, [submitTimeout])
 
     return (
         <div>
@@ -258,7 +278,11 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                 options={countryOptions}
                                                 control={form.control}
                                                 submitData={submitData}
-                                                handleOnChangeSelectedOptions={handleOnChangeSelectedCountriesOptions}
+                                                handleOnChangeSelectedOptions={
+                                                    id === '1'
+                                                        ? handleOnChangeSelectedCountriesOptionsFilter1
+                                                        : handleOnChangeSelectedCountriesOptionsFilter2
+                                                }
                                             />
                                         </div>
 
@@ -267,7 +291,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                             <div className="mb-1">Select regions</div>
                                             <SelectRegions
                                                 id={`select-regions-${id}`}
-                                                options={regionOptions}
+                                                options={id === '1' ? regionOptionsFilter1 : regionOptionsFilter2}
                                                 control={form.control}
                                                 submitData={submitData}
                                             />
@@ -294,6 +318,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                     <span className="sr-only">Open advanced mode</span>
                                                     <span className="mr-2">Advanced mode</span>
                                                     <span className="text-lg">
+                                                        {/* TODO: Fix negative margin*/}
                                                         <Chevron direction="down" rotate={open} double={true} />
                                                     </span>
                                                 </Disclosure.Button>
