@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import { Header } from 'components/Header'
 import { Footer } from 'components/Footer'
 import { DashboardName } from '@enums'
+import { QueryClientProvider } from '@providers/QueryClientProvider'
 
 interface IDashboardLayoutProps {
     children: ReactNode
@@ -26,7 +27,9 @@ const DashboardLayout = async ({ children, params }: IDashboardLayoutProps) => {
     return (
         <body className={`text-lg ${layoutClasses}`}>
             <Header dashboard={dashboard} />
-            <main className="mx-7 my-7">{children}</main>
+            <QueryClientProvider>
+                <main className="mx-7 my-7">{children}</main>
+            </QueryClientProvider>
             <Footer dashboard={dashboard} />
         </body>
     )

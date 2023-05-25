@@ -7,10 +7,10 @@ interface ISelectSingleValueProps {
     options: Option[]
     value: string | boolean
     onChange: (...event: any[]) => void
-    submitData: () => void
+    refetchCampaign: () => void
 }
 
-export const SelectSingleValue = ({ id, options, value, onChange, submitData }: ISelectSingleValueProps) => {
+export const SelectSingleValue = ({ id, options, value, onChange, refetchCampaign }: ISelectSingleValueProps) => {
     return (
         <Select
             instanceId={id}
@@ -20,7 +20,7 @@ export const SelectSingleValue = ({ id, options, value, onChange, submitData }: 
                 if (SingleValueOption) {
                     onChange(SingleValueOption.value)
                 }
-                submitData()
+                refetchCampaign()
             }}
         />
     )

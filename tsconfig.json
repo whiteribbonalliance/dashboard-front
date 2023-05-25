@@ -58,6 +58,12 @@
       ],
       "@hooks/*": [
         "hooks/*"
+      ],
+      "@stores/*": [
+        "stores/*"
+      ],
+      "@providers/*": [
+        "providers/*"
       ]
     },
     "plugins": [

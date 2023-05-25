@@ -18,16 +18,19 @@
     "@headlessui/react": "1.7.14",
     "@heroicons/react": "2.0.18",
     "@hookform/resolvers": "2.9.7",
+    "@tanstack/react-query-devtools": "^4.29.7",
     "@tanstack/react-table": "^8.9.1",
     "immer": "10.0.2",
     "next": "13.4.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "7.43.9",
+    "react-query": "3.39.3",
     "react-select": "5.7.3",
     "server-only": "0.0.1",
     "sharp": "0.32.1",
-    "yup": "0.32.11"
+    "yup": "0.32.11",
+    "zustand": "4.3.8"
   },
   "devDependencies": {
     "@types/node": "20.1.2",

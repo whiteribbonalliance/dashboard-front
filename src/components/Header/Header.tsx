@@ -17,10 +17,6 @@ interface IHeaderProps {
     dashboard: string
 }
 
-interface IChevronsLeftProps {
-    open: boolean
-}
-
 interface IHamburgerMenuProps {
     open: boolean
 }
