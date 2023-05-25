@@ -25,7 +25,9 @@ export const useCampaignQuery = (dashboard: string) => {
 
     // Refetch campaign on filters change
     useEffect(() => {
-        refetch().then()
+        if (filters) {
+            refetch().then()
+        }
     }, [refetch, filters])
 
     return campaignQuery
