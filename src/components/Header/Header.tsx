@@ -12,6 +12,7 @@ import { FiltersPanel } from '@components/FiltersPanel'
 import { LanguageSelect } from '@components/LanguageSelect'
 import { Title } from 'components/Title'
 import { Chevron } from '@components/Chevron'
+import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
 
 interface IHeaderProps {
     dashboard: string
@@ -21,13 +22,28 @@ interface IHamburgerMenuProps {
     open: boolean
 }
 
-const menuItems = [
-    { id: 'about-us', title: 'About Us', url: 'https://whiteribbonalliance.org/campaigns/what-women-want' },
-    { id: 'show-video', title: 'Show Video', url: 'https://www.youtube.com/watch?v=nBzide5J3Hk' },
-]
-
 export const Header = ({ dashboard }: IHeaderProps) => {
     const [showFiltersPanel, setShowFiltersPanel] = useState<boolean>(false)
+
+    let showVideoLink: string
+    switch (dashboard) {
+        case DashboardName.WHAT_WOMEN_WANT:
+            showVideoLink = whatWomenWantConfig.showVideoLink
+            break
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+            showVideoLink = whatYoungPeopleWantConfig.showVideoLink
+            break
+        case DashboardName.MIDWIVES_VOICES:
+            showVideoLink = midwivesVoicesConfig.showVideoLink
+            break
+        default:
+            showVideoLink = ''
+    }
+
+    const menuItems = [
+        { id: 'about-us', title: 'About Us', url: 'https://whiteribbonalliance.org/campaigns/what-women-want' },
+        { id: 'show-video', title: 'Show Video', url: showVideoLink },
+    ]
 
     // Set mobile dropdown classes
     let mobileDropdownClasses: string

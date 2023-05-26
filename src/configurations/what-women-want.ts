@@ -15,4 +15,5 @@ export const configuration: IConfiguration = {
     respondentsNoun: 'women',
     dashboardLinksFooter: [midwivesVoicesLink, healthLiteracyLink],
     questionAsked: 'What is your one request for quality reproductive and maternal healthcare services?',
+    showVideoLink: 'https://www.youtube.com/watch?v=nBzide5J3Hk',
 }
