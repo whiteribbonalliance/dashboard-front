@@ -15,5 +15,5 @@ export const configuration: IConfiguration = {
     dashboardLinksFooter: [whatWomenWantLink, healthLiteracyLink, midwivesVoicesLink],
     questionAsked: 'To improve my well-being, I want...',
     showVideoLink: 'https://youtu.be/E6_ERqyI8nA',
-    aboutUs: 'About PMNCH'
+    aboutUs: 'About PMNCH',
 }

@@ -10,6 +10,7 @@ import {
     flexRender,
     getCoreRowModel,
     getPaginationRowModel,
+    Row,
     useReactTable,
 } from '@tanstack/react-table'
 import { useEffect, useState } from 'react'
@@ -80,13 +81,13 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
     }
 
     // Set spinner classes
-    let spinnerClasses: string
+    let spinnerIconClasses: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            spinnerClasses = 'text-pmnch-colors-primary'
+            spinnerIconClasses = 'text-pmnch-colors-primary'
             break
         default:
-            spinnerClasses = 'text-default-colors-tertiary'
+            spinnerIconClasses = 'text-default-colors-tertiary'
     }
 
     // Set th classes
@@ -97,6 +98,64 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             break
         default:
             thClasses = 'font-normal'
+    }
+
+    // Get all unique descriptions and the count
+    let countAndColorDescriptions: { description: string; count: number; color: string }[] = []
+    if (tableData.data) {
+        tableData.data.forEach((datum) => {
+            const description = datum.description
+            const objExists = countAndColorDescriptions.some((obj) => obj.description === description)
+            if (!objExists) {
+                countAndColorDescriptions.push({ description: description, count: 0, color: '' })
+            }
+            const obj = countAndColorDescriptions.find((obj) => obj.description === description)
+            if (obj) {
+                obj['count'] += 1
+            }
+        })
+    }
+
+    // Sort from highest to lowest
+    countAndColorDescriptions = countAndColorDescriptions.sort((a, b) => a.count - b.count).reverse()
+
+    // Set description colors list
+    let descriptionColors: string[] = []
+    switch (dashboard) {
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+            descriptionColors = [
+                'bg-pmnch-colors-primary-faint',
+                'bg-pmnch-colors-secondary-faint',
+                'bg-pmnch-colors-tertiary-faint',
+                'bg-pmnch-colors-quaternary-faint',
+                'bg-pmnch-colors-quinary-faint',
+            ]
+            break
+        default:
+            descriptionColors = [
+                'bg-default-colors-primary-faint',
+                'bg-default-colors-secondary-faint',
+                'bg-default-colors-tertiary-faint',
+                'bg-default-colors-quaternary-faint',
+                'bg-default-colors-quinary-faint',
+            ]
+    }
+
+    // Set color for each description
+    for (let i = 0; i < countAndColorDescriptions.length; i++) {
+        countAndColorDescriptions[i]['color'] = descriptionColors[i % descriptionColors.length]
+    }
+
+    // Get the color that belongs to the response column value
+    function get_response_cell_bg_color(c: Row<any>) {
+        const cell = c.getAllCells().find((obj) => obj.column.id === 'raw_response')
+        const description = cell?.row.original?.description
+        if (description) {
+            const countAndColorDescription = countAndColorDescriptions.find((obj) => obj.description === description)
+            if (countAndColorDescription) {
+                return countAndColorDescription.color
+            }
+        }
     }
 
     return (
@@ -110,7 +169,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             {/* Loading */}
             {isLoading && (
                 <div className="my-5 flex items-center justify-center">
-                    <FontAwesomeIcon className={`animate-spin text-4xl ${spinnerClasses}`} icon={faSpinner} />
+                    <FontAwesomeIcon className={`animate-spin text-4xl ${spinnerIconClasses}`} icon={faSpinner} />
                 </div>
             )}
 
@@ -139,7 +198,13 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                             {table.getRowModel().rows.map((row) => (
                                 <tr key={row.id} className="border-b border-b-gray-light">
                                     {row.getVisibleCells().map((cell) => (
-                                        <td key={cell.id} className="border-r border-r-gray-light px-1">
+                                        <td
+                                            key={cell.id}
+                                            className={`border-r border-r-gray-light px-1 ${
+                                                // Response cell has a custom background color
+                                                cell.column.id === 'raw_response' ? get_response_cell_bg_color(row) : ''
+                                            }`}
+                                        >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}
