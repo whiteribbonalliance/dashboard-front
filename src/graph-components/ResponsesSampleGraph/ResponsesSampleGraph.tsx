@@ -30,7 +30,7 @@ interface IDescriptionCountAndColor {
 }
 
 interface ITableData {
-    data: any[]
+    data: { raw_response: string; description: string; canonical_country: string; age: string }[]
     columns: ColumnDef<any, any>[]
 }
 
@@ -128,7 +128,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             .reverse()
 
         // Set description colors list
-        let descriptionColors: string[] = []
+        let descriptionColors: string[]
         switch (dashboard) {
             case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
                 descriptionColors = [
