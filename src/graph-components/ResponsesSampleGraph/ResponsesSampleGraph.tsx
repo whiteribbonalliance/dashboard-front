@@ -30,7 +30,7 @@ interface IDescriptionCountAndColor {
 }
 
 interface ITableData {
-    data: { raw_response: string; description: string; canonical_country: string; age: string }[]
+    data: any[]
     columns: ColumnDef<any, any>[]
 }
 
@@ -180,7 +180,9 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
     return (
         <Box>
             <GraphTitle dashboard={dashboard} text="A sample of 1000 responses" />
-            <p>Question asked: {questionAsked}</p>
+            <p>
+                Question asked: <span className="italic">{questionAsked}</span>
+            </p>
 
             {/* Error */}
             {isError && <div className="my-5 flex">Could not load table</div>}
