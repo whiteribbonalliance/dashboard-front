@@ -69,8 +69,8 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
         useState<Option[]>([])
 
     // Selected countries option(s) for each filter
-    const [selectedCountryOptionsFilter1, setSelectedCountryOptionsFilter1] = useState<MultiValue<Option>>([])
-    const [selectedCountryOptionsFilter2, setSelectedCountryOptionsFilter2] = useState<MultiValue<Option>>([])
+    const [selectedCountriesOptionsFilter1, setSelectedCountriesOptionsFilter1] = useState<MultiValue<Option>>([])
+    const [selectedCountriesOptionsFilter2, setSelectedCountriesOptionsFilter2] = useState<MultiValue<Option>>([])
 
     // Select regions options(s) for each filter
     const [regionOptionsFilter1, setRegionOptionsFilter1] = useState<Option[]>([])
@@ -156,15 +156,15 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
             .catch(() => {})
     }, [dashboard])
 
-    // Set regions of selected countries for filter 1
+    // Set regions of selected countries for form filter 1
     useEffect(() => {
-        SetRegionOptionsForFilter(selectedCountryOptionsFilter1, setRegionOptionsFilter1, form_filter_1)
-    }, [dashboard, selectedCountryOptionsFilter1, form_filter_1])
+        SetRegionOptionsForFormFilter(selectedCountriesOptionsFilter1, setRegionOptionsFilter1, form_filter_1)
+    }, [selectedCountriesOptionsFilter1, form_filter_1])
 
-    // Set regions of selected countries for filter 2
+    // Set regions of selected countries for form filter 2
     useEffect(() => {
-        SetRegionOptionsForFilter(selectedCountryOptionsFilter2, setRegionOptionsFilter2, form_filter_2)
-    }, [dashboard, selectedCountryOptionsFilter2, form_filter_2])
+        SetRegionOptionsForFormFilter(selectedCountriesOptionsFilter2, setRegionOptionsFilter2, form_filter_2)
+    }, [selectedCountriesOptionsFilter2, form_filter_2])
 
     // Cleanup refetch campaign timeout
     useEffect(() => {
@@ -175,8 +175,8 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
         }
     }, [refetchCampaignTimeout])
 
-    // Set region options for filter
-    function SetRegionOptionsForFilter(
+    // Set region options for form filter
+    function SetRegionOptionsForFormFilter(
         selectedCountryOptionsFilter: MultiValue<Option>,
         setRegionOptionsFilter: Dispatch<SetStateAction<Option[]>>,
         form: UseFormReturn<IFilter, any>
@@ -199,12 +199,12 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
     // Handle on change selected countries for filter 1
     function handleOnChangeSelectedCountriesOptionsFilter1(options: MultiValue<Option>) {
-        setSelectedCountryOptionsFilter1(options)
+        setSelectedCountriesOptionsFilter1(options)
     }
 
     // Handle on change selected countries for filter 2
     function handleOnChangeSelectedCountriesOptionsFilter2(options: MultiValue<Option>) {
-        setSelectedCountryOptionsFilter2(options)
+        setSelectedCountriesOptionsFilter2(options)
     }
 
     // On filter change

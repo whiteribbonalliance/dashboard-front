@@ -25,6 +25,7 @@ interface IHamburgerMenuProps {
 export const Header = ({ dashboard }: IHeaderProps) => {
     const [showFiltersPanel, setShowFiltersPanel] = useState<boolean>(false)
 
+    // Set show video link
     let showVideoLink: string
     switch (dashboard) {
         case DashboardName.WHAT_WOMEN_WANT:
@@ -40,6 +41,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
             showVideoLink = ''
     }
 
+    // Set about us text
     let aboutUs: string
     switch (dashboard) {
         case DashboardName.WHAT_WOMEN_WANT:

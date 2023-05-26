@@ -127,11 +127,11 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             .sort((a, b) => a.count - b.count)
             .reverse()
 
-        // Set description colors list
-        let descriptionColors: string[]
+        // Set description colors classes list
+        let descriptionColorsClasses: string[]
         switch (dashboard) {
             case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-                descriptionColors = [
+                descriptionColorsClasses = [
                     'bg-pmnch-colors-primary-faint',
                     'bg-pmnch-colors-secondary-faint',
                     'bg-pmnch-colors-tertiary-faint',
@@ -140,7 +140,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                 ]
                 break
             default:
-                descriptionColors = [
+                descriptionColorsClasses = [
                     'bg-default-colors-primary-faint',
                     'bg-default-colors-secondary-faint',
                     'bg-default-colors-tertiary-faint',
@@ -151,20 +151,26 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
 
         // Set color for each description
         for (let i = 0; i < countAndColorDescriptions.current.length; i++) {
-            countAndColorDescriptions.current[i]['color'] = descriptionColors[i % descriptionColors.length]
+            countAndColorDescriptions.current[i]['color'] =
+                descriptionColorsClasses[i % descriptionColorsClasses.length]
         }
     }
 
-    // Get the description color
-    function getDescriptionColor(row: Row<any>) {
+    // Get the description's color class
+    function getDescriptionColorClass(row: Row<any>) {
+        // Find the cell with column_id raw_response
         const cell = row.getAllCells().find((obj) => obj.column.id === 'raw_response')
-        const description: string = cell?.row.original?.description
-        if (description) {
-            const countAndColorDescription = countAndColorDescriptions.current.find(
-                (obj) => obj.description === description
-            )
-            if (countAndColorDescription) {
-                return countAndColorDescription.color
+
+        // Get color class
+        if (cell) {
+            const description: string = cell.row.original?.description
+            if (description) {
+                const countAndColorDescription = countAndColorDescriptions.current.find(
+                    (obj) => obj.description === description
+                )
+                if (countAndColorDescription) {
+                    return countAndColorDescription.color
+                }
             }
         }
 
@@ -215,7 +221,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                                             key={cell.id}
                                             className={`border-r border-r-gray-light px-1 ${
                                                 // Response cell has a custom background color
-                                                cell.column.id === 'raw_response' ? getDescriptionColor(row) : ''
+                                                cell.column.id === 'raw_response' ? getDescriptionColorClass(row) : ''
                                             }`}
                                         >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}

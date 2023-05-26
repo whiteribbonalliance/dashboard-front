@@ -24,13 +24,14 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
         notFound()
     }
 
-    let gapBoxes: string
+    // Set gap-y between boxes
+    let boxesGapY: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            gapBoxes = 'gap-y-[80px]'
+            boxesGapY = 'gap-y-[80px]'
             break
         default:
-            gapBoxes = 'gap-y-[200px]'
+            boxesGapY = 'gap-y-[200px]'
     }
 
     return (
@@ -53,7 +54,7 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
                 </section>
 
                 {/* Graphs */}
-                <section className={`col-span-2 grid grid-cols-1 ${gapBoxes}`}>
+                <section className={`col-span-2 grid grid-cols-1 ${boxesGapY}`}>
                     {DashboardName.WHAT_YOUNG_PEOPLE_WANT === dashboard ? (
                         <>
                             <ResponsesBreakdownGraph dashboard={dashboard} />
