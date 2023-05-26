@@ -10,4 +10,5 @@ export interface IConfiguration {
     dashboardLinksFooter: IDashboardLink[]
     questionAsked: string
     showVideoLink: string
+    aboutUs: string
 }

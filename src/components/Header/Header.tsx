@@ -40,8 +40,24 @@ export const Header = ({ dashboard }: IHeaderProps) => {
             showVideoLink = ''
     }
 
+    let aboutUs: string
+    switch (dashboard) {
+        case DashboardName.WHAT_WOMEN_WANT:
+            aboutUs = whatWomenWantConfig.aboutUs
+            break
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+            aboutUs = whatYoungPeopleWantConfig.aboutUs
+            break
+        case DashboardName.MIDWIVES_VOICES:
+            aboutUs = midwivesVoicesConfig.aboutUs
+            break
+        default:
+            aboutUs = 'About Us'
+    }
+
+    // Create menu items
     const menuItems = [
-        { id: 'about-us', title: 'About Us', url: 'https://whiteribbonalliance.org/campaigns/what-women-want' },
+        { id: 'about-us', title: aboutUs, url: 'https://whiteribbonalliance.org/campaigns/what-women-want' },
         { id: 'show-video', title: 'Show Video', url: showVideoLink },
     ]
 
