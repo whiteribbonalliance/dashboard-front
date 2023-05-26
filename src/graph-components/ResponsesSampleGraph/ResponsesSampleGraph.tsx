@@ -13,7 +13,7 @@ import {
     Row,
     useReactTable,
 } from '@tanstack/react-table'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Chevron } from '@components/Chevron'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
@@ -21,6 +21,12 @@ import { useCampaignQuery } from '@hooks/use-campaign'
 
 interface IResponsesSampleGraphProps {
     dashboard: string
+}
+
+interface IDescriptionCountAndColor {
+    description: string
+    count: number
+    color: string
 }
 
 interface ITableData {
@@ -32,6 +38,7 @@ const columnHelper = createColumnHelper<any>()
 
 export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) => {
     const [tableData, setTableData] = useState<ITableData>({ data: [], columns: [] })
+    const countAndColorDescriptions = useRef<IDescriptionCountAndColor[]>([])
 
     // Campaign query
     const { data, isSuccess, isLoading, isError } = useCampaignQuery(dashboard)
@@ -100,62 +107,68 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             thClasses = 'font-normal'
     }
 
-    // Get all unique descriptions and the count
-    let countAndColorDescriptions: { description: string; count: number; color: string }[] = []
+    // Set descriptions count and color
     if (tableData.data) {
+        // Get all unique descriptions and the count
         tableData.data.forEach((datum) => {
             const description = datum.description
-            const objExists = countAndColorDescriptions.some((obj) => obj.description === description)
+            const objExists = countAndColorDescriptions.current.some((obj) => obj.description === description)
             if (!objExists) {
-                countAndColorDescriptions.push({ description: description, count: 0, color: '' })
+                countAndColorDescriptions.current.push({ description: description, count: 0, color: '' })
             }
-            const obj = countAndColorDescriptions.find((obj) => obj.description === description)
+            const obj = countAndColorDescriptions.current.find((obj) => obj.description === description)
             if (obj) {
                 obj['count'] += 1
             }
         })
-    }
 
-    // Sort from highest to lowest
-    countAndColorDescriptions = countAndColorDescriptions.sort((a, b) => a.count - b.count).reverse()
+        // Sort from highest to lowest
+        countAndColorDescriptions.current = countAndColorDescriptions.current
+            .sort((a, b) => a.count - b.count)
+            .reverse()
 
-    // Set description colors list
-    let descriptionColors: string[] = []
-    switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            descriptionColors = [
-                'bg-pmnch-colors-primary-faint',
-                'bg-pmnch-colors-secondary-faint',
-                'bg-pmnch-colors-tertiary-faint',
-                'bg-pmnch-colors-quaternary-faint',
-                'bg-pmnch-colors-quinary-faint',
-            ]
-            break
-        default:
-            descriptionColors = [
-                'bg-default-colors-primary-faint',
-                'bg-default-colors-secondary-faint',
-                'bg-default-colors-tertiary-faint',
-                'bg-default-colors-quaternary-faint',
-                'bg-default-colors-quinary-faint',
-            ]
-    }
+        // Set description colors list
+        let descriptionColors: string[] = []
+        switch (dashboard) {
+            case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+                descriptionColors = [
+                    'bg-pmnch-colors-primary-faint',
+                    'bg-pmnch-colors-secondary-faint',
+                    'bg-pmnch-colors-tertiary-faint',
+                    'bg-pmnch-colors-quaternary-faint',
+                    'bg-pmnch-colors-quinary-faint',
+                ]
+                break
+            default:
+                descriptionColors = [
+                    'bg-default-colors-primary-faint',
+                    'bg-default-colors-secondary-faint',
+                    'bg-default-colors-tertiary-faint',
+                    'bg-default-colors-quaternary-faint',
+                    'bg-default-colors-quinary-faint',
+                ]
+        }
 
-    // Set color for each description
-    for (let i = 0; i < countAndColorDescriptions.length; i++) {
-        countAndColorDescriptions[i]['color'] = descriptionColors[i % descriptionColors.length]
+        // Set color for each description
+        for (let i = 0; i < countAndColorDescriptions.current.length; i++) {
+            countAndColorDescriptions.current[i]['color'] = descriptionColors[i % descriptionColors.length]
+        }
     }
 
     // Get the description color
     function getDescriptionColor(row: Row<any>) {
         const cell = row.getAllCells().find((obj) => obj.column.id === 'raw_response')
-        const description = cell?.row.original?.description
+        const description: string = cell?.row.original?.description
         if (description) {
-            const countAndColorDescription = countAndColorDescriptions.find((obj) => obj.description === description)
+            const countAndColorDescription = countAndColorDescriptions.current.find(
+                (obj) => obj.description === description
+            )
             if (countAndColorDescription) {
                 return countAndColorDescription.color
             }
         }
+
+        return ''
     }
 
     return (
