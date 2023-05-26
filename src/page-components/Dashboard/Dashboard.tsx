@@ -24,6 +24,15 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
         notFound()
     }
 
+    let gapBoxes: string
+    switch (dashboard) {
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+            gapBoxes = 'gap-y-[80px]'
+            break
+        default:
+            gapBoxes = 'gap-y-[200px]'
+    }
+
     return (
         <>
             {/* Title */}
@@ -44,8 +53,7 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
                 </section>
 
                 {/* Graphs */}
-                {/* TODO: Display the ages as numbers instead of ranges for PMNCH only */}
-                <section className="col-span-2 grid grid-cols-1 gap-y-[200px]">
+                <section className={`col-span-2 grid grid-cols-1 ${gapBoxes}`}>
                     {DashboardName.WHAT_YOUNG_PEOPLE_WANT === dashboard ? (
                         <>
                             <ResponsesBreakdownGraph dashboard={dashboard} />
