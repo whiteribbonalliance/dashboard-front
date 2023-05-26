@@ -13,7 +13,7 @@ import {
     Row,
     useReactTable,
 } from '@tanstack/react-table'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Chevron } from '@components/Chevron'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
@@ -38,7 +38,7 @@ const columnHelper = createColumnHelper<any>()
 
 export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) => {
     const [tableData, setTableData] = useState<ITableData>({ data: [], columns: [] })
-    const countAndColorDescriptions = useRef<IDescriptionCountAndColor[]>([])
+    const [descriptionsCountAndColor, setDescriptionsCountAndColor] = useState<IDescriptionCountAndColor[]>([])
 
     // Campaign query
     const { data, isSuccess, isLoading, isError } = useCampaignQuery(dashboard)
@@ -108,74 +108,78 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
     }
 
     // Set descriptions count and color
-    if (tableData.data) {
-        // Get all unique descriptions and the count
-        tableData.data.forEach((datum) => {
-            const description = datum.description
-            const objExists = countAndColorDescriptions.current.some((obj) => obj.description === description)
-            if (!objExists) {
-                countAndColorDescriptions.current.push({ description: description, count: 0, color: '' })
+    useEffect(() => {
+        if (tableData.data) {
+            // Get all unique descriptions and the count
+            let tmpDescriptionsCountAndColor: IDescriptionCountAndColor[] = []
+            tableData.data.forEach((datum) => {
+                const description = datum.description
+                const objExists = tmpDescriptionsCountAndColor.some((obj) => obj.description === description)
+                if (!objExists) {
+                    tmpDescriptionsCountAndColor.push({ description: description, count: 0, color: '' })
+                }
+                const obj = tmpDescriptionsCountAndColor.find((obj) => obj.description === description)
+                if (obj) {
+                    obj['count'] += 1
+                }
+            })
+
+            // Sort from highest to lowest
+            tmpDescriptionsCountAndColor = tmpDescriptionsCountAndColor.sort((a, b) => a.count - b.count).reverse()
+
+            // Set the colors list
+            let colors: string[]
+            switch (dashboard) {
+                case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+                    colors = [
+                        'bg-pmnch-colors-primary-faint',
+                        'bg-pmnch-colors-secondary-faint',
+                        'bg-pmnch-colors-tertiary-faint',
+                        'bg-pmnch-colors-quaternary-faint',
+                        'bg-pmnch-colors-quinary-faint',
+                    ]
+                    break
+                default:
+                    colors = [
+                        'bg-default-colors-primary-faint',
+                        'bg-default-colors-secondary-faint',
+                        'bg-default-colors-tertiary-faint',
+                        'bg-default-colors-quaternary-faint',
+                        'bg-default-colors-quinary-faint',
+                    ]
             }
-            const obj = countAndColorDescriptions.current.find((obj) => obj.description === description)
-            if (obj) {
-                obj['count'] += 1
+
+            // Set color for each description
+            for (let i = 0; i < tmpDescriptionsCountAndColor.length; i++) {
+                tmpDescriptionsCountAndColor[i]['color'] = colors[i % colors.length]
             }
-        })
-
-        // Sort from highest to lowest
-        countAndColorDescriptions.current = countAndColorDescriptions.current
-            .sort((a, b) => a.count - b.count)
-            .reverse()
-
-        // Set description colors classes list
-        let descriptionColorsClasses: string[]
-        switch (dashboard) {
-            case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-                descriptionColorsClasses = [
-                    'bg-pmnch-colors-primary-faint',
-                    'bg-pmnch-colors-secondary-faint',
-                    'bg-pmnch-colors-tertiary-faint',
-                    'bg-pmnch-colors-quaternary-faint',
-                    'bg-pmnch-colors-quinary-faint',
-                ]
-                break
-            default:
-                descriptionColorsClasses = [
-                    'bg-default-colors-primary-faint',
-                    'bg-default-colors-secondary-faint',
-                    'bg-default-colors-tertiary-faint',
-                    'bg-default-colors-quaternary-faint',
-                    'bg-default-colors-quinary-faint',
-                ]
+            setDescriptionsCountAndColor(tmpDescriptionsCountAndColor)
         }
-
-        // Set color for each description
-        for (let i = 0; i < countAndColorDescriptions.current.length; i++) {
-            countAndColorDescriptions.current[i]['color'] =
-                descriptionColorsClasses[i % descriptionColorsClasses.length]
-        }
-    }
+    }, [dashboard, tableData])
 
     // Get the description's color class
-    function getDescriptionColorClass(row: Row<any>) {
-        // Find the cell with column_id raw_response
-        const cell = row.getAllCells().find((obj) => obj.column.id === 'raw_response')
+    const getDescriptionColorClass = useCallback(
+        (row: Row<any>) => {
+            // Find the cell with column_id raw_response
+            const cell = row.getAllCells().find((obj) => obj.column.id === 'raw_response')
 
-        // Get color class
-        if (cell) {
-            const description: string = cell.row.original?.description
-            if (description) {
-                const countAndColorDescription = countAndColorDescriptions.current.find(
-                    (obj) => obj.description === description
-                )
-                if (countAndColorDescription) {
-                    return countAndColorDescription.color
+            // Get color class
+            if (cell) {
+                const description: string = cell.row.original?.description
+                if (description) {
+                    const descriptionCountAndColor = descriptionsCountAndColor.find(
+                        (obj) => obj.description === description
+                    )
+                    if (descriptionCountAndColor) {
+                        return descriptionCountAndColor.color
+                    }
                 }
             }
-        }
 
-        return ''
-    }
+            return ''
+        },
+        [descriptionsCountAndColor]
+    )
 
     return (
         <Box>
@@ -223,7 +227,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                                             key={cell.id}
                                             className={`border-r border-r-gray-light px-1 ${
                                                 // Response cell has a custom background color
-                                                cell.column.id === 'raw_response' ? getDescriptionColorClass(row) : ''
+                                                cell.column.id === 'raw_response' && getDescriptionColorClass(row)
                                             }`}
                                         >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
