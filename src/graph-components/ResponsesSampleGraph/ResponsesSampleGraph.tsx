@@ -147,8 +147,8 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
     }
 
     // Get the description color
-    function get_description_color(c: Row<any>) {
-        const cell = c.getAllCells().find((obj) => obj.column.id === 'raw_response')
+    function getDescriptionColor(row: Row<any>) {
+        const cell = row.getAllCells().find((obj) => obj.column.id === 'raw_response')
         const description = cell?.row.original?.description
         if (description) {
             const countAndColorDescription = countAndColorDescriptions.find((obj) => obj.description === description)
@@ -202,7 +202,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                                             key={cell.id}
                                             className={`border-r border-r-gray-light px-1 ${
                                                 // Response cell has a custom background color
-                                                cell.column.id === 'raw_response' ? get_description_color(row) : ''
+                                                cell.column.id === 'raw_response' ? getDescriptionColor(row) : ''
                                             }`}
                                         >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
