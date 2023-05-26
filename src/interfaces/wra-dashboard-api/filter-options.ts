@@ -1,8 +1,13 @@
 import { Option } from '@types'
 
+export interface ICountryRegionOption {
+    country_alpha2_code: string
+    options: Option[]
+}
+
 export interface IFilterOptions {
     countries: Option[]
-    regions: Option[]
+    country_regions: ICountryRegionOption[]
     response_topics: Option[]
     age_buckets: Option[]
     genders: Option[]

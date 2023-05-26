@@ -9,7 +9,7 @@ import { Box } from '@components/Box'
 import Image from 'next/image'
 import { getCampaignFilterOptions } from '@services/wra-dashboard-api/api'
 import { Option } from '@types'
-import { IFilter } from '@interfaces'
+import { ICountryRegionOption, IFilter } from '@interfaces'
 import { Control, Controller, useForm, UseFormRegister, UseFormReturn } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -55,8 +55,6 @@ const schema = yup.object().shape({
 })
 
 export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
-    const filters = useFiltersStore((state: IFiltersState) => state.filters)
-
     // Set filters
     const setFilters = useFiltersStore((state: IFiltersState) => state.setFilters)
 
@@ -78,9 +76,10 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     const [regionOptionsFilter1, setRegionOptionsFilter1] = useState<Option[]>([])
     const [regionOptionsFilter2, setRegionOptionsFilter2] = useState<Option[]>([])
 
-    const allRegionOptions = useRef<Option[]>([])
+    // Region options for each country
+    const countriesRegionsOptions = useRef<ICountryRegionOption[]>([])
 
-    // Submit timeout
+    // Refetch campaign timeout
     const refetchCampaignTimeout = useRef<NodeJS.Timeout>()
 
     // Form filter 1
@@ -131,8 +130,8 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                 // Country options
                 setCountryOptions(filterOptions.countries)
 
-                // Region options (store all options in a ref to access once a country is selected)
-                allRegionOptions.current = filterOptions.regions
+                // Country Regions options
+                countriesRegionsOptions.current = filterOptions.country_regions
 
                 // Response topic options
                 setResponseTopicOptions(filterOptions.response_topics)
@@ -167,7 +166,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
         SetRegionOptionsForFilter(selectedCountryOptionsFilter2, setRegionOptionsFilter2, form_filter_2)
     }, [dashboard, selectedCountryOptionsFilter2, form_filter_2])
 
-    // Cleanup submit timeout
+    // Cleanup refetch campaign timeout
     useEffect(() => {
         return () => {
             if (refetchCampaignTimeout.current) {
@@ -189,15 +188,12 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
             return
         }
 
-        for (const selectedCountryOption of selectedCountryOptionsFilter) {
-            const regionOptions = allRegionOptions.current.filter((option) => {
-                // Get the country alpha2 code from region option: `ZW:Mashonaland East Province` -> `ZW`
-                // Then compare it to the selected country option alpha2 code
-                return (option.value as string).slice(0, 2) === selectedCountryOption.value
-            })
-            if (regionOptions) {
-                setRegionOptionsFilter(regionOptions)
-            }
+        // Set region options for selected country
+        const countryRegionOptions = countriesRegionsOptions.current.find((countryRegionOption) => {
+            return countryRegionOption.country_alpha2_code === selectedCountryOptionsFilter[0].value
+        })
+        if (countryRegionOptions) {
+            setRegionOptionsFilter(countryRegionOptions.options)
         }
     }
 
@@ -211,14 +207,14 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
         setSelectedCountryOptionsFilter2(options)
     }
 
-    // On filter change, re-fetch campaign
+    // On filter change
     function onFilterChange() {
         // Clear the current submit timeout
         if (refetchCampaignTimeout.current) {
             clearTimeout(refetchCampaignTimeout.current)
         }
 
-        // Add a small delay before re-fetching campaign
+        // Add a small delay before refetching campaign
         refetchCampaignTimeout.current = setTimeout(() => {
             // Update the filters store (when filters are updated, useCampaignQuery will refetch the campaign data)
             setFilters({ filter1: form_filter_1.getValues(), filter2: form_filter_2.getValues() })
