@@ -89,6 +89,16 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             spinnerClasses = 'text-default-colors-tertiary'
     }
 
+    // Set th classes
+    let thClasses: string
+    switch (dashboard) {
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+            thClasses = 'font-bold'
+            break
+        default:
+            thClasses = 'font-normal'
+    }
+
     return (
         <Box>
             <GraphTitle dashboard={dashboard} text="A sample of 1000 responses" />
@@ -115,7 +125,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                                     {headerGroup.headers.map((header) => (
                                         <th
                                             key={header.id}
-                                            className="border-r border-r-gray-light px-1 text-left font-normal"
+                                            className={`border-r border-r-gray-light px-1 text-left ${thClasses}`}
                                         >
                                             {header.isPlaceholder
                                                 ? null
