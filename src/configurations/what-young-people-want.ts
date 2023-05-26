@@ -2,7 +2,7 @@ import { IConfiguration } from '@interfaces'
 import { healthLiteracyLink, midwivesVoicesLink, whatWomenWantLink } from '@constants'
 import { DashboardName } from '@enums'
 
-const title = 'What Young People Want'
+const title = 'Results Dashboard'
 
 export const configuration: IConfiguration = {
     id: DashboardName.WHAT_YOUNG_PEOPLE_WANT,
