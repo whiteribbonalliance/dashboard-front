@@ -1,7 +1,7 @@
 export interface IFilter {
     countries: string[]
     regions: string[]
-    age_buckets: string[]
+    ages: string[]
     genders: string[]
     professions: string[]
     response_topics: string[]

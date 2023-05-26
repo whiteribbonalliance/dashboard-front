@@ -9,7 +9,7 @@ export interface IFilterOptions {
     countries: Option[]
     country_regions: ICountryRegionOption[]
     response_topics: Option[]
-    age_buckets: Option[]
+    ages: Option[]
     genders: Option[]
     professions: Option[]
     only_responses_from_categories: Option[]

@@ -44,7 +44,7 @@ interface IInputProps extends IFieldProps {
 const schema = yup.object().shape({
     countries: yup.array(),
     regions: yup.array(),
-    age_buckets: yup.array(),
+    ages: yup.array(),
     genders: yup.array(),
     professions: yup.array(),
     response_topics: yup.array(),
@@ -137,7 +137,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                 setResponseTopicOptions(filterOptions.response_topics)
 
                 // Age bucket options
-                setAgeBucketOptions(filterOptions.age_buckets)
+                setAgeBucketOptions(filterOptions.ages)
 
                 // Gender options
                 setGenderOptions(filterOptions.genders)
@@ -625,7 +625,7 @@ const SelectCountries = ({
 const SelectAgeBuckets = ({ id, refetchCampaign, options, control }: ISelectProps) => {
     return (
         <Controller
-            name="age_buckets"
+            name="ages"
             control={control}
             render={({ field: { onChange, value } }) => (
                 <SelectMultiValues

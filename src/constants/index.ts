@@ -30,7 +30,7 @@ export const midwivesVoicesLink: IDashboardLink = {
 export const defaultFilterValues: IFilter = {
     countries: [],
     regions: [],
-    age_buckets: [],
+    ages: [],
     genders: [],
     professions: [],
     response_topics: [],
