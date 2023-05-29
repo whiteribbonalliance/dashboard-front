@@ -22,5 +22,5 @@ export const Subtext = ({ dashboard }: ISubtextProps) => {
             subText = ''
     }
 
-    return <p className="max-w-6xl text-center">{subText}</p>
+    return <p className="max-w-6xl text-center text-lg">{subText}</p>
 }

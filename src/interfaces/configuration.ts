@@ -6,7 +6,8 @@ export interface IConfiguration {
     seoTitle: string
     seoMetaDescription: string
     subtext: string
-    respondentsNoun: string
+    respondentsNounSingular: string
+    respondentsNounPlural: string
     dashboardLinksFooter: IDashboardLink[]
     questionAsked: string
     showVideoLink: string

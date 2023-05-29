@@ -15,10 +15,9 @@ import {
 } from '@tanstack/react-table'
 import { useCallback, useEffect, useState } from 'react'
 import { Chevron } from '@components/Chevron'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { useCampaignQuery } from '@hooks/use-campaign'
 import { classNames } from '@utils'
+import { Spinner } from '@components/Spinner'
 
 interface IResponsesSampleGraphProps {
     dashboard: string
@@ -88,16 +87,6 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             break
         default:
             questionAsked = ''
-    }
-
-    // Set spinner icon classes
-    let spinnerIconClasses: string
-    switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            spinnerIconClasses = 'text-pmnchColors-primary'
-            break
-        default:
-            spinnerIconClasses = 'text-defaultColors-tertiary'
     }
 
     // Set th classes
@@ -195,14 +184,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             {isError && <div className="my-5 flex">Could not load table</div>}
 
             {/* Loading */}
-            {isLoading && (
-                <div className="my-5 flex items-center justify-center">
-                    <FontAwesomeIcon
-                        className={classNames('animate-spin text-4xl', spinnerIconClasses)}
-                        icon={faSpinner}
-                    />
-                </div>
-            )}
+            {isLoading && <Spinner dashboard={dashboard} />}
 
             {/* Success */}
             {isSuccess && (

@@ -3,6 +3,12 @@ interface IResponsesSample {
     data: any
 }
 
+interface IResponsesBreakdown {
+    count: number
+    description: string
+}
+
 export interface ICampaign {
     responses_sample: IResponsesSample
+    responses_breakdown: IResponsesBreakdown[]
 }

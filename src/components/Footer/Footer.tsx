@@ -24,13 +24,13 @@ export const Footer = ({ dashboard }: IFooterProps) => {
     let respondents: string
     switch (dashboard) {
         case DashboardName.WHAT_WOMEN_WANT:
-            respondents = whatWomenWantConfig.respondentsNoun
+            respondents = whatWomenWantConfig.respondentsNounPlural
             break
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            respondents = whatYoungPeopleWantConfig.respondentsNoun
+            respondents = whatYoungPeopleWantConfig.respondentsNounPlural
             break
         case DashboardName.MIDWIVES_VOICES:
-            respondents = midwivesVoicesConfig.respondentsNoun
+            respondents = midwivesVoicesConfig.respondentsNounPlural
             break
         default:
             respondents = 'respondents'
@@ -81,7 +81,7 @@ export const Footer = ({ dashboard }: IFooterProps) => {
     }
 
     return (
-        <footer className="mx-7 my-7 flex flex-col gap-y-5">
+        <footer className="mx-7 my-7 flex flex-col gap-y-5 text-lg">
             <div>
                 <p>* All {respondents} participating in the campaign provided informed consent.</p>
                 {footerNote && footerNote}
