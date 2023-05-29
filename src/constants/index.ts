@@ -1,5 +1,6 @@
 import { DashboardName } from '@enums'
-import { IDashboardLink, IFilter } from '@interfaces'
+import { IDashboardLink } from '@interfaces'
+import { Filter } from '@schemas/filter'
 
 export const dashboards = [
     DashboardName.WHAT_YOUNG_PEOPLE_WANT,
@@ -27,7 +28,7 @@ export const midwivesVoicesLink: IDashboardLink = {
     link: 'https://midwivesvoices.whiteribbonalliance.org',
 }
 
-export const defaultFilterValues: IFilter = {
+export const defaultFilterValues: Filter = {
     countries: [],
     regions: [],
     ages: [],

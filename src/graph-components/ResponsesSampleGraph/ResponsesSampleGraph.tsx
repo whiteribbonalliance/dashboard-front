@@ -18,6 +18,7 @@ import { Chevron } from '@components/Chevron'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { useCampaignQuery } from '@hooks/use-campaign'
+import { classNames } from '@utils'
 
 interface IResponsesSampleGraphProps {
     dashboard: string
@@ -38,6 +39,8 @@ const columnHelper = createColumnHelper<any>()
 
 export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) => {
     const [tableData, setTableData] = useState<ITableData>({ data: [], columns: [] })
+
+    // An array with objects containing the description, count, and the color assigned to it
     const [descriptionsCountAndColor, setDescriptionsCountAndColor] = useState<IDescriptionCountAndColor[]>([])
 
     // Campaign query
@@ -87,7 +90,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             questionAsked = ''
     }
 
-    // Set spinner classes
+    // Set spinner icon classes
     let spinnerIconClasses: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
@@ -194,7 +197,10 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             {/* Loading */}
             {isLoading && (
                 <div className="my-5 flex items-center justify-center">
-                    <FontAwesomeIcon className={`animate-spin text-4xl ${spinnerIconClasses}`} icon={faSpinner} />
+                    <FontAwesomeIcon
+                        className={classNames('animate-spin text-4xl', spinnerIconClasses)}
+                        icon={faSpinner}
+                    />
                 </div>
             )}
 
@@ -209,7 +215,10 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                                     {headerGroup.headers.map((header) => (
                                         <th
                                             key={header.id}
-                                            className={`border-r border-r-gray-light px-1 text-left ${thClasses}`}
+                                            className={classNames(
+                                                'border-r border-r-gray-light px-1 text-left',
+                                                thClasses
+                                            )}
                                         >
                                             {header.isPlaceholder
                                                 ? null
@@ -225,10 +234,10 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                                     {row.getVisibleCells().map((cell) => (
                                         <td
                                             key={cell.id}
-                                            className={`border-r border-r-gray-light px-1 ${
-                                                // Response cell has a custom background color
-                                                cell.column.id === 'raw_response' && getDescriptionColorClass(row)
-                                            }`}
+                                            className={classNames(
+                                                'border-r border-r-gray-light px-1',
+                                                cell.column.id === 'raw_response' ? getDescriptionColorClass(row) : ''
+                                            )}
                                         >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>

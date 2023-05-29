@@ -9,6 +9,7 @@ interface IGenerateMetadataProps {
     params: { dashboard: string }
 }
 
+// The dashboards will be created using the params returned by this function
 export async function generateStaticParams() {
     // Generate static params for dashboards
     return dashboards.map((dashboard) => {

@@ -1,10 +1,10 @@
 import { create } from 'zustand'
-import { IFilter } from '@interfaces'
 import { defaultFilterValues } from '@constants'
+import { Filter } from '@schemas/filter'
 
 interface IFilters {
-    filter1: IFilter
-    filter2: IFilter
+    filter1: Filter
+    filter2: Filter
 }
 
 export interface IFiltersState {

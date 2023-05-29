@@ -9,15 +9,15 @@ import { Box } from '@components/Box'
 import Image from 'next/image'
 import { getCampaignFilterOptions } from '@services/wra-dashboard-api/api'
 import { Option } from '@types'
-import { ICountryRegionOption, IFilter } from '@interfaces'
+import { ICountryRegionOption } from '@interfaces'
 import { Control, Controller, useForm, UseFormRegister, UseFormReturn } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
 import { SelectMultiValues } from '@components/SelectMultiValues'
 import { SelectSingleValue } from '@components/SelectSingleValue'
 import { Chevron } from '@components/Chevron'
 import { IFiltersState, useFiltersStore } from '@stores/filters'
 import { defaultFilterValues } from '@constants'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Filter, filterSchema } from '@schemas/filter'
 
 interface IFiltersPanelProps {
     dashboard: string
@@ -30,7 +30,7 @@ interface IFieldProps {
 
 interface ISelectProps extends IFieldProps {
     options: Option[]
-    control: Control<IFilter, any>
+    control: Control<Filter, any>
 }
 
 interface ISelectCountriesProps extends ISelectProps {
@@ -38,21 +38,8 @@ interface ISelectCountriesProps extends ISelectProps {
 }
 
 interface IInputProps extends IFieldProps {
-    register: UseFormRegister<IFilter>
+    register: UseFormRegister<Filter>
 }
-
-const schema = yup.object().shape({
-    countries: yup.array(),
-    regions: yup.array(),
-    ages: yup.array(),
-    genders: yup.array(),
-    professions: yup.array(),
-    response_topics: yup.array(),
-    only_responses_from_categories: yup.bool(),
-    only_multi_word_phrases_containing_filter_term: yup.bool(),
-    keyword_filter: yup.string(),
-    keyword_exclude: yup.string(),
-})
 
 export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     // Set filters
@@ -61,7 +48,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     // Select options
     const [countryOptions, setCountryOptions] = useState<Option[]>([])
     const [responseTopicOptions, setResponseTopicOptions] = useState<Option[]>([])
-    const [ageBucketOptions, setAgeBucketOptions] = useState<Option[]>([])
+    const [ageOptions, setAgeOptions] = useState<Option[]>([])
     const [genderOptions, setGenderOptions] = useState<Option[]>([])
     const [professionOptions, setProfessionOptions] = useState<Option[]>([])
     const [onlyResponsesFromCategoriesOptions, setOnlyResponsesFromCategoriesOptions] = useState<Option[]>([])
@@ -82,22 +69,22 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     // Refetch campaign timeout
     const refetchCampaignTimeout = useRef<NodeJS.Timeout>()
 
-    // Form filter 1
-    const form_filter_1 = useForm<IFilter>({
+    // Filter 1
+    const filter1 = useForm<Filter>({
         defaultValues: defaultFilterValues,
-        resolver: yupResolver(schema),
+        resolver: zodResolver(filterSchema),
     })
 
-    // Form filter 2
-    const form_filter_2 = useForm<IFilter>({
+    // Filter 2
+    const filter2 = useForm<Filter>({
         defaultValues: defaultFilterValues,
-        resolver: yupResolver(schema),
+        resolver: zodResolver(filterSchema),
     })
 
     // Tabs
     const tabs = [
-        { id: '1', title: 'Drill down', form: form_filter_1 },
-        { id: '2', title: 'Compare to...', form: form_filter_2 },
+        { id: '1', title: 'Drill down', form: filter1 },
+        { id: '2', title: 'Compare to...', form: filter2 },
     ]
 
     // Set selected tab classes
@@ -136,8 +123,8 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                 // Response topic options
                 setResponseTopicOptions(filterOptions.response_topics)
 
-                // Age bucket options
-                setAgeBucketOptions(filterOptions.ages)
+                // Age options
+                setAgeOptions(filterOptions.ages)
 
                 // Gender options
                 setGenderOptions(filterOptions.genders)
@@ -156,15 +143,15 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
             .catch(() => {})
     }, [dashboard])
 
-    // Set regions of selected countries for form filter 1
+    // Set regions of selected countries for filter 2
     useEffect(() => {
-        SetRegionOptionsForFormFilter(selectedCountriesOptionsFilter1, setRegionOptionsFilter1, form_filter_1)
-    }, [selectedCountriesOptionsFilter1, form_filter_1])
+        SetRegionOptionsForFilter(selectedCountriesOptionsFilter1, setRegionOptionsFilter1, filter1)
+    }, [selectedCountriesOptionsFilter1, filter1])
 
-    // Set regions of selected countries for form filter 2
+    // Set regions of selected countries for filter 2
     useEffect(() => {
-        SetRegionOptionsForFormFilter(selectedCountriesOptionsFilter2, setRegionOptionsFilter2, form_filter_2)
-    }, [selectedCountriesOptionsFilter2, form_filter_2])
+        SetRegionOptionsForFilter(selectedCountriesOptionsFilter2, setRegionOptionsFilter2, filter2)
+    }, [selectedCountriesOptionsFilter2, filter2])
 
     // Cleanup refetch campaign timeout
     useEffect(() => {
@@ -175,11 +162,11 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
         }
     }, [refetchCampaignTimeout])
 
-    // Set region options for form filter
-    function SetRegionOptionsForFormFilter(
+    // Set region options for filter
+    function SetRegionOptionsForFilter(
         selectedCountryOptionsFilter: MultiValue<Option>,
         setRegionOptionsFilter: Dispatch<SetStateAction<Option[]>>,
-        form: UseFormReturn<IFilter, any>
+        form: UseFormReturn<Filter, any>
     ) {
         // Only display regions for 1 selected country
         if (selectedCountryOptionsFilter.length !== 1) {
@@ -217,7 +204,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
         // Add a small delay before refetching campaign
         refetchCampaignTimeout.current = setTimeout(() => {
             // Update the filters store (when filters are updated, useCampaignQuery will refetch the campaign data)
-            setFilters({ filter1: form_filter_1.getValues(), filter2: form_filter_2.getValues() })
+            setFilters({ filter1: filter1.getValues(), filter2: filter2.getValues() })
         }, 450)
     }
 
@@ -247,9 +234,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                             {tabs.map(({ id, form }) => (
                                 <Tab.Panel
                                     key={id}
-                                    className={classNames(
-                                        'flex flex-col p-3 ring-transparent ring-offset-2 focus:outline-none'
-                                    )}
+                                    className="flex flex-col p-3 ring-transparent ring-offset-2 focus:outline-none"
                                 >
                                     {/* Normal mode */}
                                     <div className="mb-5 flex flex-col gap-y-3">
@@ -324,9 +309,9 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                             <div className="mb-1">
                                                                 Filter by age (or select range in histogram)
                                                             </div>
-                                                            <SelectAgeBuckets
-                                                                id={`select-age-buckets-${id}`}
-                                                                options={ageBucketOptions}
+                                                            <SelectAges
+                                                                id={`select-ages-${id}`}
+                                                                options={ageOptions}
                                                                 control={form.control}
                                                                 refetchCampaign={onFilterChange}
                                                             />
@@ -622,7 +607,7 @@ const SelectCountries = ({
     )
 }
 
-const SelectAgeBuckets = ({ id, refetchCampaign, options, control }: ISelectProps) => {
+const SelectAges = ({ id, refetchCampaign, options, control }: ISelectProps) => {
     return (
         <Controller
             name="ages"

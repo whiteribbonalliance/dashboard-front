@@ -64,6 +64,9 @@
       ],
       "@providers/*": [
         "providers/*"
+      ],
+      "@schemas/*": [
+        "schemas/*"
       ]
     },
     "plugins": [

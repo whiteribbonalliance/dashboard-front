@@ -14,8 +14,8 @@ export function middleware(req: NextRequest) {
     // Get dev domain
     const devDomain = (process.env.NEXT_PUBLIC_DEV_DOMAIN as string) || '.localhost'
 
-    // If localhost, assign the host value manually
-    // If production, get the custom domain/subdomain value by removing the root URL
+    // Get the custom domain/subdomain value by removing the root URL
+    // e.g. from 'whatwomenwant.whiteribbonalliance.org' remove '.whiteribbonalliance.org' to get 'whatwomenwant' (currentHost)
     const currentHost =
         process.env.NODE_ENV === 'production'
             ? hostname?.replace(prodDomain, '')
@@ -37,7 +37,6 @@ export function middleware(req: NextRequest) {
         !pathname.startsWith('/api') // Exclude all API routes
     ) {
         // Rewrite to the current hostname under the pages/dashboards folder
-        // The main logic component will happen in pages/dashboards/[dashboard]/index.ts
         return NextResponse.rewrite(nextUrl)
     }
 }
