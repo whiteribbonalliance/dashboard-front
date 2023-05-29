@@ -6,6 +6,7 @@ import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLanguage } from '@fortawesome/free-solid-svg-icons'
+import { classNames } from '@utils'
 
 interface ILanguageSelectProps {
     dashboard: string
@@ -43,7 +44,10 @@ export const LanguageSelect = ({ dashboard }: ILanguageSelectProps) => {
             <Listbox value={selectedOption} onChange={setSelectedOption}>
                 <div className="relative">
                     <Listbox.Button
-                        className={`relative w-full cursor-pointer rounded-md border py-[0.55rem] pl-3 text-left ${listboxButtonClasses}`}
+                        className={classNames(
+                            'relative w-full cursor-pointer rounded-md border py-[0.55rem] pl-3 text-left',
+                            listboxButtonClasses
+                        )}
                     >
                         <div className="flex gap-x-3">
                             <FontAwesomeIcon className="text-3xl" icon={faLanguage} />
@@ -72,7 +76,7 @@ export const LanguageSelect = ({ dashboard }: ILanguageSelectProps) => {
                                 >
                                     {({ selected }) => (
                                         <>
-                                            <span className={`block truncate ${selected ? 'font-bold' : ''}`}>
+                                            <span className={classNames('block truncate', selected ? 'font-bold' : '')}>
                                                 {option.label}
                                             </span>
                                             {selected ? (

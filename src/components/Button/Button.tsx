@@ -1,4 +1,5 @@
 import { DashboardName } from '@enums'
+import { classNames } from '@utils'
 
 interface IButtonProps {
     dashboard?: string
@@ -18,7 +19,10 @@ export const Button = ({ text, dashboard }: IButtonProps) => {
 
     return (
         <button
-            className={`flex items-center whitespace-nowrap rounded-md border px-3 py-2.5 text-xl font-bold hover:text-white ${buttonClasses}`}
+            className={classNames(
+                'flex items-center whitespace-nowrap rounded-md border px-3 py-2.5 text-xl font-bold hover:text-white',
+                buttonClasses
+            )}
         >
             <div className="flex items-center">{text}</div>
         </button>

@@ -1,4 +1,5 @@
 import { DashboardName } from '@enums'
+import { classNames } from '@utils'
 
 interface IGraphTitleProps {
     dashboard: string
@@ -15,5 +16,5 @@ export const GraphTitle = ({ dashboard, text }: IGraphTitleProps) => {
             titleClasses = 'text-4xl'
     }
 
-    return <h2 className={`mb-5 ${titleClasses}`}>{text}</h2>
+    return <h2 className={classNames('mb-5', titleClasses)}>{text}</h2>
 }

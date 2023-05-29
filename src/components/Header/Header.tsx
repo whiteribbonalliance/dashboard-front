@@ -13,6 +13,7 @@ import { LanguageSelect } from '@components/LanguageSelect'
 import { Title } from 'components/Title'
 import { Chevron } from '@components/Chevron'
 import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
+import { classNames } from '@utils'
 
 interface IHeaderProps {
     dashboard: string
@@ -135,7 +136,10 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                         <Transition>
                             <Disclosure.Panel as="nav">
                                 <ul
-                                    className={`absolute flex w-full flex-col items-center justify-center shadow-md xl:hidden ${mobileDropdownClasses}`}
+                                    className={classNames(
+                                        'absolute flex w-full flex-col items-center justify-center shadow-md xl:hidden',
+                                        mobileDropdownClasses
+                                    )}
                                 >
                                     <div className="mt-3">
                                         <LanguageSelect dashboard={dashboard} />
@@ -146,7 +150,10 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                                                 <div key={item.id} className="w-full">
                                                     <Link href={item.url} target="_blank">
                                                         <li
-                                                            className={`cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white ${menuButtonItemClasses}`}
+                                                            className={classNames(
+                                                                'cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white',
+                                                                menuButtonItemClasses
+                                                            )}
                                                         >
                                                             {item.title}
                                                         </li>
@@ -158,7 +165,10 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                                                 <div key={item.id} className="w-full">
                                                     <li
                                                         key={item.id}
-                                                        className={`cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white ${menuButtonItemClasses}`}
+                                                        className={classNames(
+                                                            'cursor-pointer py-2 text-center text-xl font-bold text-white hover:bg-white',
+                                                            menuButtonItemClasses
+                                                        )}
                                                     >
                                                         {item.title}
                                                     </li>

@@ -3,6 +3,7 @@ import { DashboardName } from '@enums'
 import React from 'react'
 import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
 import { IDashboardLink } from '@interfaces'
+import { classNames } from '@utils'
 
 interface IFooterProps {
     dashboard: string
@@ -44,7 +45,7 @@ export const Footer = ({ dashboard }: IFooterProps) => {
                     The 143556 responses from the original{' '}
                     <Link
                         href={'https://www.whiteribbonallianceindia.org/whats-latest/hamara-swasthya-hamari-awaz'}
-                        className={`underline ${footerLinkClasses}`}
+                        className={classNames('underline', footerLinkClasses)}
                     >
                         Hamara Swasthya Hamari Awaz
                     </Link>{' '}
@@ -96,7 +97,7 @@ export const Footer = ({ dashboard }: IFooterProps) => {
                                 <Link
                                     key={otherDashboardLink.id}
                                     href={otherDashboardLink.link}
-                                    className={`underline ${footerLinkClasses}`}
+                                    className={classNames('underline', footerLinkClasses)}
                                 >
                                     {otherDashboardLink.title}
                                 </Link>
@@ -110,11 +111,14 @@ export const Footer = ({ dashboard }: IFooterProps) => {
             <div>
                 <p>
                     Dashboard by{' '}
-                    <Link href={'https://freelancedatascientist.net/'} className={`underline ${footerLinkClasses}`}>
+                    <Link
+                        href={'https://freelancedatascientist.net/'}
+                        className={classNames('underline', footerLinkClasses)}
+                    >
                         Thomas Wood
                     </Link>{' '}
                     at{' '}
-                    <Link href={'https://fastdatascience.com/'} className={`underline ${footerLinkClasses}`}>
+                    <Link href={'https://fastdatascience.com/'} className={classNames('underline', footerLinkClasses)}>
                         Fast Data Science
                     </Link>
                 </p>

@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faChevronLeft, faChevronRight, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import React from 'react'
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core'
+import { classNames } from '@utils'
 
 interface IDoubleChevronsProps {
     direction: 'up' | 'down' | 'left' | 'right'
@@ -43,9 +44,11 @@ export const Chevron = ({ direction, rotate, double, onClick }: IDoubleChevronsP
 
     return (
         <div
-            className={`flex ${divWrapperClasses} cursor-pointer transition duration-100 ease-in-out ${
+            className={classNames(
+                'flex cursor-pointer transition duration-100 ease-in-out',
+                divWrapperClasses,
                 rotate ? 'rotate-180' : ''
-            }`}
+            )}
             onClick={onClick}
         >
             <FontAwesomeIcon icon={icon} />

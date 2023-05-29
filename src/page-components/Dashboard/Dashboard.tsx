@@ -11,6 +11,7 @@ import { LocationGraph } from '@graph-components/LocationGraph'
 import { ThePeopleGraph } from '@graph-components/ThePeopleGraph'
 import { DashboardName } from '@enums'
 import { GenderBreakdownGraph } from '@graph-components/GenderBreakdownGraph'
+import { classNames } from '@utils'
 
 interface IDashboardProps {
     params: { dashboard: string }
@@ -54,7 +55,7 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
                 </section>
 
                 {/* Graphs */}
-                <section className={`col-span-2 grid grid-cols-1 ${boxesGapY}`}>
+                <section className={classNames('col-span-2 grid grid-cols-1', boxesGapY)}>
                     {DashboardName.WHAT_YOUNG_PEOPLE_WANT === dashboard ? (
                         <>
                             <ResponsesBreakdownGraph dashboard={dashboard} />
