@@ -94,10 +94,10 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
     let spinnerIconClasses: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            spinnerIconClasses = 'text-pmnch-colors-primary'
+            spinnerIconClasses = 'text-pmnchColors-primary'
             break
         default:
-            spinnerIconClasses = 'text-default-colors-tertiary'
+            spinnerIconClasses = 'text-defaultColors-tertiary'
     }
 
     // Set th classes
@@ -135,20 +135,20 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             switch (dashboard) {
                 case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
                     colors = [
-                        'bg-pmnch-colors-primary-faint',
-                        'bg-pmnch-colors-secondary-faint',
-                        'bg-pmnch-colors-tertiary-faint',
-                        'bg-pmnch-colors-quaternary-faint',
-                        'bg-pmnch-colors-quinary-faint',
+                        'bg-pmnchColors-primary-faint',
+                        'bg-pmnchColors-secondary-faint',
+                        'bg-pmnchColors-tertiary-faint',
+                        'bg-pmnchColors-quaternary-faint',
+                        'bg-pmnchColors-quinary-faint',
                     ]
                     break
                 default:
                     colors = [
-                        'bg-default-colors-primary-faint',
-                        'bg-default-colors-secondary-faint',
-                        'bg-default-colors-tertiary-faint',
-                        'bg-default-colors-quaternary-faint',
-                        'bg-default-colors-quinary-faint',
+                        'bg-defaultColors-primary-faint',
+                        'bg-defaultColors-secondary-faint',
+                        'bg-defaultColors-tertiary-faint',
+                        'bg-defaultColors-quaternary-faint',
+                        'bg-defaultColors-quinary-faint',
                     ]
             }
 

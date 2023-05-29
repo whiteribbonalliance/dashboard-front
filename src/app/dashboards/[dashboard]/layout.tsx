@@ -17,11 +17,11 @@ const DashboardLayout = async ({ children, params }: IDashboardLayoutProps) => {
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
             layoutClasses =
-                'font-noto-sans-regular text-pmnch-colors-font selection:bg-pmnch-colors-primary selection:text-white'
+                'font-noto-sans-regular text-pmnchColors-font selection:bg-pmnchColors-primary selection:text-white'
             break
         default:
             layoutClasses =
-                'font-open-sans text-default-colors-font selection:bg-default-colors-tertiary selection:text-white'
+                'font-open-sans text-defaultColors-font selection:bg-defaultColors-tertiary selection:text-white'
     }
 
     return (

@@ -13,10 +13,10 @@ export const Footer = ({ dashboard }: IFooterProps) => {
     let footerLinkClasses: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            footerLinkClasses = 'text-pmnch-colors-secondary'
+            footerLinkClasses = 'text-pmnchColors-secondary'
             break
         default:
-            footerLinkClasses = 'text-default-colors-secondary'
+            footerLinkClasses = 'text-defaultColors-secondary'
     }
 
     // Set respondents

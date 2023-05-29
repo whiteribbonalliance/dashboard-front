@@ -31,11 +31,11 @@ export const LanguageSelect = ({ dashboard }: ILanguageSelectProps) => {
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
             listboxButtonClasses =
-                'px-1.5 py-1.5 border-pmnch-colors-primary text-white hover:bg-pmnch-colors-primary xl:text-pmnch-colors-primary xl:hover:text-white'
+                'px-1.5 py-1.5 border-pmnchColors-primary text-white hover:bg-pmnchColors-primary xl:text-pmnchColors-primary xl:hover:text-white'
             break
         default:
             listboxButtonClasses =
-                'px-1.5 py-1.5 border-default-colors-primary text-white hover:bg-default-colors-primary xl:text-default-colors-primary xl:hover:text-white'
+                'px-1.5 py-1.5 border-defaultColors-primary text-white hover:bg-defaultColors-primary xl:text-defaultColors-primary xl:hover:text-white'
     }
 
     return (

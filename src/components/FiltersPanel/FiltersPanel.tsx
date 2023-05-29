@@ -91,10 +91,10 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     let selectedTabClasses: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            selectedTabClasses = 'border-t-pmnch-colors-septenary'
+            selectedTabClasses = 'border-t-pmnchColors-septenary'
             break
         default:
-            selectedTabClasses = 'border-t-default-colors-tertiary'
+            selectedTabClasses = 'border-t-defaultColors-tertiary'
     }
 
     // Set topics text
@@ -437,7 +437,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                         width={1117}
                         height={200}
                     />
-                    <div className="text-center font-1point8 text-4xl uppercase text-pmnch-colors-primary">
+                    <div className="text-center font-1point8 text-4xl uppercase text-pmnchColors-primary">
                         Scan, share, and be heard!
                     </div>
                 </div>

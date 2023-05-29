@@ -10,10 +10,10 @@ export const Button = ({ text, dashboard }: IButtonProps) => {
     let buttonClasses: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            buttonClasses = 'text-pmnch-colors-primary border-pmnch-colors-primary hover:bg-pmnch-colors-primary'
+            buttonClasses = 'text-pmnchColors-primary border-pmnchColors-primary hover:bg-pmnchColors-primary'
             break
         default:
-            buttonClasses = 'text-default-colors-primary border-default-colors-primary hover:bg-default-colors-primary'
+            buttonClasses = 'text-defaultColors-primary border-defaultColors-primary hover:bg-defaultColors-primary'
     }
 
     return (

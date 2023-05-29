@@ -13,7 +13,7 @@ module.exports = {
             'gray-lighter': '#f9f9f9',
             'gray-light': '#DDDEDE',
             'transparent': 'transparent',
-            'default-colors': {
+            'defaultColors': {
                 'primary': '#202A44',
                 'secondary': '#E22040',
                 'tertiary': '#7FC5A0',
@@ -28,7 +28,7 @@ module.exports = {
 
                 'font': '#202A44',
             },
-            'pmnch-colors': {
+            'pmnchColors': {
                 'primary': '#026BEF',
                 'secondary': '#EF6100',
                 'tertiary': '#06A605',

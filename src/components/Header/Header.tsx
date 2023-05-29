@@ -67,20 +67,20 @@ export const Header = ({ dashboard }: IHeaderProps) => {
     let mobileDropdownClasses: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            mobileDropdownClasses = 'bg-pmnch-colors-primary'
+            mobileDropdownClasses = 'bg-pmnchColors-primary'
             break
         default:
-            mobileDropdownClasses = 'bg-default-colors-primary'
+            mobileDropdownClasses = 'bg-defaultColors-primary'
     }
 
     // Set menu button item classes
     let menuButtonItemClasses: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            menuButtonItemClasses = 'hover:text-pmnch-colors-font'
+            menuButtonItemClasses = 'hover:text-pmnchColors-font'
             break
         default:
-            menuButtonItemClasses = 'hover:text-default-colors-font'
+            menuButtonItemClasses = 'hover:text-defaultColors-font'
     }
 
     return (
