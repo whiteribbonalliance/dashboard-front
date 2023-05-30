@@ -124,20 +124,20 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             switch (dashboard) {
                 case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
                     colors = [
-                        'bg-pmnchColors-primary-faint',
-                        'bg-pmnchColors-secondary-faint',
-                        'bg-pmnchColors-tertiary-faint',
-                        'bg-pmnchColors-quaternary-faint',
-                        'bg-pmnchColors-quinary-faint',
+                        'bg-pmnchColors-primaryFaint',
+                        'bg-pmnchColors-secondaryFaint',
+                        'bg-pmnchColors-tertiaryFaint',
+                        'bg-pmnchColors-quaternaryFaint',
+                        'bg-pmnchColors-quinaryFaint',
                     ]
                     break
                 default:
                     colors = [
-                        'bg-defaultColors-primary-faint',
-                        'bg-defaultColors-secondary-faint',
-                        'bg-defaultColors-tertiary-faint',
-                        'bg-defaultColors-quaternary-faint',
-                        'bg-defaultColors-quinary-faint',
+                        'bg-defaultColors-primaryFaint',
+                        'bg-defaultColors-secondaryFaint',
+                        'bg-defaultColors-tertiaryFaint',
+                        'bg-defaultColors-quaternaryFaint',
+                        'bg-defaultColors-quinaryFaint',
                     ]
             }
 

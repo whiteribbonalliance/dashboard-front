@@ -20,11 +20,11 @@ module.exports = {
                 'quaternary': '#FBD872',
                 'quinary': '#DDDEDE',
 
-                'primary-faint': '#CED6E7',
-                'secondary-faint': '#FCD6DB',
-                'tertiary-faint': '#E5F3EB',
-                'quaternary-faint': '#FEF7E2',
-                'quinary-faint': '#DDDEDE',
+                'primaryFaint': '#CED6E7',
+                'secondaryFaint': '#FCD6DB',
+                'tertiaryFaint': '#E5F3EB',
+                'quaternaryFaint': '#FEF7E2',
+                'quinaryFaint': '#DDDEDE',
 
                 'font': '#202A44',
             },
@@ -37,11 +37,11 @@ module.exports = {
                 'senary': '#EF39EE',
                 'septenary': '#7E01E5',
 
-                'primary-faint': '#EAF3FF',
-                'secondary-faint': '#FFDFC9',
-                'tertiary-faint': '#BEFDBD',
-                'quaternary-faint': '#FFFCCC',
-                'quinary-faint': '#CFF3FC',
+                'primaryFaint': '#EAF3FF',
+                'secondaryFaint': '#FFDFC9',
+                'tertiaryFaint': '#BEFDBD',
+                'quaternaryFaint': '#FFFCCC',
+                'quinaryFaint': '#CFF3FC',
 
                 'font': '#000000',
             },

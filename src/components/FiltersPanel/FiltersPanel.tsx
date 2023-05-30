@@ -7,7 +7,7 @@ import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 're
 import { MultiValue } from 'react-select'
 import { Box } from '@components/Box'
 import Image from 'next/image'
-import { getCampaignFilterOptions } from '@services/wra-dashboard-api/api'
+import { getCampaignFilterOptions } from '@services/wra-dashboard-api'
 import { Option } from '@types'
 import { ICountryRegionOption } from '@interfaces'
 import { Control, Controller, useForm, UseFormRegister, UseFormReturn } from 'react-hook-form'

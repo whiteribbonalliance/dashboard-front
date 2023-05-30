@@ -6,9 +6,15 @@ import { DashboardName } from '@enums'
 import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
 import { useCampaignQuery } from '@hooks/use-campaign'
 import { Spinner } from '@components/Spinner'
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts'
+import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent'
+import { classNames } from '@utils'
 
 interface IResponsesBreakdownGraphProps {
+    dashboard: string
+}
+
+interface ICustomTooltip extends TooltipProps<ValueType, NameType> {
     dashboard: string
 }
 
@@ -56,10 +62,10 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
     let barColor: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            barColor = 'fill-pmnchColors-secondary'
+            barColor = 'fill-pmnchColors-secondary hover:fill-pmnchColors-secondaryFaint'
             break
         default:
-            barColor = 'fill-defaultColors-secondary'
+            barColor = 'fill-defaultColors-secondary hover:fill-defaultColors-secondaryFaint'
     }
 
     return (
@@ -81,11 +87,11 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
             {isSuccess && (
                 <>
                     {/* Bar chart */}
-                    <div className="mb-3 mt-3 w-full bg-gray-lighter">
+                    <div className="mb-3 mt-3 w-full whitespace-normal bg-gray-lighter">
                         <ResponsiveContainer width="100%" height={400}>
                             <BarChart
                                 data={data.responses_breakdown}
-                                margin={{ top: 15, right: 10, left: 10, bottom: 15 }}
+                                margin={{ top: 15, right: 50, left: 10, bottom: 15 }}
                                 width={750}
                                 height={500}
                                 layout="vertical"
@@ -100,7 +106,11 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
                                     width={450}
                                 />
                                 <CartesianGrid strokeDasharray="0" stroke="#FFFFFF" />
-                                <Tooltip cursor={{ fill: 'transparent' }} />
+                                <Tooltip
+                                    cursor={{ fill: 'transparent' }}
+                                    content={<CustomTooltip dashboard={dashboard} />}
+                                    position={{ x: 25 }}
+                                />
                                 <Bar dataKey="count" className={barColor} />
                             </BarChart>
                         </ResponsiveContainer>
@@ -109,4 +119,29 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
             )}
         </Box>
     )
+}
+
+const CustomTooltip = ({ active, payload, label, dashboard }: ICustomTooltip) => {
+    if (active && payload && payload.length) {
+        const value = payload[0].value
+
+        // Set p classes
+        let pClasses: string
+        switch (dashboard) {
+            case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+                pClasses = 'bg-pmnchColors-secondary'
+                break
+            default:
+                pClasses = 'bg-defaultColors-secondary'
+        }
+
+        return (
+            <p className={classNames(`border border-white p-1 text-sm text-white`, pClasses)}>
+                <span className="font-bold">{value}</span> people mentioned <span className="font-bold">“{label}”</span>
+                .
+            </p>
+        )
+    }
+
+    return null
 }
