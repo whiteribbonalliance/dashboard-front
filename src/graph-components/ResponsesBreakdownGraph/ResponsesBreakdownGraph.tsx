@@ -20,7 +20,7 @@ interface ICustomTooltip extends TooltipProps<ValueType, NameType> {
 
 export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphProps) => {
     // Campaign query
-    const { data, isSuccess, isLoading, isError } = useCampaignQuery(dashboard)
+    const { data, isSuccess, isLoading, isRefetching, isError } = useCampaignQuery(dashboard)
 
     // Set topic text
     let topicText: string
@@ -81,13 +81,13 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
             {isError && <div className="my-5 flex">Could not load bar chart</div>}
 
             {/* Loading */}
-            {isLoading && <Spinner dashboard={dashboard} />}
+            {(isLoading || isRefetching) && <Spinner dashboard={dashboard} />}
 
             {/* Success */}
-            {isSuccess && (
+            {isSuccess && !isRefetching && (
                 <>
                     {/* Bar chart */}
-                    <div className="mb-3 mt-3 w-full whitespace-normal bg-gray-lighter">
+                    <div className="mb-3 mt-3 w-full bg-white">
                         <ResponsiveContainer width="100%" height={400}>
                             <BarChart
                                 data={data.responses_breakdown}

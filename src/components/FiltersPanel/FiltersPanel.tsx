@@ -214,7 +214,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
             <div className="mb-5 w-full">
                 <Box>
                     <Tab.Group>
-                        <Tab.List className="mb-2 flex flex-col p-1 sm:flex-row">
+                        <Tab.List className="mb-2 flex flex-col sm:flex-row">
                             {tabs.map((tab) => (
                                 <Tab
                                     key={tab.id}

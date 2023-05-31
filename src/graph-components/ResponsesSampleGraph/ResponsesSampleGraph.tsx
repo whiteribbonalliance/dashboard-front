@@ -43,7 +43,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
     const [descriptionsCountAndColor, setDescriptionsCountAndColor] = useState<IDescriptionCountAndColor[]>([])
 
     // Campaign query
-    const { data, isSuccess, isLoading, isError } = useCampaignQuery(dashboard)
+    const { data, isSuccess, isLoading, isRefetching, isError } = useCampaignQuery(dashboard)
 
     // Set table data
     useEffect(() => {
@@ -184,10 +184,10 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             {isError && <div className="my-5 flex">Could not load table</div>}
 
             {/* Loading */}
-            {isLoading && <Spinner dashboard={dashboard} />}
+            {(isLoading || isRefetching) && <Spinner dashboard={dashboard} />}
 
             {/* Success */}
-            {isSuccess && (
+            {isSuccess && !isRefetching && (
                 <>
                     {/* Table */}
                     <table className="mb-3 mt-3 w-full bg-white">

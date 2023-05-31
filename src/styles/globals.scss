@@ -4,3 +4,40 @@
 
 /* Import FontAwesome styles here to fix oversizing icons issue on page refresh */
 @import 'node_modules/@fortawesome/fontawesome-svg-core/styles';
+
+/* Font to be used with the wordcloud */
+@font-face {
+    font-family: 'Noto Sans Regular';
+    font-weight: normal;
+    src: url('../app/fonts/NotoSans/NotoSans-Regular.ttf') format('truetype');
+}
+
+:root {
+    // Default
+    --defaultPrimary: #202a44;
+    --defaultSecondary: #e22040;
+    --defaultTertiary: #7fc5a0;
+    --defaultQuaternary: #fbd872;
+    --defaultQuinary: #dddede;
+    --defaultPrimaryFaint: #ced6e7;
+    --defaultSecondaryFaint: #fcd6db;
+    --defaultTertiaryFaint: #e5f3eb;
+    --defaultQuaternaryFaint: #fef7e2;
+    --defaultQuinaryFaint: #dddede;
+    --defaultFont: #202a44;
+
+    // PMNCH
+    --pmnchPrimary: #026bef;
+    --pmnchSecondary: #ef6100;
+    --pmnchTertiary: #06a605;
+    --pmnchQuaternary: #fff200;
+    --pmnchQuinary: #0fc1ef;
+    --pmnchSenary: #ef39ee;
+    --pmnchSeptenary: #7e01e5;
+    --pmnchPrimaryFaint: #eaf3ff;
+    --pmnchSecondaryFaint: #ffdfc9;
+    --pmnchTertiaryFaint: #befdbd;
+    --pmnchQuaternaryFaint: #fffccc;
+    --pmnchQuinaryFaint: #cff3fc;
+    --pmnchFont: #000000;
+}
