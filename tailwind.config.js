@@ -10,8 +10,8 @@ module.exports = {
         colors: {
             'white': '#FFFFFF',
             'black': '#000000',
-            'gray-lighter': '#f9f9f9',
-            'gray-light': '#DDDEDE',
+            'grayLighter': 'var(--grayLighter)',
+            'grayLight': 'var(--grayLight)',
             'transparent': 'transparent',
             'defaultColors': {
                 primary: 'var(--defaultPrimary)',

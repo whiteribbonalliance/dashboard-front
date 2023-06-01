@@ -191,14 +191,14 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                 <>
                     {/* Table */}
                     <table className="mb-3 mt-3 w-full bg-white">
-                        <thead className="border-b border-b-gray-light">
+                        <thead className="border-b border-b-grayLight">
                             {table.getHeaderGroups().map((headerGroup) => (
                                 <tr key={headerGroup.id}>
                                     {headerGroup.headers.map((header) => (
                                         <th
                                             key={header.id}
                                             className={classNames(
-                                                'border-r border-r-gray-light px-1 text-left',
+                                                'border-r border-r-grayLight px-1 text-left',
                                                 thClasses
                                             )}
                                         >
@@ -212,12 +212,12 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                         </thead>
                         <tbody>
                             {table.getRowModel().rows.map((row) => (
-                                <tr key={row.id} className="border-b border-b-gray-light">
+                                <tr key={row.id} className="border-b border-b-grayLight">
                                     {row.getVisibleCells().map((cell) => (
                                         <td
                                             key={cell.id}
                                             className={classNames(
-                                                'border-r border-r-gray-light px-1',
+                                                'border-r border-r-grayLight px-1',
                                                 cell.column.id === 'raw_response' ? getDescriptionColorClass(row) : ''
                                             )}
                                         >

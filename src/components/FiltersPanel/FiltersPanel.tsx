@@ -203,6 +203,22 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
         // Add a small delay before refetching campaign
         refetchCampaignTimeout.current = setTimeout(() => {
+            // Lowercase keyword_exclude and keyword_filter
+            if (filter1.getValues().keyword_exclude) {
+                filter1.getValues().keyword_exclude = filter1.getValues().keyword_exclude.toLowerCase()
+            }
+            if (filter1.getValues().keyword_filter) {
+                filter1.getValues().keyword_filter = filter1.getValues().keyword_filter.toLowerCase()
+            }
+
+            // Lowercase keyword_exclude and keyword_filter
+            if (filter2.getValues().keyword_exclude) {
+                filter2.getValues().keyword_exclude = filter2.getValues().keyword_exclude.toLowerCase()
+            }
+            if (filter2.getValues().keyword_filter) {
+                filter2.getValues().keyword_filter = filter2.getValues().keyword_filter.toLowerCase()
+            }
+
             // Update the filters store (when filters are updated, useCampaignQuery will refetch the campaign data)
             setFilters({ filter1: filter1.getValues(), filter2: filter2.getValues() })
         }, 450)
@@ -220,7 +236,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                     key={tab.id}
                                     className={({ selected }) =>
                                         classNames(
-                                            'w-full bg-gray-lighter py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
+                                            'w-full bg-grayLighter py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
                                             selected ? `border-t-2 bg-white ${selectedTabClasses}` : ''
                                         )
                                     }

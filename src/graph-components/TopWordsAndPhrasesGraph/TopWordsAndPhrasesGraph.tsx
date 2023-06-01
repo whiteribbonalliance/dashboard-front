@@ -9,6 +9,7 @@ import { classNames } from '@utils'
 import React from 'react'
 import { DashboardName } from '@enums'
 import { TopWordsWordcloud } from 'graph-components/TopWordsAndPhrasesGraph/TopWordsWordcloud'
+import { TopWords } from '@graph-components/TopWordsAndPhrasesGraph/TopWords'
 
 interface ITopWordsAndPhrasesGraphProps {
     dashboard: string
@@ -33,11 +34,15 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
         {
             id: '1',
             title: 'Word cloud',
-            content: (
-                <TopWordsWordcloud dashboard={dashboard} wordcloudWords={data?.top_words_and_phrases.wordcloud_words} />
-            ),
+            content: data ? (
+                <TopWordsWordcloud dashboard={dashboard} wordcloudWords={data.top_words_and_phrases.wordcloud_words} />
+            ) : null,
         },
-        { id: '2', title: 'Top words', content: <div>2</div> },
+        {
+            id: '2',
+            title: 'Top words',
+            content: data ? <TopWords dashboard={dashboard} topWords={data.top_words_and_phrases.top_words} /> : null,
+        },
         { id: '3', title: 'Two word phases', content: <div>3</div> },
         { id: '4', title: 'Three word phases', content: <div>4</div> },
     ]
@@ -63,7 +68,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
                                     key={tab.id}
                                     className={({ selected }) =>
                                         classNames(
-                                            'w-full bg-gray-lighter py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
+                                            'w-full bg-grayLighter py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
                                             selected ? `border-t-2 bg-white shadow-none ${selectedTabClasses}` : ''
                                         )
                                     }
@@ -74,7 +79,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
                         </Tab.List>
                         <Tab.Panels>
                             {tabs.map(({ id, content }) => (
-                                <Tab.Panel key={id} className="h-[40rem] w-full whitespace-normal bg-white">
+                                <Tab.Panel key={id} className="h-fit w-full">
                                     {content}
                                 </Tab.Panel>
                             ))}

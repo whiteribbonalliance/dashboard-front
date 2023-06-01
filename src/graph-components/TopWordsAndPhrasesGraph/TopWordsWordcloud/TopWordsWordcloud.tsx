@@ -11,7 +11,7 @@ import { IWordcloudWords } from '@interfaces'
 
 interface IWordcloudProps {
     dashboard: string
-    wordcloudWords?: IWordcloudWords[]
+    wordcloudWords: IWordcloudWords[]
 }
 
 interface ITooltipData {
@@ -28,12 +28,10 @@ export const TopWordsWordcloud = ({ dashboard, wordcloudWords }: IWordcloudProps
 
     // Cache the wordcloud
     const cachedWordcloud = useMemo(() => {
-        if (!wordcloudWords) return null
-
         // Function to get font size
         const fontScale = scaleLog({
             domain: [Math.min(...wordcloudWords.map((w) => w.value)), Math.max(...wordcloudWords.map((w) => w.value))],
-            range: [10, 125],
+            range: [10, 150],
         })
 
         // Set wordcloud colors
@@ -66,7 +64,7 @@ export const TopWordsWordcloud = ({ dashboard, wordcloudWords }: IWordcloudProps
         }
 
         return (
-            <ParentSize>
+            <ParentSize className="bg-white">
                 {(parent) => (
                     <Wordcloud
                         height={parent.height}
@@ -76,7 +74,7 @@ export const TopWordsWordcloud = ({ dashboard, wordcloudWords }: IWordcloudProps
                         spiral="rectangular"
                         rotate={0}
                         padding={3}
-                        font={'Noto Sans Regular'}
+                        font={'Impact'}
                     >
                         {(cloudWords) =>
                             cloudWords.map((w: any, i) => (
@@ -101,23 +99,19 @@ export const TopWordsWordcloud = ({ dashboard, wordcloudWords }: IWordcloudProps
         )
     }, [dashboard, wordcloudWords, hideTooltip, showTooltip, containerBounds])
 
-    if (wordcloudWords) {
-        return (
-            <>
-                {/* Wordcloud */}
-                {cachedWordcloud}
+    return (
+        <>
+            {/* Wordcloud */}
+            {cachedWordcloud}
 
-                {/* Tooltip */}
-                {tooltipOpen && tooltipData && tooltipLeft != null && tooltipTop != null && (
-                    <TooltipInPortal key={Math.random()} top={tooltipTop} left={tooltipLeft}>
-                        <div className="text-base">
-                            {tooltipData.text}&nbsp;&nbsp;&nbsp;<strong>{tooltipData.count}</strong>
-                        </div>
-                    </TooltipInPortal>
-                )}
-            </>
-        )
-    }
-
-    return null
+            {/* Tooltip */}
+            {tooltipOpen && tooltipData && tooltipLeft != null && tooltipTop != null && (
+                <TooltipInPortal key={Math.random()} top={tooltipTop} left={tooltipLeft}>
+                    <div className="text-base">
+                        {tooltipData.text}&nbsp;&nbsp;&nbsp;<strong>{tooltipData.count}</strong>
+                    </div>
+                </TooltipInPortal>
+            )}
+        </>
+    )
 }

@@ -1,4 +1,5 @@
 import { IWordcloudWords } from './wordcloud-words'
+import { ITopWords } from './top-words'
 
 interface IResponsesSample {
     columns: [{ name: string; id: string; type: string }]
@@ -12,6 +13,7 @@ interface IResponsesBreakdown {
 
 interface ITopWordsAndPhrases {
     wordcloud_words: IWordcloudWords[]
+    top_words: ITopWords[]
 }
 
 export interface ICampaign {

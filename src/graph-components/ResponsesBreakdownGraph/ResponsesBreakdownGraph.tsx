@@ -88,7 +88,7 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
                 <>
                     {/* Bar chart */}
                     <div className="mb-3 mt-3 w-full bg-white">
-                        <ResponsiveContainer width="100%" height={400}>
+                        <ResponsiveContainer height={400}>
                             <BarChart
                                 data={data.responses_breakdown}
                                 margin={{ top: 15, right: 50, left: 10, bottom: 15 }}

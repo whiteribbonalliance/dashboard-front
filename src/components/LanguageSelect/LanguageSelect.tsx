@@ -69,7 +69,7 @@ export const LanguageSelect = ({ dashboard }: ILanguageSelectProps) => {
                                     key={option.id}
                                     className={({ active }) =>
                                         `relative cursor-pointer select-none py-2 pl-10 pr-4 ${
-                                            active ? 'bg-gray-light' : ''
+                                            active ? 'bg-grayLight' : ''
                                         }`
                                     }
                                     value={option}
