@@ -82,7 +82,7 @@ export const TopWords = ({ dashboard, topWords, filter1Description, filter2Descr
                 <ResponsiveContainer className="bg-white">
                     <BarChart
                         data={topWords}
-                        margin={{ top: 15, right: 35, left: 15, bottom: 15 }}
+                        margin={{ top: 15, right: 35, left: 50, bottom: 15 }}
                         layout="vertical"
                         barCategoryGap={2}
                         barGap={0}
