@@ -20,4 +20,6 @@ export interface ICampaign {
     responses_sample: IResponsesSample
     responses_breakdown: IResponsesBreakdown[]
     top_words_and_phrases: ITopWordsAndPhrases
+    filter_1_description: string
+    filter_2_description: string
 }

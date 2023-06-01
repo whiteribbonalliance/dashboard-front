@@ -41,7 +41,14 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
         {
             id: '2',
             title: 'Top words',
-            content: data ? <TopWords dashboard={dashboard} topWords={data.top_words_and_phrases.top_words} /> : null,
+            content: data ? (
+                <TopWords
+                    dashboard={dashboard}
+                    topWords={data.top_words_and_phrases.top_words}
+                    filter1Description={data.filter_1_description}
+                    filter2Description={data.filter_2_description}
+                />
+            ) : null,
         },
         { id: '3', title: 'Two word phases', content: <div>3</div> },
         { id: '4', title: 'Three word phases', content: <div>4</div> },
@@ -79,7 +86,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
                         </Tab.List>
                         <Tab.Panels>
                             {tabs.map(({ id, content }) => (
-                                <Tab.Panel key={id} className="h-fit w-full">
+                                <Tab.Panel key={id} className="w-full">
                                     {content}
                                 </Tab.Panel>
                             ))}

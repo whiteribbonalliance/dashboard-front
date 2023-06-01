@@ -20,6 +20,8 @@ import { ITopWords } from '@interfaces'
 interface ITopWordsProps {
     dashboard: string
     topWords: ITopWords[]
+    filter1Description: string
+    filter2Description: string
 }
 
 interface ICustomTooltip extends TooltipProps<ValueType, NameType> {
@@ -27,7 +29,7 @@ interface ICustomTooltip extends TooltipProps<ValueType, NameType> {
     hoveredBarDataKey: MutableRefObject<string>
 }
 
-export const TopWords = ({ dashboard, topWords }: ITopWordsProps) => {
+export const TopWords = ({ dashboard, topWords, filter1Description, filter2Description }: ITopWordsProps) => {
     const hoveredBarDataKey = useRef<string>(undefined as any)
 
     // Set bar fill colors
@@ -56,37 +58,38 @@ export const TopWords = ({ dashboard, topWords }: ITopWordsProps) => {
             barClasses2 = 'hover:fill-grayLighter'
     }
 
+    // Legend formatter
+    function legendFormatter(value: string) {
+        if (value == 'count_1') {
+            return <span className="text-black">{filter1Description}</span>
+        }
+        if (value == 'count_2') {
+            return <span className="text-black">{filter2Description}</span>
+        }
+
+        return null
+    }
+
     // Set hovered bar data key
     function setHoveredBarDataKey(dataKey: string) {
         hoveredBarDataKey.current = dataKey
     }
 
     return (
-        <div className="mb-3 mt-3">
-            <p className="mb-1">Click on a bar to view responses containing a word or phrase.</p>
-            <div className="w-full bg-white">
-                <ResponsiveContainer height={500}>
+        <div className="mt-3">
+            <p className="mb-3">Click on a bar to view responses containing a word or phrase.</p>
+            <div className="h-[40rem]">
+                <ResponsiveContainer className="bg-white">
                     <BarChart
                         data={topWords}
                         margin={{ top: 15, right: 35, left: 15, bottom: 15 }}
-                        width={750}
-                        height={400}
                         layout="vertical"
-                        barCategoryGap={3}
+                        barCategoryGap={2}
                         barGap={0}
                     >
-                        <Legend
-                            formatter={(value) => {
-                                if (value == 'count_1') {
-                                    return <span className="text-black">[DEMONYMS]</span>
-                                }
-                                if (value == 'count_2') {
-                                    return <span className="text-black">All [RESPONDENT] (normalized)</span>
-                                }
-
-                                return null
-                            }}
-                        />
+                        {filter1Description != filter2Description && (
+                            <Legend formatter={(value) => legendFormatter(value)} />
+                        )}
                         <XAxis dataKey="count_1" type="number" axisLine={false} tickCount={7} />
                         <YAxis dataKey="word" type="category" axisLine={false} tickLine={false} />
                         <CartesianGrid strokeDasharray="0" stroke="#FFFFFF" />

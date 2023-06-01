@@ -64,38 +64,40 @@ export const TopWordsWordcloud = ({ dashboard, wordcloudWords }: IWordcloudProps
         }
 
         return (
-            <ParentSize className="bg-white">
-                {(parent) => (
-                    <Wordcloud
-                        height={parent.height}
-                        width={parent.width}
-                        words={wordcloudWords}
-                        fontSize={(datum) => fontScale(datum.value)}
-                        spiral="rectangular"
-                        rotate={0}
-                        padding={3}
-                        font={'Impact'}
-                    >
-                        {(cloudWords) =>
-                            cloudWords.map((w: any, i) => (
-                                <Text
-                                    className="hover:cursor-pointer"
-                                    key={w.text}
-                                    fill={wordcloudColors[i % wordcloudColors.length]}
-                                    textAnchor={'middle'}
-                                    transform={`translate(${w.x}, ${w.y}) rotate(${w.rotate})`}
-                                    fontSize={w.size}
-                                    fontFamily={w.font}
-                                    onMouseEnter={(e) => handleMouseOver(e, w)}
-                                    onMouseLeave={hideTooltip}
-                                >
-                                    {w.text}
-                                </Text>
-                            ))
-                        }
-                    </Wordcloud>
-                )}
-            </ParentSize>
+            <div className="h-[40rem]">
+                <ParentSize className="bg-white">
+                    {(parent) => (
+                        <Wordcloud
+                            height={parent.height}
+                            width={parent.width}
+                            words={wordcloudWords}
+                            fontSize={(datum) => fontScale(datum.value)}
+                            spiral="rectangular"
+                            rotate={0}
+                            padding={3}
+                            font={'Impact'}
+                        >
+                            {(cloudWords) =>
+                                cloudWords.map((w: any, i) => (
+                                    <Text
+                                        className="hover:cursor-pointer"
+                                        key={w.text}
+                                        fill={wordcloudColors[i % wordcloudColors.length]}
+                                        textAnchor={'middle'}
+                                        transform={`translate(${w.x}, ${w.y}) rotate(${w.rotate})`}
+                                        fontSize={w.size}
+                                        fontFamily={w.font}
+                                        onMouseEnter={(e) => handleMouseOver(e, w)}
+                                        onMouseLeave={hideTooltip}
+                                    >
+                                        {w.text}
+                                    </Text>
+                                ))
+                            }
+                        </Wordcloud>
+                    )}
+                </ParentSize>
+            </div>
         )
     }, [dashboard, wordcloudWords, hideTooltip, showTooltip, containerBounds])
 
