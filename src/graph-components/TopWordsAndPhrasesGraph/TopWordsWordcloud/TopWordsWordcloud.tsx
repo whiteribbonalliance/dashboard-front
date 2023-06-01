@@ -73,7 +73,6 @@ export const TopWordsWordcloud = ({ dashboard, wordcloudWords }: IWordcloudProps
                         width={parent.width}
                         words={wordcloudWords}
                         fontSize={(datum) => fontScale(datum.value)}
-                        random={() => 0.5}
                         spiral="rectangular"
                         rotate={0}
                         padding={3}
@@ -82,6 +81,7 @@ export const TopWordsWordcloud = ({ dashboard, wordcloudWords }: IWordcloudProps
                         {(cloudWords) =>
                             cloudWords.map((w: any, i) => (
                                 <Text
+                                    className="hover:cursor-pointer"
                                     key={w.text}
                                     fill={wordcloudColors[i % wordcloudColors.length]}
                                     textAnchor={'middle'}

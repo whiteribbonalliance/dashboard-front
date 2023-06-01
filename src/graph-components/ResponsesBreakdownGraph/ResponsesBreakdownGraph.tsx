@@ -78,7 +78,7 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
             </p>
 
             {/* Error */}
-            {isError && <div className="my-5 flex">Could not load bar chart</div>}
+            {isError && <div className="my-5 flex">Could not load data</div>}
 
             {/* Loading */}
             {(isLoading || isRefetching) && <Spinner dashboard={dashboard} />}
