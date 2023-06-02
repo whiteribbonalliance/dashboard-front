@@ -24,7 +24,7 @@ interface IHamburgerMenuProps {
 }
 
 export const Header = ({ dashboard }: IHeaderProps) => {
-    const [showFiltersPanel, setShowFiltersPanel] = useState<boolean>(false)
+    const [showMobileFiltersPanel, setShowMobileFiltersPanel] = useState<boolean>(false)
 
     // Set show video link
     let showVideoLink: string
@@ -92,9 +92,9 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                         <div className="flex items-center justify-between px-7 py-7">
                             <div className="flex items-center">
                                 {/* Button to display filters panel */}
-                                <div onClick={() => setShowFiltersPanel((prev) => !prev)} title="Filters">
+                                <div onClick={() => setShowMobileFiltersPanel((prev) => !prev)} title="Filters">
                                     <div className="flex text-3xl xl:hidden">
-                                        <Chevron direction="left" double={true} rotate={showFiltersPanel} />
+                                        <Chevron direction="left" double={true} rotate={showMobileFiltersPanel} />
                                     </div>
                                 </div>
 
@@ -183,13 +183,15 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                 )}
             </Disclosure>
 
-            {/* Filters panel */}
-            {showFiltersPanel && (
-                // height = 100vh - (height of header)
-                <div className="fixed flex h-[calc(100vh-96px)] w-full flex-col overflow-y-auto bg-white px-8 pb-3 pt-6 xl:hidden">
-                    <FiltersPanel dashboard={dashboard} />
-                </div>
-            )}
+            {/* Mobile filters panel */}
+            <div
+                className={classNames(
+                    'fixed z-50 h-[calc(100vh-96px)] w-full overflow-y-auto bg-white px-8 pb-3 pt-6 xl:hidden',
+                    showMobileFiltersPanel ? 'flex flex-col' : 'hidden'
+                )}
+            >
+                <FiltersPanel dashboard={dashboard} />
+            </div>
         </>
     )
 }

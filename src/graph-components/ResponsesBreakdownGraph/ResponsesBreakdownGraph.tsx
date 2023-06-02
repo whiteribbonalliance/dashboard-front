@@ -76,7 +76,7 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
                 see more. Hover over a bar to see the numbers and full category name.
             </p>
 
-            {isSuccess && (
+            {data && (
                 <>
                     {/* Bar chart */}
                     <div className="mb-3 mt-3 w-full bg-white">

@@ -58,7 +58,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
             <GraphTitle dashboard={dashboard} text="Top words and phrases" />
             <p>{"Here's what people said in their own words:"}</p>
             <div className="mt-3 w-full">
-                {isSuccess && (
+                {data && (
                     <>
                         <Tab.Group>
                             <Tab.List className="flex flex-col sm:flex-row">
