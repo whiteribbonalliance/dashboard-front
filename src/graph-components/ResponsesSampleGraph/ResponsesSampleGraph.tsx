@@ -17,7 +17,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { Chevron } from '@components/Chevron'
 import { useCampaignQuery } from '@hooks/use-campaign'
 import { classNames } from '@utils'
-import { Spinner } from '@components/Spinner'
 
 interface IResponsesSampleGraphProps {
     dashboard: string
@@ -43,7 +42,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
     const [descriptionsCountAndColor, setDescriptionsCountAndColor] = useState<IDescriptionCountAndColor[]>([])
 
     // Campaign query
-    const { data, isSuccess, isLoading, isRefetching, isError } = useCampaignQuery(dashboard)
+    const { data } = useCampaignQuery(dashboard)
 
     // Set table data
     useEffect(() => {
@@ -180,14 +179,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                 Question asked: <span className="italic">{questionAsked}</span>
             </p>
 
-            {/* Error */}
-            {isError && <div className="my-5 flex">Could not load data</div>}
-
-            {/* Loading */}
-            {(isLoading || isRefetching) && <Spinner dashboard={dashboard} />}
-
-            {/* Success */}
-            {isSuccess && !isRefetching && (
+            {table && (
                 <>
                     {/* Table */}
                     <table className="mb-3 mt-3 w-full bg-white">

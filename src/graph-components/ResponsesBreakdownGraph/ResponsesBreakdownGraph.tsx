@@ -5,7 +5,6 @@ import { GraphTitle } from '@components/GraphTitle'
 import { DashboardName } from '@enums'
 import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
 import { useCampaignQuery } from '@hooks/use-campaign'
-import { Spinner } from '@components/Spinner'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts'
 import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent'
 import { classNames } from '@utils'
@@ -20,7 +19,7 @@ interface ICustomTooltip extends TooltipProps<ValueType, NameType> {
 
 export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphProps) => {
     // Campaign query
-    const { data, isSuccess, isLoading, isRefetching, isError } = useCampaignQuery(dashboard)
+    const { data, isSuccess } = useCampaignQuery(dashboard)
 
     // Set topic text
     let topicText: string
@@ -77,14 +76,7 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
                 see more. Hover over a bar to see the numbers and full category name.
             </p>
 
-            {/* Error */}
-            {isError && <div className="my-5 flex">Could not load data</div>}
-
-            {/* Loading */}
-            {(isLoading || isRefetching) && <Spinner dashboard={dashboard} />}
-
-            {/* Success */}
-            {isSuccess && !isRefetching && (
+            {isSuccess && (
                 <>
                     {/* Bar chart */}
                     <div className="mb-3 mt-3 w-full bg-white">

@@ -29,8 +29,8 @@ const DashboardLayout = async ({ children, params }: IDashboardLayoutProps) => {
             <QueryClientProvider>
                 <Header dashboard={dashboard} />
                 <main className="mx-7 my-7">{children}</main>
+                <Footer dashboard={dashboard} />
             </QueryClientProvider>
-            <Footer dashboard={dashboard} />
         </body>
     )
 }
