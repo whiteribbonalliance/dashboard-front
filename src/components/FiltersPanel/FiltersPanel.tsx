@@ -18,6 +18,7 @@ import { IFiltersState, useFiltersStore } from '@stores/filters'
 import { defaultFilterValues } from '@constants'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Filter, filterSchema } from '@schemas/filter'
+import { Stats } from '@components/FiltersPanel/Stats'
 
 interface IFiltersPanelProps {
     dashboard: string
@@ -427,21 +428,8 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                 </Box>
             </div>
 
-            {/* Respondents and average age */}
-            <div className="mb-5 flex w-full flex-row gap-x-3">
-                <div className="flex basis-1/2 flex-col">
-                    <Box>
-                        <div className="text-2xl">0,000</div>
-                        <div>All respondents</div>
-                    </Box>
-                </div>
-                <div className="flex basis-1/2 flex-col">
-                    <Box>
-                        <div className="text-2xl">0-0</div>
-                        <div>Average age</div>
-                    </Box>
-                </div>
-            </div>
+            {/* Stats */}
+            <Stats dashboard={dashboard} />
 
             {/* PMNCH QR code */}
             {displayPmnchQrCode && (

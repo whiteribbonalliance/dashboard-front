@@ -22,4 +22,8 @@ export interface ICampaign {
     top_words_and_phrases: ITopWordsAndPhrases
     filter_1_description: string
     filter_2_description: string
+    filter_1_respondents_count: number
+    filter_2_respondents_count: number
+    filter_1_average_age: string
+    filter_2_average_age: string
 }

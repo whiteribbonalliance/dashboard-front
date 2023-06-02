@@ -1,3 +1,5 @@
+'use client'
+
 import { useQuery } from 'react-query'
 import { ICampaign } from '@interfaces'
 import { getCampaign } from '@services/wra-dashboard-api'
