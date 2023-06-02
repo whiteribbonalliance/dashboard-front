@@ -64,7 +64,7 @@ export const TopWords = ({ dashboard, topWords, filter1Description, filter2Descr
             return <span className="text-black">{filter1Description}</span>
         }
         if (value == 'count_2') {
-            return <span className="text-black">{filter2Description}</span>
+            return <span className="text-black">{filter2Description} (normalized)</span>
         }
 
         return null
@@ -78,7 +78,7 @@ export const TopWords = ({ dashboard, topWords, filter1Description, filter2Descr
     return (
         <div className="mt-3">
             <p className="mb-3">Click on a bar to view responses containing a word or phrase.</p>
-            <div className="h-[40rem]">
+            <div className="h-[42rem]">
                 <ResponsiveContainer className="bg-white">
                     <BarChart
                         data={topWords}
