@@ -8,6 +8,8 @@ import { useCampaignQuery } from '@hooks/use-campaign'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts'
 import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent'
 import { classNames } from '@utils'
+import { Loading } from '@components/Loading'
+import React from 'react'
 
 interface IResponsesBreakdownGraphProps {
     dashboard: string
@@ -19,7 +21,7 @@ interface ICustomTooltip extends TooltipProps<ValueType, NameType> {
 
 export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphProps) => {
     // Campaign query
-    const { data, isSuccess } = useCampaignQuery(dashboard)
+    const { data, isError } = useCampaignQuery(dashboard)
 
     // Set topic text
     let topicText: string
@@ -76,6 +78,10 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
                 see more. Hover over a bar to see the numbers and full category name.
             </p>
 
+            {/* Loading (only at first data fetch) */}
+            {!data && !isError && <Loading dashboard={dashboard} />}
+
+            {/* Graph */}
             {data && (
                 <>
                     {/* Bar chart */}

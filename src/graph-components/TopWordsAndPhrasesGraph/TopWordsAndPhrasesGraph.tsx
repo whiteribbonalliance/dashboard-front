@@ -9,6 +9,7 @@ import React from 'react'
 import { DashboardName } from '@enums'
 import { TopWordsWordcloud } from 'graph-components/TopWordsAndPhrasesGraph/TopWordsWordcloud'
 import { TopWordsOrPhrases } from 'graph-components/TopWordsAndPhrasesGraph/TopWordsOrPhrases'
+import { Loading } from '@components/Loading'
 
 interface ITopWordsAndPhrasesGraphProps {
     dashboard: string
@@ -16,7 +17,7 @@ interface ITopWordsAndPhrasesGraphProps {
 
 export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphProps) => {
     // Campaign query
-    const { data, isSuccess } = useCampaignQuery(dashboard)
+    const { data, isError } = useCampaignQuery(dashboard)
 
     // Set selected tab classes
     let selectedTabClasses: string
@@ -85,38 +86,39 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
         <Box>
             <GraphTitle dashboard={dashboard} text="Top words and phrases" />
             <p>{"Here's what people said in their own words:"}</p>
-            <div className="mt-3 w-full">
-                {!data && <div>Loading...</div>}
 
-                {data && (
-                    <>
-                        <Tab.Group>
-                            <Tab.List className="flex flex-col sm:flex-row">
-                                {tabs.map((tab) => (
-                                    <Tab
-                                        key={tab.id}
-                                        className={({ selected }) =>
-                                            classNames(
-                                                'w-full bg-grayLighter py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
-                                                selected ? `border-t-2 bg-white shadow-none ${selectedTabClasses}` : ''
-                                            )
-                                        }
-                                    >
-                                        {tab.title}
-                                    </Tab>
-                                ))}
-                            </Tab.List>
-                            <Tab.Panels>
-                                {tabs.map(({ id, content }) => (
-                                    <Tab.Panel key={id} className="w-full">
-                                        {content}
-                                    </Tab.Panel>
-                                ))}
-                            </Tab.Panels>
-                        </Tab.Group>
-                    </>
-                )}
-            </div>
+            {/* Loading (only at first data fetch) */}
+            {!data && !isError && <Loading dashboard={dashboard} />}
+
+            {/* Graph */}
+            {data && (
+                <div className="mt-3 w-full">
+                    <Tab.Group>
+                        <Tab.List className="flex flex-col sm:flex-row">
+                            {tabs.map((tab) => (
+                                <Tab
+                                    key={tab.id}
+                                    className={({ selected }) =>
+                                        classNames(
+                                            'w-full bg-grayLighter py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
+                                            selected ? `border-t-2 bg-white shadow-none ${selectedTabClasses}` : ''
+                                        )
+                                    }
+                                >
+                                    {tab.title}
+                                </Tab>
+                            ))}
+                        </Tab.List>
+                        <Tab.Panels>
+                            {tabs.map(({ id, content }) => (
+                                <Tab.Panel key={id} className="w-full">
+                                    {content}
+                                </Tab.Panel>
+                            ))}
+                        </Tab.Panels>
+                    </Tab.Group>
+                </div>
+            )}
         </Box>
     )
 }

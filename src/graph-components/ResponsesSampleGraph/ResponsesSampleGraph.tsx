@@ -13,10 +13,11 @@ import {
     Row,
     useReactTable,
 } from '@tanstack/react-table'
-import { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Chevron } from '@components/Chevron'
 import { useCampaignQuery } from '@hooks/use-campaign'
 import { classNames } from '@utils'
+import { Loading } from '@components/Loading'
 
 interface IResponsesSampleGraphProps {
     dashboard: string
@@ -42,7 +43,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
     const [descriptionsCountAndColor, setDescriptionsCountAndColor] = useState<IDescriptionCountAndColor[]>([])
 
     // Campaign query
-    const { data } = useCampaignQuery(dashboard)
+    const { data, isError } = useCampaignQuery(dashboard)
 
     // Set table data
     useEffect(() => {
@@ -179,9 +180,12 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                 Question asked: <span className="italic">{questionAsked}</span>
             </p>
 
-            {table && (
+            {/* Loading (only at first data fetch) */}
+            {!data && !isError && <Loading dashboard={dashboard} />}
+
+            {/* Table */}
+            {data && (
                 <>
-                    {/* Table */}
                     <table className="mb-3 mt-3 w-full bg-white">
                         <thead className="border-b border-b-grayLight">
                             {table.getHeaderGroups().map((headerGroup) => (

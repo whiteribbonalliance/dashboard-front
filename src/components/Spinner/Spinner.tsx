@@ -20,7 +20,7 @@ export const Spinner = ({ dashboard }: ISpinnerProps) => {
 
     return (
         <div className="my-5 flex items-center justify-center">
-            <FontAwesomeIcon className={classNames('animate-spin text-4xl', spinnerIconClasses)} icon={faSpinner} />
+            <FontAwesomeIcon className={classNames('animate-spin text-3xl', spinnerIconClasses)} icon={faSpinner} />
         </div>
     )
 }
