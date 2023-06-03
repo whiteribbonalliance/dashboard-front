@@ -44,35 +44,58 @@ export const TopWordsOrPhrases = ({
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const filtersDescriptionsAreEqual = filter1Description === filter2Description
 
-    // Set fill classes and custom tooltip paragraph classes (each id has a different color)
-    let pmnchFillClasses: string
-    let defaultFillClasses: string
+    // Set bars classes, bars fill, and custom tooltip paragraph classes (each id has a different color)
+    let pmnchBar1Classes: string
+    let defaultBar1Classes: string
+    let pmnchBar1Fill: string
+    let defaultBar1Fill: string
     let pmnchCustomTooltipParagraphClasses: string
     let defaultCustomTooltipParagraphClasses: string
     switch (id) {
         case 'top-words':
-            pmnchFillClasses = 'fill-pmnchColors-secondary hover:fill-pmnchColors-secondaryFaint'
-            defaultFillClasses = 'fill-defaultColors-secondary hover:fill-defaultColors-secondaryFaint'
+            pmnchBar1Classes = 'fill-pmnchColors-secondary hover:fill-pmnchColors-secondaryFaint'
+            defaultBar1Classes = 'fill-defaultColors-secondary hover:fill-defaultColors-secondaryFaint'
+            pmnchBar1Fill = 'var(--pmnchSecondary)'
+            defaultBar1Fill = 'var(--defaultSecondary)'
             pmnchCustomTooltipParagraphClasses = 'bg-pmnchColors-secondary'
             defaultCustomTooltipParagraphClasses = 'bg-defaultColors-secondary'
             break
         case 'two-word-phrases':
-            pmnchFillClasses = 'fill-pmnchColors-tertiary hover:fill-pmnchColors-tertiaryFaint'
-            defaultFillClasses = 'fill-defaultColors-tertiary hover:fill-defaultColors-tertiaryFaint'
+            pmnchBar1Classes = 'fill-pmnchColors-tertiary hover:fill-pmnchColors-tertiaryFaint'
+            defaultBar1Classes = 'fill-defaultColors-tertiary hover:fill-defaultColors-tertiaryFaint'
+            pmnchBar1Fill = 'var(--pmnchTertiary)'
+            defaultBar1Fill = 'var(--defaultTertiary)'
             pmnchCustomTooltipParagraphClasses = 'bg-pmnchColors-tertiary'
             defaultCustomTooltipParagraphClasses = 'bg-defaultColors-tertiary'
             break
         case 'three-word-phrases':
-            pmnchFillClasses = 'fill-pmnchColors-primary hover:fill-pmnchColors-primaryFaint'
-            defaultFillClasses = 'fill-defaultColors-primary hover:fill-defaultColors-primaryFaint'
+            pmnchBar1Classes = 'fill-pmnchColors-primary hover:fill-pmnchColors-primaryFaint'
+            defaultBar1Classes = 'fill-defaultColors-primary hover:fill-defaultColors-primaryFaint'
+            pmnchBar1Fill = 'var(--pmnchPrimary)'
+            defaultBar1Fill = 'var(--defaultPrimary)'
             pmnchCustomTooltipParagraphClasses = 'bg-pmnchColors-primary'
             defaultCustomTooltipParagraphClasses = 'bg-defaultColors-primary'
             break
         default:
-            pmnchFillClasses = 'fill-pmnchColors-primary hover:fill-pmnchColors-primaryFaint'
-            defaultFillClasses = 'fill-defaultColors-primary hover:fill-defaultColors-primaryFaint'
+            pmnchBar1Classes = 'fill-pmnchColors-primary hover:fill-pmnchColors-primaryFaint'
+            defaultBar1Classes = 'fill-defaultColors-primary hover:fill-defaultColors-primaryFaint'
+            pmnchBar1Fill = 'var(--pmnchPrimary)'
+            defaultBar1Fill = 'var(--defaultPrimary)'
             pmnchCustomTooltipParagraphClasses = 'bg-pmnchColors-primary'
             defaultCustomTooltipParagraphClasses = 'bg-defaultColors-primary'
+    }
+
+    // Set bars fill colors
+    let bar1Fill: string
+    let bar2Fill: string
+    switch (dashboard) {
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+            bar1Fill = `${pmnchBar1Fill}`
+            bar2Fill = 'var(--grayLight)'
+            break
+        default:
+            bar1Fill = `${defaultBar1Fill}`
+            bar2Fill = 'var(--grayLight)'
     }
 
     // Set bars classes
@@ -80,11 +103,11 @@ export const TopWordsOrPhrases = ({
     let bar2Classes: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            bar1Classes = `${pmnchFillClasses}`
+            bar1Classes = `${pmnchBar1Classes}`
             bar2Classes = 'fill-grayLight hover:fill-grayLighter'
             break
         default:
-            bar1Classes = `${defaultFillClasses}`
+            bar1Classes = `${defaultBar1Classes}`
             bar2Classes = 'fill-grayLight hover:fill-grayLighter'
     }
 
@@ -139,6 +162,7 @@ export const TopWordsOrPhrases = ({
                         <Bar
                             dataKey="count_1"
                             className={bar1Classes}
+                            fill={bar1Fill}
                             onMouseOver={() => setHoveredBarDataKey('count_1')}
                         />
 
@@ -147,6 +171,7 @@ export const TopWordsOrPhrases = ({
                             <Bar
                                 dataKey="count_2"
                                 className={bar2Classes}
+                                fill={bar2Fill}
                                 onMouseOver={() => setHoveredBarDataKey('count_2')}
                             />
                         )}
