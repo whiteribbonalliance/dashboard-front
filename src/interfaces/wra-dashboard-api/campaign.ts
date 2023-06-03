@@ -14,6 +14,8 @@ interface IResponsesBreakdown {
 interface ITopWordsAndPhrases {
     wordcloud_words: IWordcloudWords[]
     top_words: ITopWords[]
+    two_word_phrases: ITopWords[]
+    three_word_phrases: ITopWords[]
 }
 
 export interface ICampaign {

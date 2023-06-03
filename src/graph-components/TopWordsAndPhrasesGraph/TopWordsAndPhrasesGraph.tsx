@@ -8,7 +8,7 @@ import { classNames } from '@utils'
 import React from 'react'
 import { DashboardName } from '@enums'
 import { TopWordsWordcloud } from 'graph-components/TopWordsAndPhrasesGraph/TopWordsWordcloud'
-import { TopWords } from '@graph-components/TopWordsAndPhrasesGraph/TopWords'
+import { TopWordsOrPhrases } from 'graph-components/TopWordsAndPhrasesGraph/TopWordsOrPhrases'
 
 interface ITopWordsAndPhrasesGraphProps {
     dashboard: string
@@ -31,26 +31,54 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
     // Tabs
     const tabs = [
         {
-            id: '1',
+            id: 'word-cloud',
             title: 'Word cloud',
             content: data ? (
                 <TopWordsWordcloud dashboard={dashboard} wordcloudWords={data.top_words_and_phrases.wordcloud_words} />
             ) : null,
         },
         {
-            id: '2',
+            id: 'top-words',
             title: 'Top words',
             content: data ? (
-                <TopWords
+                <TopWordsOrPhrases
                     dashboard={dashboard}
-                    topWords={data.top_words_and_phrases.top_words}
+                    id="top-words"
+                    words={data.top_words_and_phrases.top_words}
                     filter1Description={data.filter_1_description}
                     filter2Description={data.filter_2_description}
+                    yAxisWidth={125}
                 />
             ) : null,
         },
-        { id: '3', title: 'Two word phases', content: <div>3</div> },
-        { id: '4', title: 'Three word phases', content: <div>4</div> },
+        {
+            id: 'two-word-phrases',
+            title: 'Two word phases',
+            content: data ? (
+                <TopWordsOrPhrases
+                    dashboard={dashboard}
+                    id="two-word-phrases"
+                    words={data.top_words_and_phrases.two_word_phrases}
+                    filter1Description={data.filter_1_description}
+                    filter2Description={data.filter_2_description}
+                    yAxisWidth={175}
+                />
+            ) : null,
+        },
+        {
+            id: 'three-word-phrases',
+            title: 'Three word phases',
+            content: data ? (
+                <TopWordsOrPhrases
+                    dashboard={dashboard}
+                    id="three-word-phrases"
+                    words={data.top_words_and_phrases.three_word_phrases}
+                    filter1Description={data.filter_1_description}
+                    filter2Description={data.filter_2_description}
+                    yAxisWidth={225}
+                />
+            ) : null,
+        },
     ]
 
     return (
@@ -58,6 +86,8 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
             <GraphTitle dashboard={dashboard} text="Top words and phrases" />
             <p>{"Here's what people said in their own words:"}</p>
             <div className="mt-3 w-full">
+                {!data && <div>Loading...</div>}
+
                 {data && (
                     <>
                         <Tab.Group>
