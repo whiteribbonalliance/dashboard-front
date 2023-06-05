@@ -85,7 +85,7 @@ export const TopWordsOrPhrases = ({
             defaultCustomTooltipParagraphClasses = 'bg-defaultColors-primary'
     }
 
-    // Set bars fill colors
+    // Set bars fill
     let bar1Fill: string
     let bar2Fill: string
     switch (dashboard) {

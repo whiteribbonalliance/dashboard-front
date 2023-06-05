@@ -7,7 +7,7 @@ interface ILoadingProps {
 
 export const Loading = ({ dashboard }: ILoadingProps) => {
     return (
-        <div className="flex items-center justify-center">
+        <div className="mt-5 flex items-center justify-center">
             <Spinner dashboard={dashboard} />
             <div className="ml-2">Loading...</div>
         </div>

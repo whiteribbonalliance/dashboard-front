@@ -18,6 +18,7 @@ import { Chevron } from '@components/Chevron'
 import { useCampaignQuery } from '@hooks/use-campaign'
 import { classNames } from '@utils'
 import { Loading } from '@components/Loading'
+import { Error } from '@components/Error'
 
 interface IResponsesSampleGraphProps {
     dashboard: string
@@ -179,6 +180,9 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             <p>
                 Question asked: <span className="italic">{questionAsked}</span>
             </p>
+
+            {/* Error */}
+            {!data && isError && <Error dashboard={dashboard} />}
 
             {/* Loading (only at first data fetch) */}
             {!data && !isError && <Loading dashboard={dashboard} />}

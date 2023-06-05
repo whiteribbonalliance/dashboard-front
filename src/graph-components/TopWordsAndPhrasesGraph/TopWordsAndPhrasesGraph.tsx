@@ -10,6 +10,7 @@ import { DashboardName } from '@enums'
 import { TopWordsWordcloud } from 'graph-components/TopWordsAndPhrasesGraph/TopWordsWordcloud'
 import { TopWordsOrPhrases } from 'graph-components/TopWordsAndPhrasesGraph/TopWordsOrPhrases'
 import { Loading } from '@components/Loading'
+import { Error } from '@components/Error'
 
 interface ITopWordsAndPhrasesGraphProps {
     dashboard: string
@@ -48,7 +49,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
                     words={data.top_words_and_phrases.top_words}
                     filter1Description={data.filter_1_description}
                     filter2Description={data.filter_2_description}
-                    yAxisWidth={125}
+                    yAxisWidth={250}
                 />
             ) : null,
         },
@@ -62,7 +63,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
                     words={data.top_words_and_phrases.two_word_phrases}
                     filter1Description={data.filter_1_description}
                     filter2Description={data.filter_2_description}
-                    yAxisWidth={175}
+                    yAxisWidth={250}
                 />
             ) : null,
         },
@@ -76,7 +77,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
                     words={data.top_words_and_phrases.three_word_phrases}
                     filter1Description={data.filter_1_description}
                     filter2Description={data.filter_2_description}
-                    yAxisWidth={225}
+                    yAxisWidth={275}
                 />
             ) : null,
         },
@@ -86,6 +87,9 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
         <Box>
             <GraphTitle dashboard={dashboard} text="Top words and phrases" />
             <p>{"Here's what people said in their own words:"}</p>
+
+            {/* Error */}
+            {!data && isError && <Error dashboard={dashboard} />}
 
             {/* Loading (only at first data fetch) */}
             {!data && !isError && <Loading dashboard={dashboard} />}

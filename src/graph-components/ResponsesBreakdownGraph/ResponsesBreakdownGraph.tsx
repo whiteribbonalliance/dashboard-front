@@ -9,7 +9,7 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, TooltipProp
 import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent'
 import { classNames } from '@utils'
 import { Loading } from '@components/Loading'
-import React from 'react'
+import { Error } from '@components/Error'
 
 interface IResponsesBreakdownGraphProps {
     dashboard: string
@@ -77,6 +77,9 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
                 hover over the graph and select the zoom and pan options, or click and drag the graph up and down, to
                 see more. Hover over a bar to see the numbers and full category name.
             </p>
+
+            {/* Error */}
+            {!data && isError && <Error dashboard={dashboard} />}
 
             {/* Loading (only at first data fetch) */}
             {!data && !isError && <Loading dashboard={dashboard} />}
