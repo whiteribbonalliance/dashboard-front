@@ -21,6 +21,7 @@ interface ITopWordsAndPhrases {
 
 interface IHistogram {
     age: IHistogramData[]
+    gender: IHistogramData[]
     profession: IHistogramData[]
     region: IHistogramData[]
     canonical_country: IHistogramData[]

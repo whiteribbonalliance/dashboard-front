@@ -70,22 +70,22 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     // Refetch campaign timeout
     const refetchCampaignTimeout = useRef<NodeJS.Timeout>()
 
-    // Filter 1
-    const filter1 = useForm<Filter>({
+    // Form 1
+    const form1 = useForm<Filter>({
         defaultValues: defaultFilterValues,
         resolver: zodResolver(filterSchema),
     })
 
-    // Filter 2
-    const filter2 = useForm<Filter>({
+    // Form 2
+    const form2 = useForm<Filter>({
         defaultValues: defaultFilterValues,
         resolver: zodResolver(filterSchema),
     })
 
     // Tabs
     const tabs = [
-        { id: '1', title: 'Drill down', form: filter1 },
-        { id: '2', title: 'Compare to...', form: filter2 },
+        { id: '1', title: 'Drill down', form: form1 },
+        { id: '2', title: 'Compare to...', form: form2 },
     ]
 
     // Set selected tab classes
@@ -146,13 +146,13 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
     // Set regions of selected countries for filter 2
     useEffect(() => {
-        SetRegionOptionsForFilter(selectedCountriesOptionsFilter1, setRegionOptionsFilter1, filter1)
-    }, [selectedCountriesOptionsFilter1, filter1])
+        SetRegionOptionsForFilter(selectedCountriesOptionsFilter1, setRegionOptionsFilter1, form1)
+    }, [selectedCountriesOptionsFilter1, form1])
 
     // Set regions of selected countries for filter 2
     useEffect(() => {
-        SetRegionOptionsForFilter(selectedCountriesOptionsFilter2, setRegionOptionsFilter2, filter2)
-    }, [selectedCountriesOptionsFilter2, filter2])
+        SetRegionOptionsForFilter(selectedCountriesOptionsFilter2, setRegionOptionsFilter2, form2)
+    }, [selectedCountriesOptionsFilter2, form2])
 
     // Cleanup refetch campaign timeout
     useEffect(() => {
@@ -205,23 +205,23 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
         // Add a small delay before refetching campaign
         refetchCampaignTimeout.current = setTimeout(() => {
             // Lowercase keyword_exclude and keyword_filter
-            if (filter1.getValues().keyword_exclude) {
-                filter1.getValues().keyword_exclude = filter1.getValues().keyword_exclude.toLowerCase()
+            if (form1.getValues().keyword_exclude) {
+                form1.getValues().keyword_exclude = form1.getValues().keyword_exclude.toLowerCase()
             }
-            if (filter1.getValues().keyword_filter) {
-                filter1.getValues().keyword_filter = filter1.getValues().keyword_filter.toLowerCase()
+            if (form1.getValues().keyword_filter) {
+                form1.getValues().keyword_filter = form1.getValues().keyword_filter.toLowerCase()
             }
 
             // Lowercase keyword_exclude and keyword_filter
-            if (filter2.getValues().keyword_exclude) {
-                filter2.getValues().keyword_exclude = filter2.getValues().keyword_exclude.toLowerCase()
+            if (form2.getValues().keyword_exclude) {
+                form2.getValues().keyword_exclude = form2.getValues().keyword_exclude.toLowerCase()
             }
-            if (filter2.getValues().keyword_filter) {
-                filter2.getValues().keyword_filter = filter2.getValues().keyword_filter.toLowerCase()
+            if (form2.getValues().keyword_filter) {
+                form2.getValues().keyword_filter = form2.getValues().keyword_filter.toLowerCase()
             }
 
             // Update the filters store (when filters are updated, useCampaignQuery will refetch the campaign data)
-            setFilters({ filter1: filter1.getValues(), filter2: filter2.getValues() })
+            setFilters({ filter1: form1.getValues(), filter2: form2.getValues() })
         }, 450)
     }
 
