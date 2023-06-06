@@ -26,7 +26,7 @@ interface IFiltersPanelProps {
 
 interface IFieldProps {
     id: string
-    refetchCampaign: () => void
+    customOnChange: () => void
 }
 
 interface ISelectProps extends IFieldProps {
@@ -195,8 +195,8 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
         setSelectedCountriesOptionsFilter2(options)
     }
 
-    // On filter change
-    function onFilterChange() {
+    // Refetch campaign
+    function refetchCampaign() {
         // Clear the current submit timeout
         if (refetchCampaignTimeout.current) {
             clearTimeout(refetchCampaignTimeout.current)
@@ -262,7 +262,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                 id={`select-countries-${id}`}
                                                 options={countryOptions}
                                                 control={form.control}
-                                                refetchCampaign={onFilterChange}
+                                                customOnChange={refetchCampaign}
                                                 handleOnChangeSelectedOptions={
                                                     id === '1'
                                                         ? handleOnChangeSelectedCountriesOptionsFilter1
@@ -278,7 +278,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                 id={`select-regions-${id}`}
                                                 options={id === '1' ? regionOptionsFilter1 : regionOptionsFilter2}
                                                 control={form.control}
-                                                refetchCampaign={onFilterChange}
+                                                customOnChange={refetchCampaign}
                                             />
                                         </div>
 
@@ -289,7 +289,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                 id={`select-response-topics-${id}`}
                                                 options={responseTopicOptions}
                                                 control={form.control}
-                                                refetchCampaign={onFilterChange}
+                                                customOnChange={refetchCampaign}
                                             />
                                         </div>
                                     </div>
@@ -317,7 +317,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                 id={`select-only-responses-from-categories-${id}`}
                                                                 options={onlyResponsesFromCategoriesOptions}
                                                                 control={form.control}
-                                                                refetchCampaign={onFilterChange}
+                                                                customOnChange={refetchCampaign}
                                                             />
                                                         </div>
 
@@ -330,7 +330,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                 id={`select-ages-${id}`}
                                                                 options={ageOptions}
                                                                 control={form.control}
-                                                                refetchCampaign={onFilterChange}
+                                                                customOnChange={refetchCampaign}
                                                             />
                                                         </div>
 
@@ -346,7 +346,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                             id={`select-genders-${id}`}
                                                                             options={genderOptions}
                                                                             control={form.control}
-                                                                            refetchCampaign={onFilterChange}
+                                                                            customOnChange={refetchCampaign}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -365,7 +365,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                             id={`select-genders-${id}`}
                                                                             options={genderOptions}
                                                                             control={form.control}
-                                                                            refetchCampaign={onFilterChange}
+                                                                            customOnChange={refetchCampaign}
                                                                         />
                                                                     </div>
                                                                     {/* Select profession */}
@@ -375,7 +375,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                             id={`select-professions-${id}`}
                                                                             options={professionOptions}
                                                                             control={form.control}
-                                                                            refetchCampaign={onFilterChange}
+                                                                            customOnChange={refetchCampaign}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -390,7 +390,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                 <InputKeyword
                                                                     id={`input-keyword-${id}`}
                                                                     register={form.register}
-                                                                    refetchCampaign={onFilterChange}
+                                                                    customOnChange={refetchCampaign}
                                                                 />
                                                             </div>
                                                             {/* Exclude keyword */}
@@ -399,7 +399,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                 <InputExcludeKeyword
                                                                     id={`input-exclude-keyword-${id}`}
                                                                     register={form.register}
-                                                                    refetchCampaign={onFilterChange}
+                                                                    customOnChange={refetchCampaign}
                                                                 />
                                                             </div>
                                                         </div>
@@ -413,7 +413,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                                                                     onlyMultiWordPhrasesContainingFilterTermOptions
                                                                 }
                                                                 control={form.control}
-                                                                refetchCampaign={onFilterChange}
+                                                                customOnChange={refetchCampaign}
                                                             />
                                                         </div>
                                                     </Disclosure.Panel>
@@ -450,7 +450,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     )
 }
 
-const InputKeyword = ({ id, refetchCampaign, register }: IInputProps) => {
+const InputKeyword = ({ id, customOnChange, register }: IInputProps) => {
     return (
         <input
             id={id}
@@ -458,13 +458,13 @@ const InputKeyword = ({ id, refetchCampaign, register }: IInputProps) => {
             className="w-0 min-w-full rounded-md border border-[#CCC] p-1.5"
             placeholder="Enter keyword..."
             {...register('keyword_filter', {
-                onChange: refetchCampaign,
+                onChange: customOnChange,
             })}
         />
     )
 }
 
-const InputExcludeKeyword = ({ id, refetchCampaign, register }: IInputProps) => {
+const InputExcludeKeyword = ({ id, customOnChange, register }: IInputProps) => {
     return (
         <input
             id={id}
@@ -472,13 +472,13 @@ const InputExcludeKeyword = ({ id, refetchCampaign, register }: IInputProps) => 
             className="w-0 min-w-full rounded-md border border-[#CCC] p-1.5"
             placeholder="Enter keyword..."
             {...register('keyword_exclude', {
-                onChange: refetchCampaign,
+                onChange: customOnChange,
             })}
         />
     )
 }
 
-const SelectOnlyMultiWordPhrasesContainingFilterTerm = ({ id, refetchCampaign, options, control }: ISelectProps) => {
+const SelectOnlyMultiWordPhrasesContainingFilterTerm = ({ id, customOnChange, options, control }: ISelectProps) => {
     return (
         <Controller
             name="only_multi_word_phrases_containing_filter_term"
@@ -488,15 +488,15 @@ const SelectOnlyMultiWordPhrasesContainingFilterTerm = ({ id, refetchCampaign, o
                     id={id}
                     options={options}
                     value={value}
-                    onChange={onChange}
-                    refetchCampaign={refetchCampaign}
+                    controllerRenderOnChange={onChange}
+                    customOnChange={customOnChange}
                 />
             )}
         />
     )
 }
 
-const SelectProfessions = ({ id, refetchCampaign, options, control }: ISelectProps) => {
+const SelectProfessions = ({ id, customOnChange, options, control }: ISelectProps) => {
     return (
         <Controller
             name="professions"
@@ -504,9 +504,9 @@ const SelectProfessions = ({ id, refetchCampaign, options, control }: ISelectPro
             render={({ field: { onChange, value } }) => (
                 <SelectMultiValues
                     id={id}
-                    refetchCampaign={refetchCampaign}
+                    customOnChange={customOnChange}
                     options={options}
-                    onChange={onChange}
+                    controllerRenderOnChange={onChange}
                     value={value}
                 />
             )}
@@ -514,7 +514,7 @@ const SelectProfessions = ({ id, refetchCampaign, options, control }: ISelectPro
     )
 }
 
-const SelectGenders = ({ id, refetchCampaign, options, control }: ISelectProps) => {
+const SelectGenders = ({ id, customOnChange, options, control }: ISelectProps) => {
     return (
         <Controller
             name="genders"
@@ -522,9 +522,9 @@ const SelectGenders = ({ id, refetchCampaign, options, control }: ISelectProps) 
             render={({ field: { onChange, value } }) => (
                 <SelectMultiValues
                     id={id}
-                    refetchCampaign={refetchCampaign}
+                    customOnChange={customOnChange}
                     options={options}
-                    onChange={onChange}
+                    controllerRenderOnChange={onChange}
                     value={value}
                 />
             )}
@@ -532,7 +532,7 @@ const SelectGenders = ({ id, refetchCampaign, options, control }: ISelectProps) 
     )
 }
 
-const SelectOnlyResponsesFromCategories = ({ id, refetchCampaign, options, control }: ISelectProps) => {
+const SelectOnlyResponsesFromCategories = ({ id, customOnChange, options, control }: ISelectProps) => {
     return (
         <Controller
             name="only_responses_from_categories"
@@ -542,15 +542,15 @@ const SelectOnlyResponsesFromCategories = ({ id, refetchCampaign, options, contr
                     id={id}
                     options={options}
                     value={value}
-                    onChange={onChange}
-                    refetchCampaign={refetchCampaign}
+                    controllerRenderOnChange={onChange}
+                    customOnChange={customOnChange}
                 />
             )}
         />
     )
 }
 
-const SelectResponseTopics = ({ id, refetchCampaign, options, control }: ISelectProps) => {
+const SelectResponseTopics = ({ id, customOnChange, options, control }: ISelectProps) => {
     return (
         <Controller
             name="response_topics"
@@ -558,9 +558,9 @@ const SelectResponseTopics = ({ id, refetchCampaign, options, control }: ISelect
             render={({ field: { onChange, value } }) => (
                 <SelectMultiValues
                     id={id}
-                    refetchCampaign={refetchCampaign}
+                    customOnChange={customOnChange}
                     options={options}
-                    onChange={onChange}
+                    controllerRenderOnChange={onChange}
                     value={value}
                 />
             )}
@@ -568,7 +568,7 @@ const SelectResponseTopics = ({ id, refetchCampaign, options, control }: ISelect
     )
 }
 
-const SelectRegions = ({ id, refetchCampaign, options, control }: ISelectProps) => {
+const SelectRegions = ({ id, customOnChange, options, control }: ISelectProps) => {
     return (
         <Controller
             name="regions"
@@ -576,9 +576,9 @@ const SelectRegions = ({ id, refetchCampaign, options, control }: ISelectProps) 
             render={({ field: { onChange, value } }) => (
                 <SelectMultiValues
                     id={id}
-                    refetchCampaign={refetchCampaign}
+                    customOnChange={customOnChange}
                     options={options}
-                    onChange={onChange}
+                    controllerRenderOnChange={onChange}
                     value={value}
                 />
             )}
@@ -588,7 +588,7 @@ const SelectRegions = ({ id, refetchCampaign, options, control }: ISelectProps) 
 
 const SelectCountries = ({
     id,
-    refetchCampaign,
+    customOnChange,
     options,
     control,
     handleOnChangeSelectedOptions,
@@ -600,9 +600,9 @@ const SelectCountries = ({
             render={({ field: { onChange, value } }) => (
                 <SelectMultiValues
                     id={id}
-                    refetchCampaign={refetchCampaign}
+                    customOnChange={customOnChange}
                     options={options}
-                    onChange={onChange}
+                    controllerRenderOnChange={onChange}
                     value={value}
                     handleOnChangeSelectedOptions={handleOnChangeSelectedOptions}
                 />
@@ -611,7 +611,7 @@ const SelectCountries = ({
     )
 }
 
-const SelectAges = ({ id, refetchCampaign, options, control }: ISelectProps) => {
+const SelectAges = ({ id, customOnChange, options, control }: ISelectProps) => {
     return (
         <Controller
             name="ages"
@@ -619,9 +619,9 @@ const SelectAges = ({ id, refetchCampaign, options, control }: ISelectProps) => 
             render={({ field: { onChange, value } }) => (
                 <SelectMultiValues
                     id={id}
-                    refetchCampaign={refetchCampaign}
+                    customOnChange={customOnChange}
                     options={options}
-                    onChange={onChange}
+                    controllerRenderOnChange={onChange}
                     value={value}
                 />
             )}

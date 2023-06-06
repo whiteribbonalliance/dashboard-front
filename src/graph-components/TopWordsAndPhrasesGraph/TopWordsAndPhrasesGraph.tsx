@@ -9,15 +9,14 @@ import React from 'react'
 import { DashboardName } from '@enums'
 import { TopWordsWordcloud } from 'graph-components/TopWordsAndPhrasesGraph/TopWordsWordcloud'
 import { TopWordsOrPhrases } from 'graph-components/TopWordsAndPhrasesGraph/TopWordsOrPhrases'
-import { Loading } from '@components/Loading'
-import { Error } from '@components/Error'
+import { GraphLoading } from 'components/GraphLoading'
+import { GraphError } from 'components/GraphError'
 
 interface ITopWordsAndPhrasesGraphProps {
     dashboard: string
 }
 
 export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphProps) => {
-    // Campaign query
     const { data, isError } = useCampaignQuery(dashboard)
 
     // Set selected tab classes
@@ -86,13 +85,13 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
     return (
         <Box>
             <GraphTitle dashboard={dashboard} text="Top words and phrases" />
-            <p>{"Here's what people said in their own words:"}</p>
+            <p>{"Here's what people said in their own words."}</p>
 
             {/* Error */}
-            {!data && isError && <Error dashboard={dashboard} />}
+            {!data && isError && <GraphError dashboard={dashboard} />}
 
             {/* Loading (only at first data fetch) */}
-            {!data && !isError && <Loading dashboard={dashboard} />}
+            {!data && !isError && <GraphLoading dashboard={dashboard} />}
 
             {/* Graph */}
             {data && (

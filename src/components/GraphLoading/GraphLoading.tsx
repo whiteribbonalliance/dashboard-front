@@ -1,11 +1,11 @@
 import { Spinner } from '@components/Spinner'
 import React from 'react'
 
-interface ILoadingProps {
+interface IGraphLoadingProps {
     dashboard: string
 }
 
-export const Loading = ({ dashboard }: ILoadingProps) => {
+export const GraphLoading = ({ dashboard }: IGraphLoadingProps) => {
     return (
         <div className="mt-5 flex items-center justify-center">
             <Spinner dashboard={dashboard} />

@@ -8,7 +8,7 @@ import { ResponsesBreakdownGraph } from '@graph-components/ResponsesBreakdownGra
 import { TopWordsAndPhrasesGraph } from '@graph-components/TopWordsAndPhrasesGraph'
 import { ResponsesSampleGraph } from '@graph-components/ResponsesSampleGraph'
 import { LocationGraph } from '@graph-components/LocationGraph'
-import { ThePeopleGraph } from '@graph-components/ThePeopleGraph'
+import { WhoThePeopleAreGraph } from 'graph-components/WhoThePeopleAreGraph'
 import { DashboardName } from '@enums'
 import { GenderBreakdownGraph } from '@graph-components/GenderBreakdownGraph'
 import { classNames } from '@utils'
@@ -60,7 +60,7 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
                         <>
                             <ResponsesBreakdownGraph dashboard={dashboard} />
                             <LocationGraph dashboard={dashboard} />
-                            <ThePeopleGraph dashboard={dashboard} />
+                            <WhoThePeopleAreGraph dashboard={dashboard} />
                             <GenderBreakdownGraph dashboard={dashboard} />
                             <TopWordsAndPhrasesGraph dashboard={dashboard} />
                             <ResponsesSampleGraph dashboard={dashboard} />
@@ -71,7 +71,7 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
                             <ResponsesSampleGraph dashboard={dashboard} />
                             <LocationGraph dashboard={dashboard} />
                             <ResponsesBreakdownGraph dashboard={dashboard} />
-                            <ThePeopleGraph dashboard={dashboard} />
+                            <WhoThePeopleAreGraph dashboard={dashboard} />
                         </>
                     )}
                 </section>

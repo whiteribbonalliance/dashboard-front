@@ -13,7 +13,6 @@ import {
 } from 'recharts'
 import { DashboardName } from '@enums'
 import { classNames } from '@utils'
-import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent'
 import { MutableRefObject, useRef } from 'react'
 import { ITopWords } from '@interfaces'
 
@@ -26,7 +25,7 @@ interface ITopWordsOrPhrasesProps {
     yAxisWidth: number
 }
 
-interface ICustomTooltip extends TooltipProps<ValueType, NameType> {
+interface ICustomTooltip extends TooltipProps<number, string> {
     dashboard: string
     hoveredBarDataKey: MutableRefObject<string>
     pmnchParagraphClasses: string
@@ -204,9 +203,11 @@ const CustomTooltip = ({
     if (active && payload && payload.length) {
         const data = payload.find((data) => data.dataKey === hoveredBarDataKey.current)
         if (data) {
+            const value = data.value
+
             return (
                 <p className={classNames(`border border-white p-1 text-sm text-white`, pClasses)}>
-                    <span className="font-bold">{data.value}</span> people mentioned{' '}
+                    <span className="font-bold">{value}</span> people mentioned{' '}
                     <span className="font-bold">“{label}”</span>.
                 </p>
             )

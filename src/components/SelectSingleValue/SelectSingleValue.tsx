@@ -6,11 +6,17 @@ interface ISelectSingleValueProps {
     id: string
     options: Option[]
     value: string | boolean
-    onChange: (...event: any[]) => void
-    refetchCampaign: () => void
+    controllerRenderOnChange: (...event: any[]) => void
+    customOnChange: () => void
 }
 
-export const SelectSingleValue = ({ id, options, value, onChange, refetchCampaign }: ISelectSingleValueProps) => {
+export const SelectSingleValue = ({
+    id,
+    options,
+    value,
+    controllerRenderOnChange,
+    customOnChange,
+}: ISelectSingleValueProps) => {
     return (
         <Select
             instanceId={id}
@@ -18,9 +24,9 @@ export const SelectSingleValue = ({ id, options, value, onChange, refetchCampaig
             value={options.find((option) => option.value === value)}
             onChange={(SingleValueOption) => {
                 if (SingleValueOption) {
-                    onChange(SingleValueOption.value)
+                    controllerRenderOnChange(SingleValueOption.value)
                 }
-                refetchCampaign()
+                customOnChange()
             }}
         />
     )

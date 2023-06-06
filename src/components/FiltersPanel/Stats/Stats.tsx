@@ -8,7 +8,6 @@ interface IStatsProps {
 }
 
 export const Stats = ({ dashboard }: IStatsProps) => {
-    // Campaign query
     const { data } = useCampaignQuery(dashboard)
 
     if (!data) return null

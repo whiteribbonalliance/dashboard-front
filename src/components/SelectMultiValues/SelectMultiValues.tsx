@@ -6,8 +6,8 @@ interface ISelectMultiValuesProps {
     id: string
     options: Option[]
     value: string[]
-    onChange: (...event: any[]) => void
-    refetchCampaign: () => void
+    controllerRenderOnChange: (...event: any[]) => void
+    customOnChange: () => void
     handleOnChangeSelectedOptions?: (options: MultiValue<Option>) => void
 }
 
@@ -15,8 +15,8 @@ export const SelectMultiValues = ({
     id,
     options,
     value,
-    onChange,
-    refetchCampaign,
+    controllerRenderOnChange,
+    customOnChange,
     handleOnChangeSelectedOptions,
 }: ISelectMultiValuesProps) => {
     return (
@@ -33,10 +33,10 @@ export const SelectMultiValues = ({
             })}
             onChange={(multiValueOptions) => {
                 if (multiValueOptions) {
-                    onChange(multiValueOptions.map((option) => option.value))
+                    controllerRenderOnChange(multiValueOptions.map((option) => option.value))
                 }
                 if (handleOnChangeSelectedOptions) handleOnChangeSelectedOptions(multiValueOptions)
-                refetchCampaign()
+                customOnChange()
             }}
         />
     )

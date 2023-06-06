@@ -37,3 +37,44 @@ export function titleCase(value: string) {
 
     return value[0].toUpperCase() + value.slice(1).toLowerCase()
 }
+
+/***
+ * Returns a "nice" number approximately equal to range
+ * Rounds the number if round = true Takes the ceiling if round = false
+ *
+ * @param range The range
+ * @param round Round or not
+ */
+export function niceNum(range: number, round: boolean) {
+    if (range === 0) {
+        range = 1
+    }
+
+    const exponent = Math.floor(Math.log10(range))
+    const fraction = range / Math.pow(10, exponent)
+
+    let niceFraction: number
+    if (round) {
+        if (fraction < 1.5) {
+            niceFraction = 1
+        } else if (fraction < 3) {
+            niceFraction = 2
+        } else if (fraction < 7) {
+            niceFraction = 5
+        } else {
+            niceFraction = 10
+        }
+    } else {
+        if (fraction <= 1) {
+            niceFraction = 1
+        } else if (fraction <= 2) {
+            niceFraction = 2
+        } else if (fraction <= 5) {
+            niceFraction = 5
+        } else {
+            niceFraction = 10
+        }
+    }
+
+    return Math.round(niceFraction * Math.pow(10, exponent))
+}

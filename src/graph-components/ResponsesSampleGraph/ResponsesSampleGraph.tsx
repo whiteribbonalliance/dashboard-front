@@ -17,8 +17,8 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Chevron } from '@components/Chevron'
 import { useCampaignQuery } from '@hooks/use-campaign'
 import { classNames } from '@utils'
-import { Loading } from '@components/Loading'
-import { Error } from '@components/Error'
+import { GraphLoading } from 'components/GraphLoading'
+import { GraphError } from 'components/GraphError'
 
 interface IResponsesSampleGraphProps {
     dashboard: string
@@ -39,12 +39,10 @@ const columnHelper = createColumnHelper<any>()
 
 export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) => {
     const [tableData, setTableData] = useState<ITableData>({ data: [], columns: [] })
+    const { data, isError } = useCampaignQuery(dashboard)
 
     // An array with objects containing the description, count, and the color assigned to it
     const [descriptionsCountAndColor, setDescriptionsCountAndColor] = useState<IDescriptionCountAndColor[]>([])
-
-    // Campaign query
-    const { data, isError } = useCampaignQuery(dashboard)
 
     // Set table data
     useEffect(() => {
@@ -182,10 +180,10 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             </p>
 
             {/* Error */}
-            {!data && isError && <Error dashboard={dashboard} />}
+            {!data && isError && <GraphError dashboard={dashboard} />}
 
             {/* Loading (only at first data fetch) */}
-            {!data && !isError && <Loading dashboard={dashboard} />}
+            {!data && !isError && <GraphLoading dashboard={dashboard} />}
 
             {/* Table */}
             {data && (

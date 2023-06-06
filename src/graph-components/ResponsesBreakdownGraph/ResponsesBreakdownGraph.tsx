@@ -8,8 +8,8 @@ import { useCampaignQuery } from '@hooks/use-campaign'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts'
 import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent'
 import { classNames } from '@utils'
-import { Loading } from '@components/Loading'
-import { Error } from '@components/Error'
+import { GraphLoading } from 'components/GraphLoading'
+import { GraphError } from 'components/GraphError'
 
 interface IResponsesBreakdownGraphProps {
     dashboard: string
@@ -20,7 +20,6 @@ interface ICustomTooltip extends TooltipProps<ValueType, NameType> {
 }
 
 export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphProps) => {
-    // Campaign query
     const { data, isError } = useCampaignQuery(dashboard)
 
     // Set topic text
@@ -59,14 +58,14 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
             respondentNounPlural = 'respondents'
     }
 
-    // Set bar color
-    let barColor: string
+    // Set bar classes
+    let barClasses: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            barColor = 'fill-pmnchColors-secondary hover:fill-pmnchColors-secondaryFaint'
+            barClasses = 'fill-pmnchColors-secondary hover:fill-pmnchColors-secondaryFaint'
             break
         default:
-            barColor = 'fill-defaultColors-secondary hover:fill-defaultColors-secondaryFaint'
+            barClasses = 'fill-defaultColors-secondary hover:fill-defaultColors-secondaryFaint'
     }
 
     return (
@@ -79,10 +78,10 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
             </p>
 
             {/* Error */}
-            {!data && isError && <Error dashboard={dashboard} />}
+            {!data && isError && <GraphError dashboard={dashboard} />}
 
             {/* Loading (only at first data fetch) */}
-            {!data && !isError && <Loading dashboard={dashboard} />}
+            {!data && !isError && <GraphLoading dashboard={dashboard} />}
 
             {/* Graph */}
             {data && (
@@ -112,7 +111,7 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
                                     content={<CustomTooltip dashboard={dashboard} />}
                                     position={{ x: 25 }}
                                 />
-                                <Bar dataKey="count" className={barColor} />
+                                <Bar dataKey="count" className={barClasses} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
