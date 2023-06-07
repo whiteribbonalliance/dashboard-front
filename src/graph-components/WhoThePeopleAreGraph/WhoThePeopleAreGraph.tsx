@@ -77,7 +77,14 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
     const containerHeight = useMemo(() => {
         if (!showBreakdownBy) return 0
 
-        return showBreakdownBy === 'breakdown-age' ? 500 : 950
+        switch (showBreakdownBy) {
+            case 'breakdown-age':
+                return 500
+            case 'breakdown-gender':
+                return 500
+            default:
+                return 950
+        }
     }, [showBreakdownBy])
 
     // Set bars fill
@@ -231,7 +238,11 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
                                 barCategoryGap={1}
                                 stackOffset="sign"
                             >
-                                <Legend formatter={(value) => legendFormatter(value)} />
+                                <Legend
+                                    verticalAlign="top"
+                                    formatter={(value) => legendFormatter(value)}
+                                    wrapperStyle={{ paddingBottom: '1rem' }}
+                                />
                                 <XAxis
                                     type="number"
                                     axisLine={false}

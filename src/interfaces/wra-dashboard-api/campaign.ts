@@ -27,11 +27,17 @@ interface IHistogram {
     canonical_country: IHistogramData[]
 }
 
+interface IGendersBreakdown {
+    name: string
+    count: string
+}
+
 export interface ICampaign {
     responses_sample: IResponsesSample
     responses_breakdown: IResponsesBreakdown[]
     top_words_and_phrases: ITopWordsAndPhrases
     histogram: IHistogram
+    genders_breakdown: IGendersBreakdown[]
     filter_1_description: string
     filter_2_description: string
     filter_1_respondents_count: number

@@ -141,7 +141,13 @@ export const TopWordsOrPhrases = ({
                         barGap={0}
                     >
                         {/* Only display the legend if the filters descriptions are not the same */}
-                        {!filtersDescriptionsAreEqual && <Legend formatter={(value) => legendFormatter(value)} />}
+                        {!filtersDescriptionsAreEqual && (
+                            <Legend
+                                formatter={(value) => legendFormatter(value)}
+                                verticalAlign="top"
+                                wrapperStyle={{ paddingBottom: '1rem' }}
+                            />
+                        )}
 
                         <XAxis dataKey="count_1" type="number" axisLine={false} tickCount={7} />
                         <YAxis dataKey="word" type="category" axisLine={false} tickLine={false} width={yAxisWidth} />

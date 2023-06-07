@@ -315,7 +315,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
                                                 {/* Advanced mode panel */}
                                                 <Transition>
-                                                    <Disclosure.Panel as="div" className="flex flex-col gap-y-3">
+                                                    <Disclosure.Panel as="div" className="mt-5 flex flex-col gap-y-3">
                                                         {/* Show responses from categories */}
                                                         <div>
                                                             <div className="mb-1">Responses from categories</div>
