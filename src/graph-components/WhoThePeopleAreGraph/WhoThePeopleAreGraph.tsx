@@ -83,7 +83,7 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
             case 'breakdown-gender':
                 return 500
             default:
-                return 950
+                return 1100
         }
     }, [showBreakdownBy])
 
@@ -235,7 +235,7 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
                                 margin={{ top: 15, right: 35, left: 50, bottom: 15 }}
                                 width={750}
                                 layout="vertical"
-                                barCategoryGap={1}
+                                barCategoryGap={5}
                                 stackOffset="sign"
                             >
                                 <Legend
@@ -270,6 +270,7 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
                                     dataKey="count_1"
                                     stackId={0}
                                     fill={bar2Fill}
+                                    minPointSize={5}
                                     onMouseOver={() => setHoveredBarDataKey('count_1')}
                                     onMouseEnter={toggleShowTooltip}
                                     onMouseLeave={toggleShowTooltip}
@@ -280,6 +281,7 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
                                         dataKey="count_2"
                                         stackId={0}
                                         fill={bar1Fill}
+                                        minPointSize={15}
                                         onMouseOver={() => setHoveredBarDataKey('count_2')}
                                         onMouseEnter={toggleShowTooltip}
                                         onMouseLeave={toggleShowTooltip}

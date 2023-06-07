@@ -114,7 +114,7 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
                                     content={<CustomTooltip dashboard={dashboard} />}
                                     position={{ x: 25 }}
                                 />
-                                <Bar dataKey="count" className={barClasses} />
+                                <Bar dataKey="count" className={barClasses} minPointSize={5} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>

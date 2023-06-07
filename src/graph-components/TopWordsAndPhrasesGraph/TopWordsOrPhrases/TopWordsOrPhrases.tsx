@@ -137,7 +137,7 @@ export const TopWordsOrPhrases = ({
                         margin={{ top: 15, right: 35, left: 0, bottom: 15 }}
                         width={750}
                         layout="vertical"
-                        barCategoryGap={2}
+                        barCategoryGap={5}
                         barGap={0}
                     >
                         {/* Only display the legend if the filters descriptions are not the same */}
@@ -168,6 +168,7 @@ export const TopWordsOrPhrases = ({
                             dataKey="count_1"
                             className={bar1Classes}
                             fill={bar1Fill}
+                            minPointSize={5}
                             onMouseOver={() => setHoveredBarDataKey('count_1')}
                         />
 
@@ -177,6 +178,7 @@ export const TopWordsOrPhrases = ({
                                 dataKey="count_2"
                                 className={bar2Classes}
                                 fill={bar2Fill}
+                                minPointSize={5}
                                 onMouseOver={() => setHoveredBarDataKey('count_2')}
                             />
                         )}
