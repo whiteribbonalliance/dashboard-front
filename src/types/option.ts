@@ -1,4 +1,4 @@
-export type Option = {
-    value: string | boolean
+export type Option<Type> = {
+    value: Type
     label: string
 }

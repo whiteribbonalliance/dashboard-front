@@ -12,20 +12,20 @@ interface ILanguageSelectProps {
     dashboard: string
 }
 
-type Option = {
+type LanguageOption = {
     id: string
     value: string
     label: string
 }
 
-const options: Option[] = [
+const options: LanguageOption[] = [
     { id: 'en', value: 'en', label: 'English' },
     { id: 'es', value: 'es', label: 'Spanish' },
     { id: 'nl', value: 'nl', label: 'Dutch' },
 ]
 
 export const LanguageSelect = ({ dashboard }: ILanguageSelectProps) => {
-    const [selectedOption, setSelectedOption] = useState<Option>(options[0])
+    const [selectedOption, setSelectedOption] = useState<LanguageOption>(options[0])
 
     // Set listbox button classes
     let listboxButtonClasses: string

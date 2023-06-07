@@ -172,6 +172,9 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
         [descriptionsCountAndColor]
     )
 
+    // Display table or not
+    const displayTable = !!data
+
     return (
         <Box>
             <GraphTitle dashboard={dashboard} text="A sample of 1000 responses" />
@@ -183,10 +186,10 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             {!data && isError && <GraphError dashboard={dashboard} />}
 
             {/* Loading (only at first data fetch) */}
-            {!data && !isError && <GraphLoading dashboard={dashboard} />}
+            {!displayTable && !isError && <GraphLoading dashboard={dashboard} />}
 
             {/* Table */}
-            {data && (
+            {displayTable && (
                 <>
                     <table className="mb-3 mt-3 w-full bg-white">
                         <thead className="border-b border-b-grayLight">

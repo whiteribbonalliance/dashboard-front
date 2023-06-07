@@ -82,6 +82,9 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
         },
     ]
 
+    // Display graph or not
+    const displayGraph = !!data
+
     return (
         <Box>
             <GraphTitle dashboard={dashboard} text="Top words and phrases" />
@@ -91,10 +94,10 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
             {!data && isError && <GraphError dashboard={dashboard} />}
 
             {/* Loading (only at first data fetch) */}
-            {!data && !isError && <GraphLoading dashboard={dashboard} />}
+            {!displayGraph && !isError && <GraphLoading dashboard={dashboard} />}
 
             {/* Graph */}
-            {data && (
+            {displayGraph && (
                 <div className="mt-3 w-full">
                     <Tab.Group>
                         <Tab.List className="flex flex-col sm:flex-row">

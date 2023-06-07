@@ -68,6 +68,9 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
             barClasses = 'fill-defaultColors-secondary hover:fill-defaultColors-secondaryFaint'
     }
 
+    // Display graph or not
+    const displayGraph = !!data
+
     return (
         <Box>
             <GraphTitle dashboard={dashboard} text={`Breakdown of ${respondentsText} responses by ${topicText}`} />
@@ -81,10 +84,10 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
             {!data && isError && <GraphError dashboard={dashboard} />}
 
             {/* Loading (only at first data fetch) */}
-            {!data && !isError && <GraphLoading dashboard={dashboard} />}
+            {!displayGraph && !isError && <GraphLoading dashboard={dashboard} />}
 
             {/* Graph */}
-            {data && (
+            {displayGraph && (
                 <>
                     {/* Bar chart */}
                     <div className="mb-3 mt-3 w-full">

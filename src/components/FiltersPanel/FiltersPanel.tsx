@@ -30,12 +30,14 @@ interface IFieldProps {
 }
 
 interface ISelectProps extends IFieldProps {
-    options: Option[]
+    options: (Option<string> | Option<boolean>)[]
     control: Control<Filter, any>
 }
 
 interface ISelectCountriesProps extends ISelectProps {
-    handleOnChangeSelectedOptions: (options: MultiValue<Option>) => void
+    handleOnChangeSelectedOptions:
+        | ((options: MultiValue<Option<string>>) => void)
+        | ((options: MultiValue<Option<boolean>>) => void)
 }
 
 interface IInputProps extends IFieldProps {
@@ -47,22 +49,26 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
     const setFilters = useFiltersStore((state: IFiltersState) => state.setFilters)
 
     // Select options
-    const [countryOptions, setCountryOptions] = useState<Option[]>([])
-    const [responseTopicOptions, setResponseTopicOptions] = useState<Option[]>([])
-    const [ageOptions, setAgeOptions] = useState<Option[]>([])
-    const [genderOptions, setGenderOptions] = useState<Option[]>([])
-    const [professionOptions, setProfessionOptions] = useState<Option[]>([])
-    const [onlyResponsesFromCategoriesOptions, setOnlyResponsesFromCategoriesOptions] = useState<Option[]>([])
+    const [countryOptions, setCountryOptions] = useState<Option<string>[]>([])
+    const [responseTopicOptions, setResponseTopicOptions] = useState<Option<string>[]>([])
+    const [ageOptions, setAgeOptions] = useState<Option<string>[]>([])
+    const [genderOptions, setGenderOptions] = useState<Option<string>[]>([])
+    const [professionOptions, setProfessionOptions] = useState<Option<string>[]>([])
+    const [onlyResponsesFromCategoriesOptions, setOnlyResponsesFromCategoriesOptions] = useState<Option<boolean>[]>([])
     const [onlyMultiWordPhrasesContainingFilterTermOptions, setOnlyMultiWordPhrasesContainingFilterTermOptions] =
-        useState<Option[]>([])
+        useState<Option<boolean>[]>([])
 
     // Selected countries option(s) for each filter
-    const [selectedCountriesOptionsFilter1, setSelectedCountriesOptionsFilter1] = useState<MultiValue<Option>>([])
-    const [selectedCountriesOptionsFilter2, setSelectedCountriesOptionsFilter2] = useState<MultiValue<Option>>([])
+    const [selectedCountriesOptionsFilter1, setSelectedCountriesOptionsFilter1] = useState<MultiValue<Option<string>>>(
+        []
+    )
+    const [selectedCountriesOptionsFilter2, setSelectedCountriesOptionsFilter2] = useState<MultiValue<Option<string>>>(
+        []
+    )
 
     // Select regions options(s) for each filter
-    const [regionOptionsFilter1, setRegionOptionsFilter1] = useState<Option[]>([])
-    const [regionOptionsFilter2, setRegionOptionsFilter2] = useState<Option[]>([])
+    const [regionOptionsFilter1, setRegionOptionsFilter1] = useState<Option<string>[]>([])
+    const [regionOptionsFilter2, setRegionOptionsFilter2] = useState<Option<string>[]>([])
 
     // Region options for each country
     const countriesRegionsOptions = useRef<ICountryRegionOption[]>([])
@@ -165,8 +171,8 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
     // Set region options for filter
     function SetRegionOptionsForFilter(
-        selectedCountryOptionsFilter: MultiValue<Option>,
-        setRegionOptionsFilter: Dispatch<SetStateAction<Option[]>>,
+        selectedCountryOptionsFilter: MultiValue<Option<string>>,
+        setRegionOptionsFilter: Dispatch<SetStateAction<Option<string>[]>>,
         form: UseFormReturn<Filter, any>
     ) {
         // Only display regions for 1 selected country
@@ -185,13 +191,13 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
         }
     }
 
-    // Handle on change selected countries for filter 1
-    function handleOnChangeSelectedCountriesOptionsFilter1(options: MultiValue<Option>) {
+    // Handle on change selected countries for form 1
+    function handleOnChangeSelectedCountriesOptionsFilter1(options: MultiValue<Option<string>>) {
         setSelectedCountriesOptionsFilter1(options)
     }
 
-    // Handle on change selected countries for filter 2
-    function handleOnChangeSelectedCountriesOptionsFilter2(options: MultiValue<Option>) {
+    // Handle on change selected countries for form 2
+    function handleOnChangeSelectedCountriesOptionsFilter2(options: MultiValue<Option<string>>) {
         setSelectedCountriesOptionsFilter2(options)
     }
 

@@ -4,11 +4,13 @@ import { Option } from '@types'
 
 interface ISelectMultiValuesProps {
     id: string
-    options: Option[]
+    options: (Option<string> | Option<boolean>)[]
     value: string[]
     controllerRenderOnChange: (...event: any[]) => void
     customOnChange: () => void
-    handleOnChangeSelectedOptions?: (options: MultiValue<Option>) => void
+    handleOnChangeSelectedOptions?:
+        | ((options: MultiValue<Option<string>>) => void)
+        | ((options: MultiValue<Option<boolean>>) => void)
 }
 
 export const SelectMultiValues = ({
@@ -35,7 +37,7 @@ export const SelectMultiValues = ({
                 if (multiValueOptions) {
                     controllerRenderOnChange(multiValueOptions.map((option) => option.value))
                 }
-                if (handleOnChangeSelectedOptions) handleOnChangeSelectedOptions(multiValueOptions)
+                if (handleOnChangeSelectedOptions) handleOnChangeSelectedOptions(multiValueOptions as MultiValue<any>)
                 customOnChange()
             }}
         />

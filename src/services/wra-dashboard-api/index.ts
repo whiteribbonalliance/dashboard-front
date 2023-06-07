@@ -1,5 +1,6 @@
 import { ICampaign, ICampaignRequest, IFilterOptions } from '@interfaces'
 import { getDashboardCampaignCode } from '@utils'
+import { Option } from '@types'
 
 const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL as string
 const headers = { 'Content-Type': 'application/json' }
@@ -44,6 +45,27 @@ export async function getCampaign(dashboard: string, campaignRequest: ICampaignR
     }
 
     const data: ICampaign = await response.json()
+
+    return data
+}
+
+/**
+ * Get campaign who the people are options
+ *
+ * @param dashboard The dashboard
+ */
+export async function getCampaignWhoThePeopleAreOptions(dashboard: string) {
+    const campaign = getDashboardCampaignCode(dashboard)
+    const response = await fetch(`${apiUrl}/campaigns/${campaign}/who-the-people-are-options`, {
+        method: 'GET',
+        headers: headers,
+    })
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch campaign who the people are options')
+    }
+
+    const data: Option<string>[] = await response.json()
 
     return data
 }

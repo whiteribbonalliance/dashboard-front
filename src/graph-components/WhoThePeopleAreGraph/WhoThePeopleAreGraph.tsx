@@ -25,11 +25,7 @@ import {
 import { DashboardName } from '@enums'
 import { classNames, niceNum } from '@utils'
 import { IHistogramData } from '@interfaces'
-
-const optionBreakdownAge: Option = { value: 'breakdown-age', label: 'Show breakdown by age' }
-const optionBreakdownCountry: Option = { value: 'breakdown-country', label: 'Show breakdown by country' }
-const optionBreakdownGender: Option = { value: 'breakdown-gender', label: 'Show breakdown by gender' }
-const optionBreakdownProfession: Option = { value: 'breakdown-profession', label: 'Show breakdown by profession' }
+import { getCampaignWhoThePeopleAreOptions } from '@services/wra-dashboard-api'
 
 interface IWhoThePeopleAreGraphProps {
     dashboard: string
@@ -47,23 +43,16 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
     const [paragraph, setParagraph] = useState<string>('')
+    const [options, setOptions] = useState<Option<string>[]>([])
 
-    // Set options
-    let options: Option[]
-    switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
-            options = [optionBreakdownAge, optionBreakdownCountry]
-            break
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            options = [optionBreakdownAge, optionBreakdownGender, optionBreakdownCountry]
-            break
-        case DashboardName.MIDWIVES_VOICES:
-            options = [optionBreakdownAge, optionBreakdownProfession, optionBreakdownCountry]
-            break
-        default:
-            options = []
-    }
+    // Fetch options
+    useEffect(() => {
+        getCampaignWhoThePeopleAreOptions(dashboard)
+            .then((options) => setOptions(options))
+            .catch(() => {})
+    }, [dashboard])
 
+    // If filters descriptions are equal
     let filtersDescriptionsAreEqual = false
     if (data) {
         filtersDescriptionsAreEqual = data.filter_1_description === data.filter_2_description
@@ -71,9 +60,25 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
 
     // Form
     const form = useForm<WhoThePeopleAre>({
-        defaultValues: { show_breakdown_by: 'breakdown-age' },
         resolver: zodResolver(whoThePeopleAreSchema),
     })
+
+    // Watch field showBreakdownBy
+    const showBreakdownBy = form.watch('show_breakdown_by')
+
+    // Set default value for show_breakdown_by
+    useEffect(() => {
+        if (options.length > 0) {
+            form.setValue('show_breakdown_by', options[0].value)
+        }
+    }, [form, options])
+
+    // Container height
+    const containerHeight = useMemo(() => {
+        if (!showBreakdownBy) return 0
+
+        return showBreakdownBy === 'breakdown-age' ? 500 : 950
+    }, [showBreakdownBy])
 
     // Set bars fill
     let bar1Fill: string
@@ -90,36 +95,37 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
 
     // Display breakdown
     const displayBreakdown = useCallback(() => {
-        const showBreakdownBy = form.getValues().show_breakdown_by
-        let histogramData: IHistogramData[] = []
-        switch (showBreakdownBy) {
-            case 'breakdown-age':
-                histogramData = data?.histogram.age || []
-                setParagraph('Number and ages of respondents.')
-                break
-            case 'breakdown-gender':
-                histogramData = data?.histogram.gender || []
-                setParagraph('Number and ages of respondents.')
-                break
-            case 'breakdown-profession':
-                histogramData = data?.histogram.profession || []
-                setParagraph('Number and ages of respondents.')
-                break
-            case 'breakdown-country':
-                histogramData = data?.histogram.canonical_country || []
-                setParagraph('Countries respondents are located in.')
-                break
-            default:
-                histogramData = []
-        }
+        if (data && showBreakdownBy) {
+            let histogramData: IHistogramData[]
+            switch (showBreakdownBy) {
+                case 'breakdown-age':
+                    histogramData = data.histogram.age
+                    setParagraph('Number and ages of respondents.')
+                    break
+                case 'breakdown-gender':
+                    histogramData = data.histogram.gender
+                    setParagraph('Number and ages of respondents.')
+                    break
+                case 'breakdown-profession':
+                    histogramData = data?.histogram.profession
+                    setParagraph('Number and ages of respondents.')
+                    break
+                case 'breakdown-country':
+                    histogramData = data.histogram.canonical_country
+                    setParagraph('Countries respondents are located in.')
+                    break
+                default:
+                    histogramData = []
+            }
 
-        // Set count 2 values as negative
-        for (const datum of histogramData) {
-            datum.count_2 = -datum.count_2
-        }
+            // Set count 2 values as negative
+            for (const datum of histogramData) {
+                datum.count_2 = -datum.count_2
+            }
 
-        setCurrentHistogramData(histogramData)
-    }, [data, form])
+            setCurrentHistogramData(histogramData)
+        }
+    }, [data, showBreakdownBy])
 
     useEffect(() => {
         displayBreakdown()
@@ -180,6 +186,9 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
         setShowTooltip((prev) => !prev)
     }
 
+    // Display graph or not
+    const displayGraph = currentHistogramData && showBreakdownBy
+
     return (
         <Box>
             <GraphTitle dashboard={dashboard} text="Who the people are" />
@@ -189,10 +198,10 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
             {!data && isError && <GraphError dashboard={dashboard} />}
 
             {/* Loading (only at first data fetch) */}
-            {!data && !isError && <GraphLoading dashboard={dashboard} />}
+            {!displayGraph && !isError && <GraphLoading dashboard={dashboard} />}
 
             {/* Graph */}
-            {currentHistogramData.length > 0 && (
+            {displayGraph && (
                 <div className="mt-3 flex flex-col">
                     {/* Select */}
                     <div className="w-full max-w-sm">
@@ -213,12 +222,11 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
 
                     {/* Bar chart */}
                     <div className="mb-3 mt-3 w-full">
-                        <ResponsiveContainer height={450} className="bg-white">
+                        <ResponsiveContainer height={containerHeight} className="bg-white">
                             <BarChart
                                 data={currentHistogramData}
-                                margin={{ top: 15, right: 35, left: 15, bottom: 15 }}
+                                margin={{ top: 15, right: 35, left: 50, bottom: 15 }}
                                 width={750}
-                                height={450}
                                 layout="vertical"
                                 barCategoryGap={1}
                                 stackOffset="sign"
@@ -275,7 +283,7 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
     )
 }
 
-const CustomTooltip = ({ active, payload, label, dashboard, hoveredBarDataKey, showTooltip }: ICustomTooltip) => {
+const CustomTooltip = ({ active, payload, label, hoveredBarDataKey, showTooltip }: ICustomTooltip) => {
     if (active && payload && payload.length) {
         const data = payload.find((data) => data.dataKey === hoveredBarDataKey.current)
         if (data) {

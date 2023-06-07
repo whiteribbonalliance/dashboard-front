@@ -4,7 +4,7 @@ import { Option } from '@types'
 
 interface ISelectSingleValueProps {
     id: string
-    options: Option[]
+    options: Option<string | boolean>[]
     value: string | boolean
     controllerRenderOnChange: (...event: any[]) => void
     customOnChange: () => void
