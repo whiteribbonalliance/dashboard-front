@@ -191,7 +191,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
             {/* Table */}
             {displayTable && (
                 <>
-                    <table className="mb-3 mt-3 w-full bg-white">
+                    <table className="mb-3 mt-3 w-full table-fixed bg-white">
                         <thead className="border-b border-b-grayLight">
                             {table.getHeaderGroups().map((headerGroup) => (
                                 <tr key={headerGroup.id}>
@@ -218,7 +218,7 @@ export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) 
                                         <td
                                             key={cell.id}
                                             className={classNames(
-                                                'border-r border-r-grayLight px-1',
+                                                'break-words border-r border-r-grayLight px-1',
                                                 cell.column.id === 'raw_response' ? getDescriptionColorClass(row) : ''
                                             )}
                                         >

@@ -144,6 +144,7 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
     }
 
     // Determine the max value for the x-axis
+    // TODO: fix nice num
     const getMaxValueX = useMemo(() => {
         if (currentHistogramData.length < 1) return 0
 
