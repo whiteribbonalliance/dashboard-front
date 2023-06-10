@@ -13,6 +13,7 @@ import { IWorldBubbleMapsCoordinate } from '@interfaces'
 import { Tab } from '@headlessui/react'
 import { classNames } from '@utils'
 import { useQuery } from 'react-query'
+import { IFiltersState, useFiltersStore } from '@stores/filters'
 
 interface IWorldBubbleMapsProps {
     dashboard: string
@@ -161,6 +162,9 @@ export const WorldBubbleMaps = ({ dashboard }: IWorldBubbleMapsProps) => {
 }
 
 const WorldBubbleMap = ({ dashboard, respondents, dataGeo, bubbleMapCoordinates }: IWorldBubbleMapProps) => {
+    const filters = useFiltersStore((state: IFiltersState) => state.filters)
+    const setFilters = useFiltersStore((state: IFiltersState) => state.setFilters)
+
     const svgRef = useRef<SVGSVGElement>(undefined as any)
     const divRef = useRef<HTMLDivElement>(undefined as any)
 
@@ -251,19 +255,29 @@ const WorldBubbleMap = ({ dashboard, respondents, dataGeo, bubbleMapCoordinates 
                 .style('color', 'var(--white)')
 
             // On mouse over
-            const mouseOver = () => tooltip.style('opacity', 1)
+            const onMouseOver = () => tooltip.style('opacity', 1)
 
             // On mouse move
-            const mouseMove = (event: MouseEvent, d: IWorldBubbleMapsCoordinate) =>
+            const onMouseMove = (event: MouseEvent, d: IWorldBubbleMapsCoordinate) =>
                 tooltip
                     .html(d.country_name + '<br>' + d.n + ' ' + respondents)
                     .style('left', `${event.offsetX}px`)
                     .style('top', `${event.offsetY - 85}px`)
                     .style('background-color', getBubbleColor(d.color_id))
                     .style('font-weight', 'bold')
+                    .style('display', 'block')
 
             // On mouse leave
-            const mouseLeave = () => tooltip.style('opacity', 0)
+            const onMouseLeave = () => tooltip.style('opacity', 0).style('display', 'none')
+
+            // On click (show country info)
+            const onClick = (e: MouseEvent, d: IWorldBubbleMapsCoordinate) => {
+                // if (filters.filter1.countries.length < 1) {
+                //     let filter1 = defaultFilterValues
+                //     filter1.countries = [d.country_alpha2_code]
+                //     setFilters({ filter1: filter1, filter2: filters.filter2 })
+                // }
+            }
 
             // Add circles
             svgEl
@@ -286,9 +300,10 @@ const WorldBubbleMap = ({ dashboard, respondents, dataGeo, bubbleMapCoordinates 
                 .attr('stroke', () => 'var(--white)')
                 .attr('stroke-width', 1)
                 .attr('fill-opacity', 0.4)
-                .on('mouseover', mouseOver)
-                .on('mousemove', mouseMove)
-                .on('mouseleave', mouseLeave)
+                .on('mouseover', onMouseOver)
+                .on('mousemove', onMouseMove)
+                .on('mouseleave', onMouseLeave)
+                .on('click', onClick)
         }
 
         drawWorldBubbleMap().then()
