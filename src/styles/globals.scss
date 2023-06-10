@@ -13,8 +13,11 @@
 }
 
 :root {
+    --white: #ffffff;
+    --black: #000000;
     --grayLighter: #f9f9f9;
     --grayLight: #dddede;
+    --gray: #b6b6b6;
 
     // Default
     --defaultPrimary: #202a44;
@@ -43,4 +46,8 @@
     --pmnchQuaternaryFaint: #fffccc;
     --pmnchQuinaryFaint: #cff3fc;
     --pmnchFont: #000000;
+}
+
+.bubble-map-circle:hover {
+    stroke: var(--gray);
 }

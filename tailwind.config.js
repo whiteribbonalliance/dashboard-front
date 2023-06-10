@@ -8,12 +8,13 @@ module.exports = {
     ],
     theme: {
         colors: {
-            'white': '#FFFFFF',
-            'black': '#000000',
-            'grayLighter': 'var(--grayLighter)',
-            'grayLight': 'var(--grayLight)',
-            'transparent': 'transparent',
-            'defaultColors': {
+            white: 'var(--white)',
+            black: 'var(--black)',
+            grayLighter: 'var(--grayLighter)',
+            grayLight: 'var(--grayLight)',
+            gray: 'var(--gray)',
+            transparent: 'transparent',
+            defaultColors: {
                 primary: 'var(--defaultPrimary)',
                 secondary: 'var(--defaultSecondary)',
                 tertiary: 'var(--defaultTertiary)',
@@ -28,7 +29,7 @@ module.exports = {
 
                 font: 'var(--defaultFont)',
             },
-            'pmnchColors': {
+            pmnchColors: {
                 primary: 'var(--pmnchPrimary)',
                 secondary: 'var(--pmnchSecondary)',
                 tertiary: 'var(--pmnchTertiary)',

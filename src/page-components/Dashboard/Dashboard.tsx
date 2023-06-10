@@ -6,8 +6,8 @@ import { Subtext } from 'components/Subtext'
 import { FiltersPanel } from '@components/FiltersPanel'
 import { ResponsesBreakdownGraph } from '@graph-components/ResponsesBreakdownGraph'
 import { TopWordsAndPhrasesGraph } from '@graph-components/TopWordsAndPhrasesGraph'
-import { ResponsesSampleGraph } from '@graph-components/ResponsesSampleGraph'
-import { LocationGraph } from '@graph-components/LocationGraph'
+import { ResponsesSampleTable } from 'graph-components/ResponsesSampleTable'
+import { WorldBubbleMaps } from 'graph-components/WorldBubbleMaps'
 import { WhoThePeopleAreGraph } from 'graph-components/WhoThePeopleAreGraph'
 import { DashboardName } from '@enums'
 import { GenderBreakdownGraph } from '@graph-components/GenderBreakdownGraph'
@@ -54,22 +54,22 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
                     <FiltersPanel dashboard={dashboard} />
                 </section>
 
-                {/* Graphs */}
+                {/* Graphs, table & map */}
                 <section className={classNames('col-span-2 grid grid-cols-1', boxesGapY)}>
                     {DashboardName.WHAT_YOUNG_PEOPLE_WANT === dashboard ? (
                         <>
                             <ResponsesBreakdownGraph dashboard={dashboard} />
-                            <LocationGraph dashboard={dashboard} />
+                            <WorldBubbleMaps dashboard={dashboard} />
                             <WhoThePeopleAreGraph dashboard={dashboard} />
                             <GenderBreakdownGraph dashboard={dashboard} />
                             <TopWordsAndPhrasesGraph dashboard={dashboard} />
-                            <ResponsesSampleGraph dashboard={dashboard} />
+                            <ResponsesSampleTable dashboard={dashboard} />
                         </>
                     ) : (
                         <>
                             <TopWordsAndPhrasesGraph dashboard={dashboard} />
-                            <ResponsesSampleGraph dashboard={dashboard} />
-                            <LocationGraph dashboard={dashboard} />
+                            <ResponsesSampleTable dashboard={dashboard} />
+                            <WorldBubbleMaps dashboard={dashboard} />
                             <ResponsesBreakdownGraph dashboard={dashboard} />
                             <WhoThePeopleAreGraph dashboard={dashboard} />
                         </>

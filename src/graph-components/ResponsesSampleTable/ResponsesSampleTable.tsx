@@ -37,7 +37,7 @@ interface ITableData {
 
 const columnHelper = createColumnHelper<any>()
 
-export const ResponsesSampleGraph = ({ dashboard }: IResponsesSampleGraphProps) => {
+export const ResponsesSampleTable = ({ dashboard }: IResponsesSampleGraphProps) => {
     const [tableData, setTableData] = useState<ITableData>({ data: [], columns: [] })
     const { data, isError } = useCampaignQuery(dashboard)
 

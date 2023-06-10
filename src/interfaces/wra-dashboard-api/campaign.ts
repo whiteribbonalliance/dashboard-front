@@ -7,7 +7,7 @@ interface IResponsesSample {
     data: any
 }
 
-interface IResponsesBreakdown {
+interface IResponseBreakdownData {
     count: number
     description: string
 }
@@ -27,17 +27,32 @@ interface IHistogram {
     canonical_country: IHistogramData[]
 }
 
-interface IGendersBreakdown {
+interface IGenderData {
     name: string
     count: string
 }
 
+export interface IWorldBubbleMapsCoordinate {
+    country_alpha2_code: string
+    country_name: string
+    color_id: 'color_1' | 'color_2'
+    n: number
+    lat: number
+    lon: number
+}
+
+interface IWorldBubbleMapsCoordinates {
+    coordinates_1: IWorldBubbleMapsCoordinate[]
+    coordinates_2: IWorldBubbleMapsCoordinate[]
+}
+
 export interface ICampaign {
     responses_sample: IResponsesSample
-    responses_breakdown: IResponsesBreakdown[]
+    responses_breakdown: IResponseBreakdownData[]
     top_words_and_phrases: ITopWordsAndPhrases
     histogram: IHistogram
-    genders_breakdown: IGendersBreakdown[]
+    genders_breakdown: IGenderData[]
+    world_bubble_maps_coordinates: IWorldBubbleMapsCoordinates
     filter_1_description: string
     filter_2_description: string
     filter_1_respondents_count: number
