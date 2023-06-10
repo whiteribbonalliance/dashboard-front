@@ -22,6 +22,7 @@ interface ITopWordsOrPhrasesProps {
     words: ITopWords[]
     filter1Description: string
     filter2Description: string
+    filtersAreIdentical: boolean
     yAxisWidth: number
 }
 
@@ -38,10 +39,10 @@ export const TopWordsOrPhrases = ({
     words,
     filter1Description,
     filter2Description,
+    filtersAreIdentical,
     yAxisWidth,
 }: ITopWordsOrPhrasesProps) => {
     const hoveredBarDataKey = useRef<string>(undefined as any)
-    const filtersDescriptionsAreEqual = filter1Description === filter2Description
 
     // Set bars classes, bars fill, and custom tooltip paragraph classes (each id has a different color)
     let pmnchBar1Classes: string
@@ -140,8 +141,8 @@ export const TopWordsOrPhrases = ({
                         barCategoryGap={5}
                         barGap={0}
                     >
-                        {/* Only display the legend if the filters descriptions are not the same */}
-                        {!filtersDescriptionsAreEqual && (
+                        {/* Only display the legend if filters not identical */}
+                        {!filtersAreIdentical && (
                             <Legend
                                 formatter={(value) => legendFormatter(value)}
                                 verticalAlign="top"
@@ -172,8 +173,8 @@ export const TopWordsOrPhrases = ({
                             onMouseOver={() => setHoveredBarDataKey('count_1')}
                         />
 
-                        {/* Only display the second bar if the filters descriptions are not the same */}
-                        {!filtersDescriptionsAreEqual && (
+                        {/* Only display the second bar if filters are not identical */}
+                        {!filtersAreIdentical && (
                             <Bar
                                 dataKey="count_2"
                                 className={bar2Classes}

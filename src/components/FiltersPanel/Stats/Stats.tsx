@@ -29,8 +29,8 @@ export const Stats = ({ dashboard }: IStatsProps) => {
                 </div>
             </div>
 
-            {/* Only display if filter 1 description does not equal filter 2 description */}
-            {data.filter_1_description !== data.filter_2_description && (
+            {/* Only display if filters are not identical */}
+            {!data.filters_are_identical && (
                 <>
                     <div className="text-center">vs</div>
                     <div className="mt-2 flex w-full flex-row gap-x-3">

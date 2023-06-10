@@ -85,9 +85,9 @@ export const WorldBubbleMaps = ({ dashboard }: IWorldBubbleMapsProps) => {
         },
     ]
 
-    // Add world bubble maps 2 to tabs if there is data for coordinates_2
+    // Add world bubble maps 2 if filters are not identical
     if (data && dataGeoQuery.data) {
-        if (data.filter_1_description !== data.filter_2_description) {
+        if (!data.filters_are_identical) {
             tabs.push({
                 id: 'world-bubble-map-2',
                 title: data.filter_2_description,

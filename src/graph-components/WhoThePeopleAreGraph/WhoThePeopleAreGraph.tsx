@@ -52,12 +52,6 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
             .catch(() => {})
     }, [dashboard])
 
-    // If filters descriptions are equal
-    let filtersDescriptionsAreEqual = false
-    if (data) {
-        filtersDescriptionsAreEqual = data.filter_1_description === data.filter_2_description
-    }
-
     // Form
     const form = useForm<WhoThePeopleAre>({
         resolver: zodResolver(whoThePeopleAreSchema),
@@ -177,12 +171,14 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
 
     // Domain for x-axis
     const xAxisDomain = useMemo(() => {
-        if (filtersDescriptionsAreEqual) {
-            return [0, getMaxValueX]
-        } else {
-            return [-getMaxValueX, getMaxValueX]
+        if (data) {
+            if (data.filters_are_identical) {
+                return [0, getMaxValueX]
+            } else {
+                return [-getMaxValueX, getMaxValueX]
+            }
         }
-    }, [filtersDescriptionsAreEqual, getMaxValueX])
+    }, [data, getMaxValueX])
 
     // Set hovered bar data key
     function setHoveredBarDataKey(dataKey: string) {
@@ -195,7 +191,7 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
     }
 
     // Display graph or not
-    const displayGraph = currentHistogramData && showBreakdownBy
+    const displayGraph = data && currentHistogramData && showBreakdownBy
 
     return (
         <Box>
@@ -265,7 +261,7 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
                                 />
 
                                 {/* Only display the legend if the filters descriptions are not the same */}
-                                {!filtersDescriptionsAreEqual && <Legend />}
+                                {!data.filters_are_identical && <Legend />}
 
                                 <Bar
                                     dataKey="count_1"
@@ -277,7 +273,7 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
                                     onMouseLeave={toggleShowTooltip}
                                 />
 
-                                {!filtersDescriptionsAreEqual && (
+                                {!data.filters_are_identical && (
                                     <Bar
                                         dataKey="count_2"
                                         stackId={0}

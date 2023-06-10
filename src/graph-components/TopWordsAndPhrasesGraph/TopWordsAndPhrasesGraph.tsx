@@ -48,6 +48,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
                     words={data.top_words_and_phrases.top_words}
                     filter1Description={data.filter_1_description}
                     filter2Description={data.filter_2_description}
+                    filtersAreIdentical={data.filters_are_identical}
                     yAxisWidth={250}
                 />
             ) : null,
@@ -62,6 +63,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
                     words={data.top_words_and_phrases.two_word_phrases}
                     filter1Description={data.filter_1_description}
                     filter2Description={data.filter_2_description}
+                    filtersAreIdentical={data.filters_are_identical}
                     yAxisWidth={250}
                 />
             ) : null,
@@ -76,6 +78,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard }: ITopWordsAndPhrasesGraphP
                     words={data.top_words_and_phrases.three_word_phrases}
                     filter1Description={data.filter_1_description}
                     filter2Description={data.filter_2_description}
+                    filtersAreIdentical={data.filters_are_identical}
                     yAxisWidth={275}
                 />
             ) : null,

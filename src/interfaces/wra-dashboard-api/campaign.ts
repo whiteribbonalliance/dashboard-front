@@ -59,4 +59,5 @@ export interface ICampaign {
     filter_2_respondents_count: number
     filter_1_average_age: string
     filter_2_average_age: string
+    filters_are_identical: boolean
 }
