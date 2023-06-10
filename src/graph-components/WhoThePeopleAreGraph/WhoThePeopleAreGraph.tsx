@@ -260,7 +260,7 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
                                     position={{ x: 25 }}
                                 />
 
-                                {/* Only display the legend if the filters descriptions are not the same */}
+                                {/* Only display the legend if filters are not identical */}
                                 {!data.filters_are_identical && <Legend />}
 
                                 <Bar

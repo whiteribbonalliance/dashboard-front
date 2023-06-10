@@ -109,12 +109,11 @@ const CustomTooltip = ({ active, payload }: ICustomTooltip) => {
         if (data) {
             const name = data.name
             const value = data.value
-            const fill = data.payload.fill
 
             return (
                 <p
-                    className={classNames(`border border-white p-1 text-sm text-black`)}
-                    style={{ backgroundColor: fill }}
+                    className={classNames(`border border-white p-1 text-sm text-black shadow-md`)}
+                    style={{ backgroundColor: 'var(--white)' }}
                 >
                     {`${name}, ${value}`}
                 </p>
