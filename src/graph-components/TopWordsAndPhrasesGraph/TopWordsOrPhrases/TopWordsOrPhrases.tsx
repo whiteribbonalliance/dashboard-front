@@ -131,7 +131,7 @@ export const TopWordsOrPhrases = ({
     return (
         <div className="mt-3 w-full">
             <p className="mb-3 w-full">Click on a bar to view responses containing a word or phrase.</p>
-            <div className="h-[42rem] w-full">
+            <div className="h-[43rem] w-full">
                 <ResponsiveContainer className="bg-white">
                     <BarChart
                         data={words}
