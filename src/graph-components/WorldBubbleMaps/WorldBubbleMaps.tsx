@@ -24,7 +24,7 @@ interface IWorldBubbleMapProps {
     respondents: string
     dataGeo: IDataGeo
     bubbleMapCoordinates: IWorldBubbleMapsCoordinate[]
-    colorId: 'color_1' | 'color_2'
+    colorId: 'color1' | 'color2'
 }
 
 interface IDataGeo {
@@ -82,7 +82,7 @@ export const WorldBubbleMaps = ({ dashboard }: IWorldBubbleMapsProps) => {
                         respondents={respondents}
                         dataGeo={dataGeoQuery.data}
                         bubbleMapCoordinates={data.world_bubble_maps_coordinates.coordinates_1}
-                        colorId="color_1"
+                        colorId="color1"
                     />
                 ) : null,
         },
@@ -100,7 +100,7 @@ export const WorldBubbleMaps = ({ dashboard }: IWorldBubbleMapsProps) => {
                         respondents={respondents}
                         dataGeo={dataGeoQuery.data}
                         bubbleMapCoordinates={data.world_bubble_maps_coordinates.coordinates_2}
-                        colorId="color_2"
+                        colorId="color2"
                     />
                 ),
             })
@@ -187,9 +187,9 @@ const WorldBubbleMap = ({ dashboard, respondents, dataGeo, bubbleMapCoordinates,
     // Color for bubble in map
     const bubbleColor = useMemo(() => {
         switch (colorId) {
-            case 'color_1':
+            case 'color1':
                 return bubbleColor1
-            case 'color_2':
+            case 'color2':
                 return bubbleColor2
         }
     }, [colorId, bubbleColor1, bubbleColor2])
