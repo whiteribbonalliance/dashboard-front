@@ -8,7 +8,7 @@ import { GraphLoading } from '@components/GraphLoading'
 import * as d3 from 'd3'
 import { DashboardName } from '@enums'
 import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { IWorldBubbleMapsCoordinate } from '@interfaces'
 import { Tab } from '@headlessui/react'
 import { classNames } from '@utils'
@@ -24,6 +24,7 @@ interface IWorldBubbleMapProps {
     respondents: string
     dataGeo: IDataGeo
     bubbleMapCoordinates: IWorldBubbleMapsCoordinate[]
+    colorId: 'color_1' | 'color_2'
 }
 
 interface IDataGeo {
@@ -81,6 +82,7 @@ export const WorldBubbleMaps = ({ dashboard }: IWorldBubbleMapsProps) => {
                         respondents={respondents}
                         dataGeo={dataGeoQuery.data}
                         bubbleMapCoordinates={data.world_bubble_maps_coordinates.coordinates_1}
+                        colorId="color_1"
                     />
                 ) : null,
         },
@@ -98,6 +100,7 @@ export const WorldBubbleMaps = ({ dashboard }: IWorldBubbleMapsProps) => {
                         respondents={respondents}
                         dataGeo={dataGeoQuery.data}
                         bubbleMapCoordinates={data.world_bubble_maps_coordinates.coordinates_2}
+                        colorId="color_2"
                     />
                 ),
             })
@@ -120,7 +123,7 @@ export const WorldBubbleMaps = ({ dashboard }: IWorldBubbleMapsProps) => {
     return (
         <Box>
             <GraphTitle dashboard={dashboard} text={`Where are the ${respondents} located?`} />
-            <p>Click bubbles to view country information.</p>
+            <p>Click on a bubble to view country information.</p>
 
             {/* Error */}
             {!data && isError && <GraphError dashboard={dashboard} />}
@@ -161,7 +164,7 @@ export const WorldBubbleMaps = ({ dashboard }: IWorldBubbleMapsProps) => {
     )
 }
 
-const WorldBubbleMap = ({ dashboard, respondents, dataGeo, bubbleMapCoordinates }: IWorldBubbleMapProps) => {
+const WorldBubbleMap = ({ dashboard, respondents, dataGeo, bubbleMapCoordinates, colorId }: IWorldBubbleMapProps) => {
     const filters = useFiltersStore((state: IFiltersState) => state.filters)
     const setFilters = useFiltersStore((state: IFiltersState) => state.setFilters)
 
@@ -182,17 +185,14 @@ const WorldBubbleMap = ({ dashboard, respondents, dataGeo, bubbleMapCoordinates 
     }
 
     // Color for bubble in map
-    const getBubbleColor = useCallback(
-        (colorId: 'color_1' | 'color_2') => {
-            switch (colorId) {
-                case 'color_1':
-                    return bubbleColor1
-                case 'color_2':
-                    return bubbleColor2
-            }
-        },
-        [bubbleColor1, bubbleColor2]
-    )
+    const bubbleColor = useMemo(() => {
+        switch (colorId) {
+            case 'color_1':
+                return bubbleColor1
+            case 'color_2':
+                return bubbleColor2
+        }
+    }, [colorId, bubbleColor1, bubbleColor2])
 
     // Draw the world bubble map
     useEffect(() => {
@@ -263,7 +263,7 @@ const WorldBubbleMap = ({ dashboard, respondents, dataGeo, bubbleMapCoordinates 
                     .html(d.country_name + '<br>' + d.n + ' ' + respondents)
                     .style('left', `${event.offsetX}px`)
                     .style('top', `${event.offsetY - 85}px`)
-                    .style('background-color', getBubbleColor(d.color_id))
+                    .style('background-color', bubbleColor)
                     .style('font-weight', 'bold')
                     .style('display', 'block')
 
@@ -273,9 +273,9 @@ const WorldBubbleMap = ({ dashboard, respondents, dataGeo, bubbleMapCoordinates 
             // On click (show country info)
             const onClick = (e: MouseEvent, d: IWorldBubbleMapsCoordinate) => {
                 // if (filters.filter1.countries.length < 1) {
-                //     let filter1 = defaultFilterValues
-                //     filter1.countries = [d.country_alpha2_code]
-                //     setFilters({ filter1: filter1, filter2: filters.filter2 })
+                //     // TODO: change in filter
+                //     // TODO: do similar in top words
+                //     // TODO: do similar on breakdown response topics
                 // }
             }
 
@@ -296,7 +296,7 @@ const WorldBubbleMap = ({ dashboard, respondents, dataGeo, bubbleMapCoordinates 
                     return 0
                 })
                 .attr('r', (d: IWorldBubbleMapsCoordinate) => circleSize(d.n))
-                .style('fill', (d: IWorldBubbleMapsCoordinate) => getBubbleColor(d.color_id))
+                .style('fill', (d: IWorldBubbleMapsCoordinate) => bubbleColor)
                 .attr('stroke', () => 'var(--white)')
                 .attr('stroke-width', 1)
                 .attr('fill-opacity', 0.4)
@@ -307,7 +307,7 @@ const WorldBubbleMap = ({ dashboard, respondents, dataGeo, bubbleMapCoordinates 
         }
 
         drawWorldBubbleMap().then()
-    }, [dataGeo, bubbleMapCoordinates, getBubbleColor, respondents])
+    }, [dataGeo, bubbleMapCoordinates, bubbleColor, respondents])
 
     return (
         <div ref={divRef} id="bubble-map" className="relative h-full w-full">

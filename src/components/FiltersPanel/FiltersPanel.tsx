@@ -228,7 +228,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
             // Update the filters store (when filters are updated, useCampaignQuery will refetch the campaign data)
             setFilters({ filter1: form1.getValues(), filter2: form2.getValues() })
-        }, 450)
+        }, 300)
     }
 
     return (

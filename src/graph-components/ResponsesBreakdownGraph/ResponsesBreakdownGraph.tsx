@@ -75,9 +75,8 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
         <Box>
             <GraphTitle dashboard={dashboard} text={`Breakdown of ${respondentsText} responses by ${topicText}`} />
             <p>
-                Click on a topic to view responses. Some {respondentNounPlural} mentioned more than one topic. You can
-                hover over the graph and select the zoom and pan options, or click and drag the graph up and down, to
-                see more. Hover over a bar to see the numbers and full category name.
+                Click on a topic to view responses. Some {respondentNounPlural} mentioned more than one topic. Hover
+                over a bar to see the numbers and category name.
             </p>
 
             {/* Error */}

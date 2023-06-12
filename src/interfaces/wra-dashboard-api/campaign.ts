@@ -35,7 +35,6 @@ interface IGenderData {
 export interface IWorldBubbleMapsCoordinate {
     country_alpha2_code: string
     country_name: string
-    color_id: 'color_1' | 'color_2'
     n: number
     lat: number
     lon: number

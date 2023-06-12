@@ -14,7 +14,7 @@ export function classNames(...classes: string[]) {
  *
  * @param dashboard The dashboard
  */
-export function getDashboardCampaignCode(dashboard: string) {
+export function dashboardToCampaignCode(dashboard: string) {
     switch (dashboard) {
         case DashboardName.WHAT_WOMEN_WANT:
             return CampaignCode.WHAT_WOMEN_WANT
