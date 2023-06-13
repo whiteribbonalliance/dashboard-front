@@ -85,11 +85,11 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
         )
     }
 
+    // Set logos
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
             return (
                 <div className="flex items-center gap-x-5 xl:gap-x-3">
-                    <WhiteRibbonAllianceLogo />
                     <_1point8Logo />
                     <PmnchLogo />
                 </div>
