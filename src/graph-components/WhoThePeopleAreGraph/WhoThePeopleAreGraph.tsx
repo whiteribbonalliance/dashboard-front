@@ -73,7 +73,7 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
 
         switch (showBreakdownBy) {
             case 'breakdown-age':
-                return 500
+                return 550
             case 'breakdown-gender':
                 return 500
             default:
