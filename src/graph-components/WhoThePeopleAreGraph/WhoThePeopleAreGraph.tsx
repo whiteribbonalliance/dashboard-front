@@ -86,12 +86,25 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
     let bar2Fill: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            bar1Fill = 'var(--pmnchPrimary)'
-            bar2Fill = 'var(--pmnchSecondary)'
+            bar1Fill = 'var(--pmnchSecondary)'
+            bar2Fill = 'var(--pmnchPrimary)'
             break
         default:
-            bar1Fill = 'var(--defaultTertiary)'
-            bar2Fill = 'var(--defaultSecondary)'
+            bar1Fill = 'var(--defaultSecondary)'
+            bar2Fill = 'var(--defaultTertiary)'
+    }
+
+    // Set bars classes
+    let bar1Classes: string
+    let bar2Classes: string
+    switch (dashboard) {
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+            bar1Classes = 'fill-pmnchColors-secondary hover:fill-pmnchColors-secondaryFaint'
+            bar2Classes = 'fill-pmnchColors-tertiary hover:fill-pmnchColors-tertiaryFaint'
+            break
+        default:
+            bar1Classes = 'fill-defaultColors-secondary hover:fill-defaultColors-secondaryFaint'
+            bar2Classes = 'fill-defaultColors-tertiary hover:fill-defaultColors-tertiaryFaint'
     }
 
     // Display breakdown
@@ -235,11 +248,14 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
                                 barCategoryGap={5}
                                 stackOffset="sign"
                             >
-                                <Legend
-                                    verticalAlign="top"
-                                    formatter={(value) => legendFormatter(value)}
-                                    wrapperStyle={{ paddingBottom: '1rem' }}
-                                />
+                                {/* Only display the legend if filters are not identical */}
+                                {!data.filters_are_identical && (
+                                    <Legend
+                                        verticalAlign="top"
+                                        formatter={(value) => legendFormatter(value)}
+                                        wrapperStyle={{ paddingBottom: '1rem' }}
+                                    />
+                                )}
                                 <XAxis
                                     type="number"
                                     axisLine={false}
@@ -267,13 +283,11 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
                                     position={{ x: 25 }}
                                 />
 
-                                {/* Only display the legend if filters are not identical */}
-                                {!data.filters_are_identical && <Legend />}
-
                                 <Bar
                                     dataKey="count_1"
+                                    className={bar1Classes}
                                     stackId={0}
-                                    fill={bar2Fill}
+                                    fill={bar1Fill}
                                     minPointSize={5}
                                     onMouseOver={() => setHoveredBarDataKey('count_1')}
                                     onMouseEnter={toggleShowTooltip}
@@ -283,8 +297,9 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
                                 {!data.filters_are_identical && (
                                     <Bar
                                         dataKey="count_2"
+                                        className={bar2Classes}
                                         stackId={0}
-                                        fill={bar1Fill}
+                                        fill={bar2Fill}
                                         minPointSize={15}
                                         onMouseOver={() => setHoveredBarDataKey('count_2')}
                                         onMouseEnter={toggleShowTooltip}
