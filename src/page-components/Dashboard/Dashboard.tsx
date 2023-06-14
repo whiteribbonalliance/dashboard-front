@@ -7,21 +7,18 @@ import { FiltersPanel } from '@components/FiltersPanel'
 import { WhoThePeopleAreGraph } from 'graph-components/WhoThePeopleAreGraph'
 import { DashboardName } from '@enums'
 import { classNames } from '@utils'
-import { getCampaign, getCampaignFilterOptions, getCampaignWhoThePeopleAreOptions } from '@services/wra-dashboard-api'
-import { ICampaign, IFilterOptions, IInitialData } from '@interfaces'
 import { ResponsesBreakdownGraph } from '@graph-components/ResponsesBreakdownGraph'
 import { WorldBubbleMaps } from '@graph-components/WorldBubbleMaps'
 import { ResponsesSampleTable } from '@graph-components/ResponsesSampleTable'
 import { TopWordsAndPhrasesGraph } from '@graph-components/TopWordsAndPhrasesGraph'
 import { GenderBreakdownGraph } from '@graph-components/GenderBreakdownGraph'
-import { Option } from '@types'
 
 interface IDashboardProps {
-    params: { dashboard: string }
+    params: { lang: string; dashboard: string }
 }
 
 export const Dashboard = async ({ params }: IDashboardProps) => {
-    const { dashboard } = params
+    const { dashboard, lang } = params
 
     // Fire notFound() if subdomain/dashboard requested is not an existing dashboard
     if (!dashboards.some((d) => d === dashboard)) {
@@ -71,27 +68,27 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
             <div className="grid grid-cols-1 items-start gap-x-[10%] xl:grid-cols-3">
                 {/* Filters panel */}
                 <section className="hidden xl:sticky xl:top-5 xl:col-span-1 xl:block">
-                    <FiltersPanel dashboard={dashboard} />
+                    <FiltersPanel dashboard={dashboard} language={lang} />
                 </section>
 
                 {/* Graphs, table & map */}
                 <section className={classNames('col-span-2 grid grid-cols-1', boxesGapY)}>
                     {DashboardName.WHAT_YOUNG_PEOPLE_WANT === dashboard ? (
                         <>
-                            <ResponsesBreakdownGraph dashboard={dashboard} />
-                            <WorldBubbleMaps dashboard={dashboard} />
-                            <WhoThePeopleAreGraph dashboard={dashboard} />
-                            <GenderBreakdownGraph dashboard={dashboard} />
-                            <TopWordsAndPhrasesGraph dashboard={dashboard} />
-                            <ResponsesSampleTable dashboard={dashboard} />
+                            <ResponsesBreakdownGraph dashboard={dashboard} language={lang} />
+                            <WorldBubbleMaps dashboard={dashboard} language={lang} />
+                            <WhoThePeopleAreGraph dashboard={dashboard} language={lang} />
+                            <GenderBreakdownGraph dashboard={dashboard} language={lang} />
+                            <TopWordsAndPhrasesGraph dashboard={dashboard} language={lang} />
+                            <ResponsesSampleTable dashboard={dashboard} language={lang} />
                         </>
                     ) : (
                         <>
-                            <TopWordsAndPhrasesGraph dashboard={dashboard} />
-                            <ResponsesSampleTable dashboard={dashboard} />
-                            <WorldBubbleMaps dashboard={dashboard} />
-                            <ResponsesBreakdownGraph dashboard={dashboard} />
-                            <WhoThePeopleAreGraph dashboard={dashboard} />
+                            <TopWordsAndPhrasesGraph dashboard={dashboard} language={lang} />
+                            <ResponsesSampleTable dashboard={dashboard} language={lang} />
+                            <WorldBubbleMaps dashboard={dashboard} language={lang} />
+                            <ResponsesBreakdownGraph dashboard={dashboard} language={lang} />
+                            <WhoThePeopleAreGraph dashboard={dashboard} language={lang} />
                         </>
                     )}
                 </section>

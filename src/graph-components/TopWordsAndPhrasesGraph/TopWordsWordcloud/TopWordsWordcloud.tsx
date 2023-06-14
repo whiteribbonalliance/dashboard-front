@@ -81,7 +81,7 @@ export const TopWordsWordcloud = ({ dashboard, wordcloudWords }: IWordcloudProps
                                 cloudWords.map((w: any, i) => (
                                     <Text
                                         className="hover:cursor-pointer"
-                                        key={w.text}
+                                        key={`${w.text}-${i}`}
                                         fill={wordcloudColors[i % wordcloudColors.length]}
                                         textAnchor={'middle'}
                                         transform={`translate(${w.x}, ${w.y}) rotate(${w.rotate})`}

@@ -22,6 +22,7 @@ import { Stats } from '@components/FiltersPanel/Stats'
 
 interface IFiltersPanelProps {
     dashboard: string
+    language: string
 }
 
 interface IFieldProps {
@@ -44,7 +45,7 @@ interface IInputProps extends IFieldProps {
     register: UseFormRegister<Filter>
 }
 
-export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
+export const FiltersPanel = ({ dashboard, language }: IFiltersPanelProps) => {
     // Set filters
     const setFilters = useFiltersStore((state: IFiltersState) => state.setFilters)
 
@@ -119,7 +120,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
 
     // Fetch filter options
     useEffect(() => {
-        getCampaignFilterOptions(dashboard)
+        getCampaignFilterOptions(dashboard, language)
             .then((filterOptions) => {
                 // Country options
                 setCountryOptions(filterOptions.countries)
@@ -148,7 +149,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
                 )
             })
             .catch(() => {})
-    }, [dashboard])
+    }, [dashboard, language])
 
     // Set regions of selected countries for filter 2
     useEffect(() => {
@@ -435,7 +436,7 @@ export const FiltersPanel = ({ dashboard }: IFiltersPanelProps) => {
             </div>
 
             {/* Stats */}
-            <Stats dashboard={dashboard} />
+            <Stats dashboard={dashboard} language={language} />
 
             {/* PMNCH QR code */}
             {displayPmnchQrCode && (

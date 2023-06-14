@@ -55,7 +55,8 @@ when you push or merge to `main`, except `README.md`. The app will deploy
 to https://dashboard-frontend-dot-deft-stratum-290216.uc.r.appspot.com plus any other domains that are pointing there.
 
 This script builds a Docker image and pushes to Google Container Registry and then deploys. In the future we may change
-to a direct Dockerless deployment which would use `app.yaml`. No authentication is needed because authentication is provided
+to a direct Dockerless deployment which would use `app.yaml`. No authentication is needed because authentication is
+provided
 via the Google App Engine service account, whose credentials are stored in the GitHub secret `GOOGLE_CREDENTIALS` (to
 change this, go to the GitHub web interface and got o Settings -> Secrets and variables -> Actions. You will need to be
 an administrator on the GitHub repo to modify these credentials).
@@ -77,3 +78,6 @@ Run container:
 ```bash
 docker run -p 3000:3000 wra-dashboards
 ```
+
+## Translations
+

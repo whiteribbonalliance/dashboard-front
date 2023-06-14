@@ -29,6 +29,7 @@ import { getCampaignWhoThePeopleAreOptions } from '@services/wra-dashboard-api'
 
 interface IWhoThePeopleAreGraphProps {
     dashboard: string
+    language: string
 }
 
 interface ICustomTooltip extends TooltipProps<number, string> {
@@ -37,8 +38,8 @@ interface ICustomTooltip extends TooltipProps<number, string> {
     showTooltip: boolean
 }
 
-export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) => {
-    const { data, isError } = useCampaignQuery(dashboard)
+export const WhoThePeopleAreGraph = ({ dashboard, language }: IWhoThePeopleAreGraphProps) => {
+    const { data, isError } = useCampaignQuery(dashboard, language)
     const [currentHistogramData, setCurrentHistogramData] = useState<IHistogramData[]>([])
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
@@ -47,10 +48,10 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
 
     // Fetch options
     useEffect(() => {
-        getCampaignWhoThePeopleAreOptions(dashboard)
+        getCampaignWhoThePeopleAreOptions(dashboard, language)
             .then((options) => setOptions(options))
             .catch(() => {})
-    }, [dashboard])
+    }, [dashboard, language])
 
     // Form
     const form = useForm<WhoThePeopleAre>({

@@ -5,10 +5,11 @@ import { useCampaignQuery } from '@hooks/use-campaign'
 
 interface IStatsProps {
     dashboard: string
+    language: string
 }
 
-export const Stats = ({ dashboard }: IStatsProps) => {
-    const { data } = useCampaignQuery(dashboard)
+export const Stats = ({ dashboard, language }: IStatsProps) => {
+    const { data } = useCampaignQuery(dashboard, language)
 
     if (!data) return null
 

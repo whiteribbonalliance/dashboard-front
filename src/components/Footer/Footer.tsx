@@ -9,7 +9,7 @@ interface IFooterProps {
     dashboard: string
 }
 
-export const Footer = ({ dashboard }: IFooterProps) => {
+export const Footer = async ({ dashboard }: IFooterProps) => {
     // Set footer link classes
     let footerLinkClasses: string
     switch (dashboard) {

@@ -11,7 +11,7 @@ const headers = { 'Content-Type': 'application/json' }
  * @param dashboard The dashboard
  * @param language The language
  */
-export async function getCampaignFilterOptions(dashboard: string, language: string = 'en') {
+export async function getCampaignFilterOptions(dashboard: string, language: string) {
     const campaign = dashboardToCampaignCode(dashboard)
     const response = await fetch(`${apiUrl}/campaigns/${campaign}/filter-options?lang=${language}`, {
         method: 'GET',
@@ -34,7 +34,7 @@ export async function getCampaignFilterOptions(dashboard: string, language: stri
  * @param campaignRequest The campaign request
  * @param language The language
  */
-export async function getCampaign(dashboard: string, campaignRequest: ICampaignRequest, language: string = 'en') {
+export async function getCampaign(dashboard: string, campaignRequest: ICampaignRequest, language: string) {
     const campaign = dashboardToCampaignCode(dashboard)
     const response = await fetch(`${apiUrl}/campaigns/${campaign}?lang=${language}`, {
         method: 'POST',
@@ -57,7 +57,7 @@ export async function getCampaign(dashboard: string, campaignRequest: ICampaignR
  * @param dashboard The dashboard
  * @param language The language
  */
-export async function getCampaignWhoThePeopleAreOptions(dashboard: string, language: string = 'en') {
+export async function getCampaignWhoThePeopleAreOptions(dashboard: string, language: string) {
     const campaign = dashboardToCampaignCode(dashboard)
     const response = await fetch(`${apiUrl}/campaigns/${campaign}/who-the-people-are-options?lang=${language}`, {
         method: 'GET',

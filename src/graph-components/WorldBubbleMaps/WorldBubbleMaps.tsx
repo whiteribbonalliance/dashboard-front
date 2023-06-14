@@ -17,6 +17,7 @@ import { IFiltersState, useFiltersStore } from '@stores/filters'
 
 interface IWorldBubbleMapsProps {
     dashboard: string
+    language: string
 }
 
 interface IWorldBubbleMapProps {
@@ -43,8 +44,8 @@ interface IDataGeo {
 const svgWidth = 900
 const svgHeight = 600
 
-export const WorldBubbleMaps = ({ dashboard }: IWorldBubbleMapsProps) => {
-    const { data, isError } = useCampaignQuery(dashboard)
+export const WorldBubbleMaps = ({ dashboard, language }: IWorldBubbleMapsProps) => {
+    const { data, isError } = useCampaignQuery(dashboard, language)
 
     // Set respondents
     let respondents: string

@@ -8,8 +8,7 @@ import { useEffect } from 'react'
 import { defaultFilterValues } from '@constants'
 import _ from 'lodash'
 
-// Campaign query
-export const useCampaignQuery = (dashboard: string) => {
+export const useCampaignQuery = (dashboard: string, language: string) => {
     const filters = useFiltersStore((state: IFiltersState) => state.filters)
 
     // If the filter has not changed from the default filter values then do not send it with the request
@@ -19,10 +18,14 @@ export const useCampaignQuery = (dashboard: string) => {
     const campaignQuery = useQuery<ICampaign>({
         queryKey: [`campaign-${dashboard}`],
         queryFn: () =>
-            getCampaign(dashboard, {
-                filter_1: filter1,
-                filter_2: filter2,
-            }),
+            getCampaign(
+                dashboard,
+                {
+                    filter_1: filter1,
+                    filter_2: filter2,
+                },
+                language
+            ),
         refetchOnWindowFocus: false,
     })
 

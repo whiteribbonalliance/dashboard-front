@@ -11,6 +11,7 @@ import { classNames } from '@utils'
 
 interface IGenderBreakdownGraphProps {
     dashboard: string
+    language: string
 }
 
 interface ICustomTooltip extends TooltipProps<number, string> {}
@@ -25,8 +26,8 @@ const colors = [
     'var(--pmnchSeptenary)',
 ]
 
-export const GenderBreakdownGraph = ({ dashboard }: IGenderBreakdownGraphProps) => {
-    const { data, isError } = useCampaignQuery(dashboard)
+export const GenderBreakdownGraph = ({ dashboard, language }: IGenderBreakdownGraphProps) => {
+    const { data, isError } = useCampaignQuery(dashboard, language)
 
     // Legend formatter
     function legendFormatter(value: string) {

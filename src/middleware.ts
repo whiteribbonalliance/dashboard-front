@@ -1,12 +1,25 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
+import { defaultLanguage, languages } from '@constants'
 
 // This function can be marked `async` if using `await` inside
-export function middleware(req: NextRequest) {
-    const { pathname } = req.nextUrl
+export function middleware(request: NextRequest) {
+    const { pathname } = request.nextUrl
+
+    // Check if there is any supported language in the pathname or not
+    const pathnameIsMissingLanguage = languages.every(
+        (language) => !pathname.startsWith(`/${language.code}/`) && pathname !== `/${language.code}`
+    )
+
+    // Redirect if there is no language
+    if (pathnameIsMissingLanguage) {
+        // e.g. incoming request is /products
+        // The new URL is now /en/products
+        return NextResponse.redirect(new URL(`/${defaultLanguage.code}/${pathname}`, request.url))
+    }
 
     // Get hostname
-    const hostname = req.headers.get('host')
+    const hostname = request.headers.get('host')
 
     // Get prod domain
     const prodDomain = process.env.NEXT_PUBLIC_PROD_DOMAIN as string
@@ -29,14 +42,14 @@ export function middleware(req: NextRequest) {
     }
 
     // Get url
-    const nextUrl = req.nextUrl
+    const nextUrl = request.nextUrl
     nextUrl.pathname = `/dashboards/${currentHost}${nextUrl.pathname}`
 
-    if (
-        !pathname.includes('.') && // Exclude all files in the public folder
-        !pathname.startsWith('/api') // Exclude all API routes
-    ) {
-        // Rewrite to the current hostname under the pages/dashboards folder
-        return NextResponse.rewrite(nextUrl)
-    }
+    // Rewrite to the current hostname under the app/dashboards folder
+    return NextResponse.rewrite(nextUrl)
+}
+
+export const config = {
+    // Exclude these paths
+    matcher: '/((?!api|.*\\..*|_next).*)',
 }

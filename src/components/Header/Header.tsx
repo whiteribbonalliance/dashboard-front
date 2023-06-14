@@ -17,13 +17,14 @@ import { classNames } from '@utils'
 
 interface IHeaderProps {
     dashboard: string
+    language: string
 }
 
 interface IHamburgerMenuProps {
     open: boolean
 }
 
-export const Header = ({ dashboard }: IHeaderProps) => {
+export const Header = ({ dashboard, language }: IHeaderProps) => {
     const [showMobileFiltersPanel, setShowMobileFiltersPanel] = useState<boolean>(false)
 
     // Set show video link
@@ -111,7 +112,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
 
                             {/* Menu items */}
                             <nav className="hidden gap-x-3 xl:flex">
-                                <LanguageSelect dashboard={dashboard} />
+                                <LanguageSelect dashboard={dashboard} language={language} />
                                 {menuItems.map((item) => {
                                     if (item.url) {
                                         return (
@@ -142,7 +143,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                                     )}
                                 >
                                     <div className="mt-3">
-                                        <LanguageSelect dashboard={dashboard} />
+                                        <LanguageSelect dashboard={dashboard} language={language} />
                                     </div>
                                     {menuItems.map((item) => {
                                         if (item.url) {
@@ -190,7 +191,7 @@ export const Header = ({ dashboard }: IHeaderProps) => {
                     showMobileFiltersPanel ? 'flex flex-col' : 'hidden'
                 )}
             >
-                <FiltersPanel dashboard={dashboard} />
+                <FiltersPanel dashboard={dashboard} language={language} />
             </div>
         </>
     )
