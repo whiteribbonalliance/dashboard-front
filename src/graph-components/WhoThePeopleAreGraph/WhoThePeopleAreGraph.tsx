@@ -282,18 +282,6 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
                                     }
                                     position={{ x: 25 }}
                                 />
-
-                                <Bar
-                                    dataKey="count_1"
-                                    className={bar1Classes}
-                                    stackId={0}
-                                    fill={bar1Fill}
-                                    minPointSize={5}
-                                    onMouseOver={() => setHoveredBarDataKey('count_1')}
-                                    onMouseEnter={toggleShowTooltip}
-                                    onMouseLeave={toggleShowTooltip}
-                                />
-
                                 {!data.filters_are_identical && (
                                     <Bar
                                         dataKey="count_2"
@@ -306,6 +294,17 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
                                         onMouseLeave={toggleShowTooltip}
                                     />
                                 )}
+
+                                <Bar
+                                    dataKey="count_1"
+                                    className={bar1Classes}
+                                    stackId={0}
+                                    fill={bar1Fill}
+                                    minPointSize={5}
+                                    onMouseOver={() => setHoveredBarDataKey('count_1')}
+                                    onMouseEnter={toggleShowTooltip}
+                                    onMouseLeave={toggleShowTooltip}
+                                />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
