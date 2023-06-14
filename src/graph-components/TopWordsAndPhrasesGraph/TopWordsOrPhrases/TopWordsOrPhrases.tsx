@@ -151,7 +151,14 @@ export const TopWordsOrPhrases = ({
                         )}
 
                         <XAxis dataKey="count_1" type="number" axisLine={false} tickCount={7} />
-                        <YAxis dataKey="word" type="category" axisLine={false} tickLine={false} width={yAxisWidth} />
+                        <YAxis
+                            dataKey="word"
+                            type="category"
+                            axisLine={false}
+                            tickLine={false}
+                            width={yAxisWidth}
+                            interval={0}
+                        />
                         <CartesianGrid strokeDasharray="0" stroke="#FFFFFF" />
                         <Tooltip
                             cursor={{ fill: 'transparent' }}

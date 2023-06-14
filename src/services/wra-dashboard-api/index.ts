@@ -9,10 +9,11 @@ const headers = { 'Content-Type': 'application/json' }
  * Get campaign filter options
  *
  * @param dashboard The dashboard
+ * @param language The language
  */
-export async function getCampaignFilterOptions(dashboard: string) {
+export async function getCampaignFilterOptions(dashboard: string, language: string = 'en') {
     const campaign = dashboardToCampaignCode(dashboard)
-    const response = await fetch(`${apiUrl}/campaigns/${campaign}/filter-options`, {
+    const response = await fetch(`${apiUrl}/campaigns/${campaign}/filter-options?lang=${language}`, {
         method: 'GET',
         headers: headers,
     })
@@ -31,10 +32,11 @@ export async function getCampaignFilterOptions(dashboard: string) {
  *
  * @param dashboard The dashboard
  * @param campaignRequest The campaign request
+ * @param language The language
  */
-export async function getCampaign(dashboard: string, campaignRequest: ICampaignRequest) {
+export async function getCampaign(dashboard: string, campaignRequest: ICampaignRequest, language: string = 'en') {
     const campaign = dashboardToCampaignCode(dashboard)
-    const response = await fetch(`${apiUrl}/campaigns/${campaign}`, {
+    const response = await fetch(`${apiUrl}/campaigns/${campaign}?lang=${language}`, {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(campaignRequest),
@@ -53,10 +55,11 @@ export async function getCampaign(dashboard: string, campaignRequest: ICampaignR
  * Get campaign who the people are options
  *
  * @param dashboard The dashboard
+ * @param language The language
  */
-export async function getCampaignWhoThePeopleAreOptions(dashboard: string) {
+export async function getCampaignWhoThePeopleAreOptions(dashboard: string, language: string = 'en') {
     const campaign = dashboardToCampaignCode(dashboard)
-    const response = await fetch(`${apiUrl}/campaigns/${campaign}/who-the-people-are-options`, {
+    const response = await fetch(`${apiUrl}/campaigns/${campaign}/who-the-people-are-options?lang=${language}`, {
         method: 'GET',
         headers: headers,
     })

@@ -226,7 +226,7 @@ const WorldBubbleMap = ({ dashboard, respondents, dataGeo, bubbleMapCoordinates,
             const valueExtent: any = d3.extent(bubbleMapCoordinates, (d: IWorldBubbleMapsCoordinate) => +d.n)
 
             // Circle size
-            const circleSize = d3.scaleSqrt().domain(valueExtent).range([7, 20])
+            const circleSize = d3.scaleSqrt().domain(valueExtent).range([7, 17])
 
             // Draw the map
             svgEl

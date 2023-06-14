@@ -106,6 +106,7 @@ export const ResponsesBreakdownGraph = ({ dashboard }: IResponsesBreakdownGraphP
                                     axisLine={false}
                                     tickLine={false}
                                     width={450}
+                                    interval={0}
                                 />
                                 <CartesianGrid strokeDasharray="0" stroke="#FFFFFF" />
                                 <Tooltip

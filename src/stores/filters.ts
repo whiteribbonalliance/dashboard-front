@@ -1,3 +1,5 @@
+'use client'
+
 import { create } from 'zustand'
 import { defaultFilterValues } from '@constants'
 import { Filter } from '@schemas/filter'
@@ -15,7 +17,7 @@ export interface IFiltersState {
 export const useFiltersStore = create<IFiltersState>((set, get) => ({
     filters: { filter1: defaultFilterValues, filter2: defaultFilterValues },
 
-    setFilters: (filters: IFilters) => {
+    setFilters: (filters) => {
         set(() => {
             return { filters }
         })

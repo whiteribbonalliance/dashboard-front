@@ -246,7 +246,14 @@ export const WhoThePeopleAreGraph = ({ dashboard }: IWhoThePeopleAreGraphProps) 
                                     domain={xAxisDomain}
                                     tickFormatter={(item) => xAxisFormatter(item)}
                                 />
-                                <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} width={150} />
+                                <YAxis
+                                    dataKey="name"
+                                    type="category"
+                                    axisLine={false}
+                                    tickLine={false}
+                                    width={150}
+                                    interval={0}
+                                />
                                 <CartesianGrid strokeDasharray="0" stroke="#FFFFFF" />
                                 <Tooltip
                                     cursor={{ fill: 'transparent' }}

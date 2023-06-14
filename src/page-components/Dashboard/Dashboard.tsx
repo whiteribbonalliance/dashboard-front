@@ -4,14 +4,17 @@ import { Title } from 'components/Title'
 import React from 'react'
 import { Subtext } from 'components/Subtext'
 import { FiltersPanel } from '@components/FiltersPanel'
-import { ResponsesBreakdownGraph } from '@graph-components/ResponsesBreakdownGraph'
-import { TopWordsAndPhrasesGraph } from '@graph-components/TopWordsAndPhrasesGraph'
-import { ResponsesSampleTable } from 'graph-components/ResponsesSampleTable'
-import { WorldBubbleMaps } from 'graph-components/WorldBubbleMaps'
 import { WhoThePeopleAreGraph } from 'graph-components/WhoThePeopleAreGraph'
 import { DashboardName } from '@enums'
-import { GenderBreakdownGraph } from '@graph-components/GenderBreakdownGraph'
 import { classNames } from '@utils'
+import { getCampaign, getCampaignFilterOptions, getCampaignWhoThePeopleAreOptions } from '@services/wra-dashboard-api'
+import { ICampaign, IFilterOptions, IInitialData } from '@interfaces'
+import { ResponsesBreakdownGraph } from '@graph-components/ResponsesBreakdownGraph'
+import { WorldBubbleMaps } from '@graph-components/WorldBubbleMaps'
+import { ResponsesSampleTable } from '@graph-components/ResponsesSampleTable'
+import { TopWordsAndPhrasesGraph } from '@graph-components/TopWordsAndPhrasesGraph'
+import { GenderBreakdownGraph } from '@graph-components/GenderBreakdownGraph'
+import { Option } from '@types'
 
 interface IDashboardProps {
     params: { dashboard: string }
@@ -24,6 +27,23 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
     if (!dashboards.some((d) => d === dashboard)) {
         notFound()
     }
+
+    // Get initial data
+    // let campaign: ICampaign | undefined = undefined
+    // let filterOptions: IFilterOptions | undefined = undefined
+    // let whoThePeopleWareOptions: Option<string>[] | undefined = undefined
+    //
+    // try {
+    //     campaign = await getCampaign(dashboard, {})
+    //     filterOptions = await getCampaignFilterOptions(dashboard)
+    //     whoThePeopleWareOptions = await getCampaignWhoThePeopleAreOptions(dashboard)
+    // } catch (error) {}
+    //
+    // const initialData: IInitialData = {
+    //     campaign,
+    //     filterOptions,
+    //     whoThePeopleWareOptions,
+    // }
 
     // Set gap-y between boxes
     let boxesGapY: string

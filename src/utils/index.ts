@@ -27,17 +27,6 @@ export function dashboardToCampaignCode(dashboard: string) {
     }
 }
 
-/**
- * Capitalize first letter
- *
- * @param value The value
- */
-export function titleCase(value: string) {
-    if (!value) return value
-
-    return value[0].toUpperCase() + value.slice(1).toLowerCase()
-}
-
 /***
  * Returns a "nice" number approximately equal to range
  * Rounds the number if round = true Takes the ceiling if round = false

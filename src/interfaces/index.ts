@@ -10,3 +10,4 @@ export type { ICampaign, IWorldBubbleMapsCoordinate } from './wra-dashboard-api/
 export type { IWordcloudWords } from './wra-dashboard-api/wordcloud-words'
 export type { ITopWords } from './wra-dashboard-api/top-words'
 export type { IHistogramData } from './wra-dashboard-api/histogram-data'
+export type { IInitialData } from './initial-data'
