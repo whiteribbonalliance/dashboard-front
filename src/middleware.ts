@@ -21,24 +21,40 @@ export function middleware(request: NextRequest) {
     // Get hostname
     const hostname = request.headers.get('host')
 
-    // Get prod domain
-    const prodDomain = process.env.NEXT_PUBLIC_PROD_DOMAIN as string
+    // Get prod domains
+    const prodDomains = (process.env.NEXT_PUBLIC_PROD_DOMAINS as string).split(' ')
 
     // Get dev domain
     const devDomain = (process.env.NEXT_PUBLIC_DEV_DOMAIN as string) || '.localhost'
 
     // Get the custom domain/subdomain value by removing the root URL
     // e.g. from 'whatwomenwant.whiteribbonalliance.org' remove '.whiteribbonalliance.org' to get 'whatwomenwant' (currentHost)
-    const currentHost =
-        process.env.NODE_ENV === 'production'
-            ? hostname?.replace(prodDomain, '')
-            : hostname?.replace(`${devDomain}:3000`, '')
+    let currentHost: string | undefined
+    if (process.env.NODE_ENV === 'production') {
+        // Find prod domain
+        const prodDomain = prodDomains.find((prodDomain) => {
+            if (hostname) {
+                if (hostname.endsWith(prodDomain)) {
+                    return prodDomain
+                }
+            }
+        })
+
+        // If prod domain was not found, return 404
+        if (!prodDomain) {
+            return new Response('404', { status: 404 })
+        }
+
+        currentHost = hostname?.replace(prodDomain, '')
+    } else {
+        currentHost = hostname?.replace(`${devDomain}:3000`, '')
+    }
 
     // Prevent security issues – users should not be able to canonically access
     // the pages/dashboards folder and its respective contents. This can also be done
     // via rewrites to a custom 404 page
     if (pathname.startsWith(`/dashboards`)) {
-        return new Response(null, { status: 404 })
+        return new Response('404', { status: 404 })
     }
 
     // Get url

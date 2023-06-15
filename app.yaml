@@ -12,7 +12,7 @@ handlers:
     script: auto
 
 env_variables:
-  NEXT_PUBLIC_PROD_DOMAIN: ".freelancedatascientist.net"
+  NEXT_PUBLIC_PROD_DOMAINS: ".whatwomenwant.whiteribbonalliance.org .midwivesvoices.freelancedatascientist.net"
 
 # Environment variables that need to be exposed to the client (with NEXT_PUBLIC_) should be added at build time
 build_env_variables:
