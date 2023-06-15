@@ -48,14 +48,14 @@ export function middleware(request: NextRequest) {
     if (currentHost === mainSubdomain) {
         if (dashboards.some((dashboard) => pathname.endsWith(dashboard))) {
             // Prevent security issues
-            if (pathname.startsWith(`/dashboards_with_path`)) {
+            if (pathname.startsWith(`/dashboards_use_path`)) {
                 return new Response('404', { status: 404 })
             }
 
             const nextUrl = request.nextUrl
-            nextUrl.pathname = `/dashboards_with_path${nextUrl.pathname}`
+            nextUrl.pathname = `/dashboards_use_path${nextUrl.pathname}`
 
-            // Rewrite to the current hostname under the app/dashboards_with_path folder
+            // Rewrite to the current hostname under the app/dashboards_use_path folder
             return NextResponse.rewrite(nextUrl)
         } else {
             return new Response('404', { status: 404 })
@@ -63,15 +63,15 @@ export function middleware(request: NextRequest) {
     }
 
     // Prevent security issues – users should not be able to canonically access
-    // the app/dashboards_with_subdomain folder and its respective contents
-    if (pathname.startsWith(`/dashboards_with_subdomain`)) {
+    // the app/dashboards_use_subdomain folder and its respective contents
+    if (pathname.startsWith(`/dashboards_use_subdomain`)) {
         return new Response('404', { status: 404 })
     }
 
     const nextUrl = request.nextUrl
-    nextUrl.pathname = `/dashboards_with_subdomain/${currentHost}${nextUrl.pathname}`
+    nextUrl.pathname = `/dashboards_use_subdomain/${currentHost}${nextUrl.pathname}`
 
-    // Rewrite to the current hostname under the app/dashboards_with_subdomain folder
+    // Rewrite to the current hostname under the app/dashboards_use_subdomain folder
     return NextResponse.rewrite(nextUrl)
 }
 
