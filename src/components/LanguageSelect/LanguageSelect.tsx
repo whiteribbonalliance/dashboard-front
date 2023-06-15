@@ -57,7 +57,8 @@ export const LanguageSelect = ({ dashboard, lang }: ILanguageSelectProps) => {
     // Handle language change
     async function handleLanguageChange(option: LanguageOption) {
         if (lang !== option.value) {
-            await router.replace(`/${option.value}`)
+            const pathnameWithoutLang = pathname.replace(`/${lang}`, '')
+            await router.replace(`/${option.value}/${pathnameWithoutLang}`)
         }
     }
 

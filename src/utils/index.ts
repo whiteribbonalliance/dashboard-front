@@ -1,4 +1,5 @@
 import { CampaignCode, DashboardName } from '@enums'
+import { parseDomain } from 'parse-domain'
 
 /**
  * Merge Tailwind CSS classes
@@ -66,4 +67,22 @@ export function niceNum(range: number, round: boolean) {
     }
 
     return Math.round(niceFraction * Math.pow(10, exponent))
+}
+
+/**
+ * Check if url is subdomain
+ *
+ * @param url The url
+ */
+export function isSubdomain(url: string) {
+    url = url.split(':')[0]
+
+    if (url.endsWith('.local')) {
+        url = url.replace('.local', '.com')
+    }
+
+    const parseResult = parseDomain(url)
+    const { subDomains } = parseResult as any
+
+    return !!subDomains
 }
