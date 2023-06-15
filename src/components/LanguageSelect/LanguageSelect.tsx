@@ -12,7 +12,7 @@ import { usePathname, useRouter } from 'next/navigation'
 
 interface ILanguageSelectProps {
     dashboard: string
-    language: string
+    lang: string
 }
 
 type LanguageOption = {
@@ -29,18 +29,18 @@ const options = languages.map((language) => {
     return option
 })
 
-export const LanguageSelect = ({ dashboard, language }: ILanguageSelectProps) => {
+export const LanguageSelect = ({ dashboard, lang }: ILanguageSelectProps) => {
     const [selectedOption, setSelectedOption] = useState<LanguageOption>(undefined as any)
     const router = useRouter()
     const pathname = usePathname()
 
     // Set selected option
     useEffect(() => {
-        const tmpOption = options.find((option) => option.value === language)
+        const tmpOption = options.find((option) => option.value === lang)
         if (tmpOption) {
             setSelectedOption(tmpOption)
         }
-    }, [language])
+    }, [lang])
 
     // Set listbox button classes
     let listboxButtonClasses: string
@@ -56,7 +56,7 @@ export const LanguageSelect = ({ dashboard, language }: ILanguageSelectProps) =>
 
     // Handle language change
     async function handleLanguageChange(option: LanguageOption) {
-        if (language !== option.value) {
+        if (lang !== option.value) {
             await router.replace(`/${option.value}`)
         }
     }

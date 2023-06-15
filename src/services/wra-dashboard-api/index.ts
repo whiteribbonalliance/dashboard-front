@@ -9,11 +9,11 @@ const headers = { 'Content-Type': 'application/json' }
  * Get campaign filter options
  *
  * @param dashboard The dashboard
- * @param language The language
+ * @param lang The language
  */
-export async function getCampaignFilterOptions(dashboard: string, language: string) {
+export async function getCampaignFilterOptions(dashboard: string, lang: string) {
     const campaign = dashboardToCampaignCode(dashboard)
-    const response = await fetch(`${apiUrl}/campaigns/${campaign}/filter-options?lang=${language}`, {
+    const response = await fetch(`${apiUrl}/campaigns/${campaign}/filter-options?lang=${lang}`, {
         method: 'GET',
         headers: headers,
     })
@@ -32,11 +32,11 @@ export async function getCampaignFilterOptions(dashboard: string, language: stri
  *
  * @param dashboard The dashboard
  * @param campaignRequest The campaign request
- * @param language The language
+ * @param lang The language
  */
-export async function getCampaign(dashboard: string, campaignRequest: ICampaignRequest, language: string) {
+export async function getCampaign(dashboard: string, campaignRequest: ICampaignRequest, lang: string) {
     const campaign = dashboardToCampaignCode(dashboard)
-    const response = await fetch(`${apiUrl}/campaigns/${campaign}?lang=${language}`, {
+    const response = await fetch(`${apiUrl}/campaigns/${campaign}?lang=${lang}`, {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(campaignRequest),
@@ -55,11 +55,11 @@ export async function getCampaign(dashboard: string, campaignRequest: ICampaignR
  * Get campaign who the people are options
  *
  * @param dashboard The dashboard
- * @param language The language
+ * @param lang The language
  */
-export async function getCampaignWhoThePeopleAreOptions(dashboard: string, language: string) {
+export async function getCampaignWhoThePeopleAreOptions(dashboard: string, lang: string) {
     const campaign = dashboardToCampaignCode(dashboard)
-    const response = await fetch(`${apiUrl}/campaigns/${campaign}/who-the-people-are-options?lang=${language}`, {
+    const response = await fetch(`${apiUrl}/campaigns/${campaign}/who-the-people-are-options?lang=${lang}`, {
         method: 'GET',
         headers: headers,
     })

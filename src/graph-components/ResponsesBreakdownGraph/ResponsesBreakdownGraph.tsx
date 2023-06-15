@@ -13,15 +13,15 @@ import { GraphError } from 'components/GraphError'
 
 interface IResponsesBreakdownGraphProps {
     dashboard: string
-    language: string
+    lang: string
 }
 
 interface ICustomTooltip extends TooltipProps<ValueType, NameType> {
     dashboard: string
 }
 
-export const ResponsesBreakdownGraph = ({ dashboard, language }: IResponsesBreakdownGraphProps) => {
-    const { data, isError } = useCampaignQuery(dashboard, language)
+export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdownGraphProps) => {
+    const { data, isError } = useCampaignQuery(dashboard, lang)
 
     // Set topic text
     let topicText: string

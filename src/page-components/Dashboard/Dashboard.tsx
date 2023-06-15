@@ -68,27 +68,27 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
             <div className="grid grid-cols-1 items-start gap-x-[10%] xl:grid-cols-3">
                 {/* Filters panel */}
                 <section className="hidden xl:sticky xl:top-5 xl:col-span-1 xl:block">
-                    <FiltersPanel dashboard={dashboard} language={lang} />
+                    <FiltersPanel dashboard={dashboard} lang={lang} />
                 </section>
 
-                {/* Graphs, table & map */}
+                {/* Graphs, table & maps */}
                 <section className={classNames('col-span-2 grid grid-cols-1', boxesGapY)}>
                     {DashboardName.WHAT_YOUNG_PEOPLE_WANT === dashboard ? (
                         <>
-                            <ResponsesBreakdownGraph dashboard={dashboard} language={lang} />
-                            <WorldBubbleMaps dashboard={dashboard} language={lang} />
-                            <WhoThePeopleAreGraph dashboard={dashboard} language={lang} />
-                            <GenderBreakdownGraph dashboard={dashboard} language={lang} />
-                            <TopWordsAndPhrasesGraph dashboard={dashboard} language={lang} />
-                            <ResponsesSampleTable dashboard={dashboard} language={lang} />
+                            <ResponsesBreakdownGraph dashboard={dashboard} lang={lang} />
+                            <WorldBubbleMaps dashboard={dashboard} lang={lang} />
+                            <WhoThePeopleAreGraph dashboard={dashboard} lang={lang} />
+                            <GenderBreakdownGraph dashboard={dashboard} lang={lang} />
+                            <TopWordsAndPhrasesGraph dashboard={dashboard} lang={lang} />
+                            <ResponsesSampleTable dashboard={dashboard} lang={lang} />
                         </>
                     ) : (
                         <>
-                            <TopWordsAndPhrasesGraph dashboard={dashboard} language={lang} />
-                            <ResponsesSampleTable dashboard={dashboard} language={lang} />
-                            <WorldBubbleMaps dashboard={dashboard} language={lang} />
-                            <ResponsesBreakdownGraph dashboard={dashboard} language={lang} />
-                            <WhoThePeopleAreGraph dashboard={dashboard} language={lang} />
+                            <TopWordsAndPhrasesGraph dashboard={dashboard} lang={lang} />
+                            <ResponsesSampleTable dashboard={dashboard} lang={lang} />
+                            <WorldBubbleMaps dashboard={dashboard} lang={lang} />
+                            <ResponsesBreakdownGraph dashboard={dashboard} lang={lang} />
+                            <WhoThePeopleAreGraph dashboard={dashboard} lang={lang} />
                         </>
                     )}
                 </section>

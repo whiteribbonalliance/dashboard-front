@@ -22,7 +22,7 @@ import { Stats } from '@components/FiltersPanel/Stats'
 
 interface IFiltersPanelProps {
     dashboard: string
-    language: string
+    lang: string
 }
 
 interface IFieldProps {
@@ -45,7 +45,7 @@ interface IInputProps extends IFieldProps {
     register: UseFormRegister<Filter>
 }
 
-export const FiltersPanel = ({ dashboard, language }: IFiltersPanelProps) => {
+export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     // Set filters
     const setFilters = useFiltersStore((state: IFiltersState) => state.setFilters)
 
@@ -120,7 +120,7 @@ export const FiltersPanel = ({ dashboard, language }: IFiltersPanelProps) => {
 
     // Fetch filter options
     useEffect(() => {
-        getCampaignFilterOptions(dashboard, language)
+        getCampaignFilterOptions(dashboard, lang)
             .then((filterOptions) => {
                 // Country options
                 setCountryOptions(filterOptions.countries)
@@ -149,7 +149,7 @@ export const FiltersPanel = ({ dashboard, language }: IFiltersPanelProps) => {
                 )
             })
             .catch(() => {})
-    }, [dashboard, language])
+    }, [dashboard, lang])
 
     // Set regions of selected countries for filter 2
     useEffect(() => {
@@ -229,7 +229,7 @@ export const FiltersPanel = ({ dashboard, language }: IFiltersPanelProps) => {
 
             // Update the filters store (when filters are updated, useCampaignQuery will refetch the campaign data)
             setFilters({ filter1: form1.getValues(), filter2: form2.getValues() })
-        }, 300)
+        }, 250)
     }
 
     return (
@@ -436,7 +436,7 @@ export const FiltersPanel = ({ dashboard, language }: IFiltersPanelProps) => {
             </div>
 
             {/* Stats */}
-            <Stats dashboard={dashboard} language={language} />
+            <Stats dashboard={dashboard} lang={lang} />
 
             {/* PMNCH QR code */}
             {displayPmnchQrCode && (

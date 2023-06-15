@@ -14,11 +14,11 @@ import { GraphError } from 'components/GraphError'
 
 interface ITopWordsAndPhrasesGraphProps {
     dashboard: string
-    language: string
+    lang: string
 }
 
-export const TopWordsAndPhrasesGraph = ({ dashboard, language }: ITopWordsAndPhrasesGraphProps) => {
-    const { data, isError } = useCampaignQuery(dashboard, language)
+export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrasesGraphProps) => {
+    const { data, isError } = useCampaignQuery(dashboard, lang)
 
     // Set selected tab classes
     let selectedTabClasses: string

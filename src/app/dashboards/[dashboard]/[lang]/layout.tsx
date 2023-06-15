@@ -1,9 +1,13 @@
+import '@styles/globals.scss'
 import { ReactNode } from 'react'
 import { Header } from 'components/Header'
 import { Footer } from 'components/Footer'
 import { DashboardName } from '@enums'
 import { QueryClientProvider } from '@providers/QueryClientProvider'
 import localFont from 'next/font/local'
+import { config as fontAwesomeConfig } from '@fortawesome/fontawesome-svg-core'
+
+fontAwesomeConfig.autoAddCss = false
 
 interface IDashboardLayoutProps {
     children: ReactNode
@@ -62,7 +66,7 @@ const DashboardLayout = async ({ children, params }: IDashboardLayoutProps) => {
         >
             <body className={`text-base ${layoutClasses}`}>
                 <QueryClientProvider>
-                    <Header dashboard={dashboard} language={lang} />
+                    <Header dashboard={dashboard} lang={lang} />
                     <main className="mx-7 my-7">{children}</main>
                     {/* @ts-expect-error Server Component */}
                     <Footer dashboard={dashboard} />

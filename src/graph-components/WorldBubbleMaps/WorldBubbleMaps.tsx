@@ -17,7 +17,7 @@ import { IFiltersState, useFiltersStore } from '@stores/filters'
 
 interface IWorldBubbleMapsProps {
     dashboard: string
-    language: string
+    lang: string
 }
 
 interface IWorldBubbleMapProps {
@@ -44,8 +44,8 @@ interface IDataGeo {
 const svgWidth = 900
 const svgHeight = 600
 
-export const WorldBubbleMaps = ({ dashboard, language }: IWorldBubbleMapsProps) => {
-    const { data, isError } = useCampaignQuery(dashboard, language)
+export const WorldBubbleMaps = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
+    const { data, isError } = useCampaignQuery(dashboard, lang)
 
     // Set respondents
     let respondents: string
@@ -124,7 +124,9 @@ export const WorldBubbleMaps = ({ dashboard, language }: IWorldBubbleMapsProps) 
     return (
         <Box>
             <GraphTitle dashboard={dashboard} text={`Where are the ${respondents} located?`} />
-            <p>Click on a bubble to view country information.</p>
+            <p>
+                Click on a bubble to view country information. Each bubble is sized according to the number of people.
+            </p>
 
             {/* Error */}
             {!data && isError && <GraphError dashboard={dashboard} />}

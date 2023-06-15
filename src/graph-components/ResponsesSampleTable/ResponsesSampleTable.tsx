@@ -22,7 +22,7 @@ import { GraphError } from 'components/GraphError'
 
 interface IResponsesSampleGraphProps {
     dashboard: string
-    language: string
+    lang: string
 }
 
 interface IDescriptionCountAndColor {
@@ -38,9 +38,9 @@ interface ITableData {
 
 const columnHelper = createColumnHelper<any>()
 
-export const ResponsesSampleTable = ({ dashboard, language }: IResponsesSampleGraphProps) => {
+export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphProps) => {
     const [tableData, setTableData] = useState<ITableData>({ data: [], columns: [] })
-    const { data, isError } = useCampaignQuery(dashboard, language)
+    const { data, isError } = useCampaignQuery(dashboard, lang)
 
     // An array with objects containing the description, count, and the color assigned to it
     const [descriptionsCountAndColor, setDescriptionsCountAndColor] = useState<IDescriptionCountAndColor[]>([])
