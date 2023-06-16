@@ -8,9 +8,11 @@ import { DashboardName } from '@enums'
 import { Wordcloud } from '@visx/wordcloud'
 import { useTooltip, useTooltipInPortal } from '@visx/tooltip'
 import { IWordcloudWords } from '@interfaces'
+import {toThousandsSep} from "@utils";
 
 interface IWordcloudProps {
     dashboard: string
+    lang: string
     wordcloudWords: IWordcloudWords[]
 }
 
@@ -19,7 +21,7 @@ interface ITooltipData {
     count: number
 }
 
-export const TopWordsWordcloud = ({ dashboard, wordcloudWords }: IWordcloudProps) => {
+export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordcloudProps) => {
     const { tooltipData, tooltipLeft, tooltipTop, tooltipOpen, showTooltip, hideTooltip } = useTooltip<ITooltipData>()
     const { containerBounds, TooltipInPortal } = useTooltipInPortal({
         scroll: true,
@@ -110,7 +112,7 @@ export const TopWordsWordcloud = ({ dashboard, wordcloudWords }: IWordcloudProps
             {tooltipOpen && tooltipData && tooltipLeft != null && tooltipTop != null && (
                 <TooltipInPortal key={Math.random()} top={tooltipTop} left={tooltipLeft}>
                     <div className="text-base">
-                        {tooltipData.text}&nbsp;&nbsp;&nbsp;<strong>{tooltipData.count}</strong>
+                        {tooltipData.text}&nbsp;&nbsp;&nbsp;<strong>{toThousandsSep(tooltipData.count, lang)}</strong>
                     </div>
                 </TooltipInPortal>
             )}
