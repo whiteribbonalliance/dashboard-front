@@ -14,6 +14,7 @@ import { Tab } from '@headlessui/react'
 import { classNames } from '@utils'
 import { useQuery } from 'react-query'
 import { IFiltersState, useFiltersStore } from '@stores/filters'
+import { useTranslation } from '@app/i18n/client'
 
 interface IWorldBubbleMapsProps {
     dashboard: string
@@ -46,6 +47,7 @@ const svgHeight = 600
 
 export const WorldBubbleMaps = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
     const { data, isError } = useCampaignQuery(dashboard, lang)
+    const { t } = useTranslation(lang)
 
     // Set respondents
     let respondents: string
@@ -118,15 +120,23 @@ export const WorldBubbleMaps = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
             selectedTabClasses = 'border-t-defaultColors-tertiary'
     }
 
+    // Set respondents located translation
+    let respondentsLocatedTranslation: string
+    switch (dashboard) {
+        case DashboardName.WHAT_WOMEN_WANT:
+            respondentsLocatedTranslation = t('where-women-located')
+            break
+        default:
+            respondentsLocatedTranslation = t('where-respondents-located')
+    }
+
     // Display world bubble maps or not
     const displayWorldBubbleMaps = !!data && !!dataGeoQuery.data
 
     return (
         <Box>
-            <GraphTitle dashboard={dashboard} text={`Where are the ${respondents} located?`} />
-            <p>
-                Click on a bubble to view country information. Each bubble is sized according to the number of people.
-            </p>
+            <GraphTitle dashboard={dashboard} text={respondentsLocatedTranslation} />
+            <p>{t('click-bubble-country-information')}</p>
 
             {/* Error */}
             {!data && isError && <GraphError dashboard={dashboard} />}

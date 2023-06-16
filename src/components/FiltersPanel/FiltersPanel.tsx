@@ -19,6 +19,7 @@ import { defaultFilterValues } from '@constants'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Filter, filterSchema } from '@schemas/filter'
 import { Stats } from '@components/FiltersPanel/Stats'
+import { useTranslation } from '@app/i18n/client'
 
 interface IFiltersPanelProps {
     dashboard: string
@@ -48,6 +49,8 @@ interface IInputProps extends IFieldProps {
 export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     // Set filters
     const setFilters = useFiltersStore((state: IFiltersState) => state.setFilters)
+
+    const { t } = useTranslation(lang)
 
     // Select options
     const [countryOptions, setCountryOptions] = useState<Option<string>[]>([])
@@ -91,8 +94,8 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
     // Tabs
     const tabs = [
-        { id: '1', title: 'Drill down', form: form1 },
-        { id: '2', title: 'Compare to...', form: form2 },
+        { id: '1', title: t('drill-down'), form: form1 },
+        { id: '2', title: `${t('compare-to')}...`, form: form2 },
     ]
 
     // Set selected tab classes
@@ -232,6 +235,16 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         }, 250)
     }
 
+    // Set select response topics translation
+    let selectResponseTopicsTranslation: string
+    switch (dashboard) {
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+            selectResponseTopicsTranslation = t('select-response-domains')
+            break
+        default:
+            selectResponseTopicsTranslation = t('select-response-topics')
+    }
+
     return (
         <div>
             {/* Filters */}
@@ -264,7 +277,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                     <div className="mb-5 flex flex-col gap-y-3">
                                         {/* Select countries */}
                                         <div>
-                                            <div className="mb-1">Select countries</div>
+                                            <div className="mb-1">{t('select-countries')}</div>
                                             <SelectCountries
                                                 id={`select-countries-${id}`}
                                                 options={countryOptions}
@@ -280,7 +293,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
                                         {/* Select regions */}
                                         <div>
-                                            <div className="mb-1">Select regions</div>
+                                            <div className="mb-1">{t('select-regions')}</div>
                                             <SelectRegions
                                                 id={`select-regions-${id}`}
                                                 options={id === '1' ? regionOptionsFilter1 : regionOptionsFilter2}
@@ -291,7 +304,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
                                         {/* Select response topics */}
                                         <div>
-                                            <div className="mb-1">Select response {topicsText}</div>
+                                            <div className="mb-1">{selectResponseTopicsTranslation}</div>
                                             <SelectResponseTopics
                                                 id={`select-response-topics-${id}`}
                                                 options={responseTopicOptions}
@@ -307,8 +320,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                             <>
                                                 {/* Button to display advanced mode */}
                                                 <Disclosure.Button className="flex items-center justify-end font-bold">
-                                                    <span className="sr-only">Open advanced mode</span>
-                                                    <span className="mr-2">Advanced mode</span>
+                                                    <span className="mr-2">{t('advanced-mode')}</span>
                                                     <span className="text-lg">
                                                         <Chevron direction="down" rotate={open} double={true} />
                                                     </span>
@@ -319,7 +331,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                     <Disclosure.Panel as="div" className="mt-5 flex flex-col gap-y-3">
                                                         {/* Show responses from categories */}
                                                         <div>
-                                                            <div className="mb-1">Responses from categories</div>
+                                                            <div className="mb-1">{t('responses-from-categories')}</div>
                                                             <SelectOnlyResponsesFromCategories
                                                                 id={`select-only-responses-from-categories-${id}`}
                                                                 options={onlyResponsesFromCategoriesOptions}
@@ -331,7 +343,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                         {/* Filter by age */}
                                                         <div>
                                                             <div className="mb-1">
-                                                                Filter by age (or select range in histogram)
+                                                                {t('filter-by-age-or-select-histogram')}
                                                             </div>
                                                             <SelectAges
                                                                 id={`select-ages-${id}`}
@@ -348,7 +360,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                 <div className="flex gap-x-3">
                                                                     {/* Filter by gender */}
                                                                     <div className="flex basis-1/2 flex-col">
-                                                                        <div className="mb-1">Filter by gender</div>
+                                                                        <div className="mb-1">
+                                                                            {t('filter-by-gender')}
+                                                                        </div>
                                                                         <SelectGenders
                                                                             id={`select-genders-${id}`}
                                                                             options={genderOptions}
@@ -367,7 +381,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                 <div className="flex gap-x-3">
                                                                     {/* Filter by gender */}
                                                                     <div className="flex basis-1/2 flex-col justify-between">
-                                                                        <div className="mb-1">Filter by gender</div>
+                                                                        <div className="mb-1">
+                                                                            {t('filter-by-gender')}
+                                                                        </div>
                                                                         <SelectGenders
                                                                             id={`select-genders-${id}`}
                                                                             options={genderOptions}
@@ -377,7 +393,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                     </div>
                                                                     {/* Select profession */}
                                                                     <div className="flex basis-1/2 flex-col justify-between">
-                                                                        <div className="mb-1">Select profession</div>
+                                                                        <div className="mb-1">
+                                                                            {t('select-profession')}
+                                                                        </div>
                                                                         <SelectProfessions
                                                                             id={`select-professions-${id}`}
                                                                             options={professionOptions}
@@ -393,7 +411,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                         <div className="flex gap-x-3">
                                                             {/* Filter by keyword */}
                                                             <div className="flex basis-1/2 flex-col">
-                                                                <div className="mb-1">Filter by keyword</div>
+                                                                <div className="mb-1">{t('filter-by-keyword')}</div>
                                                                 <InputKeyword
                                                                     id={`input-keyword-${id}`}
                                                                     register={form.register}
@@ -402,7 +420,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                             </div>
                                                             {/* Exclude keyword */}
                                                             <div className="flex basis-1/2 flex-col">
-                                                                <div className="mb-1">Exclude keyword</div>
+                                                                <div className="mb-1">{t('exclude-keyword')}</div>
                                                                 <InputExcludeKeyword
                                                                     id={`input-exclude-keyword-${id}`}
                                                                     register={form.register}
@@ -413,7 +431,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
                                                         {/* Show multi-word phrases */}
                                                         <div className="flex flex-col">
-                                                            <div className="mb-1">Multi-word phrases</div>
+                                                            <div className="mb-1">{t('multi-word-phrases')}</div>
                                                             <SelectOnlyMultiWordPhrasesContainingFilterTerm
                                                                 id={`select-only-multi-word-phrases-containing-filter-term-${id}`}
                                                                 options={
@@ -449,7 +467,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                         height={200}
                     />
                     <div className="text-center font-1point8 text-4xl uppercase text-pmnchColors-primary">
-                        Scan, share, and be heard!
+                        {t('scan-share-be-heard')}
                     </div>
                 </div>
             )}

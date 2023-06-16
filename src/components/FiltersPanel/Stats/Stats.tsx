@@ -2,6 +2,7 @@
 
 import { Box } from '@components/Box'
 import { useCampaignQuery } from '@hooks/use-campaign'
+import { useTranslation } from '@app/i18n/client'
 
 interface IStatsProps {
     dashboard: string
@@ -10,6 +11,7 @@ interface IStatsProps {
 
 export const Stats = ({ dashboard, lang }: IStatsProps) => {
     const { data } = useCampaignQuery(dashboard, lang)
+    const { t } = useTranslation(lang)
 
     if (!data) return null
 
@@ -25,7 +27,7 @@ export const Stats = ({ dashboard, lang }: IStatsProps) => {
                 <div className="flex-1">
                     <Box>
                         <div className="text-2xl">{data.filter_1_average_age}</div>
-                        <div>Average age</div>
+                        <div>{t('average-age')}</div>
                     </Box>
                 </div>
             </div>
@@ -33,7 +35,7 @@ export const Stats = ({ dashboard, lang }: IStatsProps) => {
             {/* Only display if filters are not identical */}
             {!data.filters_are_identical && (
                 <>
-                    <div className="text-center">vs</div>
+                    <div className="text-center">{t('vs')}</div>
                     <div className="mt-2 flex w-full flex-row gap-x-3">
                         <div className="flex-1">
                             <Box>
@@ -44,7 +46,7 @@ export const Stats = ({ dashboard, lang }: IStatsProps) => {
                         <div className="flex-1">
                             <Box>
                                 <div className="text-2xl">{data.filter_2_average_age}</div>
-                                <div>Average age</div>
+                                <div>{t('average-age')}</div>
                             </Box>
                         </div>
                     </div>

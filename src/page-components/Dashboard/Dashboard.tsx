@@ -17,7 +17,7 @@ interface IDashboardProps {
     params: { lang: string; dashboard: string }
 }
 
-export const Dashboard = async ({ params }: IDashboardProps) => {
+export const Dashboard = ({ params }: IDashboardProps) => {
     const { dashboard, lang } = params
 
     // Fire notFound() if subdomain/dashboard requested is not an existing dashboard
@@ -56,12 +56,12 @@ export const Dashboard = async ({ params }: IDashboardProps) => {
         <>
             {/* Title */}
             <div className="mb-3 flex justify-center xl:hidden">
-                <Title dashboard={dashboard} />
+                <Title dashboard={dashboard} lang={lang} />
             </div>
 
             {/* Subtext */}
             <div className="mb-10 flex justify-center">
-                <Subtext dashboard={dashboard} />
+                <Subtext dashboard={dashboard} lang={lang} />
             </div>
 
             {/* Content */}

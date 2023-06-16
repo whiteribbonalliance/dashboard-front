@@ -11,6 +11,7 @@ import { TopWordsWordcloud } from 'graph-components/TopWordsAndPhrasesGraph/TopW
 import { TopWordsOrPhrases } from 'graph-components/TopWordsAndPhrasesGraph/TopWordsOrPhrases'
 import { GraphLoading } from 'components/GraphLoading'
 import { GraphError } from 'components/GraphError'
+import { useTranslation } from '@app/i18n/client'
 
 interface ITopWordsAndPhrasesGraphProps {
     dashboard: string
@@ -19,6 +20,7 @@ interface ITopWordsAndPhrasesGraphProps {
 
 export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrasesGraphProps) => {
     const { data, isError } = useCampaignQuery(dashboard, lang)
+    const { t } = useTranslation(lang)
 
     // Set selected tab classes
     let selectedTabClasses: string
@@ -34,14 +36,14 @@ export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrases
     const tabs = [
         {
             id: 'word-cloud',
-            title: 'Word cloud',
+            title: t('word-cloud'),
             content: data ? (
                 <TopWordsWordcloud dashboard={dashboard} wordcloudWords={data.top_words_and_phrases.wordcloud_words} />
             ) : null,
         },
         {
             id: 'top-words',
-            title: 'Top words',
+            title: t('top-words'),
             content: data ? (
                 <TopWordsOrPhrases
                     dashboard={dashboard}
@@ -56,7 +58,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrases
         },
         {
             id: 'two-word-phrases',
-            title: 'Two word phases',
+            title: t('two-word-phrases'),
             content: data ? (
                 <TopWordsOrPhrases
                     dashboard={dashboard}
@@ -71,7 +73,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrases
         },
         {
             id: 'three-word-phrases',
-            title: 'Three word phases',
+            title: t('three-word-phrases'),
             content: data ? (
                 <TopWordsOrPhrases
                     dashboard={dashboard}
@@ -91,8 +93,8 @@ export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrases
 
     return (
         <Box>
-            <GraphTitle dashboard={dashboard} text="Top words and phrases" />
-            <p>{"Here's what people said in their own words."}</p>
+            <GraphTitle dashboard={dashboard} text={t('top-words-and-phrases')} />
+            <p>{t('what-people-said-own-words')}</p>
 
             {/* Error */}
             {!data && isError && <GraphError dashboard={dashboard} />}

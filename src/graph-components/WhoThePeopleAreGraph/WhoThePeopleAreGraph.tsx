@@ -26,6 +26,7 @@ import { DashboardName } from '@enums'
 import { classNames, niceNum } from '@utils'
 import { IHistogramData } from '@interfaces'
 import { getCampaignWhoThePeopleAreOptions } from '@services/wra-dashboard-api'
+import { useTranslation } from '@app/i18n/client'
 
 interface IWhoThePeopleAreGraphProps {
     dashboard: string
@@ -40,6 +41,7 @@ interface ICustomTooltip extends TooltipProps<number, string> {
 
 export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphProps) => {
     const { data, isError } = useCampaignQuery(dashboard, lang)
+    const { t } = useTranslation(lang)
     const [currentHistogramData, setCurrentHistogramData] = useState<IHistogramData[]>([])
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
@@ -115,19 +117,19 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
             switch (showBreakdownBy) {
                 case 'breakdown-age':
                     histogramData = data.histogram.age
-                    setParagraph('Number and ages of respondents.')
+                    setParagraph(t('number-ages-respondents') as string)
                     break
                 case 'breakdown-gender':
                     histogramData = data.histogram.gender
-                    setParagraph('Number and ages of respondents.')
+                    setParagraph(t('number-ages-respondents') as string)
                     break
                 case 'breakdown-profession':
                     histogramData = data?.histogram.profession
-                    setParagraph('Number and ages of respondents.')
+                    setParagraph(t('number-ages-respondents') as string)
                     break
                 case 'breakdown-country':
                     histogramData = data.histogram.canonical_country
-                    setParagraph('Countries respondents are located in.')
+                    setParagraph(t('countries-respondents-located-in') as string)
                     break
                 default:
                     histogramData = []
@@ -140,7 +142,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
 
             setCurrentHistogramData(histogramData)
         }
-    }, [data, showBreakdownBy])
+    }, [data, showBreakdownBy, t])
 
     useEffect(() => {
         displayBreakdown()
@@ -209,7 +211,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
 
     return (
         <Box>
-            <GraphTitle dashboard={dashboard} text="Who the people are" />
+            <GraphTitle dashboard={dashboard} text={t('who-the-people-are')} />
             <p>{paragraph}</p>
 
             {/* Error */}

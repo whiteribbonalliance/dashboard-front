@@ -39,12 +39,12 @@ const proximaNova = localFont({
     variable: '--font-proxima-nova',
 })
 
-const RootLayout = async ({ children }: IRootLayoutProps) => {
+const RootLayout = async (props: IRootLayoutProps) => {
     return (
         <html
             className={`${notoSansRegular.variable} ${_1point8.variable} ${helvetica.variable} ${proximaNova.variable}`}
         >
-            {children}
+            {props.children}
         </html>
     )
 }

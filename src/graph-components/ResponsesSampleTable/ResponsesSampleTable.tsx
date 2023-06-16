@@ -3,7 +3,6 @@
 import { Box } from '@components/Box'
 import { GraphTitle } from '@components/GraphTitle'
 import { DashboardName } from '@enums'
-import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
 import {
     ColumnDef,
     createColumnHelper,
@@ -19,6 +18,7 @@ import { useCampaignQuery } from '@hooks/use-campaign'
 import { classNames } from '@utils'
 import { GraphLoading } from 'components/GraphLoading'
 import { GraphError } from 'components/GraphError'
+import { useTranslation } from '@app/i18n/client'
 
 interface IResponsesSampleGraphProps {
     dashboard: string
@@ -41,6 +41,7 @@ const columnHelper = createColumnHelper<any>()
 export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphProps) => {
     const [tableData, setTableData] = useState<ITableData>({ data: [], columns: [] })
     const { data, isError } = useCampaignQuery(dashboard, lang)
+    const { t } = useTranslation(lang)
 
     // An array with objects containing the description, count, and the color assigned to it
     const [descriptionsCountAndColor, setDescriptionsCountAndColor] = useState<IDescriptionCountAndColor[]>([])
@@ -77,13 +78,13 @@ export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphP
     let questionAsked: string
     switch (dashboard) {
         case DashboardName.WHAT_WOMEN_WANT:
-            questionAsked = whatWomenWantConfig.questionAsked
+            questionAsked = t('www-question-asked')
             break
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            questionAsked = whatYoungPeopleWantConfig.questionAsked
+            questionAsked = t('pmnch-question-asked')
             break
         case DashboardName.MIDWIVES_VOICES:
-            questionAsked = midwivesVoicesConfig.questionAsked
+            questionAsked = t('midwives-voices-question-asked')
             break
         default:
             questionAsked = ''
@@ -178,9 +179,9 @@ export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphP
 
     return (
         <Box>
-            <GraphTitle dashboard={dashboard} text="A sample of 1000 responses" />
+            <GraphTitle dashboard={dashboard} text={t('a-sample-1000-responses')} />
             <p>
-                Question asked: <span className="italic">{questionAsked}</span>
+                <span className="italic">{questionAsked}</span>
             </p>
 
             {/* Error */}

@@ -67,6 +67,9 @@
       ],
       "@schemas/*": [
         "schemas/*"
+      ],
+      "@app/*": [
+        "app/*"
       ]
     },
     "plugins": [

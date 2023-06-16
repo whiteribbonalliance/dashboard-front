@@ -8,6 +8,7 @@ import { GraphLoading } from '@components/GraphLoading'
 import React from 'react'
 import { Cell, Legend, Pie, PieChart, PieLabelRenderProps, ResponsiveContainer, Tooltip, TooltipProps } from 'recharts'
 import { classNames } from '@utils'
+import { useTranslation } from '@app/i18n/client'
 
 interface IGenderBreakdownGraphProps {
     dashboard: string
@@ -28,6 +29,7 @@ const colors = [
 
 export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphProps) => {
     const { data, isError } = useCampaignQuery(dashboard, lang)
+    const { t } = useTranslation(lang)
 
     // Legend formatter
     function legendFormatter(value: string) {
@@ -63,7 +65,7 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
 
     return (
         <Box>
-            <GraphTitle dashboard={dashboard} text="Gender breakdown" />
+            <GraphTitle dashboard={dashboard} text={t('gender-breakdown')} />
 
             {/* Error */}
             {!data && isError && <GraphError dashboard={dashboard} />}

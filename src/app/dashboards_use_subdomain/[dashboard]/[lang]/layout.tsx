@@ -29,8 +29,7 @@ const DashboardLayout = async ({ children, params }: IDashboardLayoutProps) => {
             <QueryClientProvider>
                 <Header dashboard={dashboard} lang={lang} />
                 <main className="mx-7 my-7">{children}</main>
-                {/* @ts-expect-error Server Component */}
-                <Footer dashboard={dashboard} />
+                <Footer dashboard={dashboard} lang={lang} />
             </QueryClientProvider>
         </body>
     )

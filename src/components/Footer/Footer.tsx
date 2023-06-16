@@ -1,15 +1,21 @@
+'use client'
+
 import Link from 'next/link'
 import { DashboardName } from '@enums'
 import React from 'react'
 import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
 import { IDashboardLink } from '@interfaces'
 import { classNames } from '@utils'
+import { useTranslation } from '@app/i18n/client'
 
 interface IFooterProps {
     dashboard: string
+    lang: string
 }
 
-export const Footer = async ({ dashboard }: IFooterProps) => {
+export const Footer = ({ dashboard, lang }: IFooterProps) => {
+    const { t } = useTranslation(lang)
+
     // Set footer link classes
     let footerLinkClasses: string
     switch (dashboard) {
@@ -20,36 +26,20 @@ export const Footer = async ({ dashboard }: IFooterProps) => {
             footerLinkClasses = 'text-defaultColors-secondary'
     }
 
-    // Set respondents
-    let respondents: string
-    switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
-            respondents = whatWomenWantConfig.respondentsNounPlural
-            break
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            respondents = whatYoungPeopleWantConfig.respondentsNounPlural
-            break
-        case DashboardName.MIDWIVES_VOICES:
-            respondents = midwivesVoicesConfig.respondentsNounPlural
-            break
-        default:
-            respondents = 'respondents'
-    }
-
     // Set footer note
     let footerNote: React.JSX.Element | undefined
     switch (dashboard) {
         case DashboardName.WHAT_WOMEN_WANT:
             footerNote = (
                 <p>
-                    The 143556 responses from the original{' '}
+                    {t('responses-from-original')}{' '}
                     <Link
                         href={'https://www.whiteribbonallianceindia.org/whats-latest/hamara-swasthya-hamari-awaz'}
                         className={classNames('underline', footerLinkClasses)}
                     >
                         Hamara Swasthya Hamari Awaz
                     </Link>{' '}
-                    campaign are not included in these results.
+                    {t('campaign-not-included-results')}.
                 </p>
             )
             break
@@ -80,17 +70,32 @@ export const Footer = async ({ dashboard }: IFooterProps) => {
             otherDashboardLinks = []
     }
 
+    let informedConsentTranslation: string
+    switch (dashboard) {
+        case DashboardName.WHAT_WOMEN_WANT:
+            informedConsentTranslation = t('www-respondents-informed-consent')
+            break
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+            informedConsentTranslation = t('pmnch-respondents-informed-consent')
+            break
+        case DashboardName.MIDWIVES_VOICES:
+            informedConsentTranslation = t('midwives-voices-respondents-informed-consent')
+            break
+        default:
+            informedConsentTranslation = ''
+    }
+
     return (
         <footer className="mx-7 my-7 flex flex-col gap-y-5 text-lg">
             <div>
-                <p>* All {respondents} participating in the campaign provided informed consent.</p>
+                <p>* {informedConsentTranslation}</p>
                 {footerNote && footerNote}
-                <p>To protect anonymity, some respondents have been removed from this dashboard.</p>
+                <p>{t('to-protect-anonymity')}</p>
             </div>
 
             <div>
                 <p>
-                    Other dashboards:{' '}
+                    {t('other-dashboards')}:{' '}
                     {otherDashboardLinks.map((otherDashboardLink, index) => {
                         return (
                             <span key={otherDashboardLink.id}>
@@ -110,14 +115,14 @@ export const Footer = async ({ dashboard }: IFooterProps) => {
 
             <div>
                 <p>
-                    Dashboard by{' '}
+                    {t('dashboard-by')}{' '}
                     <Link
                         href={'https://freelancedatascientist.net/'}
                         className={classNames('underline', footerLinkClasses)}
                     >
                         Thomas Wood
                     </Link>{' '}
-                    at{' '}
+                    {t('at')}{' '}
                     <Link href={'https://fastdatascience.com/'} className={classNames('underline', footerLinkClasses)}>
                         Fast Data Science
                     </Link>

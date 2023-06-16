@@ -14,6 +14,7 @@ import { Title } from 'components/Title'
 import { Chevron } from '@components/Chevron'
 import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
 import { classNames } from '@utils'
+import { useTranslation } from '@app/i18n/client'
 
 interface IHeaderProps {
     dashboard: string
@@ -26,6 +27,7 @@ interface IHamburgerMenuProps {
 
 export const Header = ({ dashboard, lang }: IHeaderProps) => {
     const [showMobileFiltersPanel, setShowMobileFiltersPanel] = useState<boolean>(false)
+    const { t } = useTranslation(lang)
 
     // Set show video link
     let showVideoLink: string
@@ -47,22 +49,22 @@ export const Header = ({ dashboard, lang }: IHeaderProps) => {
     let aboutUs: string
     switch (dashboard) {
         case DashboardName.WHAT_WOMEN_WANT:
-            aboutUs = whatWomenWantConfig.aboutUs
+            aboutUs = t('about-us')
             break
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            aboutUs = whatYoungPeopleWantConfig.aboutUs
+            aboutUs = `${t('about')} PMNCH`
             break
         case DashboardName.MIDWIVES_VOICES:
-            aboutUs = midwivesVoicesConfig.aboutUs
+            aboutUs = t('about-us')
             break
         default:
-            aboutUs = 'About Us'
+            aboutUs = t('about-us')
     }
 
     // Create menu items
     const menuItems = [
         { id: 'about-us', title: aboutUs, url: 'https://whiteribbonalliance.org/campaigns/what-women-want' },
-        { id: 'show-video', title: 'Show Video', url: showVideoLink },
+        { id: 'show-video', title: t('show-video'), url: showVideoLink },
     ]
 
     // Set mobile dropdown classes
@@ -107,7 +109,7 @@ export const Header = ({ dashboard, lang }: IHeaderProps) => {
 
                             {/* Title */}
                             <div className="hidden xl:flex">
-                                <Title dashboard={dashboard} renderAsDiv />
+                                <Title dashboard={dashboard} lang={lang} renderAsDiv />
                             </div>
 
                             {/* Menu items */}
@@ -128,7 +130,7 @@ export const Header = ({ dashboard, lang }: IHeaderProps) => {
 
                             {/* Button to display mobile dropdown */}
                             <Disclosure.Button className="xl:hidden" title="Menu">
-                                <span className="sr-only">Open mobile menu dropdown</span>
+                                <span className="sr-only">{t('open-mobile-menu-dropdown')}</span>
                                 <HamburgerMenu open={open} />
                             </Disclosure.Button>
                         </div>

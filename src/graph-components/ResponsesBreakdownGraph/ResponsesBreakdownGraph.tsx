@@ -3,13 +3,13 @@
 import { Box } from '@components/Box'
 import { GraphTitle } from '@components/GraphTitle'
 import { DashboardName } from '@enums'
-import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
 import { useCampaignQuery } from '@hooks/use-campaign'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts'
 import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent'
 import { classNames } from '@utils'
 import { GraphLoading } from 'components/GraphLoading'
 import { GraphError } from 'components/GraphError'
+import { useTranslation } from '@app/i18n/client'
 
 interface IResponsesBreakdownGraphProps {
     dashboard: string
@@ -22,6 +22,7 @@ interface ICustomTooltip extends TooltipProps<ValueType, NameType> {
 
 export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdownGraphProps) => {
     const { data, isError } = useCampaignQuery(dashboard, lang)
+    const { t } = useTranslation(lang)
 
     // Set topic text
     let topicText: string
@@ -43,20 +44,20 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
             respondentsText = "respondents'"
     }
 
-    // Set respondents noun plural
-    let respondentNounPlural: string
+    // Set click view topic responses translation
+    let clickViewTopicResponsesTranslation: string
     switch (dashboard) {
         case DashboardName.WHAT_WOMEN_WANT:
-            respondentNounPlural = whatWomenWantConfig.respondentsNounPlural
+            clickViewTopicResponsesTranslation = t('www-click-view-topic-responses')
             break
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            respondentNounPlural = whatYoungPeopleWantConfig.respondentsNounPlural
+            clickViewTopicResponsesTranslation = t('pmnch-click-view-topic-responses')
             break
         case DashboardName.MIDWIVES_VOICES:
-            respondentNounPlural = midwivesVoicesConfig.respondentsNounPlural
+            clickViewTopicResponsesTranslation = t('midwives-voices-click-view-topic-responses')
             break
         default:
-            respondentNounPlural = 'respondents'
+            clickViewTopicResponsesTranslation = ''
     }
 
     // Set bar classes
@@ -69,16 +70,29 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
             barClasses = 'fill-defaultColors-secondary hover:fill-defaultColors-secondaryFaint'
     }
 
+    // Set breakdown responses topic translation
+    let breakdownResponsesTopicTranslation: string
+    switch (dashboard) {
+        case DashboardName.WHAT_WOMEN_WANT:
+            breakdownResponsesTopicTranslation = t('breakdown-women-responses-topic')
+            break
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+            breakdownResponsesTopicTranslation = t('breakdown-respondents-domain')
+            break
+        case DashboardName.MIDWIVES_VOICES:
+            breakdownResponsesTopicTranslation = t('breakdown-respondents-topic')
+            break
+        default:
+            breakdownResponsesTopicTranslation = t('breakdown-respondents-topic')
+    }
+
     // Display graph or not
     const displayGraph = !!data
 
     return (
         <Box>
-            <GraphTitle dashboard={dashboard} text={`Breakdown of ${respondentsText} responses by ${topicText}`} />
-            <p>
-                Click on a topic to view responses. Some {respondentNounPlural} mentioned more than one topic. Hover
-                over a bar to see the numbers and category name.
-            </p>
+            <GraphTitle dashboard={dashboard} text={breakdownResponsesTopicTranslation} />
+            <p>{clickViewTopicResponsesTranslation}</p>
 
             {/* Error */}
             {!data && isError && <GraphError dashboard={dashboard} />}
