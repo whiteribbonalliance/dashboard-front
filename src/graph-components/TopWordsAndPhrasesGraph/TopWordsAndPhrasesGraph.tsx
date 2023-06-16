@@ -47,6 +47,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrases
             content: data ? (
                 <TopWordsOrPhrases
                     dashboard={dashboard}
+                    lang={lang}
                     id="top-words"
                     words={data.top_words_and_phrases.top_words}
                     filter1Description={data.filter_1_description}
@@ -62,6 +63,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrases
             content: data ? (
                 <TopWordsOrPhrases
                     dashboard={dashboard}
+                    lang={lang}
                     id="two-word-phrases"
                     words={data.top_words_and_phrases.two_word_phrases}
                     filter1Description={data.filter_1_description}
@@ -77,6 +79,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrases
             content: data ? (
                 <TopWordsOrPhrases
                     dashboard={dashboard}
+                    lang={lang}
                     id="three-word-phrases"
                     words={data.top_words_and_phrases.three_word_phrases}
                     filter1Description={data.filter_1_description}

@@ -23,7 +23,7 @@ import {
     YAxis,
 } from 'recharts'
 import { DashboardName } from '@enums'
-import { classNames, niceNum } from '@utils'
+import { classNames, niceNum, toThousandsSep } from '@utils'
 import { IHistogramData } from '@interfaces'
 import { getCampaignWhoThePeopleAreOptions } from '@services/wra-dashboard-api'
 import { useTranslation } from '@app/i18n/client'
@@ -37,6 +37,7 @@ interface ICustomTooltip extends TooltipProps<number, string> {
     dashboard: string
     hoveredBarDataKey: MutableRefObject<string>
     showTooltip: boolean
+    lang: string
 }
 
 export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphProps) => {
@@ -148,9 +149,9 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
         displayBreakdown()
     }, [displayBreakdown])
 
-    // Return all numbers as positive
+    // Format x-axis numbers
     function xAxisFormatter(item: number) {
-        return Math.abs(item).toString()
+        return toThousandsSep(Math.abs(item), lang).toString()
     }
 
     // Determine the max value for the x-axis
@@ -281,6 +282,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
                                             dashboard={dashboard}
                                             hoveredBarDataKey={hoveredBarDataKey}
                                             showTooltip={showTooltip}
+                                            lang={lang}
                                         />
                                     }
                                     position={{ x: 25 }}
@@ -317,18 +319,18 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
     )
 }
 
-const CustomTooltip = ({ active, payload, label, hoveredBarDataKey, showTooltip }: ICustomTooltip) => {
+const CustomTooltip = ({ active, payload, label, hoveredBarDataKey, showTooltip, lang }: ICustomTooltip) => {
     if (active && payload && payload.length) {
         const data = payload.find((data) => data.dataKey === hoveredBarDataKey.current)
         if (data) {
-            const value = data.value ? Math.abs(data.value) : ''
+            const value = data.value ? Math.abs(data.value) : 0
 
             return (
                 <p
                     className={classNames(`border border-white p-1 text-sm text-white`, showTooltip ? '' : 'hidden')}
                     style={{ backgroundColor: data.color }}
                 >
-                    {`${label}, ${value}`}
+                    {`${label}, ${toThousandsSep(value, lang)}`}
                 </p>
             )
         }

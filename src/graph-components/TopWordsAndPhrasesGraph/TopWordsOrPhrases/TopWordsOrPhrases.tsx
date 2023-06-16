@@ -12,12 +12,14 @@ import {
     YAxis,
 } from 'recharts'
 import { DashboardName } from '@enums'
-import { classNames } from '@utils'
+import { classNames, toThousandsSep } from '@utils'
 import { MutableRefObject, useRef } from 'react'
 import { ITopWords } from '@interfaces'
+import { useTranslation } from '@app/i18n/client'
 
 interface ITopWordsOrPhrasesProps {
     dashboard: string
+    lang: string
     id: 'top-words' | 'two-word-phrases' | 'three-word-phrases'
     words: ITopWords[]
     filter1Description: string
@@ -31,10 +33,12 @@ interface ICustomTooltip extends TooltipProps<number, string> {
     hoveredBarDataKey: MutableRefObject<string>
     pmnchParagraphClasses: string
     defaultParagraphClasses: string
+    lang: string
 }
 
 export const TopWordsOrPhrases = ({
     dashboard,
+    lang,
     id,
     words,
     filter1Description,
@@ -168,6 +172,7 @@ export const TopWordsOrPhrases = ({
                                     hoveredBarDataKey={hoveredBarDataKey}
                                     pmnchParagraphClasses={pmnchCustomTooltipParagraphClasses}
                                     defaultParagraphClasses={defaultCustomTooltipParagraphClasses}
+                                    lang={lang}
                                 />
                             }
                             position={{ x: 25 }}
@@ -205,7 +210,10 @@ const CustomTooltip = ({
     hoveredBarDataKey,
     pmnchParagraphClasses,
     defaultParagraphClasses,
+    lang,
 }: ICustomTooltip) => {
+    const { t } = useTranslation(lang)
+
     // Set p classes
     let pClasses: string
     switch (dashboard) {
@@ -219,11 +227,11 @@ const CustomTooltip = ({
     if (active && payload && payload.length) {
         const data = payload.find((data) => data.dataKey === hoveredBarDataKey.current)
         if (data) {
-            const value = data.value
+            const value = data.value as number
 
             return (
                 <p className={classNames(`border border-white p-1 text-sm text-white`, pClasses)}>
-                    <span className="font-bold">{value}</span> people mentioned{' '}
+                    <span className="font-bold">{toThousandsSep(value, lang)}</span> {t('people-have-mentioned')}{' '}
                     <span className="font-bold">“{label}”</span>.
                 </p>
             )

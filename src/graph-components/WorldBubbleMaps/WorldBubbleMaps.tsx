@@ -11,7 +11,7 @@ import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } 
 import React, { useEffect, useMemo, useRef } from 'react'
 import { IWorldBubbleMapsCoordinate } from '@interfaces'
 import { Tab } from '@headlessui/react'
-import { classNames } from '@utils'
+import { classNames, toThousandsSep } from '@utils'
 import { useQuery } from 'react-query'
 import { IFiltersState, useFiltersStore } from '@stores/filters'
 import { useTranslation } from '@app/i18n/client'
@@ -27,6 +27,7 @@ interface IWorldBubbleMapProps {
     dataGeo: IDataGeo
     bubbleMapCoordinates: IWorldBubbleMapsCoordinate[]
     colorId: 'color1' | 'color2'
+    lang: string
 }
 
 interface IDataGeo {
@@ -86,6 +87,7 @@ export const WorldBubbleMaps = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
                         dataGeo={dataGeoQuery.data}
                         bubbleMapCoordinates={data.world_bubble_maps_coordinates.coordinates_1}
                         colorId="color1"
+                        lang={lang}
                     />
                 ) : null,
         },
@@ -104,6 +106,7 @@ export const WorldBubbleMaps = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
                         dataGeo={dataGeoQuery.data}
                         bubbleMapCoordinates={data.world_bubble_maps_coordinates.coordinates_2}
                         colorId="color2"
+                        lang={lang}
                     />
                 ),
             })
@@ -177,7 +180,14 @@ export const WorldBubbleMaps = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
     )
 }
 
-const WorldBubbleMap = ({ dashboard, respondents, dataGeo, bubbleMapCoordinates, colorId }: IWorldBubbleMapProps) => {
+const WorldBubbleMap = ({
+    dashboard,
+    respondents,
+    dataGeo,
+    bubbleMapCoordinates,
+    colorId,
+    lang,
+}: IWorldBubbleMapProps) => {
     const filters = useFiltersStore((state: IFiltersState) => state.filters)
     const setFilters = useFiltersStore((state: IFiltersState) => state.setFilters)
 
@@ -273,7 +283,7 @@ const WorldBubbleMap = ({ dashboard, respondents, dataGeo, bubbleMapCoordinates,
             // On mouse move
             const onMouseMove = (event: MouseEvent, d: IWorldBubbleMapsCoordinate) =>
                 tooltip
-                    .html(d.country_name + '<br>' + d.n + ' ' + respondents)
+                    .html(d.country_name + '<br>' + toThousandsSep(d.n, lang) + ' ' + respondents)
                     .style('left', `${event.offsetX}px`)
                     .style('top', `${event.offsetY - 85}px`)
                     .style('background-color', bubbleColor)

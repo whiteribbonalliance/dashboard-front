@@ -86,3 +86,20 @@ export function isSubdomain(url: string) {
 
     return !!subDomains
 }
+
+/**
+ * Format number to thousands separator
+ *
+ * @param num
+ * @param lang
+ */
+export function toThousandsSep(num: number, lang: string) {
+    let formattedNumber: string
+    try {
+        formattedNumber = num.toLocaleString(lang)
+    } catch (error) {
+        formattedNumber = num.toLocaleString('en')
+    }
+
+    return formattedNumber
+}

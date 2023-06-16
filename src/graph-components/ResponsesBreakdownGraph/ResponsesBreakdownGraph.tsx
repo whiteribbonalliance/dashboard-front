@@ -6,7 +6,7 @@ import { DashboardName } from '@enums'
 import { useCampaignQuery } from '@hooks/use-campaign'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts'
 import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent'
-import { classNames } from '@utils'
+import { classNames, toThousandsSep } from '@utils'
 import { GraphLoading } from 'components/GraphLoading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
@@ -18,6 +18,7 @@ interface IResponsesBreakdownGraphProps {
 
 interface ICustomTooltip extends TooltipProps<ValueType, NameType> {
     dashboard: string
+    lang: string
 }
 
 export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdownGraphProps) => {
@@ -86,6 +87,11 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
             breakdownResponsesTopicTranslation = t('breakdown-respondents-topic')
     }
 
+    // Format x-axis numbers
+    function xAxisFormatter(item: number) {
+        return toThousandsSep(item, lang).toString()
+    }
+
     // Display graph or not
     const displayGraph = !!data
 
@@ -114,7 +120,13 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                                 layout="vertical"
                                 barCategoryGap={5}
                             >
-                                <XAxis dataKey="count" type="number" axisLine={false} tickCount={7} />
+                                <XAxis
+                                    dataKey="count"
+                                    type="number"
+                                    axisLine={false}
+                                    tickCount={7}
+                                    tickFormatter={(item) => xAxisFormatter(item)}
+                                />
                                 <YAxis
                                     dataKey="description"
                                     type="category"
@@ -126,7 +138,7 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                                 <CartesianGrid strokeDasharray="0" stroke="#FFFFFF" />
                                 <Tooltip
                                     cursor={{ fill: 'transparent' }}
-                                    content={<CustomTooltip dashboard={dashboard} />}
+                                    content={<CustomTooltip dashboard={dashboard} lang={lang} />}
                                     position={{ x: 25 }}
                                 />
                                 <Bar dataKey="count" className={barClasses} minPointSize={5} />
@@ -139,9 +151,9 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
     )
 }
 
-const CustomTooltip = ({ active, payload, label, dashboard }: ICustomTooltip) => {
+const CustomTooltip = ({ active, payload, label, dashboard, lang }: ICustomTooltip) => {
     if (active && payload && payload.length) {
-        const value = payload[0].value
+        const value = payload[0].value as number
 
         // Set p classes
         let pClasses: string
@@ -155,8 +167,8 @@ const CustomTooltip = ({ active, payload, label, dashboard }: ICustomTooltip) =>
 
         return (
             <p className={classNames(`border border-white p-1 text-sm text-white`, pClasses)}>
-                <span className="font-bold">{value}</span> people mentioned <span className="font-bold">“{label}”</span>
-                .
+                <span className="font-bold">{toThousandsSep(value, lang)}</span> people mentioned{' '}
+                <span className="font-bold">“{label}”</span>.
             </p>
         )
     }

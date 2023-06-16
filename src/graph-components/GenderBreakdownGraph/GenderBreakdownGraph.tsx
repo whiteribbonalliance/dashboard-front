@@ -7,7 +7,7 @@ import { GraphError } from '@components/GraphError'
 import { GraphLoading } from '@components/GraphLoading'
 import React from 'react'
 import { Cell, Legend, Pie, PieChart, PieLabelRenderProps, ResponsiveContainer, Tooltip, TooltipProps } from 'recharts'
-import { classNames } from '@utils'
+import { classNames, toThousandsSep } from '@utils'
 import { useTranslation } from '@app/i18n/client'
 
 interface IGenderBreakdownGraphProps {
@@ -15,7 +15,9 @@ interface IGenderBreakdownGraphProps {
     lang: string
 }
 
-interface ICustomTooltip extends TooltipProps<number, string> {}
+interface ICustomTooltip extends TooltipProps<number, string> {
+    lang: string
+}
 
 const colors = [
     'var(--pmnchPrimary)',
@@ -83,7 +85,7 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
                                 wrapperStyle={{ paddingBottom: '1rem' }}
                                 formatter={legendFormatter}
                             />
-                            <Tooltip cursor={{ fill: 'transparent' }} content={<CustomTooltip />} />
+                            <Tooltip cursor={{ fill: 'transparent' }} content={<CustomTooltip lang={lang} />} />
                             <Pie
                                 data={data.genders_breakdown}
                                 label={customLabel}
@@ -106,19 +108,19 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
     )
 }
 
-const CustomTooltip = ({ active, payload }: ICustomTooltip) => {
+const CustomTooltip = ({ active, payload, lang }: ICustomTooltip) => {
     if (active && payload && payload.length) {
         const data = payload[0]
         if (data) {
             const name = data.name
-            const value = data.value
+            const value = data.value as number
 
             return (
                 <p
                     className={classNames(`border border-white p-1 text-sm text-black shadow-md`)}
                     style={{ backgroundColor: 'var(--white)' }}
                 >
-                    {`${name}, ${value}`}
+                    {`${name}, ${toThousandsSep(value, lang)}`}
                 </p>
             )
         }
