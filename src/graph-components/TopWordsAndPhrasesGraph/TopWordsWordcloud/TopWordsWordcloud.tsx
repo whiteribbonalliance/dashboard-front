@@ -8,7 +8,7 @@ import { DashboardName } from '@enums'
 import { Wordcloud } from '@visx/wordcloud'
 import { useTooltip, useTooltipInPortal } from '@visx/tooltip'
 import { IWordcloudWords } from '@interfaces'
-import {toThousandsSep} from "@utils";
+import { toThousandsSep } from '@utils'
 
 interface IWordcloudProps {
     dashboard: string
@@ -66,45 +66,43 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
         }
 
         return (
-            <div className="h-[40rem]">
-                <ParentSize className="bg-white">
-                    {(parent) => (
-                        <Wordcloud
-                            height={parent.height}
-                            width={parent.width}
-                            words={wordcloudWords}
-                            fontSize={(datum) => fontScale(datum.value)}
-                            spiral="rectangular"
-                            rotate={0}
-                            padding={3}
-                            font={'Impact'}
-                        >
-                            {(cloudWords) =>
-                                cloudWords.map((w: any, i) => (
-                                    <Text
-                                        className="hover:cursor-pointer"
-                                        key={`${w.text}-${i}`}
-                                        fill={wordcloudColors[i % wordcloudColors.length]}
-                                        textAnchor={'middle'}
-                                        transform={`translate(${w.x}, ${w.y}) rotate(${w.rotate})`}
-                                        fontSize={w.size}
-                                        fontFamily={w.font}
-                                        onMouseEnter={(e) => handleMouseOver(e, w)}
-                                        onMouseLeave={hideTooltip}
-                                    >
-                                        {w.text}
-                                    </Text>
-                                ))
-                            }
-                        </Wordcloud>
-                    )}
-                </ParentSize>
-            </div>
+            <ParentSize className="bg-white">
+                {(parent) => (
+                    <Wordcloud
+                        height={parent.height}
+                        width={parent.width}
+                        words={wordcloudWords}
+                        fontSize={(datum) => fontScale(datum.value)}
+                        spiral="rectangular"
+                        rotate={0}
+                        padding={3}
+                        font={'Impact'}
+                    >
+                        {(cloudWords) =>
+                            cloudWords.map((w: any, i) => (
+                                <Text
+                                    className="hover:cursor-pointer"
+                                    key={`${w.text}-${i}`}
+                                    fill={wordcloudColors[i % wordcloudColors.length]}
+                                    textAnchor={'middle'}
+                                    transform={`translate(${w.x}, ${w.y}) rotate(${w.rotate})`}
+                                    fontSize={w.size}
+                                    fontFamily={w.font}
+                                    onMouseEnter={(e) => handleMouseOver(e, w)}
+                                    onMouseLeave={hideTooltip}
+                                >
+                                    {w.text}
+                                </Text>
+                            ))
+                        }
+                    </Wordcloud>
+                )}
+            </ParentSize>
         )
     }, [dashboard, wordcloudWords, hideTooltip, showTooltip, containerBounds])
 
     return (
-        <>
+        <div className="h-[40rem]">
             {/* Wordcloud */}
             {cachedWordcloud}
 
@@ -116,6 +114,6 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
                     </div>
                 </TooltipInPortal>
             )}
-        </>
+        </div>
     )
 }

@@ -38,7 +38,11 @@ export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrases
             id: 'word-cloud',
             title: t('word-cloud'),
             content: data ? (
-                <TopWordsWordcloud dashboard={dashboard} wordcloudWords={data.top_words_and_phrases.wordcloud_words} />
+                <TopWordsWordcloud
+                    dashboard={dashboard}
+                    wordcloudWords={data.top_words_and_phrases.wordcloud_words}
+                    lang={lang}
+                />
             ) : null,
         },
         {
@@ -126,7 +130,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrases
                         </Tab.List>
                         <Tab.Panels>
                             {tabs.map(({ id, content }) => (
-                                <Tab.Panel key={id} className="w-full">
+                                <Tab.Panel key={id} unmount={false} className="w-full">
                                     {content}
                                 </Tab.Panel>
                             ))}
