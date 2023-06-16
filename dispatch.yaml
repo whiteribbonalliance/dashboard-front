@@ -1,0 +1,16 @@
+dispatch:
+  # Send all mobile traffic to the mobile frontend.
+  - url: "*whatwomenwant.whiteribbonalliance.org/*"
+    service: dashboardfrontend
+
+  # Send all mobile traffic to the mobile frontend.
+  - url: "*midwivesvoices.whiteribbonalliance.org/*"
+    service: dashboardfrontend
+
+  # Send all mobile traffic to the mobile frontend.
+  - url: "*whatyoungpeoplewant.whiteribbonalliance.org/*"
+    service: dashboardfrontend
+
+  # Send all mobile traffic to the mobile frontend.
+  - url: "*explore.whiteribbonalliance.org/*"
+    service: dashboardfrontend
