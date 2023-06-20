@@ -175,10 +175,10 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
     // Legend formatter
     function legendFormatter(value: string) {
         if (data) {
-            if (value == 'count_1') {
+            if (value === 'count_1') {
                 return <span className="text-black">{data.filter_1_description}</span>
             }
-            if (value == 'count_2') {
+            if (value === 'count_2') {
                 return <span className="text-black">{data.filter_2_description} (normalized)</span>
             }
         }

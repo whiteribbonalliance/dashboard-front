@@ -24,6 +24,15 @@ export const Title = ({ dashboard, lang, renderAsDiv }: ITitleProps) => {
         case DashboardName.MIDWIVES_VOICES:
             titleTranslation = t('midwives-voices-title')
             break
+        case DashboardName.HEALTH_WELL_BEING:
+            titleTranslation = 'What women want for health and wellbeing'
+            break
+        case DashboardName.GIZ:
+            titleTranslation = 'Economic Empowerment in Mexico'
+            break
+        case DashboardName.WWW_PAKISTAN:
+            titleTranslation = 'What Women Want Pakistan'
+            break
         default:
             titleTranslation = ''
     }

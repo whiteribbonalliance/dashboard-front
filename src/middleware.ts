@@ -2,6 +2,9 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { dashboards, defaultLanguage, languages } from '@constants'
 
+// FIXME: Temporarily filter out 'giz' and 'healthwellbeing'
+const dashboardsFiltered = dashboards.filter((dashboard) => !['giz', 'healthwellbeing'].includes(dashboard))
+
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
@@ -46,7 +49,7 @@ export function middleware(request: NextRequest) {
     // If subdomain equals the main subdomain and a path is requested that is a dashboard name, then ignore
     // subdomain routing and use path instead
     if (currentHost === mainSubdomain) {
-        if (dashboards.some((dashboard) => pathname.endsWith(dashboard))) {
+        if (dashboardsFiltered.some((dashboard) => pathname.endsWith(dashboard))) {
             // Prevent security issues
             if (pathname.startsWith(`/dashboards_use_path`)) {
                 return new Response('404', { status: 404 })

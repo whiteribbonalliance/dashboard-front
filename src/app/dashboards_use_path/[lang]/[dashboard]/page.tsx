@@ -1,7 +1,13 @@
 import { Dashboard } from '@page-components/Dashboard'
 import { dashboards, seoMainTitle } from '@constants'
 import { DashboardName } from '@enums'
-import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
+import {
+    healthWellBeingConfig,
+    midwivesVoicesConfig,
+    whatWomenWantConfig,
+    whatYoungPeopleWantConfig,
+    wwwPakistanConfig,
+} from '@configurations'
 
 export default Dashboard
 
@@ -34,6 +40,16 @@ export async function generateMetadata({ params }: IGenerateMetadataProps) {
             return {
                 title: midwivesVoicesConfig.seoTitle,
                 description: midwivesVoicesConfig.seoMetaDescription,
+            }
+        case DashboardName.HEALTH_WELL_BEING:
+            return {
+                title: healthWellBeingConfig.seoTitle,
+                description: healthWellBeingConfig.seoMetaDescription,
+            }
+        case DashboardName.WWW_PAKISTAN:
+            return {
+                title: wwwPakistanConfig.seoTitle,
+                description: wwwPakistanConfig.seoMetaDescription,
             }
         default:
             return {

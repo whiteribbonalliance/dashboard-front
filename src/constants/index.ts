@@ -6,26 +6,47 @@ export const dashboards = [
     DashboardName.WHAT_YOUNG_PEOPLE_WANT,
     DashboardName.WHAT_WOMEN_WANT,
     DashboardName.MIDWIVES_VOICES,
+    DashboardName.HEALTH_WELL_BEING,
+    DashboardName.GIZ,
+    DashboardName.WWW_PAKISTAN,
 ]
 
 export const seoMainTitle = 'White Ribbon Alliance'
 
-export const whatWomenWantLink: IDashboardLink = {
+export const whatwomenwantLink: IDashboardLink = {
     id: 'whatwomenwant',
     title: 'What Women Want',
     link: 'https://whatwomenwant.whiteribbonalliance.org',
 }
 
-export const healthLiteracyLink: IDashboardLink = {
+export const healthliteracyLink: IDashboardLink = {
     id: 'healthliteracy',
     title: 'Health Literacy',
     link: 'https://wwwliteracydashboard.whiteribbonalliance.org',
 }
 
-export const midwivesVoicesLink: IDashboardLink = {
+export const midwivesvoicesLink: IDashboardLink = {
     id: 'midwivesvoices',
     title: 'What Midwives Want',
     link: 'https://midwivesvoices.whiteribbonalliance.org',
+}
+
+export const healthwellbeingLink: IDashboardLink = {
+    id: 'healthwellbeing',
+    title: 'What women want for health and wellbeing',
+    link: 'https://explore.whiteribbonalliance.org/healthwellbeing',
+}
+
+export const gizLink: IDashboardLink = {
+    id: 'giz',
+    title: 'Economic Empowerment in Mexico',
+    link: 'https://explore.whiteribbonalliance.org/giz',
+}
+
+export const wwwpakistanLink: IDashboardLink = {
+    id: 'wwwpakistan',
+    title: 'What Women Want Pakistan',
+    link: 'https://explore.whiteribbonalliance.org/wwwpakistan',
 }
 
 export const defaultFilterValues: Filter = {

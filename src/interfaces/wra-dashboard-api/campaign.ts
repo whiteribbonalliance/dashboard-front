@@ -33,8 +33,8 @@ interface IGenderData {
 }
 
 export interface IWorldBubbleMapsCoordinate {
-    country_alpha2_code: string
-    country_name: string
+    location_code: string
+    location_name: string
     n: number
     lat: number
     lon: number

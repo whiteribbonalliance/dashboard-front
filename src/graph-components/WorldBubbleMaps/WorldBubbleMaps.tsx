@@ -13,7 +13,6 @@ import { IWorldBubbleMapsCoordinate } from '@interfaces'
 import { Tab } from '@headlessui/react'
 import { classNames, toThousandsSep } from '@utils'
 import { useQuery } from 'react-query'
-import { IFiltersState, useFiltersStore } from '@stores/filters'
 import { useTranslation } from '@app/i18n/client'
 
 interface IWorldBubbleMapsProps {
@@ -188,11 +187,35 @@ const WorldBubbleMap = ({
     colorId,
     lang,
 }: IWorldBubbleMapProps) => {
-    const filters = useFiltersStore((state: IFiltersState) => state.filters)
-    const setFilters = useFiltersStore((state: IFiltersState) => state.setFilters)
-
     const svgRef = useRef<SVGSVGElement>(undefined as any)
     const divRef = useRef<HTMLDivElement>(undefined as any)
+
+    // For 'giz' or 'wwwpakistan', only show the respective country on the map
+    switch (dashboard) {
+        case DashboardName.GIZ:
+            dataGeo.features = dataGeo.features.filter((d) => d.properties.name === 'Mexico')
+            break
+        case DashboardName.WWW_PAKISTAN:
+            dataGeo.features = dataGeo.features.filter((d) => d.properties.name === 'Pakistan')
+            break
+    }
+
+    // Set projection scale and view box
+    let projectionScale: number
+    let viewBox: string
+    switch (dashboard) {
+        case DashboardName.GIZ:
+            projectionScale = 1200
+            viewBox = `-2130 -500 ${svgWidth} ${svgHeight}`
+            break
+        case DashboardName.WWW_PAKISTAN:
+            projectionScale = 1750
+            viewBox = `2125 -975 ${svgWidth} ${svgHeight}`
+            break
+        default:
+            projectionScale = 144
+            viewBox = `0 -125 ${svgWidth} ${svgHeight}`
+    }
 
     // Set bubble color 1 and bubble color 2
     let bubbleColor1: string
@@ -220,15 +243,11 @@ const WorldBubbleMap = ({
     // Draw the world bubble map
     useEffect(() => {
         async function drawWorldBubbleMap() {
-            // Remove Antarctica from geo
-            // dataGeo.features = dataGeo.features.filter((d) => d.properties.name !== 'Antarctica')
-
             // Get svg element
             const svgEl = d3
                 .select(svgRef.current)
-                //.attr("height", svgHeight)
                 .attr('preserveAspectRatio', 'xMidYMid meet')
-                .attr('viewBox', `0 -125 ${svgWidth} ${svgHeight}`)
+                .attr('viewBox', viewBox)
 
             // Clear svg content before adding new elements
             svgEl.selectAll('*').remove()
@@ -242,7 +261,7 @@ const WorldBubbleMap = ({
             // Map and projection
             const projection = d3
                 .geoMercator()
-                .scale(144)
+                .scale(projectionScale)
                 .translate([svgWidth / 2, svgHeight / 2])
 
             //  Scale for bubble size
@@ -283,7 +302,7 @@ const WorldBubbleMap = ({
             // On mouse move
             const onMouseMove = (event: MouseEvent, d: IWorldBubbleMapsCoordinate) =>
                 tooltip
-                    .html(d.country_name + '<br>' + toThousandsSep(d.n, lang) + ' ' + respondents)
+                    .html(d.location_name + '<br>' + toThousandsSep(d.n, lang) + ' ' + respondents)
                     .style('left', `${event.offsetX}px`)
                     .style('top', `${event.offsetY - 85}px`)
                     .style('background-color', bubbleColor)
@@ -330,7 +349,7 @@ const WorldBubbleMap = ({
         }
 
         drawWorldBubbleMap().then()
-    }, [dataGeo, bubbleMapCoordinates, bubbleColor, respondents])
+    }, [dataGeo, bubbleMapCoordinates, bubbleColor, respondents, dashboard, lang, projectionScale, viewBox])
 
     return (
         <div ref={divRef} id="bubble-map" className="relative h-full w-full">

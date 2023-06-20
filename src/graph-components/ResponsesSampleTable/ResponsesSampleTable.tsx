@@ -202,7 +202,7 @@ export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphP
                                             key={header.id}
                                             className={classNames(
                                                 'border-r border-r-grayLight px-1 text-left',
-                                                header.id == 'raw_response' ? 'w-[100%]' : 'w-[35%]',
+                                                header.id === 'raw_response' ? 'w-[100%]' : 'w-[35%]',
                                                 thClasses
                                             )}
                                         >

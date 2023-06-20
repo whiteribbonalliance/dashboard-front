@@ -23,6 +23,12 @@ export function dashboardToCampaignCode(dashboard: string) {
             return CampaignCode.WHAT_YOUNG_PEOPLE_WANT
         case DashboardName.MIDWIVES_VOICES:
             return CampaignCode.MIDWIVES_VOICES
+        case DashboardName.HEALTH_WELL_BEING:
+            return CampaignCode.HEALTH_WELL_BEING
+        case DashboardName.GIZ:
+            return CampaignCode.GIZ
+        case DashboardName.WWW_PAKISTAN:
+            return CampaignCode.WWW_PAKISTAN
         default:
             return ''
     }
