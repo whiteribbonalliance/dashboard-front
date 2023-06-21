@@ -17,14 +17,15 @@ export const useCampaignQuery = (dashboard: string, lang: string) => {
 
     const campaignQuery = useQuery<ICampaign>({
         queryKey: [`campaign-${dashboard}`],
-        queryFn: () =>
+        queryFn: ({ signal }) =>
             getCampaign(
                 dashboard,
                 {
                     filter_1: filter1,
                     filter_2: filter2,
                 },
-                lang
+                lang,
+                signal
             ),
         refetchOnWindowFocus: false,
     })
@@ -35,7 +36,7 @@ export const useCampaignQuery = (dashboard: string, lang: string) => {
     // Refetch campaign on filters change
     useEffect(() => {
         if (filters) {
-            refetch().then()
+            refetch({ cancelRefetch: true }).then()
         }
     }, [refetch, filters])
 

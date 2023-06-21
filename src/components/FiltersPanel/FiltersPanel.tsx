@@ -44,7 +44,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const setFilters = useFiltersStore((state: IFiltersState) => state.setFilters)
     const setForm1 = useFilterFormsStore((state: IFilterFormsState) => state.setForm1)
     const setForm2 = useFilterFormsStore((state: IFilterFormsState) => state.setForm2)
-
     const { t } = useTranslation(lang)
 
     // Select options
@@ -215,25 +214,25 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         // Add a small delay before refetching campaign
         refetchCampaignTimeout.current = setTimeout(() => {
             // Lowercase keyword_exclude and keyword_filter
-            if (form1.getValues().keyword_exclude) {
-                form1.getValues().keyword_exclude = form1.getValues().keyword_exclude.toLowerCase()
+            if (form1Watch.keyword_exclude) {
+                form1Watch.keyword_exclude = form1Watch.keyword_exclude.toLowerCase()
             }
-            if (form1.getValues().keyword_filter) {
-                form1.getValues().keyword_filter = form1.getValues().keyword_filter.toLowerCase()
+            if (form1Watch.keyword_filter) {
+                form1Watch.keyword_filter = form1Watch.keyword_filter.toLowerCase()
             }
 
             // Lowercase keyword_exclude and keyword_filter
-            if (form2.getValues().keyword_exclude) {
-                form2.getValues().keyword_exclude = form2.getValues().keyword_exclude.toLowerCase()
+            if (form2Watch.keyword_exclude) {
+                form2Watch.keyword_exclude = form2Watch.keyword_exclude.toLowerCase()
             }
-            if (form2.getValues().keyword_filter) {
-                form2.getValues().keyword_filter = form2.getValues().keyword_filter.toLowerCase()
+            if (form2Watch.keyword_filter) {
+                form2Watch.keyword_filter = form2Watch.keyword_filter.toLowerCase()
             }
 
             // Update the filters store (when filters are updated, useCampaignQuery will refetch the campaign data)
-            setFilters({ filter1: form1.getValues(), filter2: form2.getValues() })
-        }, 250)
-    }, [form1, form1Watch, form2, form2Watch, setFilters])
+            setFilters({ filter1: form1Watch, filter2: form2Watch })
+        }, 450)
+    }, [form1Watch, form2Watch, setFilters])
 
     // Set select response topics translation
     let selectResponseTopicsTranslation: string
