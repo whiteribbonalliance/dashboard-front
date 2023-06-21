@@ -49,6 +49,7 @@ export const TopWordsOrPhrases = ({
 }: ITopWordsOrPhrasesProps) => {
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const form1 = useFilterFormsStore((state: IFilterFormsState) => state.form1)
+    const form2 = useFilterFormsStore((state: IFilterFormsState) => state.form2)
 
     // Set bars classes, bars fill, and custom tooltip paragraph classes (each id has a different color)
     let pmnchBar1Classes: string
@@ -134,10 +135,17 @@ export const TopWordsOrPhrases = ({
         hoveredBarDataKey.current = dataKey
     }
 
-    // Handle on click bar
-    function handleOnClickBar(data: any) {
+    // Handle on click bar1
+    function handleOnClickBar1(data: any) {
         if (form1) {
             form1.setValue('keyword_filter', data.word)
+        }
+    }
+
+    // Handle on click bar2
+    function handleOnClickBar2(data: any) {
+        if (form2) {
+            form2.setValue('keyword_filter', data.word)
         }
     }
 
@@ -192,7 +200,7 @@ export const TopWordsOrPhrases = ({
                             fill={bar1Fill}
                             minPointSize={5}
                             onMouseOver={() => setHoveredBarDataKey('count_1')}
-                            onClick={handleOnClickBar}
+                            onClick={handleOnClickBar1}
                         />
 
                         {/* Only display the second bar if filters are not identical */}
@@ -203,7 +211,7 @@ export const TopWordsOrPhrases = ({
                                 fill={bar2Fill}
                                 minPointSize={5}
                                 onMouseOver={() => setHoveredBarDataKey('count_2')}
-                                onClick={handleOnClickBar}
+                                onClick={handleOnClickBar2}
                             />
                         )}
                     </BarChart>
