@@ -19,6 +19,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Filter, filterSchema } from '@schemas/filter'
 import { Stats } from '@components/FiltersPanel/Stats'
 import { useTranslation } from '@app/i18n/client'
+import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
 
 interface IFiltersPanelProps {
     dashboard: string
@@ -40,8 +41,9 @@ interface IInputProps extends IFieldProps {
 }
 
 export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
-    // Set filters
     const setFilters = useFiltersStore((state: IFiltersState) => state.setFilters)
+    const setForm1 = useFilterFormsStore((state: IFilterFormsState) => state.setForm1)
+    const setForm2 = useFilterFormsStore((state: IFilterFormsState) => state.setForm2)
 
     const { t } = useTranslation(lang)
 
@@ -70,12 +72,14 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         defaultValues: defaultFilterValues,
         resolver: zodResolver(filterSchema),
     })
+    setForm1(form1)
 
     // Form 2
     const form2 = useForm<Filter>({
         defaultValues: defaultFilterValues,
         resolver: zodResolver(filterSchema),
     })
+    setForm2(form2)
 
     // For these countries, set the country as selected by default
     useEffect(() => {
