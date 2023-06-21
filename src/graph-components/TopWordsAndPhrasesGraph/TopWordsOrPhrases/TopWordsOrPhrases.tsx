@@ -16,6 +16,7 @@ import { classNames, toThousandsSep } from '@utils'
 import { MutableRefObject, useRef } from 'react'
 import { ITopWords } from '@interfaces'
 import { useTranslation } from '@app/i18n/client'
+import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
 
 interface ITopWordsOrPhrasesProps {
     dashboard: string
@@ -47,6 +48,7 @@ export const TopWordsOrPhrases = ({
     yAxisWidth,
 }: ITopWordsOrPhrasesProps) => {
     const hoveredBarDataKey = useRef<string>(undefined as any)
+    const form1 = useFilterFormsStore((state: IFilterFormsState) => state.form1)
 
     // Set bars classes, bars fill, and custom tooltip paragraph classes (each id has a different color)
     let pmnchBar1Classes: string
@@ -132,6 +134,13 @@ export const TopWordsOrPhrases = ({
         hoveredBarDataKey.current = dataKey
     }
 
+    // Handle on click bar
+    function handleOnClickBar(data: any) {
+        if (form1) {
+            form1.setValue('keyword_filter', data.word)
+        }
+    }
+
     return (
         <div className="mt-3 w-full">
             <p className="mb-3 w-full">Click on a bar to view responses containing a word or phrase.</p>
@@ -183,6 +192,7 @@ export const TopWordsOrPhrases = ({
                             fill={bar1Fill}
                             minPointSize={5}
                             onMouseOver={() => setHoveredBarDataKey('count_1')}
+                            onClick={handleOnClickBar}
                         />
 
                         {/* Only display the second bar if filters are not identical */}
@@ -193,6 +203,7 @@ export const TopWordsOrPhrases = ({
                                 fill={bar2Fill}
                                 minPointSize={5}
                                 onMouseOver={() => setHoveredBarDataKey('count_2')}
+                                onClick={handleOnClickBar}
                             />
                         )}
                     </BarChart>
