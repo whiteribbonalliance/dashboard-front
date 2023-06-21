@@ -82,3 +82,7 @@ docker run -p 3000:3000 wra-dashboards
 ## Translations
 
 Check `README.md` inside the back-end project for translations.
+
+## Hot to add a new campaign
+
+1. ...

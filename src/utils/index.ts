@@ -30,7 +30,7 @@ export function dashboardToCampaignCode(dashboard: string) {
         case DashboardName.WWW_PAKISTAN:
             return CampaignCode.WWW_PAKISTAN
         default:
-            return ''
+            return undefined
     }
 }
 

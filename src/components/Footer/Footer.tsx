@@ -43,12 +43,6 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
                 </p>
             )
             break
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            footerNote = undefined
-            break
-        case DashboardName.MIDWIVES_VOICES:
-            footerNote = undefined
-            break
         default:
             footerNote = undefined
             break

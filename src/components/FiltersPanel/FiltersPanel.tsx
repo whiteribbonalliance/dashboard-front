@@ -3,8 +3,7 @@
 import { Disclosure, Tab, Transition } from '@headlessui/react'
 import { classNames } from '@utils'
 import { DashboardName } from '@enums'
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
-import { MultiValue } from 'react-select'
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { Box } from '@components/Box'
 import Image from 'next/image'
 import { getCampaignFilterOptions } from '@services/wra-dashboard-api'
@@ -28,18 +27,12 @@ interface IFiltersPanelProps {
 
 interface IFieldProps {
     id: string
-    customOnChange: () => void
 }
 
 interface ISelectProps extends IFieldProps {
+    dashboard: string
     options: (Option<string> | Option<boolean>)[]
     control: Control<Filter, any>
-}
-
-interface ISelectCountriesProps extends ISelectProps {
-    handleOnChangeSelectedOptions:
-        | ((options: MultiValue<Option<string>>) => void)
-        | ((options: MultiValue<Option<boolean>>) => void)
 }
 
 interface IInputProps extends IFieldProps {
@@ -62,20 +55,12 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const [onlyMultiWordPhrasesContainingFilterTermOptions, setOnlyMultiWordPhrasesContainingFilterTermOptions] =
         useState<Option<boolean>[]>([])
 
-    // Selected countries option(s) for each filter
-    const [selectedCountriesOptionsFilter1, setSelectedCountriesOptionsFilter1] = useState<MultiValue<Option<string>>>(
-        []
-    )
-    const [selectedCountriesOptionsFilter2, setSelectedCountriesOptionsFilter2] = useState<MultiValue<Option<string>>>(
-        []
-    )
-
     // Select regions options(s) for each filter
     const [regionOptionsFilter1, setRegionOptionsFilter1] = useState<Option<string>[]>([])
     const [regionOptionsFilter2, setRegionOptionsFilter2] = useState<Option<string>[]>([])
 
     // Region options for each country
-    const countriesRegionsOptions = useRef<ICountryRegionOption[]>([])
+    const [countriesRegionsOptions, setCountriesRegionsOptions] = useState<ICountryRegionOption[]>([])
 
     // Refetch campaign timeout
     const refetchCampaignTimeout = useRef<NodeJS.Timeout>()
@@ -91,6 +76,20 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         defaultValues: defaultFilterValues,
         resolver: zodResolver(filterSchema),
     })
+
+    // For these countries, set the country as selected by default
+    useEffect(() => {
+        switch (dashboard) {
+            case DashboardName.WWW_PAKISTAN:
+                form1.setValue('countries', ['PK'])
+                form2.setValue('countries', ['PK'])
+                break
+            case DashboardName.GIZ:
+                form1.setValue('countries', ['MX'])
+                form2.setValue('countries', ['MX'])
+                break
+        }
+    }, [dashboard, form1, form2])
 
     // Tabs
     const tabs = [
@@ -129,7 +128,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                 setCountryOptions(filterOptions.countries)
 
                 // Country Regions options
-                countriesRegionsOptions.current = filterOptions.country_regions
+                setCountriesRegionsOptions(filterOptions.country_regions)
 
                 // Response topic options
                 setResponseTopicOptions(filterOptions.response_topics)
@@ -154,15 +153,42 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
             .catch(() => {})
     }, [dashboard, lang])
 
-    // Set regions of selected countries for filter 2
+    // Set region options for filter
+    const setRegionOptionsForFilter = useCallback(
+        (
+            selectedCountries: string[],
+            setRegionOptionsFilter: Dispatch<SetStateAction<Option<string>[]>>,
+            form: UseFormReturn<Filter, any>
+        ) => {
+            // Only display regions for 1 selected country
+            if (selectedCountries.length !== 1) {
+                setRegionOptionsFilter([])
+                form.setValue('regions', [])
+                return
+            }
+
+            // Set region options for selected country
+            const countryRegionOptions = countriesRegionsOptions.find((countryRegionOption) => {
+                return countryRegionOption.country_alpha2_code === selectedCountries[0]
+            })
+            if (countryRegionOptions) {
+                setRegionOptionsFilter(countryRegionOptions.options)
+            }
+        },
+        [countriesRegionsOptions]
+    )
+
+    // Set regions of selected countries for filter 1
+    const watchCountriesForm1 = form1.watch('countries')
     useEffect(() => {
-        SetRegionOptionsForFilter(selectedCountriesOptionsFilter1, setRegionOptionsFilter1, form1)
-    }, [selectedCountriesOptionsFilter1, form1])
+        setRegionOptionsForFilter(watchCountriesForm1, setRegionOptionsFilter1, form1)
+    }, [watchCountriesForm1, form1, setRegionOptionsForFilter])
 
     // Set regions of selected countries for filter 2
+    const watchCountriesForm2 = form2.watch('countries')
     useEffect(() => {
-        SetRegionOptionsForFilter(selectedCountriesOptionsFilter2, setRegionOptionsFilter2, form2)
-    }, [selectedCountriesOptionsFilter2, form2])
+        setRegionOptionsForFilter(watchCountriesForm2, setRegionOptionsFilter2, form2)
+    }, [watchCountriesForm2, form2, setRegionOptionsForFilter])
 
     // Cleanup refetch campaign timeout
     useEffect(() => {
@@ -173,40 +199,10 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         }
     }, [refetchCampaignTimeout])
 
-    // Set region options for filter
-    function SetRegionOptionsForFilter(
-        selectedCountryOptionsFilter: MultiValue<Option<string>>,
-        setRegionOptionsFilter: Dispatch<SetStateAction<Option<string>[]>>,
-        form: UseFormReturn<Filter, any>
-    ) {
-        // Only display regions for 1 selected country
-        if (selectedCountryOptionsFilter.length !== 1) {
-            setRegionOptionsFilter([])
-            form.setValue('regions', [])
-            return
-        }
-
-        // Set region options for selected country
-        const countryRegionOptions = countriesRegionsOptions.current.find((countryRegionOption) => {
-            return countryRegionOption.country_alpha2_code === selectedCountryOptionsFilter[0].value
-        })
-        if (countryRegionOptions) {
-            setRegionOptionsFilter(countryRegionOptions.options)
-        }
-    }
-
-    // Handle on change selected countries for form 1
-    function handleOnChangeSelectedCountriesOptionsFilter1(options: MultiValue<Option<string>>) {
-        setSelectedCountriesOptionsFilter1(options)
-    }
-
-    // Handle on change selected countries for form 2
-    function handleOnChangeSelectedCountriesOptionsFilter2(options: MultiValue<Option<string>>) {
-        setSelectedCountriesOptionsFilter2(options)
-    }
-
-    // Refetch campaign
-    function refetchCampaign() {
+    // Refetch campaign on form change
+    const form1Watch = form1.watch()
+    const form2Watch = form2.watch()
+    useEffect(() => {
         // Clear the current submit timeout
         if (refetchCampaignTimeout.current) {
             clearTimeout(refetchCampaignTimeout.current)
@@ -233,7 +229,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
             // Update the filters store (when filters are updated, useCampaignQuery will refetch the campaign data)
             setFilters({ filter1: form1.getValues(), filter2: form2.getValues() })
         }, 250)
-    }
+    }, [form1, form1Watch, form2, form2Watch, setFilters])
 
     // Set select response topics translation
     let selectResponseTopicsTranslation: string
@@ -280,14 +276,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                             <div className="mb-1">{t('select-countries')}</div>
                                             <SelectCountries
                                                 id={`select-countries-${id}`}
+                                                dashboard={dashboard}
                                                 options={countryOptions}
                                                 control={form.control}
-                                                customOnChange={refetchCampaign}
-                                                handleOnChangeSelectedOptions={
-                                                    id === '1'
-                                                        ? handleOnChangeSelectedCountriesOptionsFilter1
-                                                        : handleOnChangeSelectedCountriesOptionsFilter2
-                                                }
                                             />
                                         </div>
 
@@ -296,9 +287,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                             <div className="mb-1">{t('select-regions')}</div>
                                             <SelectRegions
                                                 id={`select-regions-${id}`}
+                                                dashboard={dashboard}
                                                 options={id === '1' ? regionOptionsFilter1 : regionOptionsFilter2}
                                                 control={form.control}
-                                                customOnChange={refetchCampaign}
                                             />
                                         </div>
 
@@ -307,9 +298,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                             <div className="mb-1">{selectResponseTopicsTranslation}</div>
                                             <SelectResponseTopics
                                                 id={`select-response-topics-${id}`}
+                                                dashboard={dashboard}
                                                 options={responseTopicOptions}
                                                 control={form.control}
-                                                customOnChange={refetchCampaign}
                                             />
                                         </div>
                                     </div>
@@ -334,9 +325,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                             <div className="mb-1">{t('responses-from-categories')}</div>
                                                             <SelectOnlyResponsesFromCategories
                                                                 id={`select-only-responses-from-categories-${id}`}
+                                                                dashboard={dashboard}
                                                                 options={onlyResponsesFromCategoriesOptions}
                                                                 control={form.control}
-                                                                customOnChange={refetchCampaign}
                                                             />
                                                         </div>
 
@@ -347,9 +338,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                             </div>
                                                             <SelectAges
                                                                 id={`select-ages-${id}`}
+                                                                dashboard={dashboard}
                                                                 options={ageOptions}
                                                                 control={form.control}
-                                                                customOnChange={refetchCampaign}
                                                             />
                                                         </div>
 
@@ -365,9 +356,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                         </div>
                                                                         <SelectGenders
                                                                             id={`select-genders-${id}`}
+                                                                            dashboard={dashboard}
                                                                             options={genderOptions}
                                                                             control={form.control}
-                                                                            customOnChange={refetchCampaign}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -386,9 +377,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                         </div>
                                                                         <SelectGenders
                                                                             id={`select-genders-${id}`}
+                                                                            dashboard={dashboard}
                                                                             options={genderOptions}
                                                                             control={form.control}
-                                                                            customOnChange={refetchCampaign}
                                                                         />
                                                                     </div>
                                                                     {/* Select profession */}
@@ -398,9 +389,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                         </div>
                                                                         <SelectProfessions
                                                                             id={`select-professions-${id}`}
+                                                                            dashboard={dashboard}
                                                                             options={professionOptions}
                                                                             control={form.control}
-                                                                            customOnChange={refetchCampaign}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -415,7 +406,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                 <InputKeyword
                                                                     id={`input-keyword-${id}`}
                                                                     register={form.register}
-                                                                    customOnChange={refetchCampaign}
                                                                 />
                                                             </div>
                                                             {/* Exclude keyword */}
@@ -424,7 +414,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                 <InputExcludeKeyword
                                                                     id={`input-exclude-keyword-${id}`}
                                                                     register={form.register}
-                                                                    customOnChange={refetchCampaign}
                                                                 />
                                                             </div>
                                                         </div>
@@ -434,11 +423,11 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                             <div className="mb-1">{t('multi-word-phrases')}</div>
                                                             <SelectOnlyMultiWordPhrasesContainingFilterTerm
                                                                 id={`select-only-multi-word-phrases-containing-filter-term-${id}`}
+                                                                dashboard={dashboard}
                                                                 options={
                                                                     onlyMultiWordPhrasesContainingFilterTermOptions
                                                                 }
                                                                 control={form.control}
-                                                                customOnChange={refetchCampaign}
                                                             />
                                                         </div>
                                                     </Disclosure.Panel>
@@ -475,149 +464,114 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     )
 }
 
-const InputKeyword = ({ id, customOnChange, register }: IInputProps) => {
+const InputKeyword = ({ id, register }: IInputProps) => {
     return (
         <input
             id={id}
             type="text"
             className="w-0 min-w-full rounded-md border border-[#CCC] p-1.5"
             placeholder="Enter keyword..."
-            {...register('keyword_filter', {
-                onChange: customOnChange,
-            })}
+            {...register('keyword_filter')}
         />
     )
 }
 
-const InputExcludeKeyword = ({ id, customOnChange, register }: IInputProps) => {
+const InputExcludeKeyword = ({ id, register }: IInputProps) => {
     return (
         <input
             id={id}
             type="text"
             className="w-0 min-w-full rounded-md border border-[#CCC] p-1.5"
             placeholder="Enter keyword..."
-            {...register('keyword_exclude', {
-                onChange: customOnChange,
-            })}
+            {...register('keyword_exclude')}
         />
     )
 }
 
-const SelectOnlyMultiWordPhrasesContainingFilterTerm = ({ id, customOnChange, options, control }: ISelectProps) => {
+const SelectOnlyMultiWordPhrasesContainingFilterTerm = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="only_multi_word_phrases_containing_filter_term"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <SelectSingleValue
-                    id={id}
-                    options={options}
-                    value={value}
-                    controllerRenderOnChange={onChange}
-                    customOnChange={customOnChange}
-                />
+                <SelectSingleValue id={id} options={options} value={value} controllerRenderOnChange={onChange} />
             )}
         />
     )
 }
 
-const SelectProfessions = ({ id, customOnChange, options, control }: ISelectProps) => {
+const SelectProfessions = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="professions"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <SelectMultiValues
-                    id={id}
-                    customOnChange={customOnChange}
-                    options={options}
-                    controllerRenderOnChange={onChange}
-                    value={value}
-                />
+                <SelectMultiValues id={id} options={options} controllerRenderOnChange={onChange} value={value} />
             )}
         />
     )
 }
 
-const SelectGenders = ({ id, customOnChange, options, control }: ISelectProps) => {
+const SelectGenders = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="genders"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <SelectMultiValues
-                    id={id}
-                    customOnChange={customOnChange}
-                    options={options}
-                    controllerRenderOnChange={onChange}
-                    value={value}
-                />
+                <SelectMultiValues id={id} options={options} controllerRenderOnChange={onChange} value={value} />
             )}
         />
     )
 }
 
-const SelectOnlyResponsesFromCategories = ({ id, customOnChange, options, control }: ISelectProps) => {
+const SelectOnlyResponsesFromCategories = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="only_responses_from_categories"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <SelectSingleValue
-                    id={id}
-                    options={options}
-                    value={value}
-                    controllerRenderOnChange={onChange}
-                    customOnChange={customOnChange}
-                />
+                <SelectSingleValue id={id} options={options} value={value} controllerRenderOnChange={onChange} />
             )}
         />
     )
 }
 
-const SelectResponseTopics = ({ id, customOnChange, options, control }: ISelectProps) => {
+const SelectResponseTopics = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="response_topics"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <SelectMultiValues
-                    id={id}
-                    customOnChange={customOnChange}
-                    options={options}
-                    controllerRenderOnChange={onChange}
-                    value={value}
-                />
+                <SelectMultiValues id={id} options={options} controllerRenderOnChange={onChange} value={value} />
             )}
         />
     )
 }
 
-const SelectRegions = ({ id, customOnChange, options, control }: ISelectProps) => {
+const SelectRegions = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="regions"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <SelectMultiValues
-                    id={id}
-                    customOnChange={customOnChange}
-                    options={options}
-                    controllerRenderOnChange={onChange}
-                    value={value}
-                />
+                <SelectMultiValues id={id} options={options} controllerRenderOnChange={onChange} value={value} />
             )}
         />
     )
 }
 
-const SelectCountries = ({
-    id,
-    customOnChange,
-    options,
-    control,
-    handleOnChangeSelectedOptions,
-}: ISelectCountriesProps) => {
+const SelectCountries = ({ id, dashboard, options, control }: ISelectProps) => {
+    // Set disabled
+    let disabled = false
+    switch (dashboard) {
+        case DashboardName.WWW_PAKISTAN:
+            disabled = true
+            break
+        case DashboardName.GIZ:
+            disabled = true
+            break
+    }
+
     return (
         <Controller
             name="countries"
@@ -625,30 +579,23 @@ const SelectCountries = ({
             render={({ field: { onChange, value } }) => (
                 <SelectMultiValues
                     id={id}
-                    customOnChange={customOnChange}
+                    isDisabled={disabled}
                     options={options}
                     controllerRenderOnChange={onChange}
                     value={value}
-                    handleOnChangeSelectedOptions={handleOnChangeSelectedOptions}
                 />
             )}
         />
     )
 }
 
-const SelectAges = ({ id, customOnChange, options, control }: ISelectProps) => {
+const SelectAges = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="ages"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <SelectMultiValues
-                    id={id}
-                    customOnChange={customOnChange}
-                    options={options}
-                    controllerRenderOnChange={onChange}
-                    value={value}
-                />
+                <SelectMultiValues id={id} options={options} controllerRenderOnChange={onChange} value={value} />
             )}
         />
     )

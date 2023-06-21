@@ -25,7 +25,9 @@ export async function generateStaticParams() {
 
 // Set page title and description
 export async function generateMetadata({ params }: IGenerateMetadataProps) {
-    switch (params.dashboard) {
+    const { dashboard } = params
+
+    switch (dashboard) {
         case DashboardName.WHAT_WOMEN_WANT:
             return {
                 title: whatWomenWantConfig.seoTitle,

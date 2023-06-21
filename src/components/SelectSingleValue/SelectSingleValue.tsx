@@ -7,16 +7,9 @@ interface ISelectSingleValueProps {
     options: Option<string | boolean>[]
     value: string | boolean
     controllerRenderOnChange: (...event: any[]) => void
-    customOnChange: () => void
 }
 
-export const SelectSingleValue = ({
-    id,
-    options,
-    value,
-    controllerRenderOnChange,
-    customOnChange,
-}: ISelectSingleValueProps) => {
+export const SelectSingleValue = ({ id, options, value, controllerRenderOnChange }: ISelectSingleValueProps) => {
     return (
         <Select
             instanceId={id}
@@ -26,7 +19,6 @@ export const SelectSingleValue = ({
                 if (SingleValueOption) {
                     controllerRenderOnChange(SingleValueOption.value)
                 }
-                customOnChange()
             }}
         />
     )

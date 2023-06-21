@@ -1,44 +1,40 @@
-import Select, { MultiValue } from 'react-select'
+import Select from 'react-select'
 import React from 'react'
 import { Option } from '@types'
 
 interface ISelectMultiValuesProps {
     id: string
+    isDisabled?: boolean
     options: (Option<string> | Option<boolean>)[]
     value: string[]
     controllerRenderOnChange: (...event: any[]) => void
-    customOnChange: () => void
-    handleOnChangeSelectedOptions?:
-        | ((options: MultiValue<Option<string>>) => void)
-        | ((options: MultiValue<Option<boolean>>) => void)
 }
 
 export const SelectMultiValues = ({
     id,
+    isDisabled,
     options,
     value,
     controllerRenderOnChange,
-    customOnChange,
-    handleOnChangeSelectedOptions,
 }: ISelectMultiValuesProps) => {
     return (
         <Select
+            isDisabled={isDisabled}
             isMulti
             instanceId={id}
             options={options}
             value={value.map((selectedVal) => {
-                const option = options.find((option) => option.value === selectedVal) || {
-                    value: '',
-                    label: '',
-                }
-                return { value: option.value, label: option.label }
+                const option = options.find((option) => option.value === selectedVal)
+                if (option) return option
             })}
             onChange={(multiValueOptions) => {
                 if (multiValueOptions) {
-                    controllerRenderOnChange(multiValueOptions.map((option) => option.value))
+                    controllerRenderOnChange(
+                        multiValueOptions.map((option) => {
+                            if (option) return option.value
+                        })
+                    )
                 }
-                if (handleOnChangeSelectedOptions) handleOnChangeSelectedOptions(multiValueOptions as MultiValue<any>)
-                customOnChange()
             }}
         />
     )
