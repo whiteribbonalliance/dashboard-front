@@ -14,6 +14,9 @@ import { Tab } from '@headlessui/react'
 import { classNames, toThousandsSep } from '@utils'
 import { useQuery } from 'react-query'
 import { useTranslation } from '@app/i18n/client'
+import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
+import { UseFormReturn } from 'react-hook-form'
+import { Filter } from '@schemas/filter'
 
 interface IWorldBubbleMapsProps {
     dashboard: string
@@ -22,6 +25,7 @@ interface IWorldBubbleMapsProps {
 
 interface IWorldBubbleMapProps {
     dashboard: string
+    form: UseFormReturn<Filter, any>
     respondents: string
     dataGeo: IDataGeo
     bubbleMapCoordinates: IWorldBubbleMapsCoordinate[]
@@ -48,6 +52,9 @@ const svgHeight = 600
 export const WorldBubbleMaps = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
     const { data, isError } = useCampaignQuery(dashboard, lang)
     const { t } = useTranslation(lang)
+
+    const form1 = useFilterFormsStore((state: IFilterFormsState) => state.form1)
+    const form2 = useFilterFormsStore((state: IFilterFormsState) => state.form2)
 
     // Set respondents
     let respondents: string
@@ -79,9 +86,10 @@ export const WorldBubbleMaps = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
             id: 'world-bubble-map-1',
             title: data ? data.filter_1_description : '',
             content:
-                data && dataGeoQuery.data ? (
+                data && dataGeoQuery.data && form1 ? (
                     <WorldBubbleMap
                         dashboard={dashboard}
+                        form={form1}
                         respondents={respondents}
                         dataGeo={dataGeoQuery.data}
                         bubbleMapCoordinates={data.world_bubble_maps_coordinates.coordinates_1}
@@ -98,16 +106,17 @@ export const WorldBubbleMaps = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
             tabs.push({
                 id: 'world-bubble-map-2',
                 title: data.filter_2_description,
-                content: (
+                content: form2 ? (
                     <WorldBubbleMap
                         dashboard={dashboard}
+                        form={form2}
                         respondents={respondents}
                         dataGeo={dataGeoQuery.data}
                         bubbleMapCoordinates={data.world_bubble_maps_coordinates.coordinates_2}
                         colorId="color2"
                         lang={lang}
                     />
-                ),
+                ) : null,
             })
         }
     }
@@ -181,6 +190,7 @@ export const WorldBubbleMaps = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
 
 const WorldBubbleMap = ({
     dashboard,
+    form,
     respondents,
     dataGeo,
     bubbleMapCoordinates,
@@ -312,13 +322,18 @@ const WorldBubbleMap = ({
             // On mouse leave
             const onMouseLeave = () => tooltip.style('opacity', 0).style('display', 'none')
 
-            // On click (show country info)
+            // On click (show country or region info)
             const onClick = (e: MouseEvent, d: IWorldBubbleMapsCoordinate) => {
-                // if (filters.filter1.countries.length < 1) {
-                //     // TODO: change in filter
-                //     // TODO: do similar in top words
-                //     // TODO: do similar on breakdown response topics
-                // }
+                switch (dashboard) {
+                    case DashboardName.WWW_PAKISTAN:
+                        form.setValue('regions', [d.location_code])
+                        break
+                    case DashboardName.GIZ:
+                        form.setValue('regions', [d.location_code])
+                        break
+                    default:
+                        form.setValue('countries', [d.location_code])
+                }
             }
 
             // Add circles
