@@ -9,6 +9,7 @@ import { Wordcloud } from '@visx/wordcloud'
 import { useTooltip, useTooltipInPortal } from '@visx/tooltip'
 import { IWordcloudWords } from '@interfaces'
 import { toThousandsSep } from '@utils'
+import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
 
 interface IWordcloudProps {
     dashboard: string
@@ -22,6 +23,7 @@ interface ITooltipData {
 }
 
 export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordcloudProps) => {
+    const form1 = useFilterFormsStore((state: IFilterFormsState) => state.form1)
     const { tooltipData, tooltipLeft, tooltipTop, tooltipOpen, showTooltip, hideTooltip } = useTooltip<ITooltipData>()
     const { containerBounds, TooltipInPortal } = useTooltipInPortal({
         scroll: true,
@@ -65,6 +67,13 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
             })
         }
 
+        // On wordcloud click
+        function handleOnClick(word: any) {
+            if (form1) {
+                form1.setValue('keyword_filter', word.text)
+            }
+        }
+
         return (
             <ParentSize className="bg-white">
                 {(parent) => (
@@ -90,6 +99,7 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
                                     fontFamily={w.font}
                                     onMouseEnter={(e) => handleMouseOver(e, w)}
                                     onMouseLeave={hideTooltip}
+                                    onClick={() => handleOnClick(w)}
                                 >
                                     {w.text}
                                 </Text>

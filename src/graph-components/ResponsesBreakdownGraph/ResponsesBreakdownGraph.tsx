@@ -97,7 +97,6 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
     // Set response topic
     function setResponseTopic(payload: any) {
         if (form1) {
-            console.log(payload)
             form1.setValue('response_topics', [payload.code])
         }
     }
