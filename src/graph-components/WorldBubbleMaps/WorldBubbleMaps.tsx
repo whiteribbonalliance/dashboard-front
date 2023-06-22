@@ -101,12 +101,12 @@ export const WorldBubbleMaps = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
     ]
 
     // Add world bubble maps 2 if filters are not identical
-    if (data && dataGeoQuery.data) {
+    if (data && dataGeoQuery.data && form2) {
         if (!data.filters_are_identical) {
             tabs.push({
                 id: 'world-bubble-map-2',
                 title: data.filter_2_description,
-                content: form2 ? (
+                content: (
                     <WorldBubbleMap
                         dashboard={dashboard}
                         form={form2}
@@ -116,7 +116,7 @@ export const WorldBubbleMaps = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
                         colorId="color2"
                         lang={lang}
                     />
-                ) : null,
+                ),
             })
         }
     }

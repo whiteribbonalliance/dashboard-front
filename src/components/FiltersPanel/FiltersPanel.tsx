@@ -71,14 +71,14 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         defaultValues: defaultFilterValues,
         resolver: zodResolver(filterSchema),
     })
-    setForm1(form1)
+    useEffect(() => setForm1(form1), [setForm1, form1])
 
     // Form 2
     const form2 = useForm<Filter>({
         defaultValues: defaultFilterValues,
         resolver: zodResolver(filterSchema),
     })
-    setForm2(form2)
+    useEffect(() => setForm2(form2), [setForm2, form2])
 
     // For these countries, set the country as selected by default
     useEffect(() => {
