@@ -140,7 +140,7 @@ export const Header = ({ dashboard, lang }: IHeaderProps) => {
                             <Disclosure.Panel as="nav">
                                 <ul
                                     className={classNames(
-                                        'absolute flex w-full flex-col items-center justify-center shadow-md xl:hidden',
+                                        'absolute z-50 flex w-full flex-col items-center justify-center shadow-md xl:hidden',
                                         mobileDropdownClasses
                                     )}
                                 >
@@ -189,7 +189,7 @@ export const Header = ({ dashboard, lang }: IHeaderProps) => {
             {/* Mobile filters panel */}
             <div
                 className={classNames(
-                    'fixed z-50 h-[calc(100vh-96px)] w-full overflow-y-auto bg-white px-8 pb-3 pt-6 xl:hidden',
+                    'fixed z-40 h-[calc(100vh-96px)] w-full overflow-y-auto bg-white px-8 pb-3 pt-6 xl:hidden',
                     showMobileFiltersPanel ? 'flex flex-col' : 'hidden'
                 )}
             >
