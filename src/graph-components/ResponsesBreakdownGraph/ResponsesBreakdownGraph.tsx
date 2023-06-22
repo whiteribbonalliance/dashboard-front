@@ -10,6 +10,7 @@ import { classNames, toThousandsSep } from '@utils'
 import { GraphLoading } from 'components/GraphLoading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
+import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
 
 interface IResponsesBreakdownGraphProps {
     dashboard: string
@@ -23,6 +24,7 @@ interface ICustomTooltip extends TooltipProps<ValueType, NameType> {
 
 export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdownGraphProps) => {
     const { data, isError } = useCampaignQuery(dashboard, lang)
+    const form1 = useFilterFormsStore((state: IFilterFormsState) => state.form1)
     const { t } = useTranslation(lang)
 
     // Set topic text
@@ -92,6 +94,14 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
         return toThousandsSep(item, lang).toString()
     }
 
+    // Set response topic
+    function setResponseTopic(payload: any) {
+        if (form1) {
+            console.log(payload)
+            form1.setValue('response_topics', [payload.code])
+        }
+    }
+
     // Display graph or not
     const displayGraph = !!data
 
@@ -141,7 +151,12 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                                     content={<CustomTooltip dashboard={dashboard} lang={lang} />}
                                     position={{ x: 25 }}
                                 />
-                                <Bar dataKey="count" className={barClasses} minPointSize={5} />
+                                <Bar
+                                    dataKey="count"
+                                    className={classNames('hover:cursor-pointer', barClasses)}
+                                    minPointSize={5}
+                                    onClick={setResponseTopic}
+                                />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>

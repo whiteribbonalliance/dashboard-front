@@ -135,17 +135,17 @@ export const TopWordsOrPhrases = ({
         hoveredBarDataKey.current = dataKey
     }
 
-    // Handle on click bar1
-    function handleOnClickBar1(data: any) {
+    // Set keyword 1
+    function setKeyword1(payload: any) {
         if (form1) {
-            form1.setValue('keyword_filter', data.word)
+            form1.setValue('keyword_filter', payload.word)
         }
     }
 
-    // Handle on click bar2
-    function handleOnClickBar2(data: any) {
+    // Set keyword 2
+    function setKeyword2(payload: any) {
         if (form2) {
-            form2.setValue('keyword_filter', data.word)
+            form2.setValue('keyword_filter', payload.word)
         }
     }
 
@@ -196,22 +196,22 @@ export const TopWordsOrPhrases = ({
                         />
                         <Bar
                             dataKey="count_1"
-                            className={bar1Classes}
+                            className={classNames('hover:cursor-pointer', bar1Classes)}
                             fill={bar1Fill}
                             minPointSize={5}
                             onMouseOver={() => setHoveredBarDataKey('count_1')}
-                            onClick={handleOnClickBar1}
+                            onClick={setKeyword1}
                         />
 
                         {/* Only display the second bar if filters are not identical */}
                         {!filtersAreIdentical && (
                             <Bar
                                 dataKey="count_2"
-                                className={bar2Classes}
+                                className={classNames('hover:cursor-pointer', bar2Classes)}
                                 fill={bar2Fill}
                                 minPointSize={5}
                                 onMouseOver={() => setHoveredBarDataKey('count_2')}
-                                onClick={handleOnClickBar2}
+                                onClick={setKeyword2}
                             />
                         )}
                     </BarChart>

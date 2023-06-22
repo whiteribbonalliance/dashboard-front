@@ -33,7 +33,7 @@ interface IFieldProps {
 interface ISelectProps extends IFieldProps {
     dashboard: string
     options: (Option<string> | Option<boolean>)[]
-    control: Control<Filter, any>
+    control: Control<Filter>
 }
 
 interface IInputProps extends IFieldProps {
@@ -271,6 +271,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                 <Tab.Panel
                                     key={id}
                                     className="flex flex-col p-3 ring-transparent ring-offset-2 focus:outline-none"
+                                    unmount={false}
                                 >
                                     {/* Normal mode */}
                                     <div className="mb-5 flex flex-col gap-y-3">

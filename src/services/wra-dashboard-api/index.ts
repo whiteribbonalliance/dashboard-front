@@ -41,7 +41,6 @@ export async function getCampaign(
     lang: string,
     signal: AbortSignal | null | undefined
 ) {
-    console.log(campaignRequest.filter_1?.countries)
     const campaign = dashboardToCampaignCode(dashboard)
     const response = await fetch(`${apiUrl}/campaigns/${campaign}?lang=${lang}`, {
         signal: signal,

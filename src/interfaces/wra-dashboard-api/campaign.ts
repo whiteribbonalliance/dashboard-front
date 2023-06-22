@@ -9,6 +9,7 @@ interface IResponsesSample {
 
 interface IResponseBreakdownData {
     count: number
+    code: string
     description: string
 }
 

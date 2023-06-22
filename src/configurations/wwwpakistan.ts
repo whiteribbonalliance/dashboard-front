@@ -1,5 +1,5 @@
 import { IConfiguration } from '@interfaces'
-import { seoMainTitle } from '@constants'
+import { healthliteracyLink, midwivesvoicesLink, seoMainTitle, whatwomenwantLink } from '@constants'
 import { DashboardName } from '@enums'
 
 const title = 'What Women Want Pakistan'
@@ -11,6 +11,6 @@ export const configuration: IConfiguration = {
     seoMetaDescription: 'We asked 245311 women in Pakistan, what they want to improve their health and wellbeing.',
     respondentsNounSingular: 'woman',
     respondentsNounPlural: 'women',
-    dashboardLinksFooter: [],
+    dashboardLinksFooter: [whatwomenwantLink, midwivesvoicesLink, healthliteracyLink],
     showVideoLink: 'https://www.youtube.com/watch?v=nBzide5J3Hk',
 }

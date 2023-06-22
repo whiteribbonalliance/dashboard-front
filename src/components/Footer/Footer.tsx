@@ -3,7 +3,12 @@
 import Link from 'next/link'
 import { DashboardName } from '@enums'
 import React from 'react'
-import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
+import {
+    midwivesVoicesConfig,
+    whatWomenWantConfig,
+    whatYoungPeopleWantConfig,
+    wwwPakistanConfig,
+} from '@configurations'
 import { IDashboardLink } from '@interfaces'
 import { classNames } from '@utils'
 import { useTranslation } from '@app/i18n/client'
@@ -60,6 +65,9 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
         case DashboardName.MIDWIVES_VOICES:
             otherDashboardLinks = midwivesVoicesConfig.dashboardLinksFooter
             break
+        case DashboardName.WWW_PAKISTAN:
+            otherDashboardLinks = wwwPakistanConfig.dashboardLinksFooter
+            break
         default:
             otherDashboardLinks = []
     }
@@ -81,32 +89,39 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
 
     return (
         <footer className="mx-7 my-7 flex flex-col gap-y-5 text-lg">
-            <div>
-                <p>* {informedConsentTranslation}</p>
-                {footerNote && footerNote}
-                <p>{t('to-protect-anonymity')}</p>
-            </div>
+            {/* Footer note */}
+            {footerNote && (
+                <div>
+                    <p>* {informedConsentTranslation}</p>
+                    {footerNote}
+                    <p>{t('to-protect-anonymity')}</p>
+                </div>
+            )}
 
-            <div>
-                <p>
-                    {t('other-dashboards')}:{' '}
-                    {otherDashboardLinks.map((otherDashboardLink, index) => {
-                        return (
-                            <span key={otherDashboardLink.id}>
-                                <Link
-                                    key={otherDashboardLink.id}
-                                    href={otherDashboardLink.link}
-                                    className={classNames('underline', footerLinkClasses)}
-                                >
-                                    {otherDashboardLink.title}
-                                </Link>
-                                {index + 1 < otherDashboardLinks.length && <> • </>}
-                            </span>
-                        )
-                    })}
-                </p>
-            </div>
+            {/* Other dashboards */}
+            {otherDashboardLinks.length > 0 && (
+                <div>
+                    <p>
+                        {t('other-dashboards')}:{' '}
+                        {otherDashboardLinks.map((otherDashboardLink, index) => {
+                            return (
+                                <span key={otherDashboardLink.id}>
+                                    <Link
+                                        key={otherDashboardLink.id}
+                                        href={otherDashboardLink.link}
+                                        className={classNames('underline', footerLinkClasses)}
+                                    >
+                                        {otherDashboardLink.title}
+                                    </Link>
+                                    {index + 1 < otherDashboardLinks.length && <> • </>}
+                                </span>
+                            )
+                        })}
+                    </p>
+                </div>
+            )}
 
+            {/* Dashboard by */}
             <div>
                 <p>
                     {t('dashboard-by')}{' '}

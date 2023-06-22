@@ -354,6 +354,7 @@ const WorldBubbleMap = ({
                 })
                 .attr('r', (d: IWorldBubbleMapsCoordinate) => circleSize(d.n))
                 .style('fill', (d: IWorldBubbleMapsCoordinate) => bubbleColor)
+                .style('cursor', 'pointer')
                 .attr('stroke', () => 'var(--white)')
                 .attr('stroke-width', 1)
                 .attr('fill-opacity', 0.4)
@@ -364,7 +365,7 @@ const WorldBubbleMap = ({
         }
 
         drawWorldBubbleMap().then()
-    }, [dataGeo, bubbleMapCoordinates, bubbleColor, respondents, dashboard, lang, projectionScale, viewBox])
+    }, [dataGeo, bubbleMapCoordinates, bubbleColor, respondents, dashboard, lang, projectionScale, viewBox, form])
 
     return (
         <div ref={divRef} id="bubble-map" className="relative h-full w-full">
