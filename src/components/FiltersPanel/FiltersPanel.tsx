@@ -66,33 +66,34 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     // Refetch campaign timeout
     const refetchCampaignTimeout = useRef<NodeJS.Timeout>()
 
+    // Set default filter values for form
+    let defaultFilterValuesForForm: Filter
+    switch (dashboard) {
+        case DashboardName.WWW_PAKISTAN:
+            defaultFilterValuesForForm = { ...defaultFilterValues }
+            defaultFilterValuesForForm.countries = ['PK']
+            break
+        case DashboardName.GIZ:
+            defaultFilterValuesForForm = { ...defaultFilterValues }
+            defaultFilterValuesForForm.countries = ['MX']
+            break
+        default:
+            defaultFilterValuesForForm = defaultFilterValues
+    }
+
     // Form 1
     const form1 = useForm<Filter>({
-        defaultValues: defaultFilterValues,
+        defaultValues: defaultFilterValuesForForm,
         resolver: zodResolver(filterSchema),
     })
     useEffect(() => setForm1(form1), [setForm1, form1])
 
     // Form 2
     const form2 = useForm<Filter>({
-        defaultValues: defaultFilterValues,
+        defaultValues: defaultFilterValuesForForm,
         resolver: zodResolver(filterSchema),
     })
     useEffect(() => setForm2(form2), [setForm2, form2])
-
-    // For these countries, set the country as selected by default
-    useEffect(() => {
-        switch (dashboard) {
-            case DashboardName.WWW_PAKISTAN:
-                form1.setValue('countries', ['PK'])
-                form2.setValue('countries', ['PK'])
-                break
-            case DashboardName.GIZ:
-                form1.setValue('countries', ['MX'])
-                form2.setValue('countries', ['MX'])
-                break
-        }
-    }, [dashboard, form1, form2])
 
     // Tabs
     const tabs = [
