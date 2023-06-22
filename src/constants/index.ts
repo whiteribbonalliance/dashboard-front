@@ -2,14 +2,7 @@ import { DashboardName } from '@enums'
 import { IDashboardLink, ILanguage } from '@interfaces'
 import { Filter } from '@schemas/filter'
 
-export const dashboards = [
-    DashboardName.WHAT_YOUNG_PEOPLE_WANT,
-    DashboardName.WHAT_WOMEN_WANT,
-    DashboardName.MIDWIVES_VOICES,
-    DashboardName.HEALTH_WELL_BEING,
-    DashboardName.GIZ,
-    DashboardName.WWW_PAKISTAN,
-]
+export const dashboards = Object.entries(DashboardName).map(([key, value]) => value)
 
 export const seoMainTitle = 'White Ribbon Alliance'
 
