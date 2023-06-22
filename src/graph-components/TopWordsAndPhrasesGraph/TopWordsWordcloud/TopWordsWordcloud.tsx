@@ -67,7 +67,7 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
             })
         }
 
-        // On wordcloud click
+        // On word click
         function handleOnClick(word: any) {
             if (form1) {
                 form1.setValue('keyword_filter', word.text)

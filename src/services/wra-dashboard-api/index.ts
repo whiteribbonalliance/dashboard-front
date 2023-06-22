@@ -1,5 +1,5 @@
 import { ICampaign, ICampaignRequest, IFilterOptions } from '@interfaces'
-import { dashboardToCampaignCode } from '@utils'
+import { dashboardNameToCampaignCode } from '@utils'
 import { Option } from '@types'
 
 const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL as string
@@ -12,7 +12,7 @@ const headers = { 'Content-Type': 'application/json' }
  * @param lang The language
  */
 export async function getCampaignFilterOptions(dashboard: string, lang: string) {
-    const campaign = dashboardToCampaignCode(dashboard)
+    const campaign = dashboardNameToCampaignCode(dashboard)
     const response = await fetch(`${apiUrl}/campaigns/${campaign}/filter-options?lang=${lang}`, {
         method: 'GET',
         headers: headers,
@@ -41,7 +41,7 @@ export async function getCampaign(
     lang: string,
     signal: AbortSignal | null | undefined
 ) {
-    const campaign = dashboardToCampaignCode(dashboard)
+    const campaign = dashboardNameToCampaignCode(dashboard)
     const response = await fetch(`${apiUrl}/campaigns/${campaign}?lang=${lang}`, {
         signal: signal,
         method: 'POST',
@@ -65,7 +65,7 @@ export async function getCampaign(
  * @param lang The language
  */
 export async function getCampaignWhoThePeopleAreOptions(dashboard: string, lang: string) {
-    const campaign = dashboardToCampaignCode(dashboard)
+    const campaign = dashboardNameToCampaignCode(dashboard)
     const response = await fetch(`${apiUrl}/campaigns/${campaign}/who-the-people-are-options?lang=${lang}`, {
         method: 'GET',
         headers: headers,
