@@ -85,11 +85,12 @@ Check `README.md` inside the back-end project for translations.
 
 ## Hot to add a new campaign
 
-1. At `src/enums/campaign-code.ts` add the new campaign code, this is the campaign code used when making a request to
-   the API.
-2. At `src/enums/dashboard-name.ts` add the new campaign name, this is the name of the campaign that will be used as the
-   subdomain or path.
-3. At `src/configurations` create a new configuration file for the dashboard and export it
+1. At `src/enums/campaign-code.ts` add the campaign code for the new dashboard, this is the campaign code used when
+   making a request to the API.
+2. At `src/enums/dashboard-name.ts` add the new dashboard name, this is the name of the dashboard that will be used as
+   the path.
+3. At `src/configurations` create a new configuration file for the new dashboard and export it
    from `src/configurations/index.ts`.
 4. At `src/app/dashboards_use_path/[lang]/[dashboard]/page.tsx` add the metadata for the new dashboard.
-5. At `src/utils/index.ts` at the dashboard name to campaign code mapping.
+5. At `src/utils/index.ts` add the new dashboard name to campaign code mapping.
+6. Update switch statements in components to reflect changes if necessary.
