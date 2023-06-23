@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { DashboardName } from '@enums'
 import React from 'react'
-import { classNames, getDashboardConfig } from '@utils'
+import { applyToThousandsSepOnText, classNames, getDashboardConfig } from '@utils'
 import { useTranslation } from '@app/i18n'
 import { Dashboard } from '@types'
 
@@ -42,7 +42,7 @@ export const Footer = async ({ dashboard, lang }: IFooterProps) => {
         case DashboardName.WHAT_WOMEN_WANT:
             footerNote = (
                 <p>
-                    {t('responses-from-original')}{' '}
+                    {applyToThousandsSepOnText(t('responses-from-original'), lang)}{' '}
                     <Link
                         href={'https://www.whiteribbonallianceindia.org/whats-latest/hamara-swasthya-hamari-awaz'}
                         className={classNames('underline', footerLinkClasses)}

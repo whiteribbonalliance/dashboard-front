@@ -116,3 +116,28 @@ export function toThousandsSep(num: number, lang: string) {
 
     return formattedNumber
 }
+
+/**
+ * Find numbers in a text and apply thousands separator
+ *
+ * @param text The text
+ * @param lang The language
+ */
+export function applyToThousandsSepOnText(text: string, lang: string) {
+    const pattern = /\d+/g
+    let textCopy = text.slice()
+    const matches = textCopy.match(pattern)
+    if (matches) {
+        for (const match of matches) {
+            if (match.length > 3) {
+                try {
+                    textCopy = textCopy.replace(match, toThousandsSep(Number(match), lang))
+                } catch (error) {}
+            }
+        }
+
+        return textCopy
+    }
+
+    return text
+}
