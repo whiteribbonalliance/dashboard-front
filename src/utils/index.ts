@@ -124,16 +124,16 @@ export function toThousandsSep(num: number, lang: string) {
  * @param lang The language
  */
 export function applyToThousandsSepOnText(text: string, lang: string) {
-    const pattern = /\d+/g
+    const pattern = /-?\d*\.?,?\d+/g
     let textCopy = text.slice()
     const matches = textCopy.match(pattern)
     if (matches) {
         for (const match of matches) {
-            if (match.length > 3) {
-                try {
-                    textCopy = textCopy.replace(match, toThousandsSep(Number(match), lang))
-                } catch (error) {}
-            }
+            if (match.length < 4) continue
+            if (match.includes(',') || match.includes('.')) continue
+            try {
+                textCopy = textCopy.replace(match, toThousandsSep(Number(match), lang))
+            } catch (error) {}
         }
 
         return textCopy
