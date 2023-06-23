@@ -1,5 +1,14 @@
-import { CampaignCode, DashboardName } from '@enums'
+import { DashboardName } from '@enums'
 import { parseDomain } from 'parse-domain'
+import {
+    gizConfig,
+    healthWellBeingConfig,
+    midwivesVoicesConfig,
+    whatWomenWantConfig,
+    whatYoungPeopleWantConfig,
+    wwwPakistanConfig,
+} from '@configurations'
+import { Dashboard } from '@types'
 
 /**
  * Merge Tailwind CSS classes
@@ -11,26 +20,24 @@ export function classNames(...classes: string[]) {
 }
 
 /**
- * Get the campaign code of a dashboard
+ * Get the dashboard config
  *
  * @param dashboard The dashboard
  */
-export function dashboardNameToCampaignCode(dashboard: string) {
+export function getDashboardConfig(dashboard: Dashboard) {
     switch (dashboard) {
         case DashboardName.WHAT_WOMEN_WANT:
-            return CampaignCode.WHAT_WOMEN_WANT
+            return whatWomenWantConfig
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            return CampaignCode.WHAT_YOUNG_PEOPLE_WANT
+            return whatYoungPeopleWantConfig
         case DashboardName.MIDWIVES_VOICES:
-            return CampaignCode.MIDWIVES_VOICES
+            return midwivesVoicesConfig
         case DashboardName.HEALTH_WELL_BEING:
-            return CampaignCode.HEALTH_WELL_BEING
+            return healthWellBeingConfig
         case DashboardName.GIZ:
-            return CampaignCode.GIZ
+            return gizConfig
         case DashboardName.WWW_PAKISTAN:
-            return CampaignCode.WWW_PAKISTAN
-        default:
-            return undefined
+            return wwwPakistanConfig
     }
 }
 

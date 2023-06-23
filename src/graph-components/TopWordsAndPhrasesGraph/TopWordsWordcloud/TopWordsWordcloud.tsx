@@ -10,9 +10,10 @@ import { useTooltip, useTooltipInPortal } from '@visx/tooltip'
 import { IWordcloudWords } from '@interfaces'
 import { toThousandsSep } from '@utils'
 import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
+import { Dashboard } from '@types'
 
 interface IWordcloudProps {
-    dashboard: string
+    dashboard: Dashboard
     lang: string
     wordcloudWords: IWordcloudWords[]
 }
@@ -109,7 +110,7 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
                 )}
             </ParentSize>
         )
-    }, [dashboard, wordcloudWords, hideTooltip, showTooltip, containerBounds])
+    }, [dashboard, form1, wordcloudWords, hideTooltip, showTooltip, containerBounds])
 
     return (
         <div className="h-[40rem]">

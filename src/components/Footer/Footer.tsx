@@ -1,25 +1,18 @@
-'use client'
-
 import Link from 'next/link'
 import { DashboardName } from '@enums'
 import React from 'react'
-import {
-    midwivesVoicesConfig,
-    whatWomenWantConfig,
-    whatYoungPeopleWantConfig,
-    wwwPakistanConfig,
-} from '@configurations'
-import { IDashboardLink } from '@interfaces'
-import { classNames } from '@utils'
-import { useTranslation } from '@app/i18n/client'
+import { classNames, getDashboardConfig } from '@utils'
+import { useTranslation } from '@app/i18n'
+import { Dashboard } from '@types'
 
 interface IFooterProps {
-    dashboard: string
+    dashboard: Dashboard
     lang: string
 }
 
-export const Footer = ({ dashboard, lang }: IFooterProps) => {
-    const { t } = useTranslation(lang)
+export const Footer = async ({ dashboard, lang }: IFooterProps) => {
+    const { t } = await useTranslation(lang)
+    const config = getDashboardConfig(dashboard)
 
     // Set footer link classes
     let footerLinkClasses: string
@@ -29,6 +22,18 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
             break
         default:
             footerLinkClasses = 'text-defaultColors-secondary'
+    }
+
+    let otherDashboardLinks = config.dashboardLinksFooter
+
+    // Set informed consent text
+    let informedConsentText: string
+    switch (dashboard) {
+        case DashboardName.WHAT_WOMEN_WANT:
+            informedConsentText = t('women-informed-consent')
+            break
+        default:
+            informedConsentText = t('respondents-informed-consent')
     }
 
     // Set footer note
@@ -50,41 +55,6 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
             break
         default:
             footerNote = undefined
-            break
-    }
-
-    // Set other dashboard links
-    let otherDashboardLinks: IDashboardLink[]
-    switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
-            otherDashboardLinks = whatWomenWantConfig.dashboardLinksFooter
-            break
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            otherDashboardLinks = whatYoungPeopleWantConfig.dashboardLinksFooter
-            break
-        case DashboardName.MIDWIVES_VOICES:
-            otherDashboardLinks = midwivesVoicesConfig.dashboardLinksFooter
-            break
-        case DashboardName.WWW_PAKISTAN:
-            otherDashboardLinks = wwwPakistanConfig.dashboardLinksFooter
-            break
-        default:
-            otherDashboardLinks = []
-    }
-
-    let informedConsentTranslation: string
-    switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
-            informedConsentTranslation = t('www-respondents-informed-consent')
-            break
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            informedConsentTranslation = t('pmnch-respondents-informed-consent')
-            break
-        case DashboardName.MIDWIVES_VOICES:
-            informedConsentTranslation = t('midwives-voices-respondents-informed-consent')
-            break
-        default:
-            informedConsentTranslation = ''
     }
 
     return (
@@ -92,7 +62,7 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
             {/* Footer note */}
             {footerNote && (
                 <div>
-                    <p>* {informedConsentTranslation}</p>
+                    <p>* {informedConsentText}</p>
                     {footerNote}
                     <p>{t('to-protect-anonymity')}</p>
                 </div>

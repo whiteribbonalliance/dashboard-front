@@ -1,5 +1,4 @@
-import { ICampaign, ICampaignRequest, IFilterOptions } from '@interfaces'
-import { dashboardNameToCampaignCode } from '@utils'
+import { ICampaign, ICampaignRequest, IConfiguration, IFilterOptions } from '@interfaces'
 import { Option } from '@types'
 
 const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL as string
@@ -8,12 +7,11 @@ const headers = { 'Content-Type': 'application/json' }
 /**
  * Get campaign filter options
  *
- * @param dashboard The dashboard
+ * @param config The campaign configuration
  * @param lang The language
  */
-export async function getCampaignFilterOptions(dashboard: string, lang: string) {
-    const campaign = dashboardNameToCampaignCode(dashboard)
-    const response = await fetch(`${apiUrl}/campaigns/${campaign}/filter-options?lang=${lang}`, {
+export async function getCampaignFilterOptions(config: IConfiguration, lang: string) {
+    const response = await fetch(`${apiUrl}/campaigns/${config.campaignCode}/filter-options?lang=${lang}`, {
         method: 'GET',
         headers: headers,
     })
@@ -30,19 +28,18 @@ export async function getCampaignFilterOptions(dashboard: string, lang: string) 
 /**
  * Get campaign
  *
- * @param dashboard The dashboard
+ * @param config The campaign configuration
  * @param campaignRequest The campaign request
  * @param lang The language
  * @param signal Signal
  */
 export async function getCampaign(
-    dashboard: string,
+    config: IConfiguration,
     campaignRequest: ICampaignRequest,
     lang: string,
     signal: AbortSignal | null | undefined
 ) {
-    const campaign = dashboardNameToCampaignCode(dashboard)
-    const response = await fetch(`${apiUrl}/campaigns/${campaign}?lang=${lang}`, {
+    const response = await fetch(`${apiUrl}/campaigns/${config.campaignCode}?lang=${lang}`, {
         signal: signal,
         method: 'POST',
         headers: headers,
@@ -61,12 +58,11 @@ export async function getCampaign(
 /**
  * Get campaign who the people are options
  *
- * @param dashboard The dashboard
+ * @param config The campaign configuration
  * @param lang The language
  */
-export async function getCampaignWhoThePeopleAreOptions(dashboard: string, lang: string) {
-    const campaign = dashboardNameToCampaignCode(dashboard)
-    const response = await fetch(`${apiUrl}/campaigns/${campaign}/who-the-people-are-options?lang=${lang}`, {
+export async function getCampaignWhoThePeopleAreOptions(config: IConfiguration, lang: string) {
+    const response = await fetch(`${apiUrl}/campaigns/${config.campaignCode}/who-the-people-are-options?lang=${lang}`, {
         method: 'GET',
         headers: headers,
     })

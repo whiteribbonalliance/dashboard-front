@@ -17,9 +17,10 @@ import { MutableRefObject, useRef } from 'react'
 import { ITopWords } from '@interfaces'
 import { useTranslation } from '@app/i18n/client'
 import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
+import { Dashboard } from '@types'
 
 interface ITopWordsOrPhrasesProps {
-    dashboard: string
+    dashboard: Dashboard
     lang: string
     id: 'top-words' | 'two-word-phrases' | 'three-word-phrases'
     words: ITopWords[]
@@ -30,7 +31,7 @@ interface ITopWordsOrPhrasesProps {
 }
 
 interface ICustomTooltip extends TooltipProps<number, string> {
-    dashboard: string
+    dashboard: Dashboard
     hoveredBarDataKey: MutableRefObject<string>
     pmnchParagraphClasses: string
     defaultParagraphClasses: string
@@ -50,6 +51,7 @@ export const TopWordsOrPhrases = ({
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const form1 = useFilterFormsStore((state: IFilterFormsState) => state.form1)
     const form2 = useFilterFormsStore((state: IFilterFormsState) => state.form2)
+    const { t } = useTranslation(lang)
 
     // Set bars classes, bars fill, and custom tooltip paragraph classes (each id has a different color)
     let pmnchBar1Classes: string
@@ -124,7 +126,11 @@ export const TopWordsOrPhrases = ({
             return <span className="text-black">{filter1Description}</span>
         }
         if (value == 'count_2') {
-            return <span className="text-black">{filter2Description} (normalized)</span>
+            return (
+                <span className="text-black">
+                    {filter2Description} ({t('normalized')})
+                </span>
+            )
         }
 
         return null

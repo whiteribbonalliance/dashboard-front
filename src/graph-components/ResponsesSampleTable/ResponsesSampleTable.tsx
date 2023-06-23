@@ -15,13 +15,14 @@ import {
 import React, { useCallback, useEffect, useState } from 'react'
 import { Chevron } from '@components/Chevron'
 import { useCampaignQuery } from '@hooks/use-campaign'
-import { classNames } from '@utils'
+import { classNames, getDashboardConfig } from '@utils'
 import { GraphLoading } from 'components/GraphLoading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
+import { Dashboard } from '@types'
 
 interface IResponsesSampleGraphProps {
-    dashboard: string
+    dashboard: Dashboard
     lang: string
 }
 
@@ -42,6 +43,7 @@ export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphP
     const [tableData, setTableData] = useState<ITableData>({ data: [], columns: [] })
     const { data, isError } = useCampaignQuery(dashboard, lang)
     const { t } = useTranslation(lang)
+    const config = getDashboardConfig(dashboard)
 
     // An array with objects containing the description, count, and the color assigned to it
     const [descriptionsCountAndColor, setDescriptionsCountAndColor] = useState<IDescriptionCountAndColor[]>([])
@@ -78,13 +80,13 @@ export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphP
     let questionAsked: string
     switch (dashboard) {
         case DashboardName.WHAT_WOMEN_WANT:
-            questionAsked = t('www-question-asked')
+            questionAsked = t(`${config.campaignCode}-question-asked`)
             break
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            questionAsked = t('pmnch-question-asked')
+            questionAsked = t(`${config.campaignCode}-question-asked`)
             break
         case DashboardName.MIDWIVES_VOICES:
-            questionAsked = t('midwives-voices-question-asked')
+            questionAsked = t(`${config.campaignCode}-question-asked`)
             break
         default:
             questionAsked = ''

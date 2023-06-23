@@ -7,9 +7,12 @@ import { IFiltersState, useFiltersStore } from '@stores/filters'
 import { useEffect } from 'react'
 import { defaultFilterValues } from '@constants'
 import _ from 'lodash'
+import { Dashboard } from '@types'
+import { getDashboardConfig } from '@utils'
 
-export const useCampaignQuery = (dashboard: string, lang: string) => {
+export const useCampaignQuery = (dashboard: Dashboard, lang: string) => {
     const filters = useFiltersStore((state: IFiltersState) => state.filters)
+    const config = getDashboardConfig(dashboard)
 
     // If the filter has not changed from the default filter values then do not send it with the request
     const filter1 = _.isEqual(filters.filter1, defaultFilterValues) ? undefined : filters.filter1
@@ -19,7 +22,7 @@ export const useCampaignQuery = (dashboard: string, lang: string) => {
         queryKey: [`campaign-${dashboard}`],
         queryFn: ({ signal }) =>
             getCampaign(
-                dashboard,
+                config,
                 {
                     filter_1: filter1,
                     filter_2: filter2,

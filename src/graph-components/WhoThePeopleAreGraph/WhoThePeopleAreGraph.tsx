@@ -6,7 +6,7 @@ import { GraphError } from '@components/GraphError'
 import { GraphLoading } from '@components/GraphLoading'
 import { useCampaignQuery } from '@hooks/use-campaign'
 import { SelectSingleValue } from '@components/SelectSingleValue'
-import { Option } from '@types'
+import { Dashboard, Option } from '@types'
 import { Controller, useForm } from 'react-hook-form'
 import React, { MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod'
@@ -23,18 +23,18 @@ import {
     YAxis,
 } from 'recharts'
 import { DashboardName } from '@enums'
-import { classNames, niceNum, toThousandsSep } from '@utils'
+import { classNames, getDashboardConfig, niceNum, toThousandsSep } from '@utils'
 import { IHistogramData } from '@interfaces'
 import { getCampaignWhoThePeopleAreOptions } from '@services/wra-dashboard-api'
 import { useTranslation } from '@app/i18n/client'
 
 interface IWhoThePeopleAreGraphProps {
-    dashboard: string
+    dashboard: Dashboard
     lang: string
 }
 
 interface ICustomTooltip extends TooltipProps<number, string> {
-    dashboard: string
+    dashboard: Dashboard
     hoveredBarDataKey: MutableRefObject<string>
     showTooltip: boolean
     lang: string
@@ -48,13 +48,14 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
     const [paragraph, setParagraph] = useState<string>('')
     const [options, setOptions] = useState<Option<string>[]>([])
+    const config = getDashboardConfig(dashboard)
 
     // Fetch options
     useEffect(() => {
-        getCampaignWhoThePeopleAreOptions(dashboard, lang)
+        getCampaignWhoThePeopleAreOptions(config, lang)
             .then((options) => setOptions(options))
             .catch(() => {})
-    }, [dashboard, lang])
+    }, [config, lang])
 
     // Form
     const form = useForm<WhoThePeopleAre>({
@@ -179,7 +180,11 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
                 return <span className="text-black">{data.filter_1_description}</span>
             }
             if (value === 'count_2') {
-                return <span className="text-black">{data.filter_2_description} (normalized)</span>
+                return (
+                    <span className="text-black">
+                        {data.filter_2_description} ({t('normalized')})
+                    </span>
+                )
             }
         }
 
@@ -235,7 +240,6 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
                                     options={options}
                                     value={value}
                                     controllerRenderOnChange={onChange}
-                                    customOnChange={displayBreakdown}
                                 />
                             )}
                         />

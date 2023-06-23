@@ -6,7 +6,7 @@ const title = 'What women want for health and wellbeing'
 
 export const configuration: IConfiguration = {
     id: DashboardName.HEALTH_WELL_BEING,
-    title: title,
+    campaignCode: 'healthwellbeing',
     seoTitle: `${title} | ${seoMainTitle}`,
     seoMetaDescription: 'We asked women around the world, what they want to improve their health and wellbeing.',
     respondentsNounSingular: 'woman',

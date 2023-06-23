@@ -6,7 +6,7 @@ const title = 'Results Dashboard'
 
 export const configuration: IConfiguration = {
     id: DashboardName.WHAT_YOUNG_PEOPLE_WANT,
-    title: title,
+    campaignCode: 'pmn01a',
     seoTitle: `${title} | PMNCH`,
     seoMetaDescription: 'What Young People Want Interactive Dashboard',
     respondentsNounSingular: 'respondent',

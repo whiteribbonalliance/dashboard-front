@@ -1,11 +1,12 @@
-import { languages as allLanguages } from '@constants'
+import { defaultLanguage, languages as allLanguages } from '@constants'
 
-export const fallbackLanguage = 'en'
+export const fallbackLanguage = defaultLanguage.code
 export const languages = allLanguages.map((language) => language.code)
 export const defaultNS = 'translation'
 
 export function getOptions(language = fallbackLanguage, ns = defaultNS) {
     return {
+        debug: false,
         supportedLngs: languages,
         fallbackLng: fallbackLanguage,
         language,

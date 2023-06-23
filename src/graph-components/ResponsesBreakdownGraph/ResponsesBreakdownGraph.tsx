@@ -6,19 +6,20 @@ import { DashboardName } from '@enums'
 import { useCampaignQuery } from '@hooks/use-campaign'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts'
 import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent'
-import { classNames, toThousandsSep } from '@utils'
+import { classNames, getDashboardConfig, toThousandsSep } from '@utils'
 import { GraphLoading } from 'components/GraphLoading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
 import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
+import { Dashboard } from '@types'
 
 interface IResponsesBreakdownGraphProps {
-    dashboard: string
+    dashboard: Dashboard
     lang: string
 }
 
 interface ICustomTooltip extends TooltipProps<ValueType, NameType> {
-    dashboard: string
+    dashboard: Dashboard
     lang: string
 }
 
@@ -26,41 +27,16 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
     const { data, isError } = useCampaignQuery(dashboard, lang)
     const form1 = useFilterFormsStore((state: IFilterFormsState) => state.form1)
     const { t } = useTranslation(lang)
+    const config = getDashboardConfig(dashboard)
 
-    // Set topic text
-    let topicText: string
-    switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            topicText = 'domain'
-            break
-        default:
-            topicText = 'topic'
-    }
-
-    // Set respondents text
-    let respondentsText: string
+    // Set click view topic responses text
+    let clickViewTopicResponsesText: string
     switch (dashboard) {
         case DashboardName.WHAT_WOMEN_WANT:
-            respondentsText = "women's"
+            clickViewTopicResponsesText = t(`${config.campaignCode}-click-view-topic-responses`)
             break
         default:
-            respondentsText = "respondents'"
-    }
-
-    // Set click view topic responses translation
-    let clickViewTopicResponsesTranslation: string
-    switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
-            clickViewTopicResponsesTranslation = t('www-click-view-topic-responses')
-            break
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            clickViewTopicResponsesTranslation = t('pmnch-click-view-topic-responses')
-            break
-        case DashboardName.MIDWIVES_VOICES:
-            clickViewTopicResponsesTranslation = t('midwives-voices-click-view-topic-responses')
-            break
-        default:
-            clickViewTopicResponsesTranslation = ''
+            clickViewTopicResponsesText = t('click-view-topic-responses')
     }
 
     // Set bar classes
@@ -73,20 +49,17 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
             barClasses = 'fill-defaultColors-secondary hover:fill-defaultColors-secondaryFaint'
     }
 
-    // Set breakdown responses topic translation
-    let breakdownResponsesTopicTranslation: string
+    // Set breakdown responses topic text
+    let breakdownResponsesTopicText: string
     switch (dashboard) {
         case DashboardName.WHAT_WOMEN_WANT:
-            breakdownResponsesTopicTranslation = t('breakdown-women-responses-topic')
+            breakdownResponsesTopicText = t(`${config.campaignCode}-breakdown-responses-topic`)
             break
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            breakdownResponsesTopicTranslation = t('breakdown-respondents-domain')
-            break
-        case DashboardName.MIDWIVES_VOICES:
-            breakdownResponsesTopicTranslation = t('breakdown-respondents-topic')
+            breakdownResponsesTopicText = t(`${config.campaignCode}-breakdown-responses-topic`)
             break
         default:
-            breakdownResponsesTopicTranslation = t('breakdown-respondents-topic')
+            breakdownResponsesTopicText = t('breakdown-responses-topic')
     }
 
     // Format x-axis numbers
@@ -106,8 +79,8 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
 
     return (
         <Box>
-            <GraphTitle dashboard={dashboard} text={breakdownResponsesTopicTranslation} />
-            <p>{clickViewTopicResponsesTranslation}</p>
+            <GraphTitle dashboard={dashboard} text={breakdownResponsesTopicText} />
+            <p>{clickViewTopicResponsesText}</p>
 
             {/* Error */}
             {!data && isError && <GraphError dashboard={dashboard} />}

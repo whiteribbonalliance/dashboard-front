@@ -2,7 +2,7 @@ import { IDashboardLink } from '@interfaces'
 
 export interface IConfiguration {
     id: string
-    title: string
+    campaignCode: string
     seoTitle: string
     seoMetaDescription: string
     respondentsNounSingular: string

@@ -12,9 +12,10 @@ import { WorldBubbleMaps } from '@graph-components/WorldBubbleMaps'
 import { ResponsesSampleTable } from '@graph-components/ResponsesSampleTable'
 import { TopWordsAndPhrasesGraph } from '@graph-components/TopWordsAndPhrasesGraph'
 import { GenderBreakdownGraph } from '@graph-components/GenderBreakdownGraph'
+import { Dashboard as TDashboard } from '@types'
 
 interface IDashboardProps {
-    params: { lang: string; dashboard: string }
+    params: { lang: string; dashboard: TDashboard }
 }
 
 export const Dashboard = ({ params }: IDashboardProps) => {
@@ -24,23 +25,6 @@ export const Dashboard = ({ params }: IDashboardProps) => {
     if (!dashboards.some((d) => d === dashboard)) {
         notFound()
     }
-
-    // Get initial data
-    // let campaign: ICampaign | undefined = undefined
-    // let filterOptions: IFilterOptions | undefined = undefined
-    // let whoThePeopleWareOptions: Option<string>[] | undefined = undefined
-    //
-    // try {
-    //     campaign = await getCampaign(dashboard, {})
-    //     filterOptions = await getCampaignFilterOptions(dashboard)
-    //     whoThePeopleWareOptions = await getCampaignWhoThePeopleAreOptions(dashboard)
-    // } catch (error) {}
-    //
-    // const initialData: IInitialData = {
-    //     campaign,
-    //     filterOptions,
-    //     whoThePeopleWareOptions,
-    // }
 
     // Set gap-y between boxes
     let boxesGapY: string
@@ -56,11 +40,13 @@ export const Dashboard = ({ params }: IDashboardProps) => {
         <>
             {/* Title */}
             <div className="mb-3 flex justify-center xl:hidden">
+                {/* @ts-expect-error Server Component */}
                 <Title dashboard={dashboard} lang={lang} />
             </div>
 
             {/* Subtext */}
             <div className="mb-10 flex justify-center">
+                {/* @ts-expect-error Server Component */}
                 <Subtext dashboard={dashboard} lang={lang} />
             </div>
 

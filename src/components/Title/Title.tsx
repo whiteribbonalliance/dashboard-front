@@ -1,49 +1,28 @@
-'use client'
-
-import { DashboardName } from '@enums'
-import { useTranslation } from '@app/i18n/client'
+import { Dashboard } from '@types'
+import { useTranslation } from '@app/i18n'
+import { getDashboardConfig } from '@utils'
 
 interface ITitleProps {
-    dashboard: string
+    dashboard: Dashboard
     lang: string
-    renderAsDiv?: boolean
+    noHeading?: boolean
 }
 
-export const Title = ({ dashboard, lang, renderAsDiv }: ITitleProps) => {
-    const { t } = useTranslation(lang)
+export const Title = async ({ dashboard, lang, noHeading }: ITitleProps) => {
+    const { t } = await useTranslation(lang)
+    const config = getDashboardConfig(dashboard)
 
-    // Set title translation
-    let titleTranslation: string
-    switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
-            titleTranslation = t('www-title')
-            break
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            titleTranslation = t('pmnch-title')
-            break
-        case DashboardName.MIDWIVES_VOICES:
-            titleTranslation = t('midwives-voices-title')
-            break
-        case DashboardName.HEALTH_WELL_BEING:
-            titleTranslation = 'What women want for health and wellbeing'
-            break
-        case DashboardName.GIZ:
-            titleTranslation = 'Economic Empowerment in Mexico'
-            break
-        case DashboardName.WWW_PAKISTAN:
-            titleTranslation = 'What Women Want Pakistan'
-            break
-        default:
-            titleTranslation = ''
-    }
-
-    // When using the title at multiple places, use renderAsDiv to prevent multiple h1 tags
+    // When using the title at multiple places, use noHeading to prevent multiple h1 tags
     return (
         <>
-            {!renderAsDiv ? (
-                <h1 className="mx-2 text-center font-proxima-nova text-4xl font-bold">{titleTranslation}</h1>
+            {noHeading ? (
+                <div className="mx-2 text-center font-proxima-nova text-4xl font-bold">
+                    {t(`${config.campaignCode}-title`)}
+                </div>
             ) : (
-                <div className="mx-2 text-center font-proxima-nova text-4xl font-bold">{titleTranslation}</div>
+                <h1 className="mx-2 text-center font-proxima-nova text-4xl font-bold">
+                    {t(`${config.campaignCode}-title`)}
+                </h1>
             )}
         </>
     )

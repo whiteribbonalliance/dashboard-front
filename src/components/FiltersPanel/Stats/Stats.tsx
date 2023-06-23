@@ -4,9 +4,10 @@ import { Box } from '@components/Box'
 import { useCampaignQuery } from '@hooks/use-campaign'
 import { useTranslation } from '@app/i18n/client'
 import { toThousandsSep } from '@utils'
+import { Dashboard } from '@types'
 
 interface IStatsProps {
-    dashboard: string
+    dashboard: Dashboard
     lang: string
 }
 

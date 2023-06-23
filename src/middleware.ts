@@ -55,6 +55,7 @@ export function middleware(request: NextRequest) {
                 return new Response('404', { status: 404 })
             }
 
+            // e.g. '/dashboards_use_path/en/whatwomenwant'
             const nextUrl = request.nextUrl
             nextUrl.pathname = `/dashboards_use_path${nextUrl.pathname}`
 
@@ -71,6 +72,7 @@ export function middleware(request: NextRequest) {
         return new Response('404', { status: 404 })
     }
 
+    // e.g. '/dashboards_use_subdomain/whatwomenwant/en'
     const nextUrl = request.nextUrl
     nextUrl.pathname = `/dashboards_use_subdomain/${currentHost}${nextUrl.pathname}`
 

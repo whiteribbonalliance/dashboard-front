@@ -6,64 +6,45 @@ import { HeaderLogos } from 'components/HeaderLogos'
 import { Disclosure, Transition } from '@headlessui/react'
 import Link from 'next/link'
 import { DashboardName } from '@enums'
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { Button } from '@components/Button/Button'
 import { FiltersPanel } from '@components/FiltersPanel'
 import { LanguageSelect } from '@components/LanguageSelect'
-import { Title } from 'components/Title'
 import { Chevron } from '@components/Chevron'
-import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
-import { classNames } from '@utils'
+import { classNames, getDashboardConfig } from '@utils'
 import { useTranslation } from '@app/i18n/client'
+import { Dashboard } from '@types'
 
 interface IHeaderProps {
-    dashboard: string
+    dashboard: Dashboard
     lang: string
+    title: ReactElement
 }
 
 interface IHamburgerMenuProps {
     open: boolean
 }
 
-export const Header = ({ dashboard, lang }: IHeaderProps) => {
+export const Header = ({ dashboard, lang, title }: IHeaderProps) => {
     const [showMobileFiltersPanel, setShowMobileFiltersPanel] = useState<boolean>(false)
+    const config = getDashboardConfig(dashboard)
     const { t } = useTranslation(lang)
 
-    // Set show video link
-    let showVideoLink: string
-    switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
-            showVideoLink = whatWomenWantConfig.showVideoLink
-            break
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            showVideoLink = whatYoungPeopleWantConfig.showVideoLink
-            break
-        case DashboardName.MIDWIVES_VOICES:
-            showVideoLink = midwivesVoicesConfig.showVideoLink
-            break
-        default:
-            showVideoLink = ''
-    }
+    const showVideoLink = config.showVideoLink
 
     // Set about us text
-    let aboutUs: string
+    let aboutUsText: string
     switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
-            aboutUs = t('about-us')
-            break
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            aboutUs = `${t('about')} PMNCH`
-            break
-        case DashboardName.MIDWIVES_VOICES:
-            aboutUs = t('about-us')
+            aboutUsText = `${t('about')} PMNCH`
             break
         default:
-            aboutUs = t('about-us')
+            aboutUsText = t('about-us')
     }
 
     // Create menu items
     const menuItems = [
-        { id: 'about-us', title: aboutUs, url: 'https://whiteribbonalliance.org/campaigns/what-women-want' },
+        { id: 'about-us', title: aboutUsText, url: 'https://whiteribbonalliance.org/campaigns/what-women-want' },
         { id: 'show-video', title: t('show-video'), url: showVideoLink },
     ]
 
@@ -108,9 +89,7 @@ export const Header = ({ dashboard, lang }: IHeaderProps) => {
                             </div>
 
                             {/* Title */}
-                            <div className="hidden xl:flex">
-                                <Title dashboard={dashboard} lang={lang} renderAsDiv />
-                            </div>
+                            <div className="hidden xl:flex">{title}</div>
 
                             {/* Menu items */}
                             <nav className="hidden gap-x-3 xl:flex">
@@ -130,7 +109,6 @@ export const Header = ({ dashboard, lang }: IHeaderProps) => {
 
                             {/* Button to display mobile dropdown */}
                             <Disclosure.Button className="xl:hidden" title="Menu">
-                                <span className="sr-only">{t('open-mobile-menu-dropdown')}</span>
                                 <HamburgerMenu open={open} />
                             </Disclosure.Button>
                         </div>

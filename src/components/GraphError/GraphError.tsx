@@ -1,7 +1,8 @@
 import React from 'react'
+import { Dashboard } from '@types'
 
 interface IGraphErrorProps {
-    dashboard: string
+    dashboard: Dashboard
 }
 
 export const GraphError = ({ dashboard }: IGraphErrorProps) => {

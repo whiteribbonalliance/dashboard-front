@@ -12,9 +12,10 @@ import { TopWordsOrPhrases } from 'graph-components/TopWordsAndPhrasesGraph/TopW
 import { GraphLoading } from 'components/GraphLoading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
+import { Dashboard } from '@types'
 
 interface ITopWordsAndPhrasesGraphProps {
-    dashboard: string
+    dashboard: Dashboard
     lang: string
 }
 

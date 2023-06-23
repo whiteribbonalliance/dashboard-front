@@ -1,14 +1,14 @@
 'use client'
 
 import { Disclosure, Tab, Transition } from '@headlessui/react'
-import { classNames } from '@utils'
+import { classNames, getDashboardConfig } from '@utils'
 import { DashboardName } from '@enums'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { Box } from '@components/Box'
 import Image from 'next/image'
 import { getCampaignFilterOptions } from '@services/wra-dashboard-api'
-import { Option } from '@types'
-import { ICountryRegionOption } from '@interfaces'
+import { Dashboard, Option } from '@types'
+import { ICountryRegionOption, IFilterOptions } from '@interfaces'
 import { Control, Controller, useForm, UseFormRegister, UseFormReturn } from 'react-hook-form'
 import { SelectMultiValues } from '@components/SelectMultiValues'
 import { SelectSingleValue } from '@components/SelectSingleValue'
@@ -20,9 +20,10 @@ import { Filter, filterSchema } from '@schemas/filter'
 import { Stats } from '@components/FiltersPanel/Stats'
 import { useTranslation } from '@app/i18n/client'
 import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
+import { useQuery } from 'react-query'
 
 interface IFiltersPanelProps {
-    dashboard: string
+    dashboard: Dashboard
     lang: string
 }
 
@@ -31,7 +32,7 @@ interface IFieldProps {
 }
 
 interface ISelectProps extends IFieldProps {
-    dashboard: string
+    dashboard: Dashboard
     options: (Option<string> | Option<boolean>)[]
     control: Control<Filter>
 }
@@ -45,6 +46,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const setForm1 = useFilterFormsStore((state: IFilterFormsState) => state.setForm1)
     const setForm2 = useFilterFormsStore((state: IFilterFormsState) => state.setForm2)
     const { t } = useTranslation(lang)
+    const config = getDashboardConfig(dashboard)
 
     // Select options
     const [countryOptions, setCountryOptions] = useState<Option<string>[]>([])
@@ -111,51 +113,44 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
             selectedTabClasses = 'border-t-defaultColors-tertiary'
     }
 
-    // Set topics text
-    let topicsText: string
-    switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            topicsText = 'domains'
-            break
-        default:
-            topicsText = 'topics'
-    }
-
     // Whether the PMNCH QR code should be displayed
     const displayPmnchQrCode = dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT
 
     // Fetch filter options
-    useEffect(() => {
-        getCampaignFilterOptions(dashboard, lang)
-            .then((filterOptions) => {
-                // Country options
-                setCountryOptions(filterOptions.countries)
+    useQuery<IFilterOptions>({
+        queryKey: [`campaign-filter-options-${dashboard}`],
+        queryFn: () => getCampaignFilterOptions(config, lang),
+        refetchOnWindowFocus: false,
+        retry: 3,
+        onSuccess: (filterOptions) => {
+            // Country options
+            setCountryOptions(filterOptions.countries)
 
-                // Country Regions options
-                setCountriesRegionsOptions(filterOptions.country_regions)
+            // Country Regions options
+            setCountriesRegionsOptions(filterOptions.country_regions)
 
-                // Response topic options
-                setResponseTopicOptions(filterOptions.response_topics)
+            // Response topic options
+            setResponseTopicOptions(filterOptions.response_topics)
 
-                // Age options
-                setAgeOptions(filterOptions.ages)
+            // Age options
+            setAgeOptions(filterOptions.ages)
 
-                // Gender options
-                setGenderOptions(filterOptions.genders)
+            // Gender options
+            setGenderOptions(filterOptions.genders)
 
-                // Profession options
-                setProfessionOptions(filterOptions.professions)
+            // Profession options
+            setProfessionOptions(filterOptions.professions)
 
-                // Only responses from categories options
-                setOnlyResponsesFromCategoriesOptions(filterOptions.only_responses_from_categories)
+            // Only responses from categories options
+            setOnlyResponsesFromCategoriesOptions(filterOptions.only_responses_from_categories)
 
-                // Only multi-word phrases containing filter term options
-                setOnlyMultiWordPhrasesContainingFilterTermOptions(
-                    filterOptions.only_multi_word_phrases_containing_filter_term
-                )
-            })
-            .catch(() => {})
-    }, [dashboard, lang])
+            // Only multi-word phrases containing filter term options
+            setOnlyMultiWordPhrasesContainingFilterTermOptions(
+                filterOptions.only_multi_word_phrases_containing_filter_term
+            )
+        },
+        onError: () => {},
+    })
 
     // Set region options for filter
     const setRegionOptionsForFilter = useCallback(
@@ -182,13 +177,13 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         [countriesRegionsOptions]
     )
 
-    // Set regions of selected countries for filter 1
+    // Set regions for the selected country for filter 1
     const watchCountriesForm1 = form1.watch('countries')
     useEffect(() => {
         setRegionOptionsForFilter(watchCountriesForm1, setRegionOptionsFilter1, form1)
     }, [watchCountriesForm1, form1, setRegionOptionsForFilter])
 
-    // Set regions of selected countries for filter 2
+    // Set regions for the selected country for filter 2
     const watchCountriesForm2 = form2.watch('countries')
     useEffect(() => {
         setRegionOptionsForFilter(watchCountriesForm2, setRegionOptionsFilter2, form2)
@@ -235,14 +230,14 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         }, 450)
     }, [form1Watch, form2Watch, setFilters])
 
-    // Set select response topics translation
-    let selectResponseTopicsTranslation: string
+    // Set select response topics text
+    let selectResponseTopicsText: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            selectResponseTopicsTranslation = t('select-response-domains')
+            selectResponseTopicsText = t('select-response-domains')
             break
         default:
-            selectResponseTopicsTranslation = t('select-response-topics')
+            selectResponseTopicsText = t('select-response-topics')
     }
 
     return (
@@ -300,7 +295,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
                                         {/* Select response topics */}
                                         <div>
-                                            <div className="mb-1">{selectResponseTopicsTranslation}</div>
+                                            <div className="mb-1">{selectResponseTopicsText}</div>
                                             <SelectResponseTopics
                                                 id={`select-response-topics-${id}`}
                                                 dashboard={dashboard}
@@ -568,13 +563,8 @@ const SelectRegions = ({ id, options, control }: ISelectProps) => {
 const SelectCountries = ({ id, dashboard, options, control }: ISelectProps) => {
     // Set disabled
     let disabled = false
-    switch (dashboard) {
-        case DashboardName.WWW_PAKISTAN:
-            disabled = true
-            break
-        case DashboardName.GIZ:
-            disabled = true
-            break
+    if (dashboard === DashboardName.WWW_PAKISTAN || dashboard === DashboardName.GIZ) {
+        disabled = true
     }
 
     return (

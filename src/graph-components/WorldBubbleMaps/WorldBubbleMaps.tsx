@@ -7,24 +7,24 @@ import { GraphError } from '@components/GraphError'
 import { GraphLoading } from '@components/GraphLoading'
 import * as d3 from 'd3'
 import { DashboardName } from '@enums'
-import { midwivesVoicesConfig, whatWomenWantConfig, whatYoungPeopleWantConfig } from '@configurations'
 import React, { useEffect, useMemo, useRef } from 'react'
 import { IWorldBubbleMapsCoordinate } from '@interfaces'
 import { Tab } from '@headlessui/react'
-import { classNames, toThousandsSep } from '@utils'
+import { classNames, getDashboardConfig, toThousandsSep } from '@utils'
 import { useQuery } from 'react-query'
 import { useTranslation } from '@app/i18n/client'
 import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
 import { UseFormReturn } from 'react-hook-form'
 import { Filter } from '@schemas/filter'
+import { Dashboard } from '@types'
 
 interface IWorldBubbleMapsProps {
-    dashboard: string
+    dashboard: Dashboard
     lang: string
 }
 
 interface IWorldBubbleMapProps {
-    dashboard: string
+    dashboard: Dashboard
     form: UseFormReturn<Filter, any>
     respondents: string
     dataGeo: IDataGeo
@@ -56,21 +56,10 @@ export const WorldBubbleMaps = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
     const form1 = useFilterFormsStore((state: IFilterFormsState) => state.form1)
     const form2 = useFilterFormsStore((state: IFilterFormsState) => state.form2)
 
+    const config = getDashboardConfig(dashboard)
+
     // Set respondents
-    let respondents: string
-    switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
-            respondents = whatWomenWantConfig.respondentsNounPlural
-            break
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            respondents = whatYoungPeopleWantConfig.respondentsNounPlural
-            break
-        case DashboardName.MIDWIVES_VOICES:
-            respondents = midwivesVoicesConfig.respondentsNounPlural
-            break
-        default:
-            respondents = 'respondents'
-    }
+    const respondents = t(config.respondentsNounPlural)
 
     // Data geo query
     const dataGeoQuery = useQuery<IDataGeo | undefined>({
@@ -131,14 +120,14 @@ export const WorldBubbleMaps = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
             selectedTabClasses = 'border-t-defaultColors-tertiary'
     }
 
-    // Set respondents located translation
-    let respondentsLocatedTranslation: string
+    // Set respondents located text
+    let respondentsLocatedText: string
     switch (dashboard) {
         case DashboardName.WHAT_WOMEN_WANT:
-            respondentsLocatedTranslation = t('where-women-located')
+            respondentsLocatedText = t(`${config.campaignCode}-where-located`)
             break
         default:
-            respondentsLocatedTranslation = t('where-respondents-located')
+            respondentsLocatedText = t('where-located')
     }
 
     // Display world bubble maps or not
@@ -146,7 +135,7 @@ export const WorldBubbleMaps = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
 
     return (
         <Box>
-            <GraphTitle dashboard={dashboard} text={respondentsLocatedTranslation} />
+            <GraphTitle dashboard={dashboard} text={respondentsLocatedText} />
             <p>{t('click-bubble-country-information')}</p>
 
             {/* Error */}

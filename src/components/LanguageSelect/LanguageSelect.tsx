@@ -9,9 +9,10 @@ import { faLanguage } from '@fortawesome/free-solid-svg-icons'
 import { classNames } from '@utils'
 import { languages } from '@constants'
 import { usePathname, useRouter } from 'next/navigation'
+import { Dashboard } from '@types'
 
 interface ILanguageSelectProps {
-    dashboard: string
+    dashboard: Dashboard
     lang: string
 }
 

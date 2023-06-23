@@ -1,8 +1,9 @@
 import { Spinner } from '@components/Spinner'
 import React from 'react'
+import { Dashboard } from '@types'
 
 interface IGraphLoadingProps {
-    dashboard: string
+    dashboard: Dashboard
 }
 
 export const GraphLoading = ({ dashboard }: IGraphLoadingProps) => {

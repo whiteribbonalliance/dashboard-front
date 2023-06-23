@@ -9,9 +9,10 @@ import React from 'react'
 import { Cell, Legend, Pie, PieChart, PieLabelRenderProps, ResponsiveContainer, Tooltip, TooltipProps } from 'recharts'
 import { classNames, toThousandsSep } from '@utils'
 import { useTranslation } from '@app/i18n/client'
+import { Dashboard } from '@types'
 
 interface IGenderBreakdownGraphProps {
-    dashboard: string
+    dashboard: Dashboard
     lang: string
 }
 

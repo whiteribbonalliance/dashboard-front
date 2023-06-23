@@ -2,16 +2,18 @@
 
 import { useEffect } from 'react'
 import i18next from 'i18next'
+import LanguageDetector from 'i18next-browser-languagedetector'
 import { initReactI18next, useTranslation as useTranslationOrg, UseTranslationOptions } from 'react-i18next'
 import resourcesToBackend from 'i18next-resources-to-backend'
 import { getOptions } from './settings'
 
 i18next
     .use(initReactI18next)
+    .use(LanguageDetector)
     .use(resourcesToBackend((lang: string, ns: string) => import(`./languages/${lang}/${ns}.json`)))
     .init({
         ...getOptions(),
-        lng: undefined, // let detect the language on client side
+        lng: undefined, // Detect the language client side
         detection: {
             order: ['path', 'htmlTag', 'cookie', 'navigator'],
         },

@@ -8,9 +8,8 @@ const initI18next = async (lang: string, ns: string) => {
     const i18nInstance = createInstance()
     await i18nInstance
         .use(initReactI18next)
-        .use(resourcesToBackend((lang: string, ns: string) => import(`./languages/${lang}/${ns}.json`)))
+        .use(resourcesToBackend(() => import(`./languages/${lang}/${ns}.json`)))
         .init(getOptions(lang, ns))
-        .then()
 
     return i18nInstance
 }
@@ -19,8 +18,6 @@ export async function useTranslation(lang: string, ns: string = 'translation', o
     const i18nextInstance = await initI18next(lang, ns)
 
     return {
-        // @ts-ignore
-        t: i18nextInstance.getFixedT(lang, Array.isArray(ns) ? ns[0] : ns, options.keyPrefix),
-        i18n: i18nextInstance,
+        t: i18nextInstance.getFixedT(lang, ns, options.keyPrefix),
     }
 }
