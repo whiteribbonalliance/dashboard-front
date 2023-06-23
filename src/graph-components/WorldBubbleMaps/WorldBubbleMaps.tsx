@@ -190,13 +190,10 @@ const WorldBubbleMap = ({
     const divRef = useRef<HTMLDivElement>(undefined as any)
 
     // For 'giz' or 'wwwpakistan', only show the respective country on the map
-    switch (dashboard) {
-        case DashboardName.GIZ:
-            dataGeo.features = dataGeo.features.filter((d) => d.properties.name === 'Mexico')
-            break
-        case DashboardName.WWW_PAKISTAN:
-            dataGeo.features = dataGeo.features.filter((d) => d.properties.name === 'Pakistan')
-            break
+    if (dashboard === DashboardName.GIZ) {
+        dataGeo.features = dataGeo.features.filter((d) => d.properties.name === 'Mexico')
+    } else if (dashboard === DashboardName.WWW_PAKISTAN) {
+        dataGeo.features = dataGeo.features.filter((d) => d.properties.name === 'Pakistan')
     }
 
     // Set projection scale and view box
