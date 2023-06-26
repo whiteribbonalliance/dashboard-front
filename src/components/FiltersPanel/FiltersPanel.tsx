@@ -22,6 +22,7 @@ import { useTranslation } from '@app/i18n/client'
 import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
 import { useQuery } from 'react-query'
 import { Tooltip } from '@components/Tooltip'
+import { IRefetchCampaignState, useRefetchCampaignStore } from '@stores/refetch-campaign'
 
 interface IFiltersPanelProps {
     dashboard: Dashboard
@@ -46,6 +47,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const setFilters = useFiltersStore((state: IFiltersState) => state.setFilters)
     const setForm1 = useFilterFormsStore((state: IFilterFormsState) => state.setForm1)
     const setForm2 = useFilterFormsStore((state: IFilterFormsState) => state.setForm2)
+    const setRefetchCampaign = useRefetchCampaignStore((state: IRefetchCampaignState) => state.setRefetchCampaign)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
 
@@ -205,11 +207,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         }
     }, [refetchCampaignTimeout])
 
-    // Refetch campaign on form change
-    const form1Watch = form1.watch()
-    const form2Watch = form2.watch()
-    useEffect(() => {
-        // Clear the current submit timeout
+    // Refetch campaign
+    function refetchCampaign() {
+        // Clear the current refetch campaign timeout
         if (refetchCampaignTimeout.current) {
             clearTimeout(refetchCampaignTimeout.current)
         }
@@ -217,25 +217,28 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         // Add a small delay before refetching campaign
         refetchCampaignTimeout.current = setTimeout(() => {
             // Lowercase keyword_exclude and keyword_filter
-            if (form1Watch.keyword_exclude) {
-                form1Watch.keyword_exclude = form1Watch.keyword_exclude.toLowerCase()
+            if (form1.getValues().keyword_exclude) {
+                form1.getValues().keyword_exclude = form1.getValues().keyword_exclude.toLowerCase()
             }
-            if (form1Watch.keyword_filter) {
-                form1Watch.keyword_filter = form1Watch.keyword_filter.toLowerCase()
+            if (form1.getValues().keyword_filter) {
+                form1.getValues().keyword_filter = form1.getValues().keyword_filter.toLowerCase()
             }
 
             // Lowercase keyword_exclude and keyword_filter
-            if (form2Watch.keyword_exclude) {
-                form2Watch.keyword_exclude = form2Watch.keyword_exclude.toLowerCase()
+            if (form2.getValues().keyword_exclude) {
+                form2.getValues().keyword_exclude = form2.getValues().keyword_exclude.toLowerCase()
             }
-            if (form2Watch.keyword_filter) {
-                form2Watch.keyword_filter = form2Watch.keyword_filter.toLowerCase()
+            if (form2.getValues().keyword_filter) {
+                form2.getValues().keyword_filter = form2.getValues().keyword_filter.toLowerCase()
             }
 
-            // Update the filters store (when filters are updated, useCampaignQuery will refetch the campaign data)
-            setFilters({ filter1: form1Watch, filter2: form2Watch })
+            // Update the filters store (when filters are updated, useCampaignQuery will refetch campaign data)
+            setFilters({ filter1: form1.getValues(), filter2: form2.getValues() })
         }, 450)
-    }, [form1Watch, form2Watch, setFilters])
+    }
+
+    // Set refetch campaign
+    setRefetchCampaign(refetchCampaign)
 
     // Set select response topics text
     let selectResponseTopicsText: string

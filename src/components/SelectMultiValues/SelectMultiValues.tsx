@@ -1,6 +1,7 @@
 import Select from 'react-select'
 import React from 'react'
 import { Option } from '@types'
+import { IRefetchCampaignState, useRefetchCampaignStore } from '@stores/refetch-campaign'
 
 interface ISelectMultiValuesProps {
     id: string
@@ -17,6 +18,8 @@ export const SelectMultiValues = ({
     value,
     controllerRenderOnChange,
 }: ISelectMultiValuesProps) => {
+    const refetchCampaign = useRefetchCampaignStore((state: IRefetchCampaignState) => state.refetchCampaign)
+
     return (
         <Select
             isDisabled={isDisabled}
@@ -34,6 +37,11 @@ export const SelectMultiValues = ({
                             if (option) return option.value
                         })
                     )
+                }
+
+                // Refetch campaign
+                if (refetchCampaign) {
+                    refetchCampaign()
                 }
             }}
         />
