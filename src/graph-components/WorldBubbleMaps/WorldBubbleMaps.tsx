@@ -17,6 +17,7 @@ import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
 import { UseFormReturn } from 'react-hook-form'
 import { Filter } from '@schemas/filter'
 import { Dashboard } from '@types'
+import { Tooltip } from '@components/Tooltip'
 
 interface IWorldBubbleMapsProps {
     dashboard: Dashboard
@@ -134,46 +135,62 @@ export const WorldBubbleMaps = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
     const displayWorldBubbleMaps = !!data && !!dataGeoQuery.data
 
     return (
-        <Box>
-            <GraphTitle dashboard={dashboard} text={respondentsLocatedText} />
-            <p>{t('click-bubble-country-information')}</p>
+        <div>
+            {/* Tooltip: where are the respondents located */}
+            <Tooltip
+                id="respondents-located"
+                dashboard={dashboard}
+                title={'Map view'}
+                paragraphs={[
+                    'Here you can see where the respondents were located geographically. The size of the bubbles indicates how many respondents were from that country or region proportionally.',
+                    'If you mouse-over any of the bubbles, it will tell you how many respondents were in that country or region.',
+                    'If you click on a bubble, the Dashboard will filter for responses from that country or region.',
+                ]}
+            />
 
-            {/* Error */}
-            {!data && isError && <GraphError dashboard={dashboard} />}
-
-            {/* Loading (only at first data fetch) */}
-            {!displayWorldBubbleMaps && !isError && <GraphLoading dashboard={dashboard} />}
-
-            {/* World bubble maps */}
-            {displayWorldBubbleMaps && (
-                <div className="mt-3 w-full">
-                    <Tab.Group>
-                        <Tab.List className="flex flex-col sm:flex-row">
-                            {tabs.map((tab) => (
-                                <Tab
-                                    key={tab.id}
-                                    className={({ selected }) =>
-                                        classNames(
-                                            'w-full bg-grayLighter py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
-                                            selected ? `border-t-2 bg-white shadow-none ${selectedTabClasses}` : ''
-                                        )
-                                    }
-                                >
-                                    {tab.title}
-                                </Tab>
-                            ))}
-                        </Tab.List>
-                        <Tab.Panels>
-                            {tabs.map(({ id, content }) => (
-                                <Tab.Panel key={id} className="w-full">
-                                    {content}
-                                </Tab.Panel>
-                            ))}
-                        </Tab.Panels>
-                    </Tab.Group>
+            <Box>
+                <div data-tooltip-id="respondents-located">
+                    <GraphTitle dashboard={dashboard} text={respondentsLocatedText} />
                 </div>
-            )}
-        </Box>
+                <p>{t('click-bubble-country-information')}</p>
+
+                {/* Error */}
+                {!data && isError && <GraphError dashboard={dashboard} />}
+
+                {/* Loading (only at first data fetch) */}
+                {!displayWorldBubbleMaps && !isError && <GraphLoading dashboard={dashboard} />}
+
+                {/* World bubble maps */}
+                {displayWorldBubbleMaps && (
+                    <div className="mt-3 w-full">
+                        <Tab.Group>
+                            <Tab.List className="flex flex-col sm:flex-row">
+                                {tabs.map((tab) => (
+                                    <Tab
+                                        key={tab.id}
+                                        className={({ selected }) =>
+                                            classNames(
+                                                'w-full bg-grayLighter py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
+                                                selected ? `border-t-2 bg-white shadow-none ${selectedTabClasses}` : ''
+                                            )
+                                        }
+                                    >
+                                        {tab.title}
+                                    </Tab>
+                                ))}
+                            </Tab.List>
+                            <Tab.Panels>
+                                {tabs.map(({ id, content }) => (
+                                    <Tab.Panel key={id} className="w-full">
+                                        {content}
+                                    </Tab.Panel>
+                                ))}
+                            </Tab.Panels>
+                        </Tab.Group>
+                    </div>
+                )}
+            </Box>
+        </div>
     )
 }
 

@@ -21,6 +21,7 @@ import { Stats } from '@components/FiltersPanel/Stats'
 import { useTranslation } from '@app/i18n/client'
 import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
 import { useQuery } from 'react-query'
+import { Tooltip } from '@components/Tooltip'
 
 interface IFiltersPanelProps {
     dashboard: Dashboard
@@ -81,6 +82,12 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
             break
         default:
             defaultFilterValuesForForm = defaultFilterValues
+    }
+
+    // Set display countries filter tooltip
+    let displayCountriesFilterTooltip = true
+    if (dashboard === DashboardName.WWW_PAKISTAN || dashboard === DashboardName.GIZ) {
+        displayCountriesFilterTooltip = false
     }
 
     // Form 1
@@ -242,11 +249,78 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
     return (
         <div>
+            {/* Tooltip: filters */}
+            <Tooltip
+                id="filters-panel-tab-list"
+                dashboard={dashboard}
+                title={'Filter Controls'}
+                paragraphs={[
+                    'Here you can filter campaign responses.',
+                    '“Select countries” and “Select response topics” are dropdowns that allow you to select from the list of participating countries and from the list of topic areas and categories.',
+                ]}
+            />
+
+            {/* Tooltip: countries filter */}
+            {displayCountriesFilterTooltip && (
+                <Tooltip
+                    id="filters-panel-select-country"
+                    dashboard={dashboard}
+                    title={'Filter by country'}
+                    paragraphs={[
+                        'Here you can filter responses by a particular country, or group of countries, by clicking on the country name in the dropdown.',
+                        'You can also select a country by clicking on its bubble in the map view at the far bottom right of the Dashboard.',
+                    ]}
+                />
+            )}
+
+            {/* Tooltip: response topics */}
+            <Tooltip
+                id="filters-panel-select-response-topics"
+                dashboard={dashboard}
+                title={'Filter by Response Topic'}
+                paragraphs={[
+                    'Here you can drill down into the different categories of requests respondents demanded through the campaign.',
+                    'You can select one or more topics by clicking on the category name in the dropdown.',
+                    'You can also select a topic by clicking on its rectangle in the topic bar graph below.',
+                ]}
+            />
+
+            {/* Tooltip: age */}
+            <Tooltip
+                id="filters-panel-select-age"
+                dashboard={dashboard}
+                title={'Filter by age'}
+                paragraphs={[
+                    'Use dropdowns to include only the ages you are filtering for.',
+                    'You can also filter an age range by selecting specific bars on the age bar graph to the right.',
+                ]}
+            />
+
+            {/* Tooltip: keyword */}
+            <Tooltip
+                id="filters-panel-input-keyword"
+                dashboard={dashboard}
+                title={'Filter by keywords'}
+                paragraphs={[
+                    'The “Filter by keyword” and “Exclude keyword” options allow for an even closer look at the responses by giving you the power to search for a specific keyword of your choosing.',
+                ]}
+            />
+
+            {/* Tooltip: only multi-word phrases */}
+            <Tooltip
+                id="filters-panel-select-only-multi-word-phrases"
+                dashboard={dashboard}
+                title={'Advanced feature'}
+                paragraphs={[
+                    'To also see all the short phrases containing your chosen keyword term, select “Show only multi-word phrases containing the filter term.”',
+                ]}
+            />
+
             {/* Filters */}
             <div className="mb-5 w-full">
                 <Box>
                     <Tab.Group>
-                        <Tab.List className="mb-2 flex flex-col sm:flex-row">
+                        <Tab.List data-tooltip-id="filters-panel-tab-list" className="mb-2 flex flex-col sm:flex-row">
                             {tabs.map((tab) => (
                                 <Tab
                                     key={tab.id}
@@ -272,7 +346,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                     {/* Normal mode */}
                                     <div className="mb-5 flex flex-col gap-y-3">
                                         {/* Select countries */}
-                                        <div>
+                                        <div data-tooltip-id="filters-panel-select-country">
                                             <div className="mb-1">{t('select-countries')}</div>
                                             <SelectCountries
                                                 id={`select-countries-${id}`}
@@ -294,7 +368,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                         </div>
 
                                         {/* Select response topics */}
-                                        <div>
+                                        <div data-tooltip-id="filters-panel-select-response-topics">
                                             <div className="mb-1">{selectResponseTopicsText}</div>
                                             <SelectResponseTopics
                                                 id={`select-response-topics-${id}`}
@@ -332,7 +406,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                         </div>
 
                                                         {/* Filter by age */}
-                                                        <div>
+                                                        <div data-tooltip-id="filters-panel-select-age">
                                                             <div className="mb-1">
                                                                 {t('filter-by-age-or-select-histogram')}
                                                             </div>
@@ -399,7 +473,10 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                         )}
 
                                                         {/* Filter by keyword & exclude keyword */}
-                                                        <div className="flex gap-x-3">
+                                                        <div
+                                                            className="flex gap-x-3"
+                                                            data-tooltip-id="filters-panel-input-keyword"
+                                                        >
                                                             {/* Filter by keyword */}
                                                             <div className="flex basis-1/2 flex-col">
                                                                 <div className="mb-1">{t('filter-by-keyword')}</div>
@@ -419,7 +496,10 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                         </div>
 
                                                         {/* Show multi-word phrases */}
-                                                        <div className="flex flex-col">
+                                                        <div
+                                                            className="flex flex-col"
+                                                            data-tooltip-id="filters-panel-select-only-multi-word-phrases"
+                                                        >
                                                             <div className="mb-1">{t('multi-word-phrases')}</div>
                                                             <SelectOnlyMultiWordPhrasesContainingFilterTerm
                                                                 id={`select-only-multi-word-phrases-containing-filter-term-${id}`}

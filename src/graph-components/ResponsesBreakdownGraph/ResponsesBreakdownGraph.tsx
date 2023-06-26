@@ -4,7 +4,16 @@ import { Box } from '@components/Box'
 import { GraphTitle } from '@components/GraphTitle'
 import { DashboardName } from '@enums'
 import { useCampaignQuery } from '@hooks/use-campaign'
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts'
+import {
+    Bar,
+    BarChart,
+    CartesianGrid,
+    ResponsiveContainer,
+    Tooltip as RechartsTooltip,
+    TooltipProps,
+    XAxis,
+    YAxis,
+} from 'recharts'
 import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent'
 import { classNames, getDashboardConfig, toThousandsSep } from '@utils'
 import { GraphLoading } from 'components/GraphLoading'
@@ -12,6 +21,8 @@ import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
 import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
 import { Dashboard } from '@types'
+import React from 'react'
+import { Tooltip } from '@components/Tooltip'
 
 interface IResponsesBreakdownGraphProps {
     dashboard: Dashboard
@@ -78,63 +89,78 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
     const displayGraph = !!data
 
     return (
-        <Box>
-            <GraphTitle dashboard={dashboard} text={breakdownResponsesTopicText} />
-            <p>{clickViewTopicResponsesText}</p>
+        <div>
+            {/* Tooltip: responses breakdown */}
+            <Tooltip
+                id="responses-breakdown"
+                dashboard={dashboard}
+                title={'Topic breakdown'}
+                paragraphs={[
+                    'Each topic category is represented as a bar. The length of the bar represents how many respondents responded in that category.',
+                    'You can click on a topic bar to filter for that category.',
+                ]}
+            />
 
-            {/* Error */}
-            {!data && isError && <GraphError dashboard={dashboard} />}
+            <Box>
+                <div data-tooltip-id="responses-breakdown">
+                    <GraphTitle dashboard={dashboard} text={breakdownResponsesTopicText} />
+                </div>
+                <p>{clickViewTopicResponsesText}</p>
 
-            {/* Loading (only at first data fetch) */}
-            {!displayGraph && !isError && <GraphLoading dashboard={dashboard} />}
+                {/* Error */}
+                {!data && isError && <GraphError dashboard={dashboard} />}
 
-            {/* Graph */}
-            {displayGraph && (
-                <>
-                    {/* Bar chart */}
-                    <div className="mb-3 mt-3 w-full">
-                        <ResponsiveContainer height={400} className="bg-white">
-                            <BarChart
-                                data={data.responses_breakdown}
-                                margin={{ top: 15, right: 50, left: 10, bottom: 15 }}
-                                width={750}
-                                height={500}
-                                layout="vertical"
-                                barCategoryGap={5}
-                            >
-                                <XAxis
-                                    dataKey="count"
-                                    type="number"
-                                    axisLine={false}
-                                    tickCount={7}
-                                    tickFormatter={(item) => xAxisFormatter(item)}
-                                />
-                                <YAxis
-                                    dataKey="description"
-                                    type="category"
-                                    axisLine={false}
-                                    tickLine={false}
-                                    width={450}
-                                    interval={0}
-                                />
-                                <CartesianGrid strokeDasharray="0" stroke="#FFFFFF" />
-                                <Tooltip
-                                    cursor={{ fill: 'transparent' }}
-                                    content={<CustomTooltip dashboard={dashboard} lang={lang} />}
-                                    position={{ x: 25 }}
-                                />
-                                <Bar
-                                    dataKey="count"
-                                    className={classNames('hover:cursor-pointer', barClasses)}
-                                    minPointSize={5}
-                                    onClick={setResponseTopic}
-                                />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </div>
-                </>
-            )}
-        </Box>
+                {/* Loading (only at first data fetch) */}
+                {!displayGraph && !isError && <GraphLoading dashboard={dashboard} />}
+
+                {/* Graph */}
+                {displayGraph && (
+                    <>
+                        {/* Bar chart */}
+                        <div className="mb-3 mt-3 w-full">
+                            <ResponsiveContainer height={400} className="bg-white">
+                                <BarChart
+                                    data={data.responses_breakdown}
+                                    margin={{ top: 15, right: 50, left: 10, bottom: 15 }}
+                                    width={750}
+                                    height={500}
+                                    layout="vertical"
+                                    barCategoryGap={5}
+                                >
+                                    <XAxis
+                                        dataKey="count"
+                                        type="number"
+                                        axisLine={false}
+                                        tickCount={7}
+                                        tickFormatter={(item) => xAxisFormatter(item)}
+                                    />
+                                    <YAxis
+                                        dataKey="description"
+                                        type="category"
+                                        axisLine={false}
+                                        tickLine={false}
+                                        width={450}
+                                        interval={0}
+                                    />
+                                    <CartesianGrid strokeDasharray="0" stroke="#FFFFFF" />
+                                    <RechartsTooltip
+                                        cursor={{ fill: 'transparent' }}
+                                        content={<CustomTooltip dashboard={dashboard} lang={lang} />}
+                                        position={{ x: 25 }}
+                                    />
+                                    <Bar
+                                        dataKey="count"
+                                        className={classNames('hover:cursor-pointer', barClasses)}
+                                        minPointSize={5}
+                                        onClick={setResponseTopic}
+                                    />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </>
+                )}
+            </Box>
+        </div>
     )
 }
 

@@ -13,6 +13,7 @@ import { GraphLoading } from 'components/GraphLoading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
 import { Dashboard } from '@types'
+import { Tooltip } from '@components/Tooltip'
 
 interface ITopWordsAndPhrasesGraphProps {
     dashboard: Dashboard
@@ -100,45 +101,71 @@ export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrases
     const displayGraph = !!data
 
     return (
-        <Box>
-            <GraphTitle dashboard={dashboard} text={t('top-words-and-phrases')} />
-            <p>{t('what-people-said-own-words')}</p>
+        <div>
+            {/* Tooltip: top words phrases */}
+            <Tooltip
+                id="two-word-phrases"
+                dashboard={dashboard}
+                title={'Single words, two-word phrases, and three-word phrases'}
+                paragraphs={[
+                    'Of the responses that you have filtered, here you can see the most common single words that the respondent mentioned.',
+                    'You can also see the most common two-word and three-word phrases that were mentioned within your filter, allowing for a deeper understanding of what the respondents were asking for.',
+                    'Similar to the “Filter by keyword” function at the top of the Dashboard, you can also click on any bar on the “One word phrases” graph to filter the responses for that word.',
+                ]}
+            />
 
-            {/* Error */}
-            {!data && isError && <GraphError dashboard={dashboard} />}
+            {/* Tooltip: top words phrases  */}
+            <Tooltip
+                id="top-words-phrases"
+                dashboard={dashboard}
+                title={'Advanced feature'}
+                paragraphs={[
+                    'If you want to limit the two-word and three-word phrases to those phrases containing a keyword, you can select “Show only multi-word phrases containing filter term” in the filter control panel.',
+                ]}
+            />
 
-            {/* Loading (only at first data fetch) */}
-            {!displayGraph && !isError && <GraphLoading dashboard={dashboard} />}
-
-            {/* Graph */}
-            {displayGraph && (
-                <div className="mt-3 w-full">
-                    <Tab.Group>
-                        <Tab.List className="flex flex-col sm:flex-row">
-                            {tabs.map((tab) => (
-                                <Tab
-                                    key={tab.id}
-                                    className={({ selected }) =>
-                                        classNames(
-                                            'w-full bg-grayLighter py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
-                                            selected ? `border-t-2 bg-white shadow-none ${selectedTabClasses}` : ''
-                                        )
-                                    }
-                                >
-                                    {tab.title}
-                                </Tab>
-                            ))}
-                        </Tab.List>
-                        <Tab.Panels>
-                            {tabs.map(({ id, content }) => (
-                                <Tab.Panel key={id} unmount={false} className="w-full">
-                                    {content}
-                                </Tab.Panel>
-                            ))}
-                        </Tab.Panels>
-                    </Tab.Group>
+            <Box>
+                <div data-tooltip-id="two-word-phrases">
+                    <GraphTitle dashboard={dashboard} text={t('top-words-and-phrases')} />
                 </div>
-            )}
-        </Box>
+                <p>{t('what-people-said-own-words')}</p>
+
+                {/* Error */}
+                {!data && isError && <GraphError dashboard={dashboard} />}
+
+                {/* Loading (only at first data fetch) */}
+                {!displayGraph && !isError && <GraphLoading dashboard={dashboard} />}
+
+                {/* Graph */}
+                {displayGraph && (
+                    <div className="mt-3 w-full">
+                        <Tab.Group>
+                            <Tab.List data-tooltip-id="top-words-phrases" className="flex flex-col sm:flex-row">
+                                {tabs.map((tab) => (
+                                    <Tab
+                                        key={tab.id}
+                                        className={({ selected }) =>
+                                            classNames(
+                                                'w-full bg-grayLighter py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
+                                                selected ? `border-t-2 bg-white shadow-none ${selectedTabClasses}` : ''
+                                            )
+                                        }
+                                    >
+                                        {tab.title}
+                                    </Tab>
+                                ))}
+                            </Tab.List>
+                            <Tab.Panels>
+                                {tabs.map(({ id, content }) => (
+                                    <Tab.Panel key={id} unmount={false} className="w-full">
+                                        {content}
+                                    </Tab.Panel>
+                                ))}
+                            </Tab.Panels>
+                        </Tab.Group>
+                    </div>
+                )}
+            </Box>
+        </div>
     )
 }

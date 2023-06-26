@@ -20,6 +20,7 @@ import { GraphLoading } from 'components/GraphLoading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
 import { Dashboard } from '@types'
+import { Tooltip } from '@components/Tooltip'
 
 interface IResponsesSampleGraphProps {
     dashboard: Dashboard
@@ -180,112 +181,129 @@ export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphP
     const displayTable = !!data
 
     return (
-        <Box>
-            <GraphTitle dashboard={dashboard} text={t('a-sample-1000-responses')} />
-            <p>
-                <span className="italic">{questionAsked}</span>
-            </p>
+        <div>
+            {/* Tooltip: sample responses */}
+            <Tooltip
+                id="sample-responses"
+                dashboard={dashboard}
+                title={'Sample responses'}
+                paragraphs={[
+                    'Look here to see a randomized sample of the original responses, in the actual words of the respondents who shared their responses for the campaign.',
+                    'You can also see which category each response was assigned to, which country the respondent lives in, and their age.',
+                ]}
+            />
 
-            {/* Error */}
-            {!data && isError && <GraphError dashboard={dashboard} />}
+            <Box>
+                <div data-tooltip-id="sample-responses">
+                    <GraphTitle dashboard={dashboard} text={t('a-sample-1000-responses')} />
+                </div>
+                <p>
+                    <span className="italic">{questionAsked}</span>
+                </p>
 
-            {/* Loading (only at first data fetch) */}
-            {!displayTable && !isError && <GraphLoading dashboard={dashboard} />}
+                {/* Error */}
+                {!data && isError && <GraphError dashboard={dashboard} />}
 
-            {/* Table */}
-            {displayTable && (
-                <>
-                    <table className="mb-3 mt-3 w-full table-fixed bg-white">
-                        <thead className="border-b border-b-grayLight">
-                            {table.getHeaderGroups().map((headerGroup) => (
-                                <tr key={headerGroup.id}>
-                                    {headerGroup.headers.map((header) => (
-                                        <th
-                                            key={header.id}
-                                            className={classNames(
-                                                'border-r border-r-grayLight px-1 text-left',
-                                                header.id === 'raw_response' ? 'w-[100%]' : 'w-[35%]',
-                                                thClasses
-                                            )}
-                                        >
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(header.column.columnDef.header, header.getContext())}
-                                        </th>
-                                    ))}
-                                </tr>
-                            ))}
-                        </thead>
-                        <tbody>
-                            {table.getRowModel().rows.map((row) => (
-                                <tr key={row.id} className="border-b border-b-grayLight">
-                                    {row.getVisibleCells().map((cell) => (
-                                        <td
-                                            key={cell.id}
-                                            className={classNames(
-                                                'break-words border-r border-r-grayLight px-1',
-                                                cell.column.id === 'raw_response' ? getDescriptionColorClass(row) : ''
-                                            )}
-                                        >
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                        </td>
-                                    ))}
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                {/* Loading (only at first data fetch) */}
+                {!displayTable && !isError && <GraphLoading dashboard={dashboard} />}
 
-                    {/* Pagination */}
-                    <div className="flex justify-end">
-                        <div className="flex items-center gap-x-3">
-                            {/* Go to first page */}
-                            <div className="text-sm" onClick={() => table.setPageIndex(0)}>
-                                <Chevron double={true} direction="left" />
-                            </div>
+                {/* Table */}
+                {displayTable && (
+                    <>
+                        <table className="mb-3 mt-3 w-full table-fixed bg-white">
+                            <thead className="border-b border-b-grayLight">
+                                {table.getHeaderGroups().map((headerGroup) => (
+                                    <tr key={headerGroup.id}>
+                                        {headerGroup.headers.map((header) => (
+                                            <th
+                                                key={header.id}
+                                                className={classNames(
+                                                    'border-r border-r-grayLight px-1 text-left',
+                                                    header.id === 'raw_response' ? 'w-[100%]' : 'w-[35%]',
+                                                    thClasses
+                                                )}
+                                            >
+                                                {header.isPlaceholder
+                                                    ? null
+                                                    : flexRender(header.column.columnDef.header, header.getContext())}
+                                            </th>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </thead>
+                            <tbody>
+                                {table.getRowModel().rows.map((row) => (
+                                    <tr key={row.id} className="border-b border-b-grayLight">
+                                        {row.getVisibleCells().map((cell) => (
+                                            <td
+                                                key={cell.id}
+                                                className={classNames(
+                                                    'break-words border-r border-r-grayLight px-1',
+                                                    cell.column.id === 'raw_response'
+                                                        ? getDescriptionColorClass(row)
+                                                        : ''
+                                                )}
+                                            >
+                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
 
-                            {/* Go to previous page */}
-                            <div className="text-sm" onClick={() => table.previousPage()}>
-                                <Chevron direction="left" />
-                            </div>
+                        {/* Pagination */}
+                        <div className="flex justify-end">
+                            <div className="flex items-center gap-x-3">
+                                {/* Go to first page */}
+                                <div className="text-sm" onClick={() => table.setPageIndex(0)}>
+                                    <Chevron double={true} direction="left" />
+                                </div>
 
-                            {/* Current page index */}
-                            <input
-                                className="flex h-7 w-[3em] items-center rounded-sm p-0.5 text-center"
-                                type="number"
-                                min={1}
-                                max={table.getPageCount()}
-                                value={table.getState().pagination.pageIndex + 1}
-                                onChange={(e) => {
-                                    const page = e.target.value ? Number(e.target.value) - 1 : 0
-                                    table.setPageIndex(page)
-                                }}
-                            />
+                                {/* Go to previous page */}
+                                <div className="text-sm" onClick={() => table.previousPage()}>
+                                    <Chevron direction="left" />
+                                </div>
 
-                            <span>/</span>
+                                {/* Current page index */}
+                                <input
+                                    className="flex h-7 w-[3em] items-center rounded-sm p-0.5 text-center"
+                                    type="number"
+                                    min={1}
+                                    max={table.getPageCount()}
+                                    value={table.getState().pagination.pageIndex + 1}
+                                    onChange={(e) => {
+                                        const page = e.target.value ? Number(e.target.value) - 1 : 0
+                                        table.setPageIndex(page)
+                                    }}
+                                />
 
-                            {/* Total pages */}
-                            <span>{table.getPageCount()}</span>
+                                <span>/</span>
 
-                            {/* Go to next page */}
-                            <div
-                                className="text-sm"
-                                onClick={() => {
-                                    if (table.getState().pagination.pageIndex + 1 !== table.getPageCount()) {
-                                        table.nextPage()
-                                    }
-                                }}
-                            >
-                                <Chevron direction="right" />
-                            </div>
+                                {/* Total pages */}
+                                <span>{table.getPageCount()}</span>
 
-                            {/* Go to last page */}
-                            <div className="text-sm" onClick={() => table.setPageIndex(table.getPageCount() - 1)}>
-                                <Chevron double={true} direction="right" />
+                                {/* Go to next page */}
+                                <div
+                                    className="text-sm"
+                                    onClick={() => {
+                                        if (table.getState().pagination.pageIndex + 1 !== table.getPageCount()) {
+                                            table.nextPage()
+                                        }
+                                    }}
+                                >
+                                    <Chevron direction="right" />
+                                </div>
+
+                                {/* Go to last page */}
+                                <div className="text-sm" onClick={() => table.setPageIndex(table.getPageCount() - 1)}>
+                                    <Chevron double={true} direction="right" />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </>
-            )}
-        </Box>
+                    </>
+                )}
+            </Box>
+        </div>
     )
 }
