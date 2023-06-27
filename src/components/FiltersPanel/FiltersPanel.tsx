@@ -207,8 +207,8 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         }
     }, [refetchCampaignTimeout])
 
-    // Refetch campaign
-    function refetchCampaign() {
+    // Set refetch campaign
+    setRefetchCampaign(() => {
         // Clear the current refetch campaign timeout
         if (refetchCampaignTimeout.current) {
             clearTimeout(refetchCampaignTimeout.current)
@@ -235,10 +235,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
             // Update the filters store (when filters are updated, useCampaignQuery will refetch campaign data)
             setFilters({ filter1: form1.getValues(), filter2: form2.getValues() })
         }, 450)
-    }
-
-    // Set refetch campaign
-    setRefetchCampaign(refetchCampaign)
+    })
 
     // Set select response topics text
     let selectResponseTopicsText: string

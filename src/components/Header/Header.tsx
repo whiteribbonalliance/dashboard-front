@@ -14,6 +14,7 @@ import { Chevron } from '@components/Chevron'
 import { classNames, getDashboardConfig } from '@utils'
 import { useTranslation } from '@app/i18n/client'
 import { Dashboard } from '@types'
+import Image from 'next/image'
 
 interface IHeaderProps {
     dashboard: Dashboard
@@ -32,21 +33,16 @@ export const Header = ({ dashboard, lang, title }: IHeaderProps) => {
 
     const showVideoLink = config.showVideoLink
 
-    // Set about us text
-    let aboutUsText: string
-    switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            aboutUsText = `${t('about')} PMNCH`
-            break
-        default:
-            aboutUsText = t('about-us')
-    }
-
     // Create menu items
-    const menuItems = [
-        { id: 'about-us', title: aboutUsText, url: 'https://whiteribbonalliance.org/campaigns/what-women-want' },
+    let menuItems = [
+        { id: 'about-us', title: t('about-us'), url: 'https://whiteribbonalliance.org/campaigns/what-women-want' },
         { id: 'show-video', title: t('show-video'), url: showVideoLink },
     ]
+
+    // For PMNCH, remove about us
+    if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
+        menuItems = menuItems.filter((item) => item.id !== 'about-us')
+    }
 
     // Set mobile dropdown classes
     let mobileDropdownClasses: string
@@ -92,7 +88,7 @@ export const Header = ({ dashboard, lang, title }: IHeaderProps) => {
                             <div className="hidden xl:flex">{title}</div>
 
                             {/* Menu items */}
-                            <nav className="hidden gap-x-3 xl:flex">
+                            <nav className="hidden gap-x-3 xl:flex xl:items-center">
                                 <LanguageSelect dashboard={dashboard} lang={lang} />
                                 {menuItems.map((item) => {
                                     if (item.url) {
@@ -105,6 +101,7 @@ export const Header = ({ dashboard, lang, title }: IHeaderProps) => {
                                         return <Button dashboard={dashboard} key={item.id} text={item.title} />
                                     }
                                 })}
+                                {dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT && <PmnchLogo />}
                             </nav>
 
                             {/* Button to display mobile dropdown */}
@@ -157,6 +154,7 @@ export const Header = ({ dashboard, lang, title }: IHeaderProps) => {
                                             )
                                         }
                                     })}
+                                    {dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT && <PmnchLogo />}
                                 </ul>
                             </Disclosure.Panel>
                         </Transition>
@@ -179,4 +177,20 @@ export const Header = ({ dashboard, lang, title }: IHeaderProps) => {
 
 const HamburgerMenu = ({ open }: IHamburgerMenuProps) => {
     return <FontAwesomeIcon className={open ? 'text-4xl' : 'text-3xl'} icon={open ? faXmark : faBars} />
+}
+
+const PmnchLogo = () => {
+    return (
+        <div className="flex w-full py-2 hover:bg-white xl:w-fit xl:py-0">
+            <Link href={'https://pmnch.who.int'} className="flex w-full justify-center">
+                <Image
+                    className="max-h-[4.5rem] w-full max-w-[17rem] object-contain xl:max-h-[4rem]"
+                    src="/whatyoungpeoplewant/pmnch_logo_2.png"
+                    alt="pmnch logo"
+                    width={1117}
+                    height={200}
+                />
+            </Link>
+        </div>
+    )
 }
