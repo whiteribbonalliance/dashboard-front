@@ -346,8 +346,10 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                     {/* Normal mode */}
                                     <div className="mb-5 flex flex-col gap-y-3">
                                         {/* Select countries */}
-                                        <div data-tooltip-id="filters-panel-select-country">
-                                            <div className="mb-1">{t('select-countries')}</div>
+                                        <div>
+                                            <div className="mb-1" data-tooltip-id="filters-panel-select-country">
+                                                {t('select-countries')}
+                                            </div>
                                             <SelectCountries
                                                 id={`select-countries-${id}`}
                                                 dashboard={dashboard}
@@ -368,8 +370,13 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                         </div>
 
                                         {/* Select response topics */}
-                                        <div data-tooltip-id="filters-panel-select-response-topics">
-                                            <div className="mb-1">{selectResponseTopicsText}</div>
+                                        <div>
+                                            <div
+                                                className="mb-1"
+                                                data-tooltip-id="filters-panel-select-response-topics"
+                                            >
+                                                {selectResponseTopicsText}
+                                            </div>
                                             <SelectResponseTopics
                                                 id={`select-response-topics-${id}`}
                                                 dashboard={dashboard}
@@ -406,8 +413,11 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                         </div>
 
                                                         {/* Filter by age */}
-                                                        <div data-tooltip-id="filters-panel-select-age">
-                                                            <div className="mb-1">
+                                                        <div>
+                                                            <div
+                                                                className="mb-1"
+                                                                data-tooltip-id="filters-panel-select-age"
+                                                            >
                                                                 {t('filter-by-age-or-select-histogram')}
                                                             </div>
                                                             <SelectAges
@@ -473,13 +483,15 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                         )}
 
                                                         {/* Filter by keyword & exclude keyword */}
-                                                        <div
-                                                            className="flex gap-x-3"
-                                                            data-tooltip-id="filters-panel-input-keyword"
-                                                        >
+                                                        <div className="flex gap-x-3">
                                                             {/* Filter by keyword */}
                                                             <div className="flex basis-1/2 flex-col">
-                                                                <div className="mb-1">{t('filter-by-keyword')}</div>
+                                                                <div
+                                                                    className="mb-1"
+                                                                    data-tooltip-id="filters-panel-input-keyword"
+                                                                >
+                                                                    {t('filter-by-keyword')}
+                                                                </div>
                                                                 <InputKeyword
                                                                     id={`input-keyword-${id}`}
                                                                     register={form.register}
@@ -487,7 +499,12 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                             </div>
                                                             {/* Exclude keyword */}
                                                             <div className="flex basis-1/2 flex-col">
-                                                                <div className="mb-1">{t('exclude-keyword')}</div>
+                                                                <div
+                                                                    className="mb-1"
+                                                                    data-tooltip-id="filters-panel-input-keyword"
+                                                                >
+                                                                    {t('exclude-keyword')}
+                                                                </div>
                                                                 <InputExcludeKeyword
                                                                     id={`input-exclude-keyword-${id}`}
                                                                     register={form.register}
@@ -496,11 +513,13 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                         </div>
 
                                                         {/* Show multi-word phrases */}
-                                                        <div
-                                                            className="flex flex-col"
-                                                            data-tooltip-id="filters-panel-select-only-multi-word-phrases"
-                                                        >
-                                                            <div className="mb-1">{t('multi-word-phrases')}</div>
+                                                        <div className="flex flex-col">
+                                                            <div
+                                                                className="mb-1"
+                                                                data-tooltip-id="filters-panel-select-only-multi-word-phrases"
+                                                            >
+                                                                {t('multi-word-phrases')}
+                                                            </div>
                                                             <SelectOnlyMultiWordPhrasesContainingFilterTerm
                                                                 id={`select-only-multi-word-phrases-containing-filter-term-${id}`}
                                                                 dashboard={dashboard}
