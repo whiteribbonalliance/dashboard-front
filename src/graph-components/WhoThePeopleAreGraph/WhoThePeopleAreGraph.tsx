@@ -92,7 +92,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
             bar1Fill = 'var(--pmnchSecondary)'
-            bar2Fill = 'var(--pmnchPrimary)'
+            bar2Fill = 'var(--pmnchTertiary)'
             break
         default:
             bar1Fill = 'var(--defaultSecondary)'
