@@ -59,7 +59,7 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
                     textAnchor={x > (cx as number) ? 'start' : 'end'}
                     dominantBaseline="central"
                 >
-                    {`${((percent as number) * 100).toFixed(2)}%`}
+                    {`${((percent as number) * 100).toFixed(3)}%`}
                 </text>
             )
         }
@@ -99,7 +99,7 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
                                 cx="50%"
                                 cy="50%"
                                 outerRadius={170}
-                                minAngle={20}
+                                minAngle={5}
                             >
                                 {data.genders_breakdown.map((datum, index) => (
                                     <Cell key={`cell-${datum.name}`} fill={colors[index % colors.length]} />
