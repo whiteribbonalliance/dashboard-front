@@ -21,17 +21,16 @@ interface ICustomTooltip extends TooltipProps<number, string> {
 }
 
 const colors = [
-    'var(--pmnchPrimary)',
-    'var(--pmnchSecondary)',
+    'var(--pmnchQuaternary)',
     'var(--pmnchSecondaryFaint)',
     'var(--pmnchTertiary)',
     'var(--pmnchTertiaryFaint)',
-    'var(--pmnchQuaternary)',
-    'var(--pmnchQuaternaryFaint)',
     'var(--pmnchQuinary)',
     'var(--pmnchQuinaryFaint)',
     'var(--pmnchSenary)',
+    'var(--pmnchPrimary)',
     'var(--pmnchSeptenary)',
+    'var(--pmnchSecondary)',
 ]
 
 export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphProps) => {
@@ -45,14 +44,28 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
 
     // Custom label
     function customLabel({ cx, cy, midAngle, innerRadius, outerRadius, percent }: PieLabelRenderProps) {
-        if (cx !== undefined && innerRadius !== undefined && outerRadius !== undefined && midAngle !== undefined) {
+        if (
+            cx !== undefined &&
+            cy !== undefined &&
+            midAngle !== undefined &&
+            innerRadius !== undefined &&
+            outerRadius !== undefined &&
+            percent !== undefined
+        ) {
             const radian = Math.PI / 180
-            const radius = 120 + (innerRadius as number) + ((outerRadius as number) - (innerRadius as number)) * 0.5
+            const radius = 135 + (innerRadius as number) + ((outerRadius as number) - (innerRadius as number)) * 0.5
             const x = (cx as number) + radius * Math.cos(-midAngle * radian)
             const y = (cy as number) + radius * Math.sin(-midAngle * radian)
 
+            // Set font size
+            let fontSize = 15
+            if (percent * 100 < 10) {
+                fontSize = 10
+            }
+
             return (
                 <text
+                    fontSize={fontSize}
                     x={x}
                     y={y}
                     fill="black"
@@ -98,8 +111,8 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
                                 nameKey="name"
                                 cx="50%"
                                 cy="50%"
-                                outerRadius={170}
-                                minAngle={5}
+                                outerRadius={165}
+                                minAngle={2.1}
                             >
                                 {data.genders_breakdown.map((datum, index) => (
                                     <Cell key={`cell-${datum.name}`} fill={colors[index % colors.length]} />

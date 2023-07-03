@@ -57,7 +57,7 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
             barClasses = 'fill-pmnchColors-secondary hover:fill-pmnchColors-secondaryFaint'
             break
         default:
-            barClasses = 'fill-defaultColors-secondary hover:fill-defaultColors-secondaryFaint'
+            barClasses = 'fill-defaultColors-primary hover:fill-defaultColors-primaryFaint'
     }
 
     // Set breakdown responses topic text
@@ -175,7 +175,7 @@ const CustomTooltip = ({ active, payload, label, dashboard, lang }: ICustomToolt
                 pClasses = 'bg-pmnchColors-secondary'
                 break
             default:
-                pClasses = 'bg-defaultColors-secondary'
+                pClasses = 'bg-defaultColors-primary'
         }
 
         return (

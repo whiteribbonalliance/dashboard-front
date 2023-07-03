@@ -182,7 +182,7 @@ const HamburgerMenu = ({ open }: IHamburgerMenuProps) => {
 const PmnchLogo = () => {
     return (
         <div className="flex w-full py-2 hover:bg-white xl:w-fit xl:py-0">
-            <Link href={'https://pmnch.who.int'} className="flex w-full justify-center">
+            <Link href={'https://pmnch.who.int'} target="_blank" className="flex w-full justify-center">
                 <Image
                     className="max-h-[4.5rem] w-full max-w-[17rem] object-contain xl:max-h-[4rem]"
                     src="/whatyoungpeoplewant/pmnch_logo_2.png"

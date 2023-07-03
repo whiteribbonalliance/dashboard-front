@@ -95,7 +95,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
             bar2Fill = 'var(--pmnchTertiary)'
             break
         default:
-            bar1Fill = 'var(--defaultSecondary)'
+            bar1Fill = 'var(--defaultPrimary)'
             bar2Fill = 'var(--defaultTertiary)'
     }
 
@@ -108,7 +108,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
             bar2Classes = 'fill-pmnchColors-tertiary hover:fill-pmnchColors-tertiaryFaint'
             break
         default:
-            bar1Classes = 'fill-defaultColors-secondary hover:fill-defaultColors-secondaryFaint'
+            bar1Classes = 'fill-defaultColors-primary hover:fill-defaultColors-primaryFaint'
             bar2Classes = 'fill-defaultColors-tertiary hover:fill-defaultColors-tertiaryFaint'
     }
 

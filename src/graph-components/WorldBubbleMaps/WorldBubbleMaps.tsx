@@ -235,12 +235,12 @@ const WorldBubbleMap = ({
     let bubbleColor2: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            bubbleColor1 = 'var(--pmnchTertiary)'
-            bubbleColor2 = 'var(--pmnchPrimary)'
+            bubbleColor1 = 'var(--pmnchSecondary)'
+            bubbleColor2 = 'var(--pmnchTertiary)'
             break
         default:
-            bubbleColor1 = 'var(--defaultTertiary)'
-            bubbleColor2 = 'var(--defaultQuaternary)'
+            bubbleColor1 = 'var(--defaultPrimary)'
+            bubbleColor2 = 'var(--defaultTertiary)'
     }
 
     // Color for bubble in map

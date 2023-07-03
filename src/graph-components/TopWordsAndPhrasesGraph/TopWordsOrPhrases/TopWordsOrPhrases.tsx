@@ -22,7 +22,6 @@ import { Dashboard } from '@types'
 interface ITopWordsOrPhrasesProps {
     dashboard: Dashboard
     lang: string
-    id: 'top-words' | 'two-word-phrases' | 'three-word-phrases'
     words: ITopWords[]
     filter1Description: string
     filter2Description: string
@@ -31,17 +30,13 @@ interface ITopWordsOrPhrasesProps {
 }
 
 interface ICustomTooltip extends TooltipProps<number, string> {
-    dashboard: Dashboard
     hoveredBarDataKey: MutableRefObject<string>
-    pmnchParagraphClasses: string
-    defaultParagraphClasses: string
     lang: string
 }
 
 export const TopWordsOrPhrases = ({
     dashboard,
     lang,
-    id,
     words,
     filter1Description,
     filter2Description,
@@ -53,58 +48,17 @@ export const TopWordsOrPhrases = ({
     const form2 = useFilterFormsStore((state: IFilterFormsState) => state.form2)
     const { t } = useTranslation(lang)
 
-    // Set bars classes, bars fill, and custom tooltip paragraph classes (each id has a different color)
-    let pmnchBar1Classes: string
-    let defaultBar1Classes: string
-    let pmnchBar1Fill: string
-    let defaultBar1Fill: string
-    let pmnchCustomTooltipParagraphClasses: string
-    let defaultCustomTooltipParagraphClasses: string
-    switch (id) {
-        case 'top-words':
-            pmnchBar1Classes = 'fill-pmnchColors-secondary hover:fill-pmnchColors-secondaryFaint'
-            defaultBar1Classes = 'fill-defaultColors-secondary hover:fill-defaultColors-secondaryFaint'
-            pmnchBar1Fill = 'var(--pmnchSecondary)'
-            defaultBar1Fill = 'var(--defaultSecondary)'
-            pmnchCustomTooltipParagraphClasses = 'bg-pmnchColors-secondary'
-            defaultCustomTooltipParagraphClasses = 'bg-defaultColors-secondary'
-            break
-        case 'two-word-phrases':
-            pmnchBar1Classes = 'fill-pmnchColors-tertiary hover:fill-pmnchColors-tertiaryFaint'
-            defaultBar1Classes = 'fill-defaultColors-tertiary hover:fill-defaultColors-tertiaryFaint'
-            pmnchBar1Fill = 'var(--pmnchTertiary)'
-            defaultBar1Fill = 'var(--defaultTertiary)'
-            pmnchCustomTooltipParagraphClasses = 'bg-pmnchColors-tertiary'
-            defaultCustomTooltipParagraphClasses = 'bg-defaultColors-tertiary'
-            break
-        case 'three-word-phrases':
-            pmnchBar1Classes = 'fill-pmnchColors-primary hover:fill-pmnchColors-primaryFaint'
-            defaultBar1Classes = 'fill-defaultColors-primary hover:fill-defaultColors-primaryFaint'
-            pmnchBar1Fill = 'var(--pmnchPrimary)'
-            defaultBar1Fill = 'var(--defaultPrimary)'
-            pmnchCustomTooltipParagraphClasses = 'bg-pmnchColors-primary'
-            defaultCustomTooltipParagraphClasses = 'bg-defaultColors-primary'
-            break
-        default:
-            pmnchBar1Classes = 'fill-pmnchColors-primary hover:fill-pmnchColors-primaryFaint'
-            defaultBar1Classes = 'fill-defaultColors-primary hover:fill-defaultColors-primaryFaint'
-            pmnchBar1Fill = 'var(--pmnchPrimary)'
-            defaultBar1Fill = 'var(--defaultPrimary)'
-            pmnchCustomTooltipParagraphClasses = 'bg-pmnchColors-primary'
-            defaultCustomTooltipParagraphClasses = 'bg-defaultColors-primary'
-    }
-
     // Set bars fill
     let bar1Fill: string
     let bar2Fill: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            bar1Fill = `${pmnchBar1Fill}`
-            bar2Fill = 'var(--grayLight)'
+            bar1Fill = 'var(--pmnchSecondary)'
+            bar2Fill = 'var(--pmnchTertiary)'
             break
         default:
-            bar1Fill = `${defaultBar1Fill}`
-            bar2Fill = 'var(--grayLight)'
+            bar1Fill = 'var(--defaultPrimary)'
+            bar2Fill = 'var(--defaultTertiary)'
     }
 
     // Set bars classes
@@ -112,12 +66,12 @@ export const TopWordsOrPhrases = ({
     let bar2Classes: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            bar1Classes = `${pmnchBar1Classes}`
-            bar2Classes = 'fill-grayLight hover:fill-grayLighter'
+            bar1Classes = 'fill-pmnchColors-secondary hover:fill-pmnchColors-secondaryFaint'
+            bar2Classes = 'fill-pmnchColors-tertiary hover:fill-pmnchColors-tertiaryFaint'
             break
         default:
-            bar1Classes = `${defaultBar1Classes}`
-            bar2Classes = 'fill-grayLight hover:fill-grayLighter'
+            bar1Classes = 'fill-defaultColors-primary hover:fill-defaultColors-primaryFaint'
+            bar2Classes = 'fill-defaultColors-tertiary hover:fill-defaultColors-tertiaryFaint'
     }
 
     // Legend formatter
@@ -189,15 +143,7 @@ export const TopWordsOrPhrases = ({
                         <CartesianGrid strokeDasharray="0" stroke="#FFFFFF" />
                         <Tooltip
                             cursor={{ fill: 'transparent' }}
-                            content={
-                                <CustomTooltip
-                                    dashboard={dashboard}
-                                    hoveredBarDataKey={hoveredBarDataKey}
-                                    pmnchParagraphClasses={pmnchCustomTooltipParagraphClasses}
-                                    defaultParagraphClasses={defaultCustomTooltipParagraphClasses}
-                                    lang={lang}
-                                />
-                            }
+                            content={<CustomTooltip hoveredBarDataKey={hoveredBarDataKey} lang={lang} />}
                             position={{ x: 25 }}
                         />
                         <Bar
@@ -227,35 +173,21 @@ export const TopWordsOrPhrases = ({
     )
 }
 
-const CustomTooltip = ({
-    active,
-    payload,
-    label,
-    dashboard,
-    hoveredBarDataKey,
-    pmnchParagraphClasses,
-    defaultParagraphClasses,
-    lang,
-}: ICustomTooltip) => {
+const CustomTooltip = ({ active, payload, label, hoveredBarDataKey, lang }: ICustomTooltip) => {
     const { t } = useTranslation(lang)
-
-    // Set p classes
-    let pClasses: string
-    switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            pClasses = pmnchParagraphClasses
-            break
-        default:
-            pClasses = defaultParagraphClasses
-    }
 
     if (active && payload && payload.length) {
         const data = payload.find((data) => data.dataKey === hoveredBarDataKey.current)
         if (data) {
             const value = data.value as number
+            const color = data.color
 
             return (
-                <p className={classNames(`border border-white p-1 text-sm text-white`, pClasses)}>
+                <p
+                    key={color}
+                    className={classNames('border border-white p-1 text-sm text-white')}
+                    style={{ backgroundColor: color }}
+                >
                     <span className="font-bold">{toThousandsSep(value, lang)}</span> {t('people-have-mentioned')}{' '}
                     <span className="font-bold">“{label}”</span>.
                 </p>
