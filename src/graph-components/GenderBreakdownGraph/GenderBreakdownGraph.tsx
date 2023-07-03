@@ -22,9 +22,9 @@ interface ICustomTooltip extends TooltipProps<number, string> {
 
 const colors = [
     'var(--pmnchQuaternary)',
-    'var(--pmnchSecondaryFaint)',
+    //'var(--pmnchSecondaryFaint)',
     'var(--pmnchTertiary)',
-    'var(--pmnchTertiaryFaint)',
+    // 'var(--pmnchTertiaryFaint)',
     'var(--pmnchQuinary)',
     'var(--pmnchQuinaryFaint)',
     'var(--pmnchSenary)',
