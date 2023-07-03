@@ -10,6 +10,7 @@ import { Cell, Legend, Pie, PieChart, PieLabelRenderProps, ResponsiveContainer, 
 import { classNames, toThousandsSep } from '@utils'
 import { useTranslation } from '@app/i18n/client'
 import { Dashboard } from '@types'
+import _ from 'lodash'
 
 interface IGenderBreakdownGraphProps {
     dashboard: Dashboard
@@ -20,7 +21,7 @@ interface ICustomTooltip extends TooltipProps<number, string> {
     lang: string
 }
 
-const colors = [
+const colors = _.shuffle([
     'var(--pmnchQuaternary)',
     //'var(--pmnchSecondaryFaint)',
     'var(--pmnchTertiary)',
@@ -31,7 +32,7 @@ const colors = [
     'var(--pmnchPrimary)',
     'var(--pmnchSeptenary)',
     'var(--pmnchSecondary)',
-]
+])
 
 export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphProps) => {
     const { data, isError } = useCampaignQuery(dashboard, lang)
