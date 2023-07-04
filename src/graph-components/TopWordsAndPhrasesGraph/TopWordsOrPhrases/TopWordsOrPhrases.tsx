@@ -113,7 +113,7 @@ export const TopWordsOrPhrases = ({
         <div className="mt-3 w-full">
             <p className="mb-3 w-full">Click on a bar to view responses containing a word or phrase.</p>
             <div className="h-[43rem] w-full">
-                <ResponsiveContainer className="bg-white">
+                <ResponsiveContainer height={675} className="bg-white">
                     <BarChart
                         data={words}
                         margin={{ top: 15, right: 35, left: 0, bottom: 15 }}
