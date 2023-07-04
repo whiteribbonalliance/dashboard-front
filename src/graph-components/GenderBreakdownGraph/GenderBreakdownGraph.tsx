@@ -54,14 +54,14 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
             percent !== undefined
         ) {
             const radian = Math.PI / 180
-            const radius = 135 + (innerRadius as number) + ((outerRadius as number) - (innerRadius as number)) * 0.5
+            const radius = 175 + (innerRadius as number) + ((outerRadius as number) - (innerRadius as number)) * 0.5
             const x = (cx as number) + radius * Math.cos(-midAngle * radian)
             const y = (cy as number) + radius * Math.sin(-midAngle * radian)
 
             // Set font size
             let fontSize = 15
             if (percent * 100 < 10) {
-                fontSize = 10
+                fontSize = 12
             }
 
             return (
@@ -97,8 +97,8 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
             {/* Graph */}
             {displayGraph && (
                 <div className="mb-3 mt-3 w-full">
-                    <ResponsiveContainer height={550} className="bg-white">
-                        <PieChart width={730} height={300} margin={{ top: 15, right: 10, left: 10, bottom: 15 }}>
+                    <ResponsiveContainer height={650} className="bg-white">
+                        <PieChart width={730} height={650} margin={{ top: 15, right: 10, left: 10, bottom: 15 }}>
                             <Legend
                                 verticalAlign="top"
                                 wrapperStyle={{ paddingBottom: '1rem' }}
@@ -112,8 +112,8 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
                                 nameKey="name"
                                 cx="50%"
                                 cy="50%"
-                                outerRadius={165}
-                                minAngle={2.1}
+                                outerRadius={220}
+                                minAngle={1.8}
                             >
                                 {data.genders_breakdown.map((datum, index) => (
                                     <Cell key={`cell-${datum.name}`} fill={colors[index % colors.length]} />
