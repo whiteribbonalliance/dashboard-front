@@ -9,7 +9,7 @@ import Image from 'next/image'
 import { getCampaignFilterOptions } from '@services/wra-dashboard-api'
 import { Dashboard, Option } from '@types'
 import { ICountryRegionOption, IFilterOptions } from '@interfaces'
-import { Control, Controller, useForm, UseFormRegister, UseFormReturn } from 'react-hook-form'
+import { Control, Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { SelectMultiValues } from '@components/SelectMultiValues'
 import { SelectSingleValue } from '@components/SelectSingleValue'
 import { Chevron } from '@components/Chevron'
@@ -40,7 +40,7 @@ interface ISelectProps extends IFieldProps {
 }
 
 interface IInputProps extends IFieldProps {
-    register: UseFormRegister<Filter>
+    control: Control<Filter>
 }
 
 interface ITab {
@@ -172,7 +172,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         (
             selectedCountries: string[],
             setRegionOptionsFilter: Dispatch<SetStateAction<Option<string>[]>>,
-            form: UseFormReturn<Filter, any>
+            form: UseFormReturn<Filter>
         ) => {
             // Only display regions for 1 selected country
             if (selectedCountries.length !== 1) {
@@ -502,7 +502,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                 </div>
                                                                 <InputKeyword
                                                                     id={`input-keyword-${id}`}
-                                                                    register={form.register}
+                                                                    control={form.control}
                                                                 />
                                                             </div>
                                                             {/* Exclude keyword */}
@@ -515,7 +515,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                 </div>
                                                                 <InputExcludeKeyword
                                                                     id={`input-exclude-keyword-${id}`}
-                                                                    register={form.register}
+                                                                    control={form.control}
                                                                 />
                                                             </div>
                                                         </div>
@@ -573,26 +573,52 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     )
 }
 
-const InputKeyword = ({ id, register }: IInputProps) => {
+const InputKeyword = ({ id, control }: IInputProps) => {
+    const refetchCampaign = useRefetchCampaignStore((state: IRefetchCampaignState) => state.refetchCampaign)
+
     return (
-        <input
-            id={id}
-            type="text"
-            className="w-0 min-w-full rounded-md border border-[#CCC] p-1.5"
-            placeholder="Enter keyword..."
-            {...register('keyword_filter')}
+        <Controller
+            name="keyword_filter"
+            control={control}
+            render={({ field }) => (
+                <input
+                    id={id}
+                    className="w-0 min-w-full rounded-md border border-[#CCC] p-1.5"
+                    type="text"
+                    placeholder="Enter keyword..."
+                    onChange={(e) => {
+                        field.onChange(e)
+                        if (refetchCampaign) {
+                            refetchCampaign()
+                        }
+                    }}
+                />
+            )}
         />
     )
 }
 
-const InputExcludeKeyword = ({ id, register }: IInputProps) => {
+const InputExcludeKeyword = ({ id, control }: IInputProps) => {
+    const refetchCampaign = useRefetchCampaignStore((state: IRefetchCampaignState) => state.refetchCampaign)
+
     return (
-        <input
-            id={id}
-            type="text"
-            className="w-0 min-w-full rounded-md border border-[#CCC] p-1.5"
-            placeholder="Enter keyword..."
-            {...register('keyword_exclude')}
+        <Controller
+            name="keyword_exclude"
+            control={control}
+            render={({ field }) => (
+                <input
+                    id={id}
+                    className="w-0 min-w-full rounded-md border border-[#CCC] p-1.5"
+                    type="text"
+                    placeholder="Enter keyword..."
+                    onChange={(e) => {
+                        field.onChange(e)
+                        if (refetchCampaign) {
+                            refetchCampaign()
+                        }
+                    }}
+                />
+            )}
         />
     )
 }
