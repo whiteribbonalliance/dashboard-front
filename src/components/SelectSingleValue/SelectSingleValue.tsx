@@ -1,18 +1,22 @@
 import Select from 'react-select'
 import React from 'react'
 import { Option } from '@types'
-import { IRefetchCampaignState, useRefetchCampaignStore } from '@stores/refetch-campaign'
 
 interface ISelectSingleValueProps {
     id: string
     options: Option<string | boolean>[]
     value: string | boolean
     controllerRenderOnChange: (...event: any[]) => void
+    onChangeEffect?: () => void // A function to run when the value of this select changes
 }
 
-export const SelectSingleValue = ({ id, options, value, controllerRenderOnChange }: ISelectSingleValueProps) => {
-    const refetchCampaign = useRefetchCampaignStore((state: IRefetchCampaignState) => state.refetchCampaign)
-
+export const SelectSingleValue = ({
+    id,
+    options,
+    value,
+    controllerRenderOnChange,
+    onChangeEffect,
+}: ISelectSingleValueProps) => {
     return (
         <Select
             instanceId={id}
@@ -23,9 +27,8 @@ export const SelectSingleValue = ({ id, options, value, controllerRenderOnChange
                     controllerRenderOnChange(SingleValueOption.value)
                 }
 
-                // Refetch campaign
-                if (refetchCampaign) {
-                    refetchCampaign()
+                if (onChangeEffect) {
+                    onChangeEffect()
                 }
             }}
         />
