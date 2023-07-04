@@ -43,6 +43,12 @@ interface IInputProps extends IFieldProps {
     register: UseFormRegister<Filter>
 }
 
+interface ITab {
+    id: 'tab-1' | 'tab-2'
+    title: string
+    form: UseFormReturn<Filter>
+}
+
 export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const setFilters = useFiltersStore((state: IFiltersState) => state.setFilters)
     const setForm1 = useFilterFormsStore((state: IFilterFormsState) => state.setForm1)
@@ -107,9 +113,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     useEffect(() => setForm2(form2), [setForm2, form2])
 
     // Tabs
-    const tabs = [
-        { id: '1', title: t('drill-down'), form: form1 },
-        { id: '2', title: `${t('compare-to')}...`, form: form2 },
+    const tabs: ITab[] = [
+        { id: 'tab-1', title: t('drill-down'), form: form1 },
+        { id: 'tab-2', title: `${t('compare-to')}...`, form: form2 },
     ]
 
     // Set selected tab classes
@@ -364,7 +370,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                             <SelectRegions
                                                 id={`select-regions-${id}`}
                                                 dashboard={dashboard}
-                                                options={id === '1' ? regionOptionsFilter1 : regionOptionsFilter2}
+                                                options={id === 'tab-1' ? regionOptionsFilter1 : regionOptionsFilter2}
                                                 control={form.control}
                                             />
                                         </div>
@@ -515,22 +521,24 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                         </div>
 
                                                         {/* Show multi-word phrases */}
-                                                        <div className="flex flex-col">
-                                                            <div
-                                                                className="mb-1 w-fit"
-                                                                data-tooltip-id="filters-panel-select-only-multi-word-phrases"
-                                                            >
-                                                                {t('multi-word-phrases')}
+                                                        {id == 'tab-1' && (
+                                                            <div className="flex flex-col">
+                                                                <div
+                                                                    className="mb-1 w-fit"
+                                                                    data-tooltip-id="filters-panel-select-only-multi-word-phrases"
+                                                                >
+                                                                    {t('multi-word-phrases')}
+                                                                </div>
+                                                                <SelectOnlyMultiWordPhrasesContainingFilterTerm
+                                                                    id={`select-only-multi-word-phrases-containing-filter-term-${id}`}
+                                                                    dashboard={dashboard}
+                                                                    options={
+                                                                        onlyMultiWordPhrasesContainingFilterTermOptions
+                                                                    }
+                                                                    control={form.control}
+                                                                />
                                                             </div>
-                                                            <SelectOnlyMultiWordPhrasesContainingFilterTerm
-                                                                id={`select-only-multi-word-phrases-containing-filter-term-${id}`}
-                                                                dashboard={dashboard}
-                                                                options={
-                                                                    onlyMultiWordPhrasesContainingFilterTermOptions
-                                                                }
-                                                                control={form.control}
-                                                            />
-                                                        </div>
+                                                        )}
                                                     </Disclosure.Panel>
                                                 </Transition>
                                             </>
