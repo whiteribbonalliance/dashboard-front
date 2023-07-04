@@ -113,7 +113,7 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
     }, [dashboard, form1, wordcloudWords, hideTooltip, showTooltip, containerBounds])
 
     return (
-        <div className="h-[40rem]">
+        <div className="mb-3 h-[40rem]">
             {/* Wordcloud */}
             {cachedWordcloud}
 

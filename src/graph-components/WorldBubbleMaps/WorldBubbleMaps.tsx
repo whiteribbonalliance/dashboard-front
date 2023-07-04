@@ -162,7 +162,7 @@ export const WorldBubbleMaps = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
 
                 {/* World bubble maps */}
                 {displayWorldBubbleMaps && (
-                    <div className="mt-3 w-full">
+                    <div className="mb-3 mt-3 w-full">
                         <Tab.Group>
                             <Tab.List className="flex flex-col sm:flex-row">
                                 {tabs.map((tab) => (
