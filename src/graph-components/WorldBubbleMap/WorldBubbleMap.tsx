@@ -134,7 +134,9 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
                 <div data-tooltip-id="respondents-located">
                     <GraphTitle dashboard={dashboard} text={respondentsLocatedText} />
                 </div>
-                <p>{t('click-bubble-country-information')}</p>
+                <p>
+                    {t('click-bubble-country-information')} {t('each-bubble-sized-number-people')}
+                </p>
 
                 {/* Error */}
                 {!data && isError && <GraphError dashboard={dashboard} />}
@@ -146,7 +148,7 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
                 {displayWorldBubbleMaps && (
                     <div className="mb-3 mt-3 w-full bg-white">
                         {/* Toggles to show/hide bubbles */}
-                        <div className="flex flex-col gap-y-1 p-2">
+                        <div className="flex flex-col gap-y-1 px-3 py-3">
                             <div
                                 className={classNames('flex cursor-pointer', showBubbles1 ? '' : 'opacity-60')}
                                 onClick={() => setShowBubbles1((prev) => !prev)}
@@ -154,17 +156,20 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
                                 <div className="mr-3 flex items-center justify-center">
                                     <FontAwesomeIcon icon={faCircle} style={{ color: bubbleColor1 }} />
                                 </div>
-                                <p>{t('each-bubble-sized-number-people')}</p>
+                                <p>{data.filter_1_description}</p>
                             </div>
-                            <div
-                                className={classNames('flex cursor-pointer', showBubbles2 ? '' : 'opacity-60')}
-                                onClick={() => setShowBubbles2((prev) => !prev)}
-                            >
-                                <div className="mr-3 flex items-center justify-center">
-                                    <FontAwesomeIcon icon={faCircle} style={{ color: bubbleColor2 }} />
+
+                            {!data.filters_are_identical && (
+                                <div
+                                    className={classNames('flex cursor-pointer', showBubbles2 ? '' : 'opacity-60')}
+                                    onClick={() => setShowBubbles2((prev) => !prev)}
+                                >
+                                    <div className="mr-3 flex items-center justify-center">
+                                        <FontAwesomeIcon icon={faCircle} style={{ color: bubbleColor2 }} />
+                                    </div>
+                                    <p>{data.filter_2_description}</p>
                                 </div>
-                                <p>{t('each-bubble-sized-number-people')}</p>
-                            </div>
+                            )}
                         </div>
 
                         {/* Map */}
