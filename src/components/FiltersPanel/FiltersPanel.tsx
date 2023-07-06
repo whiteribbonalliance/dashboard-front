@@ -599,7 +599,7 @@ const InputKeyword = ({ id, control, refetchCampaign }: IInputProps) => {
                     id={id}
                     placeHolder={'Enter keyword...'}
                     controllerRenderOnChange={onChange}
-                    onChangeEffect={refetchCampaign}
+                    onChange={refetchCampaign}
                 />
             )}
         />
@@ -616,7 +616,7 @@ const InputExcludeKeyword = ({ id, control, refetchCampaign }: IInputProps) => {
                     id={id}
                     placeHolder={'Enter keyword...'}
                     controllerRenderOnChange={onChange}
-                    onChangeEffect={refetchCampaign}
+                    onChange={refetchCampaign}
                 />
             )}
         />
@@ -634,7 +634,7 @@ const SelectOnlyMultiWordPhrasesContainingFilterTerm = ({ id, options, control, 
                     options={options}
                     value={value}
                     controllerRenderOnChange={onChange}
-                    onChangeEffect={refetchCampaign}
+                    onChange={refetchCampaign}
                 />
             )}
         />
@@ -652,7 +652,7 @@ const SelectProfessions = ({ id, options, control, refetchCampaign }: ISelectPro
                     options={options}
                     controllerRenderOnChange={onChange}
                     value={value}
-                    onChangeEffect={refetchCampaign}
+                    onChange={refetchCampaign}
                 />
             )}
         />
@@ -670,7 +670,7 @@ const SelectGenders = ({ id, options, control, refetchCampaign }: ISelectProps) 
                     options={options}
                     controllerRenderOnChange={onChange}
                     value={value}
-                    onChangeEffect={refetchCampaign}
+                    onChange={refetchCampaign}
                 />
             )}
         />
@@ -688,7 +688,7 @@ const SelectOnlyResponsesFromCategories = ({ id, options, control, refetchCampai
                     options={options}
                     value={value}
                     controllerRenderOnChange={onChange}
-                    onChangeEffect={refetchCampaign}
+                    onChange={refetchCampaign}
                 />
             )}
         />
@@ -706,7 +706,7 @@ const SelectResponseTopics = ({ id, options, control, refetchCampaign }: ISelect
                     options={options}
                     controllerRenderOnChange={onChange}
                     value={value}
-                    onChangeEffect={refetchCampaign}
+                    onChange={refetchCampaign}
                 />
             )}
         />
@@ -724,7 +724,7 @@ const SelectRegions = ({ id, options, control, refetchCampaign }: ISelectProps) 
                     options={options}
                     controllerRenderOnChange={onChange}
                     value={value}
-                    onChangeEffect={refetchCampaign}
+                    onChange={refetchCampaign}
                 />
             )}
         />
@@ -749,7 +749,7 @@ const SelectCountries = ({ id, dashboard, options, control, refetchCampaign }: I
                     options={options}
                     controllerRenderOnChange={onChange}
                     value={value}
-                    onChangeEffect={refetchCampaign}
+                    onChange={refetchCampaign}
                 />
             )}
         />
@@ -767,7 +767,7 @@ const SelectAges = ({ id, options, control, refetchCampaign }: ISelectProps) => 
                     options={options}
                     controllerRenderOnChange={onChange}
                     value={value}
-                    onChangeEffect={refetchCampaign}
+                    onChange={refetchCampaign}
                 />
             )}
         />

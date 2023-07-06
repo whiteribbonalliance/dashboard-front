@@ -8,7 +8,7 @@ import { WhoThePeopleAreGraph } from 'graph-components/WhoThePeopleAreGraph'
 import { DashboardName } from '@enums'
 import { classNames } from '@utils'
 import { ResponsesBreakdownGraph } from '@graph-components/ResponsesBreakdownGraph'
-import { WorldBubbleMaps } from '@graph-components/WorldBubbleMaps'
+import { WorldBubbleMap } from 'graph-components/WorldBubbleMap'
 import { ResponsesSampleTable } from '@graph-components/ResponsesSampleTable'
 import { TopWordsAndPhrasesGraph } from '@graph-components/TopWordsAndPhrasesGraph'
 import { GenderBreakdownGraph } from '@graph-components/GenderBreakdownGraph'
@@ -62,7 +62,7 @@ export const Dashboard = ({ params }: IDashboardProps) => {
                     {DashboardName.WHAT_YOUNG_PEOPLE_WANT === dashboard ? (
                         <>
                             <ResponsesBreakdownGraph dashboard={dashboard} lang={lang} />
-                            <WorldBubbleMaps dashboard={dashboard} lang={lang} />
+                            <WorldBubbleMap dashboard={dashboard} lang={lang} />
                             <WhoThePeopleAreGraph dashboard={dashboard} lang={lang} />
                             <GenderBreakdownGraph dashboard={dashboard} lang={lang} />
                             <TopWordsAndPhrasesGraph dashboard={dashboard} lang={lang} />
@@ -72,7 +72,7 @@ export const Dashboard = ({ params }: IDashboardProps) => {
                         <>
                             <TopWordsAndPhrasesGraph dashboard={dashboard} lang={lang} />
                             <ResponsesSampleTable dashboard={dashboard} lang={lang} />
-                            <WorldBubbleMaps dashboard={dashboard} lang={lang} />
+                            <WorldBubbleMap dashboard={dashboard} lang={lang} />
                             <ResponsesBreakdownGraph dashboard={dashboard} lang={lang} />
                             <WhoThePeopleAreGraph dashboard={dashboard} lang={lang} />
                         </>

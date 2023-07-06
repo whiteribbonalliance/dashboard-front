@@ -4,10 +4,10 @@ interface IInputProps {
     id: string
     placeHolder: string
     controllerRenderOnChange: (...event: any[]) => void
-    onChangeEffect?: () => void // A function to run when the value of this input changes
+    onChange?: () => void // A function to run when the value of this input changes
 }
 
-export const Input = ({ id, placeHolder, controllerRenderOnChange, onChangeEffect }: IInputProps) => {
+export const Input = ({ id, placeHolder, controllerRenderOnChange, onChange }: IInputProps) => {
     return (
         <input
             id={id}
@@ -17,8 +17,8 @@ export const Input = ({ id, placeHolder, controllerRenderOnChange, onChangeEffec
             onChange={(value) => {
                 controllerRenderOnChange(value)
 
-                if (onChangeEffect) {
-                    onChangeEffect()
+                if (onChange) {
+                    onChange()
                 }
             }}
         />

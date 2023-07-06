@@ -8,7 +8,7 @@ interface ISelectMultiValuesProps {
     options: (Option<string> | Option<boolean>)[]
     value: string[]
     controllerRenderOnChange: (...event: any[]) => void
-    onChangeEffect?: () => void // A function to run when the value of this select changes
+    onChange?: () => void // A function to run when the value of this select changes
 }
 
 export const SelectMultiValues = ({
@@ -17,7 +17,7 @@ export const SelectMultiValues = ({
     options,
     value,
     controllerRenderOnChange,
-    onChangeEffect,
+    onChange,
 }: ISelectMultiValuesProps) => {
     return (
         <Select
@@ -38,8 +38,8 @@ export const SelectMultiValues = ({
                     )
                 }
 
-                if (onChangeEffect) {
-                    onChangeEffect()
+                if (onChange) {
+                    onChange()
                 }
             }}
         />

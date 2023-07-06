@@ -7,7 +7,7 @@ interface ISelectSingleValueProps {
     options: Option<string | boolean>[]
     value: string | boolean
     controllerRenderOnChange: (...event: any[]) => void
-    onChangeEffect?: () => void // A function to run when the value of this select changes
+    onChange?: () => void // A function to run when the value of this select changes
 }
 
 export const SelectSingleValue = ({
@@ -15,7 +15,7 @@ export const SelectSingleValue = ({
     options,
     value,
     controllerRenderOnChange,
-    onChangeEffect,
+    onChange,
 }: ISelectSingleValueProps) => {
     return (
         <Select
@@ -27,8 +27,8 @@ export const SelectSingleValue = ({
                     controllerRenderOnChange(SingleValueOption.value)
                 }
 
-                if (onChangeEffect) {
-                    onChangeEffect()
+                if (onChange) {
+                    onChange()
                 }
             }}
         />
