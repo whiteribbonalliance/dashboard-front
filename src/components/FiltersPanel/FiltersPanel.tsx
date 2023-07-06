@@ -594,11 +594,12 @@ const InputKeyword = ({ id, control, refetchCampaign }: IInputProps) => {
         <Controller
             name="keyword_filter"
             control={control}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
                 <Input
                     id={id}
                     placeHolder={'Enter keyword...'}
                     controllerRenderOnChange={onChange}
+                    value={value}
                     onChange={refetchCampaign}
                 />
             )}
@@ -611,11 +612,12 @@ const InputExcludeKeyword = ({ id, control, refetchCampaign }: IInputProps) => {
         <Controller
             name="keyword_exclude"
             control={control}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
                 <Input
                     id={id}
                     placeHolder={'Enter keyword...'}
                     controllerRenderOnChange={onChange}
+                    value={value}
                     onChange={refetchCampaign}
                 />
             )}

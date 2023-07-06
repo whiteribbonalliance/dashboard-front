@@ -23,6 +23,7 @@ import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
 import { Dashboard } from '@types'
 import React from 'react'
 import { Tooltip } from '@components/Tooltip'
+import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 
 interface IResponsesBreakdownGraphProps {
     dashboard: Dashboard
@@ -37,6 +38,7 @@ interface ICustomTooltip extends TooltipProps<ValueType, NameType> {
 export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdownGraphProps) => {
     const { data, isError } = useCampaignQuery(dashboard, lang)
     const form1 = useFilterFormsStore((state: IFilterFormsState) => state.form1)
+    const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
 
@@ -82,6 +84,9 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
     function setResponseTopic(payload: any) {
         if (form1) {
             form1.setValue('response_topics', [payload.code])
+            if (refetchCampaign) {
+                refetchCampaign()
+            }
         }
     }
 
