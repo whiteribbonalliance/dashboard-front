@@ -308,7 +308,6 @@ const D3Map = ({
                 .attr('fill', '#b8b8b8')
                 .attr('d', d3.geoPath().projection(projection) as any)
                 .style('stroke', 'none')
-                .style('opacity', 0.3)
 
             // Tooltip
             const tooltip = d3
@@ -396,6 +395,7 @@ const D3Map = ({
         projectionScale,
         viewBox,
         form,
+        refetchCampaign,
         bubbleColor1,
         bubbleColor2,
     ])
