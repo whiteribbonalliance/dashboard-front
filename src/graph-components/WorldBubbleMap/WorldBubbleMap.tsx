@@ -12,13 +12,14 @@ import { IWorldBubbleMapsCoordinate } from '@interfaces'
 import { classNames, getDashboardConfig, toThousandsSep } from '@utils'
 import { useQuery } from 'react-query'
 import { useTranslation } from '@app/i18n/client'
-import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
+import { useFilterFormsStore } from '@stores/filter-forms'
 import { UseFormReturn } from 'react-hook-form'
 import { Filter } from '@schemas/filter'
 import { Dashboard } from '@types'
 import { Tooltip } from '@components/Tooltip'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle } from '@fortawesome/free-solid-svg-icons'
+import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 
 interface IWorldBubbleMapsProps {
     dashboard: Dashboard
@@ -32,6 +33,7 @@ interface IWorldBubbleMapsCoordinateWithColor extends IWorldBubbleMapsCoordinate
 interface IWorldBubbleMapProps {
     dashboard: Dashboard
     form: UseFormReturn<Filter>
+    refetchCampaign: () => void
     respondents: string
     dataGeo: IDataGeo
     worldBubbleMapsCoordinates1?: IWorldBubbleMapsCoordinate[]
@@ -65,7 +67,8 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
 
     const { t } = useTranslation(lang)
 
-    const form1 = useFilterFormsStore((state: IFilterFormsState) => state.form1)
+    const form1 = useFilterFormsStore((state) => state.form1)
+    const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
 
     const config = getDashboardConfig(dashboard)
 
@@ -114,7 +117,7 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
     }
 
     // Display world bubble maps or not
-    const displayWorldBubbleMaps = !!data && !!dataGeoQuery.data && !!form1
+    const displayWorldBubbleMaps = !!data && !!dataGeoQuery.data && !!form1 && !!refetchCampaign
 
     return (
         <div>
@@ -176,6 +179,7 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
                         <D3Map
                             dashboard={dashboard}
                             form={form1}
+                            refetchCampaign={refetchCampaign}
                             respondents={respondents}
                             dataGeo={dataGeoQuery.data as IDataGeo}
                             worldBubbleMapsCoordinates1={
@@ -200,6 +204,7 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
 const D3Map = ({
     dashboard,
     form,
+    refetchCampaign,
     respondents,
     dataGeo,
     worldBubbleMapsCoordinates1,
@@ -348,6 +353,8 @@ const D3Map = ({
                     default:
                         form.setValue('countries', [d.location_code])
                 }
+
+                refetchCampaign()
             }
 
             // Add circles
