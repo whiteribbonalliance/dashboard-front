@@ -20,6 +20,8 @@ import { Tooltip } from '@components/Tooltip'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle } from '@fortawesome/free-solid-svg-icons'
 import { useRefetchCampaignStore } from '@stores/refetch-campaign'
+import { feature } from 'topojson-client'
+import { Topology } from 'topojson-specification'
 
 interface IWorldBubbleMapsProps {
     dashboard: Dashboard
@@ -30,12 +32,13 @@ interface IWorldBubbleMapsCoordinateWithColor extends IWorldBubbleMapsCoordinate
     color: string
 }
 
-interface IWorldBubbleMapProps {
+interface ID3MapProps {
     dashboard: Dashboard
     form: UseFormReturn<Filter>
     refetchCampaign: () => void
     respondents: string
     dataGeo: IDataGeo
+    topoJsonMX: Topology
     worldBubbleMapsCoordinates1?: IWorldBubbleMapsCoordinate[]
     worldBubbleMapsCoordinates2?: IWorldBubbleMapsCoordinate[]
     bubbleColor1: string
@@ -83,6 +86,16 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
         refetchOnWindowFocus: false,
     })
 
+    // Data topo JSON Mexico
+    const dataTopoJsonMX = useQuery<Topology | undefined>({
+        queryKey: ['topo-mexico'],
+        queryFn: () =>
+            d3.json<Topology>(
+                'https://gist.githubusercontent.com/diegovalle/5129746/raw/c1c35e439b1d5e688bca20b79f0e53a1fc12bf9e/mx_tj.json'
+            ),
+        refetchOnWindowFocus: false,
+    })
+
     // Set selected tab classes
     let selectedTabClasses: string
     switch (dashboard) {
@@ -117,7 +130,8 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
     }
 
     // Display world bubble maps or not
-    const displayWorldBubbleMaps = !!data && !!dataGeoQuery.data && !!form1 && !!refetchCampaign
+    const displayWorldBubbleMaps =
+        !!data && !!dataGeoQuery.data && !!dataTopoJsonMX.data && !!form1 && !!refetchCampaign
 
     return (
         <div>
@@ -182,6 +196,7 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
                             refetchCampaign={refetchCampaign}
                             respondents={respondents}
                             dataGeo={dataGeoQuery.data as IDataGeo}
+                            topoJsonMX={dataTopoJsonMX.data as Topology}
                             worldBubbleMapsCoordinates1={
                                 showBubbles1 ? data.world_bubble_maps_coordinates.coordinates_1 : undefined
                             }
@@ -207,44 +222,25 @@ const D3Map = ({
     refetchCampaign,
     respondents,
     dataGeo,
+    topoJsonMX,
     worldBubbleMapsCoordinates1,
     worldBubbleMapsCoordinates2,
     bubbleColor1,
     bubbleColor2,
     lang,
-}: IWorldBubbleMapProps) => {
+}: ID3MapProps) => {
     const svgRef = useRef<SVGSVGElement>(undefined as any)
     const divRef = useRef<HTMLDivElement>(undefined as any)
-
-    // For 'giz' or 'wwwpakistan', only show the respective country on the map
-    if (dashboard === DashboardName.GIZ) {
-        dataGeo.features = dataGeo.features.filter((d) => d.properties.name === 'Mexico')
-    } else if (dashboard === DashboardName.WWW_PAKISTAN) {
-        dataGeo.features = dataGeo.features.filter((d) => d.properties.name === 'Pakistan')
-    }
-
-    // Set projection scale and view box
-    let projectionScale: number
-    let viewBox: string
-    switch (dashboard) {
-        case DashboardName.GIZ:
-            // focus on country
-            projectionScale = 1200
-            viewBox = `-2130 -500 ${svgWidth} ${svgHeight}`
-            break
-        case DashboardName.WWW_PAKISTAN:
-            // focus on country
-            projectionScale = 1750
-            viewBox = `2125 -975 ${svgWidth} ${svgHeight}`
-            break
-        default:
-            projectionScale = 144
-            viewBox = `0 -125 ${svgWidth} ${svgHeight}`
-    }
 
     // Draw the world bubble map
     useEffect(() => {
         async function drawWorldBubbleMap() {
+            // Set view box
+            let viewBox = `0 -125 ${svgWidth} ${svgHeight}`
+            if (dashboard === DashboardName.WWW_PAKISTAN || dashboard === DashboardName.GIZ) {
+                viewBox = `0 0 ${svgWidth} ${svgHeight}`
+            }
+
             // Get svg element
             const svgEl = d3
                 .select(svgRef.current)
@@ -261,13 +257,37 @@ const D3Map = ({
             }
 
             // Map and projection
-            const projection = d3
-                .geoMercator()
-                .scale(projectionScale)
-                .translate([svgWidth / 2, svgHeight / 2])
+            const projection = d3.geoMercator().translate([svgWidth / 2, svgHeight / 2])
 
-            // This variable will be used for the map
-            let worldBubbleMapsCoordinates: IWorldBubbleMapsCoordinateWithColor[] = []
+            // Zoom on map
+            if (dashboard === DashboardName.GIZ) {
+                projection
+                    .center([-99.1, 19.25]) // GPS of location of Mexico City to zoom on
+                    .scale(38000) // Zoom
+            } else if (dashboard === DashboardName.WWW_PAKISTAN) {
+                projection
+                    .center([70, 30.5]) // GPS of location of Pakistan to zoom on
+                    .scale(2000) // Zoom
+            } else {
+                projection.scale(144) // Zoom
+            }
+
+            // For 'wwwpakistan', only show the respective country on the map (GeoJSON)
+            switch (dashboard) {
+                case DashboardName.WWW_PAKISTAN:
+                    dataGeo.features = dataGeo.features.filter((d) => d.properties.name === 'Pakistan')
+                    break
+                case DashboardName.GIZ:
+                    // Uses TopoJSON
+                    // dataGeo.features = dataGeo.features.filter((d) => d.properties.name === 'Mexico')
+                    break
+            }
+
+            // Hide antarctica
+            dataGeo.features = dataGeo.features.filter((d) => d.properties.name !== 'Antarctica')
+
+            // This variable will be used for the coordinates on the map
+            let worldBubbleMapsCoordinates: IWorldBubbleMapsCoordinateWithColor[]
 
             // Set colors for world bubble maps coordinates 1
             let worldBubbleMapsCoordinatesWithColors1: IWorldBubbleMapsCoordinateWithColor[] = []
@@ -299,15 +319,32 @@ const D3Map = ({
             // Circle size
             const circleSize = d3.scaleSqrt().domain(valueExtent).range([7, 17])
 
+            // Path
+            const path = d3.geoPath().projection(projection) as any
+
             // Draw the map
-            svgEl
-                .append('g')
-                .selectAll('path')
-                .data(dataGeo.features)
-                .join('path')
-                .attr('fill', '#b8b8b8')
-                .attr('d', d3.geoPath().projection(projection) as any)
-                .style('stroke', 'none')
+            const fillColor = '#b7b7b7'
+            switch (dashboard) {
+                case DashboardName.GIZ:
+                    // Use topoJSON for Mexico
+                    svgEl
+                        .append('path')
+                        .datum(feature(topoJsonMX, topoJsonMX.objects.states))
+                        .attr('fill', () => fillColor)
+                        .attr('stroke', '#ffffff')
+                        .attr('d', path)
+                    break
+                default:
+                    // Use GeoJSON
+                    svgEl
+                        .append('g')
+                        .selectAll('path')
+                        .data(dataGeo.features)
+                        .join('path')
+                        .attr('fill', fillColor)
+                        .style('stroke', 'none')
+                        .attr('d', path)
+            }
 
             // Tooltip
             const tooltip = d3
@@ -392,8 +429,6 @@ const D3Map = ({
         respondents,
         dashboard,
         lang,
-        projectionScale,
-        viewBox,
         form,
         refetchCampaign,
         bubbleColor1,
