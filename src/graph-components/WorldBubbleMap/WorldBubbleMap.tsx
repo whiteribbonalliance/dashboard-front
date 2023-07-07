@@ -22,6 +22,7 @@ import { faCircle } from '@fortawesome/free-solid-svg-icons'
 import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 import { feature } from 'topojson-client'
 import { Topology } from 'topojson-specification'
+import { FeatureCollection } from 'geojson'
 
 interface IWorldBubbleMapsProps {
     dashboard: Dashboard
@@ -37,25 +38,13 @@ interface ID3MapProps {
     form: UseFormReturn<Filter>
     refetchCampaign: () => void
     respondents: string
-    dataGeo: IDataGeo
+    geoJsonFeatures: FeatureCollection
     topoJsonMX: Topology
     worldBubbleMapsCoordinates1?: IWorldBubbleMapsCoordinate[]
     worldBubbleMapsCoordinates2?: IWorldBubbleMapsCoordinate[]
     bubbleColor1: string
     bubbleColor2: string
     lang: string
-}
-
-interface IDataGeo {
-    features: {
-        type: string
-        properties: { name: string }
-        geometry: {
-            type: string
-            coordinates: number[][][]
-        }
-    }[]
-    type: string
 }
 
 // svg dimensions
@@ -79,16 +68,18 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
     const respondents = t(config.respondentsNounPlural)
 
     // Data geo query
-    const dataGeoQuery = useQuery<IDataGeo | undefined>({
-        queryKey: ['data-geo'],
+    const dataGeoQuery = useQuery<FeatureCollection | undefined>({
+        queryKey: ['world-geo'],
         queryFn: () =>
-            d3.json<IDataGeo>('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson'),
+            d3.json<FeatureCollection>(
+                'https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson'
+            ),
         refetchOnWindowFocus: false,
     })
 
     // Data topo JSON Mexico
     const dataTopoJsonMX = useQuery<Topology | undefined>({
-        queryKey: ['topo-mexico'],
+        queryKey: ['topo-json-mx'],
         queryFn: () =>
             d3.json<Topology>(
                 'https://gist.githubusercontent.com/diegovalle/5129746/raw/c1c35e439b1d5e688bca20b79f0e53a1fc12bf9e/mx_tj.json'
@@ -195,7 +186,7 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
                             form={form1}
                             refetchCampaign={refetchCampaign}
                             respondents={respondents}
-                            dataGeo={dataGeoQuery.data as IDataGeo}
+                            geoJsonFeatures={dataGeoQuery.data as FeatureCollection}
                             topoJsonMX={dataTopoJsonMX.data as Topology}
                             worldBubbleMapsCoordinates1={
                                 showBubbles1 ? data.world_bubble_maps_coordinates.coordinates_1 : undefined
@@ -221,7 +212,7 @@ const D3Map = ({
     form,
     refetchCampaign,
     respondents,
-    dataGeo,
+    geoJsonFeatures,
     topoJsonMX,
     worldBubbleMapsCoordinates1,
     worldBubbleMapsCoordinates2,
@@ -275,7 +266,7 @@ const D3Map = ({
             // For 'wwwpakistan', only show the respective country on the map (GeoJSON)
             switch (dashboard) {
                 case DashboardName.WWW_PAKISTAN:
-                    dataGeo.features = dataGeo.features.filter((d) => d.properties.name === 'Pakistan')
+                    geoJsonFeatures.features = geoJsonFeatures.features.filter((d) => d.properties?.name === 'Pakistan')
                     break
                 case DashboardName.GIZ:
                     // Uses TopoJSON
@@ -284,7 +275,7 @@ const D3Map = ({
             }
 
             // Hide antarctica
-            dataGeo.features = dataGeo.features.filter((d) => d.properties.name !== 'Antarctica')
+            geoJsonFeatures.features = geoJsonFeatures.features.filter((d) => d.properties?.name !== 'Antarctica')
 
             // This variable will be used for the coordinates on the map
             let worldBubbleMapsCoordinates: IWorldBubbleMapsCoordinateWithColor[]
@@ -339,7 +330,7 @@ const D3Map = ({
                     svgEl
                         .append('g')
                         .selectAll('path')
-                        .data(dataGeo.features)
+                        .data(geoJsonFeatures.features)
                         .join('path')
                         .attr('fill', fillColor)
                         .style('stroke', 'none')
@@ -423,7 +414,7 @@ const D3Map = ({
 
         drawWorldBubbleMap().then()
     }, [
-        dataGeo,
+        geoJsonFeatures,
         worldBubbleMapsCoordinates1,
         worldBubbleMapsCoordinates2,
         respondents,
