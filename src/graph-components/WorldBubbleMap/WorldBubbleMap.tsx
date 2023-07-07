@@ -82,7 +82,7 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
         queryKey: ['topo-json-mx'],
         queryFn: () =>
             d3.json<Topology>(
-                'https://raw.githubusercontent.com/datamexico/mexico-topojson/master/topojson/Entities.json'
+                'https://gist.githubusercontent.com/diegovalle/5129746/raw/c1c35e439b1d5e688bca20b79f0e53a1fc12bf9e/mx_tj.json'
             ),
         refetchOnWindowFocus: false,
     })
