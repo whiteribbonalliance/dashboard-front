@@ -67,9 +67,9 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
     // Set respondents
     const respondents = t(config.respondentsNounPlural)
 
-    // Data geo query
+    // Data geo world query
     const dataGeoQuery = useQuery<FeatureCollection | undefined>({
-        queryKey: ['world-geo'],
+        queryKey: ['geo-world'],
         queryFn: () =>
             d3.json<FeatureCollection>(
                 'https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson'
@@ -82,7 +82,7 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
         queryKey: ['topo-json-mx'],
         queryFn: () =>
             d3.json<Topology>(
-                'https://gist.githubusercontent.com/diegovalle/5129746/raw/c1c35e439b1d5e688bca20b79f0e53a1fc12bf9e/mx_tj.json'
+                'https://raw.githubusercontent.com/datamexico/mexico-topojson/master/topojson/Entities.json'
             ),
         refetchOnWindowFocus: false,
     })
@@ -424,6 +424,7 @@ const D3Map = ({
         refetchCampaign,
         bubbleColor1,
         bubbleColor2,
+        topoJsonMX,
     ])
 
     return (
