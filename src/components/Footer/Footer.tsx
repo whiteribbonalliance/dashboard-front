@@ -59,18 +59,20 @@ export const Footer = async ({ dashboard, lang }: IFooterProps) => {
 
     return (
         <footer className="mx-7 my-7 flex flex-col gap-y-5 text-lg">
-            {/* Informed consent */}
             <div>
-                <p>* {informedConsentText}</p>
-            </div>
-
-            {/* Footer note */}
-            {footerNote && (
+                {/* Informed consent */}
                 <div>
-                    {footerNote}
+                    <p>* {informedConsentText}</p>
+                </div>
+
+                {/* Footer note */}
+                {footerNote && <div>{footerNote}</div>}
+
+                {/* Protect anonymity */}
+                <div>
                     <p>{t('to-protect-anonymity')}</p>
                 </div>
-            )}
+            </div>
 
             {/* Other dashboards */}
             {otherDashboardLinks.length > 0 && (
