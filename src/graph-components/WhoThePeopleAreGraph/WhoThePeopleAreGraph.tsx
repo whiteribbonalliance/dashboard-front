@@ -8,7 +8,7 @@ import { useCampaignQuery } from '@hooks/use-campaign'
 import { SelectSingleValue } from '@components/SelectSingleValue'
 import { Dashboard, Option } from '@types'
 import { Controller, useForm } from 'react-hook-form'
-import React, { MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod'
 import { WhoThePeopleAre, whoThePeopleAreSchema } from '@schemas/who-the-people-are'
 import {
@@ -112,8 +112,8 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
             bar2Classes = 'fill-defaultColors-tertiary hover:fill-defaultColors-tertiaryFaint'
     }
 
-    // Display breakdown
-    const displayBreakdown = useCallback(() => {
+    // Set histogram data
+    useEffect(() => {
         if (data && showBreakdownBy) {
             let histogramData: IHistogramData[]
             switch (showBreakdownBy) {
@@ -146,17 +146,12 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
         }
     }, [data, showBreakdownBy, t])
 
-    useEffect(() => {
-        displayBreakdown()
-    }, [displayBreakdown])
-
     // Format x-axis numbers
     function xAxisFormatter(item: number) {
         return toThousandsSep(Math.abs(item), lang).toString()
     }
 
     // Determine the max value for the x-axis
-    // TODO: fix nice num
     const getMaxValueX = useMemo(() => {
         if (currentHistogramData.length < 1) return 0
 
@@ -165,12 +160,12 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
             currentHistogramData.reduce((prev, curr) => (prev.count_1 > curr.count_1 ? prev : curr)).count_1
         )
 
-        // Find the lowest value for count_2 (count_2 has negative numbers) and convert the number to positive
+        // Find the max value for count_2 (count_2 has negative numbers) and convert the number to positive
         const count2Max = Math.abs(
             currentHistogramData.reduce((prev, curr) => (prev.count_2 < curr.count_2 ? prev : curr)).count_2
         )
 
-        return niceNum(Math.max(count1Max, count2Max), true)
+        return niceNum(Math.max(count1Max, count2Max), false)
     }, [currentHistogramData])
 
     // Legend formatter
@@ -291,6 +286,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
                                     }
                                     position={{ x: 25 }}
                                 />
+                                {/* Only display bar2 if filters are not identical */}
                                 {!data.filters_are_identical && (
                                     <Bar
                                         dataKey="count_2"

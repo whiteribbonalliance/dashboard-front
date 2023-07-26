@@ -8,37 +8,43 @@ import {
     Bar,
     BarChart,
     CartesianGrid,
+    Legend,
     ResponsiveContainer,
     Tooltip as RechartsTooltip,
     TooltipProps,
     XAxis,
     YAxis,
 } from 'recharts'
-import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent'
-import { classNames, getDashboardConfig, toThousandsSep } from '@utils'
+import { classNames, getDashboardConfig, niceNum, toThousandsSep } from '@utils'
 import { GraphLoading } from 'components/GraphLoading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
 import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
 import { Dashboard } from '@types'
-import React from 'react'
+import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { Tooltip } from '@components/Tooltip'
 import { useRefetchCampaignStore } from '@stores/refetch-campaign'
+import { IResponseBreakdown } from '@interfaces'
 
 interface IResponsesBreakdownGraphProps {
     dashboard: Dashboard
     lang: string
 }
 
-interface ICustomTooltip extends TooltipProps<ValueType, NameType> {
+interface ICustomTooltip extends TooltipProps<number, string> {
     dashboard: Dashboard
+    hoveredBarDataKey: MutableRefObject<string>
+    showTooltip: boolean
     lang: string
 }
 
 export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdownGraphProps) => {
     const { data, isError } = useCampaignQuery(dashboard, lang)
+    const [responsesBreakdown, setResponsesBreakdown] = useState<IResponseBreakdown[]>([])
     const form1 = useFilterFormsStore((state: IFilterFormsState) => state.form1)
     const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
+    const hoveredBarDataKey = useRef<string>(undefined as any)
+    const [showTooltip, setShowTooltip] = useState<boolean>(false)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
 
@@ -52,14 +58,30 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
             clickViewTopicResponsesText = t('click-view-topic-responses')
     }
 
-    // Set bar classes
-    let barClasses: string
+    // Set bars fill
+    let bar1Fill: string
+    let bar2Fill: string
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            barClasses = 'fill-pmnchColors-secondary hover:fill-pmnchColors-secondaryFaint'
+            bar1Fill = 'var(--pmnchSecondary)'
+            bar2Fill = 'var(--pmnchTertiary)'
             break
         default:
-            barClasses = 'fill-defaultColors-primary hover:fill-defaultColors-primaryFaint'
+            bar1Fill = 'var(--defaultPrimary)'
+            bar2Fill = 'var(--defaultTertiary)'
+    }
+
+    // Set bars classes
+    let bar1Classes: string
+    let bar2Classes: string
+    switch (dashboard) {
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+            bar1Classes = 'fill-pmnchColors-secondary hover:fill-pmnchColors-secondaryFaint'
+            bar2Classes = 'fill-pmnchColors-tertiary hover:fill-pmnchColors-tertiaryFaint'
+            break
+        default:
+            bar1Classes = 'fill-defaultColors-primary hover:fill-defaultColors-primaryFaint'
+            bar2Classes = 'fill-defaultColors-tertiary hover:fill-defaultColors-tertiaryFaint'
     }
 
     // Set breakdown responses topic text
@@ -77,8 +99,52 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
 
     // Format x-axis numbers
     function xAxisFormatter(item: number) {
-        return toThousandsSep(item, lang).toString()
+        console.log(item)
+        return toThousandsSep(Math.abs(item), lang).toString()
     }
+
+    // Determine the max value for the x-axis
+    const getMaxValueX = useMemo(() => {
+        if (responsesBreakdown.length < 1) return 0
+
+        // Find the max value for count_1
+        const count1Max = Math.abs(
+            responsesBreakdown.reduce((prev, curr) => (prev.count_1 > curr.count_1 ? prev : curr)).count_1
+        )
+
+        // Find the max value for count_2 (count_2 has negative numbers) and convert the number to positive
+        const count2Max = Math.abs(
+            responsesBreakdown.reduce((prev, curr) => (prev.count_2 < curr.count_2 ? prev : curr)).count_2
+        )
+
+        return niceNum(Math.max(count1Max, count2Max), false)
+    }, [responsesBreakdown])
+
+    // Domain for x-axis
+    const xAxisDomain = useMemo(() => {
+        if (data) {
+            if (data.filters_are_identical) {
+                return [0, getMaxValueX]
+            } else {
+                return [-getMaxValueX, getMaxValueX]
+            }
+        }
+    }, [data, getMaxValueX])
+
+    // Set responses breakdown
+    useEffect(() => {
+        if (data) {
+            // Set count 2 values as negative
+            const tmpResponsesBreakdown: IResponseBreakdown[] = []
+            for (const datum of data.responses_breakdown) {
+                const tmpDatum = datum
+                tmpDatum.count_2 = -tmpDatum.count_2
+                tmpResponsesBreakdown.push(tmpDatum)
+            }
+
+            setResponsesBreakdown(tmpResponsesBreakdown)
+        }
+    }, [data])
 
     // Set response topic
     function setResponseTopic(payload: any) {
@@ -90,8 +156,36 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
         }
     }
 
+    // Legend formatter
+    function legendFormatter(value: string) {
+        if (data) {
+            if (value === 'count_1') {
+                return <span className="text-black">{data.filter_1_description}</span>
+            }
+            if (value === 'count_2') {
+                return (
+                    <span className="text-black">
+                        {data.filter_2_description} ({t('normalized')})
+                    </span>
+                )
+            }
+        }
+
+        return null
+    }
+
+    // Toggle showTooltip
+    function toggleShowTooltip() {
+        setShowTooltip((prev) => !prev)
+    }
+
+    // Set hovered bar data key
+    function setHoveredBarDataKey(dataKey: string) {
+        hoveredBarDataKey.current = dataKey
+    }
+
     // Display graph or not
-    const displayGraph = !!data
+    const displayGraph = data && responsesBreakdown
 
     return (
         <div>
@@ -125,18 +219,26 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                         <div className="mb-3 mt-3 w-full">
                             <ResponsiveContainer height={400} className="bg-white">
                                 <BarChart
-                                    data={data.responses_breakdown}
+                                    data={responsesBreakdown}
                                     margin={{ top: 15, right: 50, left: 10, bottom: 15 }}
                                     width={750}
                                     height={500}
                                     layout="vertical"
                                     barCategoryGap={5}
+                                    stackOffset="sign"
                                 >
+                                    {/* Only display the legend if filters are not identical */}
+                                    {!data.filters_are_identical && (
+                                        <Legend
+                                            verticalAlign="top"
+                                            formatter={(value) => legendFormatter(value)}
+                                            wrapperStyle={{ paddingBottom: '1rem' }}
+                                        />
+                                    )}
                                     <XAxis
-                                        dataKey="count"
                                         type="number"
                                         axisLine={false}
-                                        tickCount={7}
+                                        domain={xAxisDomain}
                                         tickFormatter={(item) => xAxisFormatter(item)}
                                     />
                                     <YAxis
@@ -150,14 +252,41 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                                     <CartesianGrid strokeDasharray="0" stroke="#FFFFFF" />
                                     <RechartsTooltip
                                         cursor={{ fill: 'transparent' }}
-                                        content={<CustomTooltip dashboard={dashboard} lang={lang} />}
+                                        content={
+                                            <CustomTooltip
+                                                dashboard={dashboard}
+                                                hoveredBarDataKey={hoveredBarDataKey}
+                                                showTooltip={showTooltip}
+                                                lang={lang}
+                                            />
+                                        }
                                         position={{ x: 25 }}
                                     />
+
+                                    {/* Only display bar2 if filters are not identical */}
+                                    {!data.filters_are_identical && (
+                                        <Bar
+                                            dataKey="count_2"
+                                            className={classNames('hover:cursor-pointer', bar2Classes)}
+                                            fill={bar2Fill}
+                                            minPointSize={15}
+                                            onClick={setResponseTopic}
+                                            stackId={0}
+                                            onMouseOver={() => setHoveredBarDataKey('count_2')}
+                                            onMouseEnter={toggleShowTooltip}
+                                            onMouseLeave={toggleShowTooltip}
+                                        />
+                                    )}
                                     <Bar
-                                        dataKey="count"
-                                        className={classNames('hover:cursor-pointer', barClasses)}
+                                        dataKey="count_1"
+                                        className={classNames('hover:cursor-pointer', bar1Classes)}
+                                        fill={bar1Fill}
                                         minPointSize={5}
                                         onClick={setResponseTopic}
+                                        stackId={0}
+                                        onMouseOver={() => setHoveredBarDataKey('count_1')}
+                                        onMouseEnter={toggleShowTooltip}
+                                        onMouseLeave={toggleShowTooltip}
                                     />
                                 </BarChart>
                             </ResponsiveContainer>
@@ -169,26 +298,21 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
     )
 }
 
-const CustomTooltip = ({ active, payload, label, dashboard, lang }: ICustomTooltip) => {
+const CustomTooltip = ({ active, payload, label, hoveredBarDataKey, showTooltip, lang }: ICustomTooltip) => {
     if (active && payload && payload.length) {
-        const value = payload[0].value as number
+        const data = payload.find((data) => data.dataKey === hoveredBarDataKey.current)
+        if (data) {
+            const value = data.value ? Math.abs(data.value) : 0
 
-        // Set p classes
-        let pClasses: string
-        switch (dashboard) {
-            case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-                pClasses = 'bg-pmnchColors-secondary'
-                break
-            default:
-                pClasses = 'bg-defaultColors-primary'
+            return (
+                <p
+                    className={classNames(`border border-white p-1 text-sm text-white`, showTooltip ? '' : 'hidden')}
+                    style={{ backgroundColor: data.color }}
+                >
+                    {`${label}, ${toThousandsSep(value, lang)}`}
+                </p>
+            )
         }
-
-        return (
-            <p className={classNames(`border border-white p-1 text-sm text-white`, pClasses)}>
-                <span className="font-bold">{toThousandsSep(value, lang)}</span> people mentioned{' '}
-                <span className="font-bold">“{label}”</span>.
-            </p>
-        )
     }
 
     return null

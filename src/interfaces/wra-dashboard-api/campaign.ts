@@ -7,8 +7,9 @@ interface IResponsesSample {
     data: any
 }
 
-interface IResponseBreakdownData {
-    count: number
+export interface IResponseBreakdown {
+    count_1: number
+    count_2: number
     code: string
     description: string
 }
@@ -48,7 +49,7 @@ interface IWorldBubbleMapsCoordinates {
 
 export interface ICampaign {
     responses_sample: IResponsesSample
-    responses_breakdown: IResponseBreakdownData[]
+    responses_breakdown: IResponseBreakdown[]
     top_words_and_phrases: ITopWordsAndPhrases
     histogram: IHistogram
     genders_breakdown: IGenderData[]
