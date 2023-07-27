@@ -53,14 +53,14 @@ export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphP
     useEffect(() => {
         if (data) {
             const tmpColumns: ColumnDef<any, any>[] = []
-            for (const column of data.responses_sample.columns) {
+            for (const column of data.responses_sample.q1.columns) {
                 tmpColumns.push(
                     columnHelper.accessor(column.id, {
                         header: column.name,
                     })
                 )
             }
-            setTableData({ data: data.responses_sample.data, columns: tmpColumns })
+            setTableData({ data: data.responses_sample.q1.data, columns: tmpColumns })
         }
     }, [data])
 

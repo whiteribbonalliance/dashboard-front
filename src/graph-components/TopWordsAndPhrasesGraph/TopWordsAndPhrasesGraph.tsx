@@ -42,7 +42,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrases
             content: data ? (
                 <TopWordsWordcloud
                     dashboard={dashboard}
-                    wordcloudWords={data.top_words_and_phrases.wordcloud_words}
+                    wordcloudWords={data.top_words_and_phrases.q1.wordcloud_words}
                     lang={lang}
                 />
             ) : null,
@@ -54,7 +54,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrases
                 <TopWordsOrPhrases
                     dashboard={dashboard}
                     lang={lang}
-                    words={data.top_words_and_phrases.top_words}
+                    words={data.top_words_and_phrases.q1.top_words}
                     filter1Description={data.filter_1_description}
                     filter2Description={data.filter_2_description}
                     filtersAreIdentical={data.filters_are_identical}
@@ -69,7 +69,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrases
                 <TopWordsOrPhrases
                     dashboard={dashboard}
                     lang={lang}
-                    words={data.top_words_and_phrases.two_word_phrases}
+                    words={data.top_words_and_phrases.q1.two_word_phrases}
                     filter1Description={data.filter_1_description}
                     filter2Description={data.filter_2_description}
                     filtersAreIdentical={data.filters_are_identical}
@@ -84,7 +84,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrases
                 <TopWordsOrPhrases
                     dashboard={dashboard}
                     lang={lang}
-                    words={data.top_words_and_phrases.three_word_phrases}
+                    words={data.top_words_and_phrases.q1.three_word_phrases}
                     filter1Description={data.filter_1_description}
                     filter2Description={data.filter_2_description}
                     filtersAreIdentical={data.filters_are_identical}

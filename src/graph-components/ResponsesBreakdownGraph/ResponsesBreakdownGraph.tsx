@@ -136,7 +136,7 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
         if (data) {
             // Set count 2 values as negative
             const tmpResponsesBreakdown: IResponseBreakdown[] = []
-            for (const datum of data.responses_breakdown) {
+            for (const datum of data.responses_breakdown.q1) {
                 const tmpDatum = datum
                 tmpDatum.count_2 = -tmpDatum.count_2
                 tmpResponsesBreakdown.push(tmpDatum)

@@ -48,9 +48,9 @@ interface IWorldBubbleMapsCoordinates {
 }
 
 export interface ICampaign {
-    responses_sample: IResponsesSample
-    responses_breakdown: IResponseBreakdown[]
-    top_words_and_phrases: ITopWordsAndPhrases
+    responses_sample: { q1: IResponsesSample; q2: IResponsesSample }
+    responses_breakdown: { q1: IResponseBreakdown[]; q2: IResponseBreakdown[] }
+    top_words_and_phrases: { q1: ITopWordsAndPhrases; q2: ITopWordsAndPhrases }
     histogram: IHistogram
     genders_breakdown: IGenderData[]
     world_bubble_maps_coordinates: IWorldBubbleMapsCoordinates
