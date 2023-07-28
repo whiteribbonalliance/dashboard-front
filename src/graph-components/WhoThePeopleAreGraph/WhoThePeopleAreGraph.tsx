@@ -47,13 +47,13 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
     const [paragraph, setParagraph] = useState<string>('')
-    const [options, setOptions] = useState<Option<string>[]>([])
+    const [whoThePeopleAreOptions, setWhoThePeopleAreOptions] = useState<Option<string>[]>([])
     const config = getDashboardConfig(dashboard)
 
     // Fetch options
     useEffect(() => {
         getCampaignWhoThePeopleAreOptions(config, lang)
-            .then((options) => setOptions(options))
+            .then((options) => setWhoThePeopleAreOptions(options))
             .catch(() => {})
     }, [config, lang])
 
@@ -62,21 +62,23 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
         resolver: zodResolver(whoThePeopleAreSchema),
     })
 
-    // Watch field showBreakdownBy
-    const showBreakdownBy = form.watch('show_breakdown_by')
+    // Watch field
+    const showBreakdownByField = form.watch('show_breakdown_by')
 
     // Set default value for show_breakdown_by
     useEffect(() => {
-        if (options.length > 0) {
-            form.setValue('show_breakdown_by', options[0].value)
+        if (whoThePeopleAreOptions.length > 0) {
+            if (!showBreakdownByField) {
+                form.setValue('show_breakdown_by', whoThePeopleAreOptions[0].value)
+            }
         }
-    }, [form, options])
+    }, [form, whoThePeopleAreOptions, showBreakdownByField])
 
     // Container height
     const containerHeight = useMemo(() => {
-        if (!showBreakdownBy) return 0
+        if (!showBreakdownByField) return 0
 
-        switch (showBreakdownBy) {
+        switch (showBreakdownByField) {
             case 'breakdown-age':
                 return 550
             case 'breakdown-gender':
@@ -84,7 +86,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
             default:
                 return 1100
         }
-    }, [showBreakdownBy])
+    }, [showBreakdownByField])
 
     // Set bars fill
     let bar1Fill: string
@@ -114,9 +116,9 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
 
     // Set histogram data
     useEffect(() => {
-        if (data && showBreakdownBy) {
+        if (data && showBreakdownByField) {
             let histogramData: IHistogramData[]
-            switch (showBreakdownBy) {
+            switch (showBreakdownByField) {
                 case 'breakdown-age':
                     histogramData = data.histogram.age
                     setParagraph(t('number-ages-respondents') as string)
@@ -144,7 +146,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
 
             setCurrentHistogramData(histogramData)
         }
-    }, [data, showBreakdownBy, t])
+    }, [data, showBreakdownByField, t])
 
     // Format x-axis numbers
     function xAxisFormatter(item: number) {
@@ -208,7 +210,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
     }
 
     // Display graph or not
-    const displayGraph = data && currentHistogramData && showBreakdownBy
+    const displayGraph = data && currentHistogramData && showBreakdownByField
 
     return (
         <Box>
@@ -232,7 +234,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
                             render={({ field: { onChange, value } }) => (
                                 <SelectSingleValue
                                     id="select-show-breakdown-by"
-                                    options={options}
+                                    options={whoThePeopleAreOptions}
                                     value={value}
                                     controllerRenderOnChange={onChange}
                                 />

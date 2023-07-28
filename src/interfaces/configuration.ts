@@ -9,4 +9,5 @@ export interface IConfiguration {
     respondentsNounPlural: string
     dashboardLinksFooter: IDashboardLink[]
     showVideoLink: string
+    questionsAsked: string[]
 }
