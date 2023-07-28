@@ -8,13 +8,13 @@ import { Title } from '@components/Title'
 import localFont from 'next/font/local'
 import { dir } from 'i18next'
 import { config as fontAwesomeConfig } from '@fortawesome/fontawesome-svg-core'
-import { Dashboard } from '@types'
+import { TDashboard } from '@types'
 
 fontAwesomeConfig.autoAddCss = false
 
 interface IDashboardLayoutProps {
     children: ReactNode
-    params: { dashboard: Dashboard; lang: string }
+    params: { dashboard: TDashboard; lang: string }
 }
 
 const notoSansRegular = localFont({

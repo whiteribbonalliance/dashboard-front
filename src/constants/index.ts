@@ -1,6 +1,6 @@
 import { DashboardName } from '@enums'
 import { IDashboardLink, ILanguage } from '@interfaces'
-import { Filter } from '@schemas/filter'
+import { TFilter } from '@schemas/filter'
 
 export const dashboards = Object.entries(DashboardName).map(([key, value]) => value)
 
@@ -42,7 +42,7 @@ export const wwwpakistanLink: IDashboardLink = {
     link: 'https://explore.whiteribbonalliance.org/wwwpakistan',
 }
 
-export const defaultFilterValues: Filter = {
+export const defaultFilterValues: TFilter = {
     countries: [],
     regions: [],
     ages: [],

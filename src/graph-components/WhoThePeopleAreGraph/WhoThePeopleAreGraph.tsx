@@ -6,11 +6,11 @@ import { GraphError } from '@components/GraphError'
 import { GraphLoading } from '@components/GraphLoading'
 import { useCampaignQuery } from '@hooks/use-campaign'
 import { SelectSingleValue } from '@components/SelectSingleValue'
-import { Dashboard, Option } from '@types'
+import { TDashboard, TOption } from '@types'
 import { Controller, useForm } from 'react-hook-form'
 import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod'
-import { WhoThePeopleAre, whoThePeopleAreSchema } from '@schemas/who-the-people-are'
+import { TWhoThePeopleAre, whoThePeopleAreSchema } from '@schemas/who-the-people-are'
 import {
     Bar,
     BarChart,
@@ -29,12 +29,12 @@ import { getCampaignWhoThePeopleAreOptions } from '@services/wra-dashboard-api'
 import { useTranslation } from '@app/i18n/client'
 
 interface IWhoThePeopleAreGraphProps {
-    dashboard: Dashboard
+    dashboard: TDashboard
     lang: string
 }
 
 interface ICustomTooltip extends TooltipProps<number, string> {
-    dashboard: Dashboard
+    dashboard: TDashboard
     hoveredBarDataKey: MutableRefObject<string>
     showTooltip: boolean
     lang: string
@@ -47,7 +47,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
     const [paragraph, setParagraph] = useState<string>('')
-    const [whoThePeopleAreOptions, setWhoThePeopleAreOptions] = useState<Option<string>[]>([])
+    const [whoThePeopleAreOptions, setWhoThePeopleAreOptions] = useState<TOption<string>[]>([])
     const config = getDashboardConfig(dashboard)
 
     // Fetch options
@@ -58,7 +58,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
     }, [config, lang])
 
     // Form
-    const form = useForm<WhoThePeopleAre>({
+    const form = useForm<TWhoThePeopleAre>({
         resolver: zodResolver(whoThePeopleAreSchema),
     })
 

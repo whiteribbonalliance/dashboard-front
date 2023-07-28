@@ -1,5 +1,5 @@
 import { ICampaign, ICampaignRequest, IConfiguration, IFilterOptions } from '@interfaces'
-import { Option } from '@types'
+import { TOption } from '@types'
 
 const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL as string
 const headers = { 'Content-Type': 'application/json' }
@@ -71,7 +71,7 @@ export async function getCampaignWhoThePeopleAreOptions(config: IConfiguration, 
         throw new Error('Failed to fetch campaign who the people are options')
     }
 
-    const data: Option<string>[] = await response.json()
+    const data: TOption<string>[] = await response.json()
 
     return data
 }

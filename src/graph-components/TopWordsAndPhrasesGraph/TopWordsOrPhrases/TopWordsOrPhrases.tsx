@@ -17,11 +17,11 @@ import { MutableRefObject, useRef } from 'react'
 import { ITopWords } from '@interfaces'
 import { useTranslation } from '@app/i18n/client'
 import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
-import { Dashboard } from '@types'
+import { TDashboard } from '@types'
 import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 
 interface ITopWordsOrPhrasesProps {
-    dashboard: Dashboard
+    dashboard: TDashboard
     lang: string
     words: ITopWords[]
     filter1Description: string

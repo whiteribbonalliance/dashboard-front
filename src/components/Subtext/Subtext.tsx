@@ -1,9 +1,9 @@
-import { Dashboard } from '@types'
+import { TDashboard } from '@types'
 import { useTranslation } from '@app/i18n'
 import { applyToThousandsSepOnText, getDashboardConfig } from '@utils'
 
 interface ISubtextProps {
-    dashboard: Dashboard
+    dashboard: TDashboard
     lang: string
 }
 

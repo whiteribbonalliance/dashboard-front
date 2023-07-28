@@ -4,4 +4,4 @@ export const whoThePeopleAreSchema = z.object({
     show_breakdown_by: z.string(),
 })
 
-export type WhoThePeopleAre = z.infer<typeof whoThePeopleAreSchema>
+export type TWhoThePeopleAre = z.infer<typeof whoThePeopleAreSchema>

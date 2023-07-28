@@ -1,10 +1,10 @@
 import Select from 'react-select'
 import React from 'react'
-import { Option } from '@types'
+import { TOption } from '@types'
 
 interface ISelectSingleValueProps {
     id: string
-    options: Option<string | boolean>[]
+    options: TOption<string | boolean>[]
     value: string | boolean
     controllerRenderOnChange: (...event: any[]) => void
     onChange?: () => void // A function to run when the value of this select changes

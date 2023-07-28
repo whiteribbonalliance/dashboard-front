@@ -15,28 +15,25 @@ import {
     XAxis,
     YAxis,
 } from 'recharts'
-import { classNames, getCampaignQuestionsAskedOptions, getDashboardConfig, niceNum, toThousandsSep } from '@utils'
+import { classNames, getDashboardConfig, niceNum, toThousandsSep } from '@utils'
 import { GraphLoading } from 'components/GraphLoading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
 import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
-import { Dashboard } from '@types'
+import { TDashboard } from '@types'
 import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { Tooltip } from '@components/Tooltip'
 import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 import { IResponseBreakdown } from '@interfaces'
-import { Controller, useForm } from 'react-hook-form'
-import { SelectSingleValue } from '@components/SelectSingleValue'
-import { zodResolver } from '@hookform/resolvers/zod/dist/zod'
-import { QuestionAsked, questionAskedSchema } from '@schemas/question-asked'
+import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
 
 interface IResponsesBreakdownGraphProps {
-    dashboard: Dashboard
+    dashboard: TDashboard
     lang: string
 }
 
 interface ICustomTooltip extends TooltipProps<number, string> {
-    dashboard: Dashboard
+    dashboard: TDashboard
     hoveredBarDataKey: MutableRefObject<string>
     showTooltip: boolean
     lang: string
@@ -46,27 +43,12 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
     const { data, isError } = useCampaignQuery(dashboard, lang)
     const [responsesBreakdown, setResponsesBreakdown] = useState<IResponseBreakdown[]>([])
     const form1 = useFilterFormsStore((state: IFilterFormsState) => state.form1)
+    const questionAskedCode = useQuestionAskedCodeStore((state) => state.questionAskedCode)
     const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
-    const questionsAskedOptions = getCampaignQuestionsAskedOptions(dashboard)
-
-    // Form
-    const form = useForm<QuestionAsked>({
-        resolver: zodResolver(questionAskedSchema),
-    })
-
-    // Watch field
-    const questionAskedField = form.watch('question_asked')
-
-    // Set default value for question_asked
-    useEffect(() => {
-        if (form) {
-            form.setValue('question_asked', 'q1')
-        }
-    }, [form])
 
     // Set click view topic responses text
     let clickViewTopicResponsesText: string
@@ -152,9 +134,9 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
 
     // Set responses breakdown
     useEffect(() => {
-        if (data && questionAskedField) {
+        if (data) {
             let tmpResponsesBreakdown
-            switch (questionAskedField) {
+            switch (questionAskedCode) {
                 case 'q1':
                     tmpResponsesBreakdown = data.responses_breakdown.q1
                     break
@@ -175,7 +157,7 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
 
             setResponsesBreakdown(tmpModifiedResponsesBreakdown)
         }
-    }, [data, questionAskedField])
+    }, [data, questionAskedCode])
 
     // Set response topic
     function setResponseTopic(payload: any) {
@@ -247,27 +229,6 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                 {displayGraph && (
                     <>
                         <div className="mt-3 flex flex-col">
-                            {/* Select */}
-                            {questionsAskedOptions.length > 0 && (
-                                <>
-                                    <p>{t('question-asked')}: </p>
-                                    <div className="mt-3 w-full max-w-sm">
-                                        <Controller
-                                            name="question_asked"
-                                            control={form.control}
-                                            render={({ field: { onChange, value } }) => (
-                                                <SelectSingleValue
-                                                    id="select-show-breakdown-by"
-                                                    options={questionsAskedOptions}
-                                                    value={value}
-                                                    controllerRenderOnChange={onChange}
-                                                />
-                                            )}
-                                        />
-                                    </div>
-                                </>
-                            )}
-
                             {/* Bar chart */}
                             <div className="mb-3 mt-3 w-full">
                                 <ResponsiveContainer height={400} className="bg-white">

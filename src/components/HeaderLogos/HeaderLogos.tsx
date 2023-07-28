@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { DashboardName } from '@enums'
-import { Dashboard } from '@types'
+import { TDashboard } from '@types'
 
 interface IHeaderLogosProps {
-    dashboard: Dashboard
+    dashboard: TDashboard
 }
 
 export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {

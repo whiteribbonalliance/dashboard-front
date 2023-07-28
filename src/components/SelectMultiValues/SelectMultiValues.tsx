@@ -1,11 +1,11 @@
 import Select from 'react-select'
 import React from 'react'
-import { Option } from '@types'
+import { TOption } from '@types'
 
 interface ISelectMultiValuesProps {
     id: string
     isDisabled?: boolean
-    options: (Option<string> | Option<boolean>)[]
+    options: (TOption<string> | TOption<boolean>)[]
     value: string[]
     controllerRenderOnChange: (...event: any[]) => void
     onChange?: () => void // A function to run when the value of this select changes

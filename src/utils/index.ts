@@ -8,7 +8,7 @@ import {
     whatYoungPeopleWantConfig,
     wwwPakistanConfig,
 } from '@configurations'
-import { Dashboard, Option } from '@types'
+import { TDashboard, TOption } from '@types'
 import { QuestionAsked } from '@schemas/question-asked'
 
 /**
@@ -25,7 +25,7 @@ export function classNames(...classes: string[]) {
  *
  * @param dashboard The dashboard
  */
-export function getDashboardConfig(dashboard: Dashboard) {
+export function getDashboardConfig(dashboard: TDashboard) {
     switch (dashboard) {
         case DashboardName.WHAT_WOMEN_WANT:
             return whatWomenWantConfig
@@ -148,8 +148,8 @@ export function applyToThousandsSepOnText(text: string, lang: string) {
  *
  * @param dashboard The dashboard
  */
-export function getCampaignQuestionsAskedOptions(dashboard: Dashboard) {
-    const questionsAskedOptions: Option<QuestionAsked['question_asked']>[] = []
+export function getCampaignQuestionsAskedOptions(dashboard: TDashboard) {
+    const questionsAskedOptions: TOption<QuestionAsked['question_asked']>[] = []
     const config = getDashboardConfig(dashboard)
     for (let i = 0; i < config.questionsAsked.length; i++) {
         questionsAskedOptions.push({ value: `q${i + 1}`, label: config.questionsAsked[i] })

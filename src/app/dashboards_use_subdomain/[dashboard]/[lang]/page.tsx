@@ -1,6 +1,6 @@
 import { Dashboard } from 'page-components/Dashboard'
 import { dashboards } from '@constants'
-import { Dashboard as TDashboard } from '@types'
+import { TDashboard as TDashboard } from '@types'
 import { getDashboardConfig } from '@utils'
 
 export default Dashboard

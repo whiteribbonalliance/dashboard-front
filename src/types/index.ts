@@ -1,3 +1,3 @@
 // App
-export type { Option } from './option'
-export type { Dashboard } from './dashboard'
+export type { TOption } from './option'
+export type { TDashboard } from './dashboard'

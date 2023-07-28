@@ -1,9 +1,9 @@
 import { DashboardName } from '@enums'
 import { classNames } from '@utils'
-import { Dashboard } from '@types'
+import { TDashboard } from '@types'
 
 interface IGraphTitleProps {
-    dashboard: Dashboard
+    dashboard: TDashboard
     text: string
 }
 

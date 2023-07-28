@@ -19,11 +19,11 @@ import { classNames, getDashboardConfig } from '@utils'
 import { GraphLoading } from 'components/GraphLoading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
-import { Dashboard } from '@types'
+import { TDashboard } from '@types'
 import { Tooltip } from '@components/Tooltip'
 
 interface IResponsesSampleGraphProps {
-    dashboard: Dashboard
+    dashboard: TDashboard
     lang: string
 }
 

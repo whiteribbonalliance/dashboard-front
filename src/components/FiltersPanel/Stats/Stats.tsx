@@ -4,12 +4,12 @@ import { Box } from '@components/Box'
 import { useCampaignQuery } from '@hooks/use-campaign'
 import { useTranslation } from '@app/i18n/client'
 import { toThousandsSep } from '@utils'
-import { Dashboard } from '@types'
+import { TDashboard } from '@types'
 import { Tooltip } from '@components/Tooltip'
 import React from 'react'
 
 interface IStatsProps {
-    dashboard: Dashboard
+    dashboard: TDashboard
     lang: string
 }
 

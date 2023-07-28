@@ -7,10 +7,10 @@ import { IFiltersState, useFiltersStore } from '@stores/filters'
 import { useEffect } from 'react'
 import { defaultFilterValues } from '@constants'
 import _ from 'lodash'
-import { Dashboard } from '@types'
+import { TDashboard } from '@types'
 import { getDashboardConfig } from '@utils'
 
-export const useCampaignQuery = (dashboard: Dashboard, lang: string) => {
+export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
     const filters = useFiltersStore((state: IFiltersState) => state.filters)
     const config = getDashboardConfig(dashboard)
 

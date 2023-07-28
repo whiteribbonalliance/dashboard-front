@@ -1,13 +1,13 @@
 'use client'
 
 import { Disclosure, Tab, Transition } from '@headlessui/react'
-import { classNames, getDashboardConfig } from '@utils'
+import { classNames, getCampaignQuestionsAskedOptions, getDashboardConfig } from '@utils'
 import { DashboardName } from '@enums'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { Box } from '@components/Box'
 import Image from 'next/image'
 import { getCampaignFilterOptions } from '@services/wra-dashboard-api'
-import { Dashboard, Option } from '@types'
+import { TDashboard, TOption } from '@types'
 import { ICountryRegionOption, IFilterOptions } from '@interfaces'
 import { Control, Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { SelectMultiValues } from '@components/SelectMultiValues'
@@ -16,7 +16,7 @@ import { Chevron } from '@components/Chevron'
 import { IFiltersState, useFiltersStore } from '@stores/filters'
 import { defaultFilterValues } from '@constants'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Filter, filterSchema } from '@schemas/filter'
+import { filterSchema, TFilter } from '@schemas/filter'
 import { Stats } from '@components/FiltersPanel/Stats'
 import { useTranslation } from '@app/i18n/client'
 import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
@@ -24,9 +24,10 @@ import { useQuery } from 'react-query'
 import { Tooltip } from '@components/Tooltip'
 import { IRefetchCampaignState, useRefetchCampaignStore } from '@stores/refetch-campaign'
 import { Input } from '@components/Input'
+import { QuestionAsked } from '@components/FiltersPanel/QuestionAsked'
 
 interface IFiltersPanelProps {
-    dashboard: Dashboard
+    dashboard: TDashboard
     lang: string
 }
 
@@ -36,19 +37,19 @@ interface IFieldProps {
 }
 
 interface ISelectProps extends IFieldProps {
-    dashboard: Dashboard
-    options: (Option<string> | Option<boolean>)[]
-    control: Control<Filter>
+    dashboard: TDashboard
+    options: (TOption<string> | TOption<boolean>)[]
+    control: Control<TFilter>
 }
 
 interface IInputProps extends IFieldProps {
-    control: Control<Filter>
+    control: Control<TFilter>
 }
 
 interface ITab {
     id: 'tab-1' | 'tab-2'
     title: string
-    form: UseFormReturn<Filter>
+    form: UseFormReturn<TFilter>
 }
 
 export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
@@ -58,20 +59,21 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const setRefetchCampaign = useRefetchCampaignStore((state: IRefetchCampaignState) => state.setRefetchCampaign)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
+    const questionsAskedOptions = getCampaignQuestionsAskedOptions(dashboard)
 
     // Select options
-    const [countryOptions, setCountryOptions] = useState<Option<string>[]>([])
-    const [responseTopicOptions, setResponseTopicOptions] = useState<Option<string>[]>([])
-    const [ageOptions, setAgeOptions] = useState<Option<string>[]>([])
-    const [genderOptions, setGenderOptions] = useState<Option<string>[]>([])
-    const [professionOptions, setProfessionOptions] = useState<Option<string>[]>([])
-    const [onlyResponsesFromCategoriesOptions, setOnlyResponsesFromCategoriesOptions] = useState<Option<boolean>[]>([])
+    const [countryOptions, setCountryOptions] = useState<TOption<string>[]>([])
+    const [responseTopicOptions, setResponseTopicOptions] = useState<TOption<string>[]>([])
+    const [ageOptions, setAgeOptions] = useState<TOption<string>[]>([])
+    const [genderOptions, setGenderOptions] = useState<TOption<string>[]>([])
+    const [professionOptions, setProfessionOptions] = useState<TOption<string>[]>([])
+    const [onlyResponsesFromCategoriesOptions, setOnlyResponsesFromCategoriesOptions] = useState<TOption<boolean>[]>([])
     const [onlyMultiWordPhrasesContainingFilterTermOptions, setOnlyMultiWordPhrasesContainingFilterTermOptions] =
-        useState<Option<boolean>[]>([])
+        useState<TOption<boolean>[]>([])
 
     // Select regions options(s) for each filter
-    const [regionOptionsFilter1, setRegionOptionsFilter1] = useState<Option<string>[]>([])
-    const [regionOptionsFilter2, setRegionOptionsFilter2] = useState<Option<string>[]>([])
+    const [regionOptionsFilter1, setRegionOptionsFilter1] = useState<TOption<string>[]>([])
+    const [regionOptionsFilter2, setRegionOptionsFilter2] = useState<TOption<string>[]>([])
 
     // Region options for each country
     const [countriesRegionsOptions, setCountriesRegionsOptions] = useState<ICountryRegionOption[]>([])
@@ -80,7 +82,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const refetchCampaignTimeout = useRef<NodeJS.Timeout>()
 
     // Set default filter values for form
-    let defaultFilterValuesForForm: Filter
+    let defaultFilterValuesForForm: TFilter
     switch (dashboard) {
         case DashboardName.WWW_PAKISTAN:
             defaultFilterValuesForForm = { ...defaultFilterValues }
@@ -101,14 +103,14 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     }
 
     // Form 1
-    const form1 = useForm<Filter>({
+    const form1 = useForm<TFilter>({
         defaultValues: defaultFilterValuesForForm,
         resolver: zodResolver(filterSchema),
     })
     useEffect(() => setForm1(form1), [setForm1, form1])
 
     // Form 2
-    const form2 = useForm<Filter>({
+    const form2 = useForm<TFilter>({
         defaultValues: defaultFilterValuesForForm,
         resolver: zodResolver(filterSchema),
     })
@@ -173,8 +175,8 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const setRegionOptionsForFilter = useCallback(
         (
             selectedCountries: string[],
-            setRegionOptionsFilter: Dispatch<SetStateAction<Option<string>[]>>,
-            form: UseFormReturn<Filter>
+            setRegionOptionsFilter: Dispatch<SetStateAction<TOption<string>[]>>,
+            form: UseFormReturn<TFilter>
         ) => {
             // Only display regions for 1 selected country
             if (selectedCountries.length !== 1) {
@@ -326,6 +328,13 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                     'To also see all the short phrases containing your chosen keyword term, select “Show only multi-word phrases containing the filter term.”',
                 ]}
             />
+
+            {/* Question asked */}
+            {questionsAskedOptions.length > 1 && (
+                <div className="mb-5">
+                    <QuestionAsked dashboard={dashboard} />
+                </div>
+            )}
 
             {/* Filters */}
             <div className="mb-5 w-full">

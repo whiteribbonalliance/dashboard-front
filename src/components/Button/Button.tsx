@@ -1,9 +1,9 @@
 import { DashboardName } from '@enums'
 import { classNames } from '@utils'
-import { Dashboard } from '@types'
+import { TDashboard } from '@types'
 
 interface IButtonProps {
-    dashboard?: Dashboard
+    dashboard?: TDashboard
     text: string
 }
 

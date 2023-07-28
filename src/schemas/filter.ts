@@ -13,4 +13,4 @@ export const filterSchema = z.object({
     keyword_exclude: z.string(),
 })
 
-export type Filter = z.infer<typeof filterSchema>
+export type TFilter = z.infer<typeof filterSchema>

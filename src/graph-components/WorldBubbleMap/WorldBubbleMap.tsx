@@ -14,8 +14,8 @@ import { useQuery } from 'react-query'
 import { useTranslation } from '@app/i18n/client'
 import { useFilterFormsStore } from '@stores/filter-forms'
 import { UseFormReturn } from 'react-hook-form'
-import { Filter } from '@schemas/filter'
-import { Dashboard } from '@types'
+import { TFilter } from '@schemas/filter'
+import { TDashboard } from '@types'
 import { Tooltip } from '@components/Tooltip'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle } from '@fortawesome/free-solid-svg-icons'
@@ -25,7 +25,7 @@ import { Topology } from 'topojson-specification'
 import { FeatureCollection } from 'geojson'
 
 interface IWorldBubbleMapsProps {
-    dashboard: Dashboard
+    dashboard: TDashboard
     lang: string
 }
 
@@ -34,8 +34,8 @@ interface IWorldBubbleMapsCoordinateWithColor extends IWorldBubbleMapsCoordinate
 }
 
 interface ID3MapProps {
-    dashboard: Dashboard
-    form: UseFormReturn<Filter>
+    dashboard: TDashboard
+    form: UseFormReturn<TFilter>
     refetchCampaign: () => void
     respondents: string
     geoJsonFeatures: FeatureCollection

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const questionAskedSchema = z.object({
-    question_asked: z.string(),
+    question_asked_code: z.string(),
 })
 
-export type QuestionAsked = z.infer<typeof questionAskedSchema>
+export type TQuestionAsked = z.infer<typeof questionAskedSchema>

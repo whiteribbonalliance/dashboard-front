@@ -3,10 +3,10 @@ import { DashboardName } from '@enums'
 import React from 'react'
 import { applyToThousandsSepOnText, classNames, getDashboardConfig } from '@utils'
 import { useTranslation } from '@app/i18n'
-import { Dashboard } from '@types'
+import { TDashboard } from '@types'
 
 interface IFooterProps {
-    dashboard: Dashboard
+    dashboard: TDashboard
     lang: string
 }
 

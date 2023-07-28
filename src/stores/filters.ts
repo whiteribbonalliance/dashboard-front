@@ -2,11 +2,11 @@
 
 import { create } from 'zustand'
 import { defaultFilterValues } from '@constants'
-import { Filter } from '@schemas/filter'
+import { TFilter } from '@schemas/filter'
 
 interface IFilters {
-    filter1: Filter
-    filter2: Filter
+    filter1: TFilter
+    filter2: TFilter
 }
 
 export interface IFiltersState {

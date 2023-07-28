@@ -12,7 +12,7 @@ import { WorldBubbleMap } from 'graph-components/WorldBubbleMap'
 import { ResponsesSampleTable } from '@graph-components/ResponsesSampleTable'
 import { TopWordsAndPhrasesGraph } from '@graph-components/TopWordsAndPhrasesGraph'
 import { GenderBreakdownGraph } from '@graph-components/GenderBreakdownGraph'
-import { Dashboard as TDashboard } from '@types'
+import { TDashboard as TDashboard } from '@types'
 
 interface IDashboardProps {
     params: { lang: string; dashboard: TDashboard }
