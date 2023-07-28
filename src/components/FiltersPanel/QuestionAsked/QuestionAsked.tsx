@@ -8,8 +8,8 @@ import React, { useEffect } from 'react'
 import { useTranslation } from '@app/i18n/client'
 import { TDashboard } from '@types'
 import { SelectSingleValue } from '@components/SelectSingleValue'
-import { getCampaignQuestionsAskedOptions } from '@utils'
 import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
+import { useQuestionsAskedOptions } from '@hooks/use-questions-asked-options'
 
 interface IQuestionAskedProps {
     dashboard: TDashboard
@@ -17,7 +17,7 @@ interface IQuestionAskedProps {
 
 export const QuestionAsked = ({ dashboard }: IQuestionAskedProps) => {
     const { t } = useTranslation(dashboard)
-    const questionsAskedOptions = getCampaignQuestionsAskedOptions(dashboard)
+    const questionsAskedOptions = useQuestionsAskedOptions(dashboard)
     const setQuestionAskedCode = useQuestionAskedCodeStore((state) => state.setQuestionAskedCode)
 
     // Form

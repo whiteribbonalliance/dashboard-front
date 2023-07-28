@@ -195,4 +195,4 @@ export const languages: ILanguage[] = [
 
 export const defaultLanguage: ILanguage = { code: 'en', name: 'English' }
 
-export const questionCodes = ['q1', 'q2'] as const
+export const questionsCodes = ['q1', 'q2'] as const

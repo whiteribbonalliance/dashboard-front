@@ -1,7 +1,7 @@
 'use client'
 
 import { Disclosure, Tab, Transition } from '@headlessui/react'
-import { classNames, getCampaignQuestionsAskedOptions, getDashboardConfig } from '@utils'
+import { classNames, getDashboardConfig } from '@utils'
 import { DashboardName } from '@enums'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { Box } from '@components/Box'
@@ -25,6 +25,7 @@ import { Tooltip } from '@components/Tooltip'
 import { IRefetchCampaignState, useRefetchCampaignStore } from '@stores/refetch-campaign'
 import { Input } from '@components/Input'
 import { QuestionAsked } from '@components/FiltersPanel/QuestionAsked'
+import { useQuestionsAskedOptions } from '@hooks/use-questions-asked-options'
 
 interface IFiltersPanelProps {
     dashboard: TDashboard
@@ -59,7 +60,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const setRefetchCampaign = useRefetchCampaignStore((state: IRefetchCampaignState) => state.setRefetchCampaign)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
-    const questionsAskedOptions = getCampaignQuestionsAskedOptions(dashboard)
+    const questionsAskedOptions = useQuestionsAskedOptions(dashboard)
 
     // Select options
     const [countryOptions, setCountryOptions] = useState<TOption<string>[]>([])

@@ -14,5 +14,5 @@ export const configuration: IConfiguration = {
     respondentsNounPlural: 'respondents',
     dashboardLinksFooter: [whatwomenwantLink, healthliteracyLink],
     showVideoLink: 'https://www.youtube.com/watch?v=nBzide5J3Hk',
-    questionsAsked: [],
+    questionsAskedCodes: [],
 }

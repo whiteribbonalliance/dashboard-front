@@ -1,3 +1,3 @@
-import { questionCodes } from '@constants'
+import { questionsCodes } from '@constants'
 
-export type TQuestionCode = typeof questionCodes[number]
+export type TQuestionCode = typeof questionsCodes[number]

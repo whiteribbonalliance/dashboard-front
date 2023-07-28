@@ -8,8 +8,7 @@ import {
     whatYoungPeopleWantConfig,
     wwwPakistanConfig,
 } from '@configurations'
-import { TDashboard, TOption } from '@types'
-import { QuestionAsked } from '@schemas/question-asked'
+import { TDashboard } from '@types'
 
 /**
  * Merge Tailwind CSS classes
@@ -141,19 +140,4 @@ export function applyToThousandsSepOnText(text: string, lang: string) {
     }
 
     return text
-}
-
-/**
- * Get questions asked options
- *
- * @param dashboard The dashboard
- */
-export function getCampaignQuestionsAskedOptions(dashboard: TDashboard) {
-    const questionsAskedOptions: TOption<QuestionAsked['question_asked']>[] = []
-    const config = getDashboardConfig(dashboard)
-    for (let i = 0; i < config.questionsAsked.length; i++) {
-        questionsAskedOptions.push({ value: `q${i + 1}`, label: config.questionsAsked[i] })
-    }
-
-    return questionsAskedOptions
 }
