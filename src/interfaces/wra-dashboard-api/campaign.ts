@@ -14,7 +14,7 @@ export interface IResponseBreakdown {
     description: string
 }
 
-interface ITopWordsAndPhrases {
+export interface ITopWordsAndPhrases {
     wordcloud_words: IWordcloudWords[]
     top_words: ITopWords[]
     two_word_phrases: ITopWords[]
