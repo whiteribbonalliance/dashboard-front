@@ -135,17 +135,7 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
     // Set responses breakdown
     useEffect(() => {
         if (data) {
-            let tmpResponsesBreakdown
-            switch (questionAskedCode) {
-                case 'q1':
-                    tmpResponsesBreakdown = data.responses_breakdown.q1
-                    break
-                case 'q2':
-                    tmpResponsesBreakdown = data.responses_breakdown.q2
-                    break
-                default:
-                    tmpResponsesBreakdown = data.responses_breakdown.q1
-            }
+            const tmpResponsesBreakdown = data.responses_breakdown[questionAskedCode]
 
             // Set count 2 values as negative
             const tmpModifiedResponsesBreakdown: IResponseBreakdown[] = []

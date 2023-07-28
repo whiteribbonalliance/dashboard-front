@@ -2,7 +2,7 @@ import { IWordcloudWords } from './wordcloud-words'
 import { ITopWords } from './top-words'
 import { IHistogramData } from './histogram-data'
 
-interface IResponsesSample {
+export interface IResponsesSample {
     columns: [{ name: string; id: string; type: string }]
     data: any
 }
