@@ -56,7 +56,6 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
     // Form
     const form = useForm<QuestionAsked>({
         resolver: zodResolver(questionAskedSchema),
-        defaultValues: { question_asked: questionsAskedOptions[0].value },
     })
 
     // Watch field
@@ -64,12 +63,10 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
 
     // Set default value for question_asked
     useEffect(() => {
-        if (form && questionsAskedOptions.length > 1) {
-            if (!questionAskedField) {
-                form.setValue('question_asked', questionsAskedOptions[0].value)
-            }
+        if (form) {
+            form.setValue('question_asked', 'q1')
         }
-    }, [form, questionsAskedOptions, questionAskedField])
+    }, [form])
 
     // Set click view topic responses text
     let clickViewTopicResponsesText: string
@@ -250,23 +247,25 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                 {displayGraph && (
                     <>
                         <div className="mt-3 flex flex-col">
-                            <p>{t('question-asked')}: </p>
                             {/* Select */}
-                            {questionsAskedOptions.length > 1 && (
-                                <div className="w-full max-w-sm">
-                                    <Controller
-                                        name="question_asked"
-                                        control={form.control}
-                                        render={({ field: { onChange, value } }) => (
-                                            <SelectSingleValue
-                                                id="select-show-breakdown-by"
-                                                options={questionsAskedOptions}
-                                                value={value}
-                                                controllerRenderOnChange={onChange}
-                                            />
-                                        )}
-                                    />
-                                </div>
+                            {questionsAskedOptions.length > 0 && (
+                                <>
+                                    <p>{t('question-asked')}: </p>
+                                    <div className="mt-3 w-full max-w-sm">
+                                        <Controller
+                                            name="question_asked"
+                                            control={form.control}
+                                            render={({ field: { onChange, value } }) => (
+                                                <SelectSingleValue
+                                                    id="select-show-breakdown-by"
+                                                    options={questionsAskedOptions}
+                                                    value={value}
+                                                    controllerRenderOnChange={onChange}
+                                                />
+                                            )}
+                                        />
+                                    </div>
+                                </>
                             )}
 
                             {/* Bar chart */}
