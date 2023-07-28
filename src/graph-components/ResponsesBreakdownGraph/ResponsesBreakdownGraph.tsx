@@ -95,6 +95,9 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
             breakdownResponsesTopicText = t(`${config.campaignCode}-breakdown-responses-topic`)
             break
+        case DashboardName.GIZ:
+            breakdownResponsesTopicText = t(`${config.campaignCode}-breakdown-responses-topic`)
+            break
         default:
             breakdownResponsesTopicText = t('breakdown-responses-topic')
     }

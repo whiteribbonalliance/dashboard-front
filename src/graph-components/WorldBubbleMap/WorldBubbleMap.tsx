@@ -103,6 +103,9 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
         case DashboardName.WHAT_WOMEN_WANT:
             respondentsLocatedText = t(`${config.campaignCode}-where-located`)
             break
+        case DashboardName.GIZ:
+            respondentsLocatedText = t(`${config.campaignCode}-where-located`)
+            break
         default:
             respondentsLocatedText = t('where-located')
     }
