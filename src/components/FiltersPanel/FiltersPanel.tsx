@@ -85,11 +85,11 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     // Set default filter values for form
     let defaultFilterValuesForForm: TFilter
     switch (dashboard) {
-        case DashboardName.WWW_PAKISTAN:
+        case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
             defaultFilterValuesForForm = { ...defaultFilterValues }
             defaultFilterValuesForForm.countries = ['PK']
             break
-        case DashboardName.GIZ:
+        case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
             defaultFilterValuesForForm = { ...defaultFilterValues }
             defaultFilterValuesForForm.countries = ['MX']
             break
@@ -99,7 +99,10 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
     // Set display countries filter tooltip
     let displayCountriesFilterTooltip = true
-    if (dashboard === DashboardName.WWW_PAKISTAN || dashboard === DashboardName.GIZ) {
+    if (
+        dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN ||
+        dashboard === DashboardName.ECONOMIC_EMPOWERMENT_MEXICO
+    ) {
         displayCountriesFilterTooltip = false
     }
 
@@ -746,7 +749,10 @@ const SelectRegions = ({ id, options, control, refetchCampaign }: ISelectProps) 
 const SelectCountries = ({ id, dashboard, options, control, refetchCampaign }: ISelectProps) => {
     // Set disabled
     let disabled = false
-    if (dashboard === DashboardName.WWW_PAKISTAN || dashboard === DashboardName.GIZ) {
+    if (
+        dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN ||
+        dashboard === DashboardName.ECONOMIC_EMPOWERMENT_MEXICO
+    ) {
         disabled = true
     }
 

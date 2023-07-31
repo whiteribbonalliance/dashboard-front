@@ -9,10 +9,16 @@ export const useQuestionsAskedOptions = (dashboard: TDashboard) => {
     const { t } = useTranslation(dashboard)
     const config = getDashboardConfig(dashboard)
 
+    // Campaigns with one question only do not require questions asked options
+    if (config.questionsAskedCodes.length < 2) {
+        return questionsAskedOptions
+    }
+
     // Set questions asked options
     for (let i = 0; i < config.questionsAskedCodes.length; i++) {
+        const value = config.questionsAskedCodes[i]
         const label = t(`${dashboard}-${config.questionsAskedCodes[i]}`)
-        questionsAskedOptions.push({ value: config.questionsAskedCodes[i], label: label })
+        questionsAskedOptions.push({ value, label })
     }
 
     return questionsAskedOptions

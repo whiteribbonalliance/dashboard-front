@@ -1,7 +1,7 @@
 'use client'
 
 import { Box } from '@components/Box'
-import { useCampaignQuery } from '@hooks/use-campaign'
+import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { useTranslation } from '@app/i18n/client'
 import { toThousandsSep } from '@utils'
 import { TDashboard } from '@types'

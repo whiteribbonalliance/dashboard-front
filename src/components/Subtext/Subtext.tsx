@@ -14,7 +14,7 @@ export const Subtext = async ({ dashboard, lang }: ISubtextProps) => {
 
     return (
         <div className="max-w-6xl text-center text-lg">
-            {dashboard === DashboardName.GIZ ? (
+            {dashboard === DashboardName.ECONOMIC_EMPOWERMENT_MEXICO ? (
                 <>
                     <p className="mb-3">{applyToThousandsSepOnText(t('giz-asked-questions'), lang)}:</p>
                     <p className="mb-3">

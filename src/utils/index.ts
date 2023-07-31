@@ -1,12 +1,12 @@
 import { DashboardName } from '@enums'
 import { parseDomain } from 'parse-domain'
 import {
-    gizConfig,
-    healthWellBeingConfig,
+    economicEmpowermentMexicoConfig,
+    healthwellbeingConfig,
     midwivesVoicesConfig,
     whatWomenWantConfig,
+    whatWomenWantPakistanConfig,
     whatYoungPeopleWantConfig,
-    wwwPakistanConfig,
 } from '@configurations'
 import { TDashboard } from '@types'
 
@@ -32,12 +32,12 @@ export function getDashboardConfig(dashboard: TDashboard) {
             return whatYoungPeopleWantConfig
         case DashboardName.MIDWIVES_VOICES:
             return midwivesVoicesConfig
-        case DashboardName.HEALTH_WELL_BEING:
-            return healthWellBeingConfig
-        case DashboardName.GIZ:
-            return gizConfig
-        case DashboardName.WWW_PAKISTAN:
-            return wwwPakistanConfig
+        case DashboardName.HEALTHWELLBEING:
+            return healthwellbeingConfig
+        case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
+            return economicEmpowermentMexicoConfig
+        case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
+            return whatWomenWantPakistanConfig
     }
 }
 

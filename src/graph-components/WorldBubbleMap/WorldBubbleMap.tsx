@@ -2,7 +2,7 @@
 
 import { Box } from '@components/Box'
 import { GraphTitle } from '@components/GraphTitle'
-import { useCampaignQuery } from '@hooks/use-campaign'
+import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { GraphError } from '@components/GraphError'
 import { GraphLoading } from '@components/GraphLoading'
 import * as d3 from 'd3'
@@ -103,7 +103,7 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
         case DashboardName.WHAT_WOMEN_WANT:
             respondentsLocatedText = t(`${config.campaignCode}-where-located`)
             break
-        case DashboardName.GIZ:
+        case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
             respondentsLocatedText = t(`${config.campaignCode}-where-located`)
             break
         default:
@@ -231,7 +231,10 @@ const D3Map = ({
         async function drawWorldBubbleMap() {
             // Set view box
             let viewBox = `0 -125 ${svgWidth} ${svgHeight}`
-            if (dashboard === DashboardName.WWW_PAKISTAN || dashboard === DashboardName.GIZ) {
+            if (
+                dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN ||
+                dashboard === DashboardName.ECONOMIC_EMPOWERMENT_MEXICO
+            ) {
                 viewBox = `0 0 ${svgWidth} ${svgHeight}`
             }
 
@@ -254,11 +257,11 @@ const D3Map = ({
             const projection = d3.geoMercator().translate([svgWidth / 2, svgHeight / 2])
 
             // Zoom on map
-            if (dashboard === DashboardName.GIZ) {
+            if (dashboard === DashboardName.ECONOMIC_EMPOWERMENT_MEXICO) {
                 projection
                     .center([-99.1, 19.25]) // GPS of location of Mexico City to zoom on
                     .scale(38000) // Zoom
-            } else if (dashboard === DashboardName.WWW_PAKISTAN) {
+            } else if (dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN) {
                 projection
                     .center([70, 30.5]) // GPS of location of Pakistan to zoom on
                     .scale(2000) // Zoom
@@ -268,10 +271,10 @@ const D3Map = ({
 
             // For 'wwwpakistan', only show the respective country on the map (GeoJSON)
             switch (dashboard) {
-                case DashboardName.WWW_PAKISTAN:
+                case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
                     geoJsonFeatures.features = geoJsonFeatures.features.filter((d) => d.properties?.name === 'Pakistan')
                     break
-                case DashboardName.GIZ:
+                case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
                     // Uses TopoJSON
                     // dataGeo.features = dataGeo.features.filter((d) => d.properties.name === 'Mexico')
                     break
@@ -319,7 +322,7 @@ const D3Map = ({
             // Draw the map
             const fillColor = '#b7b7b7'
             switch (dashboard) {
-                case DashboardName.GIZ:
+                case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
                     // Use topoJSON for Mexico
                     svgEl
                         .append('path')
@@ -374,10 +377,10 @@ const D3Map = ({
             // On click (show country or region info)
             const onClick = (e: MouseEvent, d: IWorldBubbleMapsCoordinateWithColor) => {
                 switch (dashboard) {
-                    case DashboardName.WWW_PAKISTAN:
+                    case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
                         form.setValue('regions', [d.location_code])
                         break
-                    case DashboardName.GIZ:
+                    case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
                         form.setValue('regions', [d.location_code])
                         break
                     default:

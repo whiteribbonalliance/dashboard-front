@@ -14,7 +14,7 @@ import {
 } from '@tanstack/react-table'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Chevron } from '@components/Chevron'
-import { useCampaignQuery } from '@hooks/use-campaign'
+import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { classNames, getDashboardConfig } from '@utils'
 import { GraphLoading } from 'components/GraphLoading'
 import { GraphError } from 'components/GraphError'

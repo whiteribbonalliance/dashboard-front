@@ -3,7 +3,7 @@
 import { Box } from '@components/Box'
 import { GraphTitle } from '@components/GraphTitle'
 import { DashboardName } from '@enums'
-import { useCampaignQuery } from '@hooks/use-campaign'
+import { useCampaignQuery } from '@hooks/use-campaign-query'
 import {
     Bar,
     BarChart,
@@ -95,7 +95,7 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
             breakdownResponsesTopicText = t(`${config.campaignCode}-breakdown-responses-topic`)
             break
-        case DashboardName.GIZ:
+        case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
             breakdownResponsesTopicText = t(`${config.campaignCode}-breakdown-responses-topic`)
             break
         default:

@@ -2,7 +2,7 @@
 
 import { Box } from '@components/Box'
 import { GraphTitle } from '@components/GraphTitle'
-import { useCampaignQuery } from '@hooks/use-campaign'
+import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { GraphError } from '@components/GraphError'
 import { GraphLoading } from '@components/GraphLoading'
 import React from 'react'

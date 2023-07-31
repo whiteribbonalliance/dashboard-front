@@ -5,7 +5,7 @@ import { DashboardName } from '@enums'
 const title = 'Economic Empowerment in Mexico'
 
 export const configuration: IConfiguration = {
-    id: DashboardName.GIZ,
+    id: DashboardName.ECONOMIC_EMPOWERMENT_MEXICO,
     campaignCode: 'giz',
     seoTitle: `${title} | ${seoMainTitle}`,
     seoMetaDescription:
