@@ -60,18 +60,29 @@ export const Footer = async ({ dashboard, lang }: IFooterProps) => {
     return (
         <footer className="mx-7 my-7 flex flex-col gap-y-5 text-lg">
             <div>
+                {/* Data displayed survey */}
+                {dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT && (
+                    <div className="max-w-5xl">
+                        <p>{t('pmn01a-data-displayed-survey')}</p>
+                    </div>
+                )}
+
                 {/* Informed consent */}
-                <div>
-                    <p>* {informedConsentText}</p>
-                </div>
+                {dashboard !== DashboardName.WHAT_YOUNG_PEOPLE_WANT && (
+                    <div>
+                        <p>* {informedConsentText}</p>
+                    </div>
+                )}
 
                 {/* Footer note */}
                 {footerNote && <div>{footerNote}</div>}
 
                 {/* Protect anonymity */}
-                <div>
-                    <p>{t('to-protect-anonymity')}</p>
-                </div>
+                {dashboard !== DashboardName.WHAT_YOUNG_PEOPLE_WANT && (
+                    <div>
+                        <p>{t('to-protect-anonymity')}</p>
+                    </div>
+                )}
             </div>
 
             {/* Other dashboards */}

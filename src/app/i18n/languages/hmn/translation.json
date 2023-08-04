@@ -40,6 +40,7 @@
     "about": "Txog",
     "women-informed-consent": "Txhua tus poj niam hauv kev sib tw tau txais kev pom zoo.",
     "respondents-informed-consent": "Txhua tus neeg teb hauv qhov kev sib tw tau txais kev pom zoo.",
+    "pmn01a-data-displayed-survey": "Cov ntaub ntawv tso tawm ntawm lub dashboard no yog sau ncaj qha los ntawm kev soj ntsuam cov lus teb thiab tsis yog los ntawm lub teb chaws cov ntaub ntawv txheeb cais lossis cov ntaub ntawv teev tseg. Nws sawv cev rau cov kev xav uas tau hais los ntawm cov tub ntxhais hluas thaum lub sijhawm tshawb fawb, thiab txhua qhov kev txiav txim siab los ntawm cov lus teb no yog lub luag haujlwm ntawm tus neeg siv, tsis yog PMNCH. PMNCH tau cog lus tias yuav hwm, txhawb nqa thiab tiv thaiv txoj cai thiab kev noj qab haus huv ntawm txhua tus tib neeg. Txhua qhov kev xav tau hais tawm hauv cov lus teb los yog cov ntaub ntawv luam tawm tawm los ntawm lub dashboard uas cuam tshuam qhov kev cog lus no tsis tau pom zoo los ntawm PMNCH.",
     "wra03a-question-asked": "Nqe Lus Nug: Koj qhov kev thov ib qho twg rau kev pabcuam kev tsim menyuam yaus thiab kev noj qab haus huv ntawm niam txiv?",
     "midwife-question-asked": "Lo lus nug: Koj xav tau dab tsi hauv koj lub luag haujlwm ua tus kws yug menyuam?",
     "pmn01a-question-asked": "Lo lus nug: Txhawm rau txhim kho kuv txoj kev noj qab haus huv, Kuv xav ...",
