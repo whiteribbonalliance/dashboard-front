@@ -454,7 +454,11 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                 className="mb-1 w-fit"
                                                                 data-tooltip-id="filters-panel-select-age"
                                                             >
-                                                                {t('filter-by-age-or-select-histogram')}
+                                                                {/* The replace function is usd to replace a text within parenthesis from the translation */}
+                                                                {t('filter-by-age-or-select-histogram').replace(
+                                                                    / *\([^)]*\) */g,
+                                                                    ''
+                                                                )}
                                                             </div>
                                                             <SelectAges
                                                                 id={`select-ages-${id}`}
