@@ -1,5 +1,3 @@
-'use client'
-
 import { TDashboard } from '@types'
 import { useTranslation } from '@app/i18n'
 import { applyToThousandsSepOnText, classNames, getDashboardConfig } from '@utils'
