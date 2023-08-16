@@ -84,7 +84,11 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
 
         switch (showBreakdownByField) {
             case 'breakdown-age':
-                return 1900
+                if (dashboard == DashboardName.HEALTHWELLBEING) {
+                    return 1900
+                } else {
+                    return 650
+                }
             case 'breakdown-age-range':
                 return 550
             case 'breakdown-gender':
@@ -92,7 +96,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
             default:
                 return 1100
         }
-    }, [showBreakdownByField])
+    }, [dashboard, showBreakdownByField])
 
     // Set bars fill
     let bar1Fill: string
