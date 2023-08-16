@@ -84,7 +84,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
 
         switch (showBreakdownByField) {
             case 'breakdown-age':
-                if (dashboard == DashboardName.HEALTHWELLBEING) {
+                if (dashboard === DashboardName.HEALTHWELLBEING) {
                     return 1900
                 } else {
                     return 650
