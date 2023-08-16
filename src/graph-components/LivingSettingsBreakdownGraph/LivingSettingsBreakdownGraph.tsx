@@ -15,19 +15,16 @@ import {
     XAxis,
     YAxis,
 } from 'recharts'
-import { classNames, getDashboardConfig, niceNum, toThousandsSep } from '@utils'
+import { classNames, niceNum, toThousandsSep } from '@utils'
 import { GraphLoading } from 'components/GraphLoading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
-import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
 import { TDashboard } from '@types'
 import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
-import { Tooltip } from '@components/Tooltip'
-import { useRefetchCampaignStore } from '@stores/refetch-campaign'
-import { IResponseBreakdown } from '@interfaces'
+import { ILivingSettingBreakdown } from '@interfaces'
 import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
 
-interface IResponsesBreakdownGraphProps {
+interface ILivingSettingsBreakdownGraphProps {
     dashboard: TDashboard
     lang: string
 }
@@ -39,26 +36,12 @@ interface ICustomTooltip extends TooltipProps<number, string> {
     lang: string
 }
 
-export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdownGraphProps) => {
+export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSettingsBreakdownGraphProps) => {
     const { data, isError } = useCampaignQuery(dashboard, lang)
-    const [responsesBreakdown, setResponsesBreakdown] = useState<IResponseBreakdown[]>([])
-    const form1 = useFilterFormsStore((state: IFilterFormsState) => state.form1)
-    const questionAskedCode = useQuestionAskedCodeStore((state) => state.questionAskedCode)
-    const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
+    const [livingSettingsBreakdown, setLivingSettingsBreakdown] = useState<ILivingSettingBreakdown[]>([])
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
     const { t } = useTranslation(lang)
-    const config = getDashboardConfig(dashboard)
-
-    // Set click view topic responses text
-    let clickViewTopicResponsesText: string
-    switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
-            clickViewTopicResponsesText = t(`${config.campaignCode}-click-view-topic-responses`)
-            break
-        default:
-            clickViewTopicResponsesText = t('click-view-topic-responses')
-    }
 
     // Set bars fill
     let bar1Fill: string
@@ -86,22 +69,6 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
             bar2Classes = 'fill-defaultColors-tertiary hover:fill-defaultColors-tertiaryFaint'
     }
 
-    // Set breakdown responses topic text
-    let breakdownResponsesTopicText: string
-    switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
-            breakdownResponsesTopicText = t(`${config.campaignCode}-breakdown-responses-topic`)
-            break
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            breakdownResponsesTopicText = t(`${config.campaignCode}-breakdown-responses-topic`)
-            break
-        case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
-            breakdownResponsesTopicText = t(`${config.campaignCode}-breakdown-responses-topic`)
-            break
-        default:
-            breakdownResponsesTopicText = t('breakdown-responses-topic')
-    }
-
     // Format x-axis numbers
     function xAxisFormatter(item: number) {
         return toThousandsSep(Math.abs(item), lang).toString()
@@ -109,20 +76,20 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
 
     // Determine the max value for the x-axis
     const getMaxValueX = useMemo(() => {
-        if (responsesBreakdown.length < 1) return 0
+        if (livingSettingsBreakdown.length < 1) return 0
 
         // Find the max value for count_1
         const count1Max = Math.abs(
-            responsesBreakdown.reduce((prev, curr) => (prev.count_1 > curr.count_1 ? prev : curr)).count_1
+            livingSettingsBreakdown.reduce((prev, curr) => (prev.count_1 > curr.count_1 ? prev : curr)).count_1
         )
 
         // Find the max value for count_2 (count_2 has negative numbers) and convert the number to positive
         const count2Max = Math.abs(
-            responsesBreakdown.reduce((prev, curr) => (prev.count_2 < curr.count_2 ? prev : curr)).count_2
+            livingSettingsBreakdown.reduce((prev, curr) => (prev.count_2 < curr.count_2 ? prev : curr)).count_2
         )
 
         return niceNum(Math.max(count1Max, count2Max), false)
-    }, [responsesBreakdown])
+    }, [livingSettingsBreakdown])
 
     // Domain for x-axis
     const xAxisDomain = useMemo(() => {
@@ -135,32 +102,22 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
         }
     }, [data, getMaxValueX])
 
-    // Set responses breakdown
+    // Set living settings breakdown
     useEffect(() => {
         if (data) {
-            const tmpResponsesBreakdown = data.responses_breakdown[questionAskedCode]
+            const tmpLivingSettingsBreakdown = data.living_settings_breakdown
 
             // Set count 2 values as negative
-            const tmpModifiedResponsesBreakdown: IResponseBreakdown[] = []
-            for (const datum of tmpResponsesBreakdown) {
+            const tmpModifiedLivingSettingsBreakdown: ILivingSettingBreakdown[] = []
+            for (const datum of tmpLivingSettingsBreakdown) {
                 const tmpDatum = datum
                 tmpDatum.count_2 = -tmpDatum.count_2
-                tmpModifiedResponsesBreakdown.push(tmpDatum)
+                tmpModifiedLivingSettingsBreakdown.push(tmpDatum)
             }
 
-            setResponsesBreakdown(tmpModifiedResponsesBreakdown)
+            setLivingSettingsBreakdown(tmpModifiedLivingSettingsBreakdown)
         }
-    }, [data, questionAskedCode])
-
-    // Set response topic
-    function setResponseTopic(payload: any) {
-        if (form1) {
-            form1.setValue('response_topics', [payload.code])
-            if (refetchCampaign) {
-                refetchCampaign()
-            }
-        }
-    }
+    }, [data])
 
     // Legend formatter
     function legendFormatter(value: string) {
@@ -191,26 +148,14 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
     }
 
     // Display graph or not
-    const displayGraph = !!data && !!responsesBreakdown
+    const displayGraph = !!data && !!livingSettingsBreakdown
 
     return (
         <div>
-            {/* Tooltip: responses breakdown */}
-            <Tooltip
-                id="responses-breakdown"
-                dashboard={dashboard}
-                title={'Topic breakdown'}
-                paragraphs={[
-                    'Each topic category is represented as a bar. The length of the bar represents how many respondents responded in that category.',
-                    'You can click on a topic bar to filter for that category.',
-                ]}
-            />
-
             <Box>
                 <div data-tooltip-id="responses-breakdown">
-                    <GraphTitle dashboard={dashboard} text={breakdownResponsesTopicText} />
+                    <GraphTitle dashboard={dashboard} text={t('living-settings')} />
                 </div>
-                <p>{clickViewTopicResponsesText}</p>
 
                 {/* Error */}
                 {!data && isError && <GraphError dashboard={dashboard} />}
@@ -226,7 +171,7 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                             <div className="mb-3 mt-3 w-full">
                                 <ResponsiveContainer height={400} className="bg-white">
                                     <BarChart
-                                        data={responsesBreakdown}
+                                        data={livingSettingsBreakdown}
                                         margin={{ top: 15, right: 50, left: 10, bottom: 15 }}
                                         width={750}
                                         height={500}
@@ -249,7 +194,7 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                                             tickFormatter={(item) => xAxisFormatter(item)}
                                         />
                                         <YAxis
-                                            dataKey="description"
+                                            dataKey="name"
                                             type="category"
                                             axisLine={false}
                                             tickLine={false}
@@ -277,7 +222,6 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                                                 className={classNames('hover:cursor-pointer', bar2Classes)}
                                                 fill={bar2Fill}
                                                 minPointSize={15}
-                                                onClick={setResponseTopic}
                                                 stackId={0}
                                                 onMouseOver={() => setHoveredBarDataKey('count_2')}
                                                 onMouseEnter={toggleShowTooltip}
@@ -289,7 +233,6 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                                             className={classNames('hover:cursor-pointer', bar1Classes)}
                                             fill={bar1Fill}
                                             minPointSize={5}
-                                            onClick={setResponseTopic}
                                             stackId={0}
                                             onMouseOver={() => setHoveredBarDataKey('count_1')}
                                             onMouseEnter={toggleShowTooltip}

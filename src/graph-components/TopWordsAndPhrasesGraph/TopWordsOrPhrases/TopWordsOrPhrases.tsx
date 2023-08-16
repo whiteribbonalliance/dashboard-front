@@ -78,10 +78,10 @@ export const TopWordsOrPhrases = ({
 
     // Legend formatter
     function legendFormatter(value: string) {
-        if (value == 'count_1') {
+        if (value === 'count_1') {
             return <span className="text-black">{filter1Description}</span>
         }
-        if (value == 'count_2') {
+        if (value === 'count_2') {
             return (
                 <span className="text-black">
                     {filter2Description} ({t('normalized')})

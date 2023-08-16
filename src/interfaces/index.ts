@@ -14,6 +14,7 @@ export type {
     IResponseBreakdown,
     IResponsesSample,
     ITopWordsAndPhrases,
+    ILivingSettingBreakdown,
 } from './wra-dashboard-api/campaign'
 export type { IWordcloudWords } from './wra-dashboard-api/wordcloud-words'
 export type { ITopWords } from './wra-dashboard-api/top-words'

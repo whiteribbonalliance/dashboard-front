@@ -210,7 +210,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
     }
 
     // Display graph or not
-    const displayGraph = data && currentHistogramData && showBreakdownByField
+    const displayGraph = !!data && !!currentHistogramData && !!showBreakdownByField
 
     return (
         <Box>

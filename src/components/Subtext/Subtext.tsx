@@ -4,6 +4,7 @@ import { applyToThousandsSepOnText, classNames, getDashboardConfig } from '@util
 import { DashboardName } from '@enums'
 import Link from 'next/link'
 import React from 'react'
+import { NodeType } from 'yaml/dist/nodes/Node'
 
 const HtmlToReact = require('html-to-react')
 const HtmlToReactParser = require('html-to-react').Parser
@@ -57,9 +58,7 @@ export const Subtext = async ({ dashboard, lang }: ISubtextProps) => {
             // Processing instructions for the parser
             const processingInstructions = [
                 {
-                    shouldProcessNode: (node: any) => {
-                        return node.name === 'a'
-                    },
+                    shouldProcessNode: (node: any) => node.name === 'a',
                     processNode: (node: any, children: any, index: number) => {
                         return (
                             <Link

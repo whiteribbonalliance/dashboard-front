@@ -47,9 +47,16 @@ interface IWorldBubbleMapsCoordinates {
     coordinates_2: IWorldBubbleMapsCoordinate[]
 }
 
+export interface ILivingSettingBreakdown {
+    name: string
+    count_1: number
+    count_2: number
+}
+
 export interface ICampaign {
     responses_sample: { q1: IResponsesSample; q2: IResponsesSample }
     responses_breakdown: { q1: IResponseBreakdown[]; q2: IResponseBreakdown[] }
+    living_settings_breakdown: ILivingSettingBreakdown[]
     top_words_and_phrases: { q1: ITopWordsAndPhrases; q2: ITopWordsAndPhrases }
     histogram: IHistogram
     genders_breakdown: IGenderData[]

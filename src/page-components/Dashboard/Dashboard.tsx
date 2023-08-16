@@ -13,6 +13,7 @@ import { ResponsesSampleTable } from '@graph-components/ResponsesSampleTable'
 import { TopWordsAndPhrasesGraph } from '@graph-components/TopWordsAndPhrasesGraph'
 import { GenderBreakdownGraph } from '@graph-components/GenderBreakdownGraph'
 import { TDashboard as TDashboard } from '@types'
+import { LivingSettingsBreakdownGraph } from '@graph-components/LivingSettingsBreakdownGraph'
 
 interface IDashboardProps {
     params: { lang: string; dashboard: TDashboard }
@@ -36,6 +37,44 @@ export const Dashboard = ({ params }: IDashboardProps) => {
             boxesGapY = 'gap-y-[200px]'
     }
 
+    let graphs
+    switch (dashboard) {
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+            graphs = (
+                <>
+                    <ResponsesBreakdownGraph dashboard={dashboard} lang={lang} />
+                    <WorldBubbleMap dashboard={dashboard} lang={lang} />
+                    <WhoThePeopleAreGraph dashboard={dashboard} lang={lang} />
+                    <GenderBreakdownGraph dashboard={dashboard} lang={lang} />
+                    <TopWordsAndPhrasesGraph dashboard={dashboard} lang={lang} />
+                    <ResponsesSampleTable dashboard={dashboard} lang={lang} />
+                </>
+            )
+            break
+        case DashboardName.HEALTHWELLBEING:
+            graphs = (
+                <>
+                    <TopWordsAndPhrasesGraph dashboard={dashboard} lang={lang} />
+                    <ResponsesSampleTable dashboard={dashboard} lang={lang} />
+                    <WorldBubbleMap dashboard={dashboard} lang={lang} />
+                    <ResponsesBreakdownGraph dashboard={dashboard} lang={lang} />
+                    <LivingSettingsBreakdownGraph dashboard={dashboard} lang={lang} />
+                    <WhoThePeopleAreGraph dashboard={dashboard} lang={lang} />
+                </>
+            )
+            break
+        default:
+            graphs = (
+                <>
+                    <TopWordsAndPhrasesGraph dashboard={dashboard} lang={lang} />
+                    <ResponsesSampleTable dashboard={dashboard} lang={lang} />
+                    <WorldBubbleMap dashboard={dashboard} lang={lang} />
+                    <ResponsesBreakdownGraph dashboard={dashboard} lang={lang} />
+                    <WhoThePeopleAreGraph dashboard={dashboard} lang={lang} />
+                </>
+            )
+    }
+
     return (
         <>
             {/* Title */}
@@ -57,27 +96,8 @@ export const Dashboard = ({ params }: IDashboardProps) => {
                     <FiltersPanel dashboard={dashboard} lang={lang} />
                 </section>
 
-                {/* Graphs, table & maps */}
-                <section className={classNames('col-span-2 grid grid-cols-1', boxesGapY)}>
-                    {DashboardName.WHAT_YOUNG_PEOPLE_WANT === dashboard ? (
-                        <>
-                            <ResponsesBreakdownGraph dashboard={dashboard} lang={lang} />
-                            <WorldBubbleMap dashboard={dashboard} lang={lang} />
-                            <WhoThePeopleAreGraph dashboard={dashboard} lang={lang} />
-                            <GenderBreakdownGraph dashboard={dashboard} lang={lang} />
-                            <TopWordsAndPhrasesGraph dashboard={dashboard} lang={lang} />
-                            <ResponsesSampleTable dashboard={dashboard} lang={lang} />
-                        </>
-                    ) : (
-                        <>
-                            <TopWordsAndPhrasesGraph dashboard={dashboard} lang={lang} />
-                            <ResponsesSampleTable dashboard={dashboard} lang={lang} />
-                            <WorldBubbleMap dashboard={dashboard} lang={lang} />
-                            <ResponsesBreakdownGraph dashboard={dashboard} lang={lang} />
-                            <WhoThePeopleAreGraph dashboard={dashboard} lang={lang} />
-                        </>
-                    )}
-                </section>
+                {/* Graphs, table, map */}
+                <section className={classNames('col-span-2 grid grid-cols-1', boxesGapY)}>{graphs}</section>
             </div>
         </>
     )

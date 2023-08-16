@@ -559,7 +559,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                         </div>
 
                                                         {/* Show multi-word phrases */}
-                                                        {id == 'tab-1' && (
+                                                        {id === 'tab-1' && (
                                                             <div className="flex flex-col">
                                                                 <div
                                                                     className="mb-1 w-fit"
