@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import Image from 'next/image'
 import { DashboardName } from '@enums'
 import { TDashboard } from '@types'
@@ -11,15 +10,13 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
     const WhiteRibbonAllianceLogo = () => {
         return (
             <div>
-                <Link href={'/'}>
-                    <Image
-                        className="max-h-[3rem] w-full max-w-[17rem] xl:max-h-[4rem]"
-                        src="/wra_logo.png"
-                        alt="white ribbon alliance logo"
-                        width={1117}
-                        height={200}
-                    />
-                </Link>
+                <Image
+                    className="max-h-[3rem] w-full max-w-[17rem] xl:max-h-[4rem]"
+                    src="/wra_logo.png"
+                    alt="white ribbon alliance logo"
+                    width={1117}
+                    height={200}
+                />
             </div>
         )
     }
@@ -27,15 +24,13 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
     const WhatWomenWantLogo = () => {
         return (
             <div>
-                <Link href={'/'}>
-                    <Image
-                        className="max-h-[3rem] w-full max-w-[17rem] xl:max-h-[5rem]"
-                        src="/whatwomenwant/www_horizontal_logo.png"
-                        alt="what women want logo"
-                        width={1117}
-                        height={200}
-                    />
-                </Link>
+                <Image
+                    className="max-h-[3rem] w-full max-w-[17rem] xl:max-h-[5rem]"
+                    src="/whatwomenwant/www_horizontal_logo.png"
+                    alt="what women want logo"
+                    width={1117}
+                    height={200}
+                />
             </div>
         )
     }
@@ -43,15 +38,13 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
     const PushWithWomenLogo = () => {
         return (
             <div>
-                <Link href={'/'}>
-                    <Image
-                        className="max-h-[3rem] w-full max-w-[17rem] xl:max-h-[4rem]"
-                        src="/midwivesvoices/push_with_women.png"
-                        alt="push with women logo"
-                        width={1117}
-                        height={200}
-                    />
-                </Link>
+                <Image
+                    className="max-h-[3rem] w-full max-w-[17rem] xl:max-h-[4rem]"
+                    src="/midwivesvoices/push_with_women.png"
+                    alt="push with women logo"
+                    width={1117}
+                    height={200}
+                />
             </div>
         )
     }
@@ -73,15 +66,13 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
     const PmnchLogo = () => {
         return (
             <div>
-                <Link href={'/'}>
-                    <Image
-                        className="my-[-10px] max-h-[3.5rem] w-full max-w-[20rem] xl:max-h-[5rem]"
-                        src="/whatyoungpeoplewant/pmnch_logo.png"
-                        alt="pmnch logo"
-                        width={1117}
-                        height={200}
-                    />
-                </Link>
+                <Image
+                    className="my-[-10px] max-h-[3.5rem] w-full max-w-[20rem] xl:max-h-[5rem]"
+                    src="/whatyoungpeoplewant/pmnch_logo.png"
+                    alt="pmnch logo"
+                    width={1117}
+                    height={200}
+                />
             </div>
         )
     }
