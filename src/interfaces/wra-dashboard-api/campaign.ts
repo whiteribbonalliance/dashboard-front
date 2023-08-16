@@ -23,6 +23,7 @@ export interface ITopWordsAndPhrases {
 
 interface IHistogram {
     age: IHistogramData[]
+    age_range: IHistogramData[]
     gender: IHistogramData[]
     profession: IHistogramData[]
     region: IHistogramData[]

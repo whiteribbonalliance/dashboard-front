@@ -69,10 +69,14 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
     useEffect(() => {
         if (whoThePeopleAreOptions.length > 0) {
             if (!showBreakdownByField) {
-                form.setValue('show_breakdown_by', whoThePeopleAreOptions[0].value)
+                if (dashboard === DashboardName.HEALTHWELLBEING) {
+                    form.setValue('show_breakdown_by', 'breakdown-age-range')
+                } else {
+                    form.setValue('show_breakdown_by', whoThePeopleAreOptions[0].value)
+                }
             }
         }
-    }, [form, whoThePeopleAreOptions, showBreakdownByField])
+    }, [dashboard, form, whoThePeopleAreOptions, showBreakdownByField])
 
     // Container height
     const containerHeight = useMemo(() => {
@@ -80,9 +84,11 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
 
         switch (showBreakdownByField) {
             case 'breakdown-age':
+                return 1900
+            case 'breakdown-age-range':
                 return 550
             case 'breakdown-gender':
-                return 500
+                return 550
             default:
                 return 1100
         }
@@ -121,19 +127,23 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
             switch (showBreakdownByField) {
                 case 'breakdown-age':
                     histogramData = data.histogram.age
-                    setParagraph(t('number-ages-respondents') as string)
+                    setParagraph(t('number-ages-respondents'))
+                    break
+                case 'breakdown-age-range':
+                    histogramData = data.histogram.age_range
+                    setParagraph(t('number-ages-respondents'))
                     break
                 case 'breakdown-gender':
                     histogramData = data.histogram.gender
-                    setParagraph(t('number-ages-respondents') as string)
+                    setParagraph(t('number-ages-respondents'))
                     break
                 case 'breakdown-profession':
-                    histogramData = data?.histogram.profession
-                    setParagraph(t('number-ages-respondents') as string)
+                    histogramData = data.histogram.profession
+                    setParagraph(t('number-ages-respondents'))
                     break
                 case 'breakdown-country':
                     histogramData = data.histogram.canonical_country
-                    setParagraph(t('countries-respondents-located-in') as string)
+                    setParagraph(t('countries-respondents-located-in'))
                     break
                 default:
                     histogramData = []
