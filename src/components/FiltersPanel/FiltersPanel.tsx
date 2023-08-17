@@ -153,7 +153,15 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
             setCountriesRegionsOptions(filterOptions.country_regions)
 
             // Response topic options
-            setResponseTopicOptions(filterOptions.response_topics)
+            setResponseTopicOptions(
+                filterOptions.response_topics.map((responseTopic) => {
+                    return {
+                        value: responseTopic.value,
+                        label: responseTopic.label,
+                        metadata: responseTopic.metadata,
+                    } as TOption<string>
+                })
+            )
 
             // Age options
             setAgeOptions(filterOptions.ages)

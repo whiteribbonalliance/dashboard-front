@@ -25,6 +25,16 @@ export const SelectMultiValues = ({
             isMulti
             instanceId={id}
             options={options}
+            formatOptionLabel={(option) => {
+                if (option) {
+                    const metadata = option.metadata
+                    if (metadata && metadata === 'is_parent') {
+                        return <span className="font-bold">{option.label}</span>
+                    } else {
+                        return <span>{option.label}</span>
+                    }
+                }
+            }}
             value={value.map((selectedVal) => {
                 const option = options.find((option) => option.value === selectedVal)
                 if (option) return option
