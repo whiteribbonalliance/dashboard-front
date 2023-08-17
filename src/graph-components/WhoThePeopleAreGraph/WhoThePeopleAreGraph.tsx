@@ -309,7 +309,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
                                         className={bar2Classes}
                                         stackId={0}
                                         fill={bar2Fill}
-                                        minPointSize={5}
+                                        minPointSize={3}
                                         onMouseOver={() => setHoveredBarDataKey('count_2')}
                                         onMouseEnter={toggleShowTooltip}
                                         onMouseLeave={toggleShowTooltip}
@@ -321,7 +321,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
                                     className={bar1Classes}
                                     stackId={0}
                                     fill={bar1Fill}
-                                    minPointSize={5}
+                                    minPointSize={3}
                                     onMouseOver={() => setHoveredBarDataKey('count_1')}
                                     onMouseEnter={toggleShowTooltip}
                                     onMouseLeave={toggleShowTooltip}

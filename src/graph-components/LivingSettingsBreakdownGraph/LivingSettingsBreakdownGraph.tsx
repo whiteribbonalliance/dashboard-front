@@ -221,7 +221,7 @@ export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSetting
                                                 dataKey="count_2"
                                                 className={classNames('hover:cursor-pointer', bar2Classes)}
                                                 fill={bar2Fill}
-                                                minPointSize={5}
+                                                minPointSize={3}
                                                 stackId={0}
                                                 onMouseOver={() => setHoveredBarDataKey('count_2')}
                                                 onMouseEnter={toggleShowTooltip}
@@ -232,7 +232,7 @@ export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSetting
                                             dataKey="count_1"
                                             className={classNames('hover:cursor-pointer', bar1Classes)}
                                             fill={bar1Fill}
-                                            minPointSize={5}
+                                            minPointSize={3}
                                             stackId={0}
                                             onMouseOver={() => setHoveredBarDataKey('count_1')}
                                             onMouseEnter={toggleShowTooltip}

@@ -158,7 +158,7 @@ export const TopWordsOrPhrases = ({
                             dataKey="count_1"
                             className={classNames('hover:cursor-pointer', bar1Classes)}
                             fill={bar1Fill}
-                            minPointSize={5}
+                            minPointSize={3}
                             onMouseOver={() => setHoveredBarDataKey('count_1')}
                             onClick={setKeyword1}
                         />
@@ -169,7 +169,7 @@ export const TopWordsOrPhrases = ({
                                 dataKey="count_2"
                                 className={classNames('hover:cursor-pointer', bar2Classes)}
                                 fill={bar2Fill}
-                                minPointSize={5}
+                                minPointSize={3}
                                 onMouseOver={() => setHoveredBarDataKey('count_2')}
                                 onClick={setKeyword2}
                             />

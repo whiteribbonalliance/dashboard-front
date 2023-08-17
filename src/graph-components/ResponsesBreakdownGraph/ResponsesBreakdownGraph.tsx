@@ -275,7 +275,7 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                                                 dataKey="count_2"
                                                 className={classNames('hover:cursor-pointer', bar2Classes)}
                                                 fill={bar2Fill}
-                                                minPointSize={5}
+                                                minPointSize={3}
                                                 onClick={setResponseTopic}
                                                 stackId={0}
                                                 onMouseOver={() => setHoveredBarDataKey('count_2')}
@@ -287,7 +287,7 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                                             dataKey="count_1"
                                             className={classNames('hover:cursor-pointer', bar1Classes)}
                                             fill={bar1Fill}
-                                            minPointSize={5}
+                                            minPointSize={3}
                                             onClick={setResponseTopic}
                                             stackId={0}
                                             onMouseOver={() => setHoveredBarDataKey('count_1')}
