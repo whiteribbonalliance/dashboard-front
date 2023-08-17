@@ -224,7 +224,7 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                         <div className="mt-3 flex flex-col">
                             {/* Bar chart */}
                             <div className="mb-3 mt-3 w-full">
-                                <ResponsiveContainer height={400} className="bg-white">
+                                <ResponsiveContainer height={525} className="bg-white">
                                     <BarChart
                                         data={responsesBreakdown}
                                         margin={{ top: 15, right: 50, left: 10, bottom: 15 }}
