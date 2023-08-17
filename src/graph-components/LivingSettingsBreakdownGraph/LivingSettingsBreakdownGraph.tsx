@@ -221,7 +221,7 @@ export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSetting
                                                 dataKey="count_2"
                                                 className={classNames('hover:cursor-pointer', bar2Classes)}
                                                 fill={bar2Fill}
-                                                minPointSize={15}
+                                                minPointSize={5}
                                                 stackId={0}
                                                 onMouseOver={() => setHoveredBarDataKey('count_2')}
                                                 onMouseEnter={toggleShowTooltip}

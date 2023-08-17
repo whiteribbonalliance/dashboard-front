@@ -229,7 +229,6 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                                         data={responsesBreakdown}
                                         margin={{ top: 15, right: 50, left: 10, bottom: 15 }}
                                         width={750}
-                                        height={500}
                                         layout="vertical"
                                         barCategoryGap={5}
                                         stackOffset="sign"
@@ -276,7 +275,7 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                                                 dataKey="count_2"
                                                 className={classNames('hover:cursor-pointer', bar2Classes)}
                                                 fill={bar2Fill}
-                                                minPointSize={15}
+                                                minPointSize={5}
                                                 onClick={setResponseTopic}
                                                 stackId={0}
                                                 onMouseOver={() => setHoveredBarDataKey('count_2')}
