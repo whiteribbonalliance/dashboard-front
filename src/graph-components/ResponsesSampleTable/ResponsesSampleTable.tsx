@@ -21,7 +21,6 @@ import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
 import { TDashboard } from '@types'
 import { Tooltip } from '@components/Tooltip'
-import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
 import { IResponsesSample } from '@interfaces'
 
 interface IResponsesSampleGraphProps {
@@ -45,7 +44,6 @@ const columnHelper = createColumnHelper<any>()
 export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphProps) => {
     const [tableData, setTableData] = useState<ITableData>({ data: [], columns: [] })
     const { data, isError } = useCampaignQuery(dashboard, lang)
-    const questionAskedCode = useQuestionAskedCodeStore((state) => state.questionAskedCode)
     const [responsesSample, setResponsesSample] = useState<IResponsesSample>(undefined as any)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
@@ -71,9 +69,9 @@ export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphP
     // Set responses sample
     useEffect(() => {
         if (data) {
-            setResponsesSample(data.responses_sample[questionAskedCode])
+            setResponsesSample(data.responses_sample)
         }
-    }, [data, questionAskedCode])
+    }, [data])
 
     // Table
     const table = useReactTable({

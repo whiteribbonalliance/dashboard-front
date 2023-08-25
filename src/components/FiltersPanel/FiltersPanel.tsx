@@ -13,19 +13,20 @@ import { Control, Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { SelectMultiValues } from '@components/SelectMultiValues'
 import { SelectSingleValue } from '@components/SelectSingleValue'
 import { Chevron } from '@components/Chevron'
-import { IFiltersState, useFiltersStore } from '@stores/filters'
+import { useFiltersStore } from '@stores/filters'
 import { defaultFilterValues } from '@constants'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { filterSchema, TFilter } from '@schemas/filter'
 import { Stats } from '@components/FiltersPanel/Stats'
 import { useTranslation } from '@app/i18n/client'
-import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
+import { useFilterFormsStore } from '@stores/filter-forms'
 import { useQuery } from 'react-query'
 import { Tooltip } from '@components/Tooltip'
-import { IRefetchCampaignState, useRefetchCampaignStore } from '@stores/refetch-campaign'
+import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 import { Input } from '@components/Input'
 import { QuestionAsked } from '@components/FiltersPanel/QuestionAsked'
 import { useQuestionsAskedOptions } from '@hooks/use-questions-asked-options'
+import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
 
 interface IFiltersPanelProps {
     dashboard: TDashboard
@@ -54,13 +55,16 @@ interface ITab {
 }
 
 export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
-    const setFilters = useFiltersStore((state: IFiltersState) => state.setFilters)
-    const setForm1 = useFilterFormsStore((state: IFilterFormsState) => state.setForm1)
-    const setForm2 = useFilterFormsStore((state: IFilterFormsState) => state.setForm2)
-    const setRefetchCampaign = useRefetchCampaignStore((state: IRefetchCampaignState) => state.setRefetchCampaign)
+    const setFilters = useFiltersStore((state) => state.setFilters)
+    const setForm1 = useFilterFormsStore((state) => state.setForm1)
+    const setForm2 = useFilterFormsStore((state) => state.setForm2)
+    const setRefetchCampaign = useRefetchCampaignStore((state) => state.setRefetchCampaign)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
     const questionsAskedOptions = useQuestionsAskedOptions(dashboard)
+    const questionAskedCode = useQuestionAskedCodeStore((state) => state.questionAskedCode)
+
+    const hideResponseTopicRelatedFilters = dashboard === DashboardName.HEALTHWELLBEING && questionAskedCode == 'q2'
 
     // Select options
     const [countryOptions, setCountryOptions] = useState<TOption<string>[]>([])
@@ -410,21 +414,24 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                         </div>
 
                                         {/* Select response topics */}
-                                        <div>
-                                            <div
-                                                className="mb-1 w-fit"
-                                                data-tooltip-id="filters-panel-select-response-topics"
-                                            >
-                                                {selectResponseTopicsText}
+                                        {/* Do not display if 'healthwellbeing' and 'q2' */}
+                                        {!hideResponseTopicRelatedFilters && (
+                                            <div>
+                                                <div
+                                                    className="mb-1 w-fit"
+                                                    data-tooltip-id="filters-panel-select-response-topics"
+                                                >
+                                                    {selectResponseTopicsText}
+                                                </div>
+                                                <SelectResponseTopics
+                                                    id={`select-response-topics-${id}`}
+                                                    dashboard={dashboard}
+                                                    options={responseTopicOptions}
+                                                    control={form.control}
+                                                    refetchCampaign={refetchCampaign}
+                                                />
                                             </div>
-                                            <SelectResponseTopics
-                                                id={`select-response-topics-${id}`}
-                                                dashboard={dashboard}
-                                                options={responseTopicOptions}
-                                                control={form.control}
-                                                refetchCampaign={refetchCampaign}
-                                            />
-                                        </div>
+                                        )}
                                     </div>
 
                                     {/* Advanced mode */}
@@ -443,18 +450,22 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                 <Transition>
                                                     <Disclosure.Panel as="div" className="mt-5 flex flex-col gap-y-3">
                                                         {/* Show responses from categories */}
-                                                        <div>
-                                                            <div className="mb-1 w-fit">
-                                                                {t('responses-from-categories')}
-                                                            </div>
-                                                            <SelectOnlyResponsesFromCategories
-                                                                id={`select-only-responses-from-categories-${id}`}
-                                                                dashboard={dashboard}
-                                                                options={onlyResponsesFromCategoriesOptions}
-                                                                control={form.control}
-                                                                refetchCampaign={refetchCampaign}
-                                                            />
-                                                        </div>
+                                                        {/* Do not display if 'healthwellbeing' and 'q2' */}
+                                                        {!hideResponseTopicRelatedFilters &&
+                                                            questionAskedCode !== 'q2' && (
+                                                                <div>
+                                                                    <div className="mb-1 w-fit">
+                                                                        {t('responses-from-categories')}
+                                                                    </div>
+                                                                    <SelectOnlyResponsesFromCategories
+                                                                        id={`select-only-responses-from-categories-${id}`}
+                                                                        dashboard={dashboard}
+                                                                        options={onlyResponsesFromCategoriesOptions}
+                                                                        control={form.control}
+                                                                        refetchCampaign={refetchCampaign}
+                                                                    />
+                                                                </div>
+                                                            )}
 
                                                         {/* Filter by age */}
                                                         <div>

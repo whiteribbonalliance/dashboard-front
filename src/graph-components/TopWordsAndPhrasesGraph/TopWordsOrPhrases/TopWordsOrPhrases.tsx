@@ -45,8 +45,8 @@ export const TopWordsOrPhrases = ({
     yAxisWidth,
 }: ITopWordsOrPhrasesProps) => {
     const hoveredBarDataKey = useRef<string>(undefined as any)
-    const form1 = useFilterFormsStore((state: IFilterFormsState) => state.form1)
-    const form2 = useFilterFormsStore((state: IFilterFormsState) => state.form2)
+    const form1 = useFilterFormsStore((state) => state.form1)
+    const form2 = useFilterFormsStore((state) => state.form2)
     const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
     const { t } = useTranslation(lang)
 

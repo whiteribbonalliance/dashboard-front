@@ -55,10 +55,10 @@ export interface ILivingSettingBreakdown {
 }
 
 export interface ICampaign {
-    responses_sample: { q1: IResponsesSample; q2: IResponsesSample }
-    responses_breakdown: { q1: IResponseBreakdown[]; q2: IResponseBreakdown[] }
+    responses_sample: IResponsesSample
+    responses_breakdown: IResponseBreakdown[]
     living_settings_breakdown: ILivingSettingBreakdown[]
-    top_words_and_phrases: { q1: ITopWordsAndPhrases; q2: ITopWordsAndPhrases }
+    top_words_and_phrases: ITopWordsAndPhrases
     histogram: IHistogram
     genders_breakdown: IGenderData[]
     world_bubble_maps_coordinates: IWorldBubbleMapsCoordinates

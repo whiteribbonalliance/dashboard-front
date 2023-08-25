@@ -42,8 +42,7 @@ interface ICustomTooltip extends TooltipProps<number, string> {
 export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdownGraphProps) => {
     const { data, isError } = useCampaignQuery(dashboard, lang)
     const [responsesBreakdown, setResponsesBreakdown] = useState<IResponseBreakdown[]>([])
-    const form1 = useFilterFormsStore((state: IFilterFormsState) => state.form1)
-    const questionAskedCode = useQuestionAskedCodeStore((state) => state.questionAskedCode)
+    const form1 = useFilterFormsStore((state) => state.form1)
     const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
@@ -138,7 +137,7 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
     // Set responses breakdown
     useEffect(() => {
         if (data) {
-            const tmpResponsesBreakdown = data.responses_breakdown[questionAskedCode]
+            const tmpResponsesBreakdown = data.responses_breakdown
 
             // Set count 2 values as negative
             const tmpModifiedResponsesBreakdown: IResponseBreakdown[] = []
@@ -150,7 +149,7 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
 
             setResponsesBreakdown(tmpModifiedResponsesBreakdown)
         }
-    }, [data, questionAskedCode])
+    }, [data])
 
     // Set response topic
     function setResponseTopic(payload: any) {

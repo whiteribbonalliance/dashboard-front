@@ -31,15 +31,17 @@ export async function getCampaignFilterOptions(config: IConfiguration, lang: str
  * @param config The campaign configuration
  * @param campaignRequest The campaign request
  * @param lang The language
+ * @param qCode The question code
  * @param signal Signal
  */
 export async function getCampaign(
     config: IConfiguration,
     campaignRequest: ICampaignRequest,
     lang: string,
+    qCode: string,
     signal: AbortSignal | null | undefined
 ) {
-    const response = await fetch(`${apiUrl}/campaigns/${config.campaignCode}?lang=${lang}`, {
+    const response = await fetch(`${apiUrl}/campaigns/${config.campaignCode}?q_code=${qCode}&lang=${lang}`, {
         signal: signal,
         method: 'POST',
         headers: headers,

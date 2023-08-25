@@ -15,7 +15,6 @@ import { useTranslation } from '@app/i18n/client'
 import { TDashboard } from '@types'
 import { Tooltip } from '@components/Tooltip'
 import { ITopWordsAndPhrases } from '@interfaces'
-import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
 
 interface ITopWordsAndPhrasesGraphProps {
     dashboard: TDashboard
@@ -25,7 +24,6 @@ interface ITopWordsAndPhrasesGraphProps {
 export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrasesGraphProps) => {
     const { data, isError } = useCampaignQuery(dashboard, lang)
     const [topWordsAndPhrases, setTopWordsAndPhrases] = useState<ITopWordsAndPhrases>(undefined as any)
-    const questionAskedCode = useQuestionAskedCodeStore((state) => state.questionAskedCode)
     const { t } = useTranslation(lang)
 
     // Set selected tab classes
@@ -104,9 +102,9 @@ export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrases
     // Set top words and phrases
     useEffect(() => {
         if (data) {
-            setTopWordsAndPhrases(data.top_words_and_phrases[questionAskedCode])
+            setTopWordsAndPhrases(data.top_words_and_phrases)
         }
-    }, [data, questionAskedCode])
+    }, [data])
 
     // Display graph or not
     const displayGraph = !!data

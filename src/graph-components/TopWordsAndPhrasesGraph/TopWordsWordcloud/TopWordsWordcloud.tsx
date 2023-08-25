@@ -24,7 +24,7 @@ interface ITooltipData {
 }
 
 export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordcloudProps) => {
-    const form1 = useFilterFormsStore((state: IFilterFormsState) => state.form1)
+    const form1 = useFilterFormsStore((state) => state.form1)
     const { tooltipData, tooltipLeft, tooltipTop, tooltipOpen, showTooltip, hideTooltip } = useTooltip<ITooltipData>()
     const { containerBounds, TooltipInPortal } = useTooltipInPortal({
         scroll: true,
