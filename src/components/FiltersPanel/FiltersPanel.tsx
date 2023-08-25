@@ -350,7 +350,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
             {/* Switch between questions */}
             {questionsAskedOptions.length > 1 && (
                 <div className="mb-5">
-                    <QuestionAsked dashboard={dashboard} title={t('question-asked')} />
+                    <QuestionAsked dashboard={dashboard} />
                 </div>
             )}
 

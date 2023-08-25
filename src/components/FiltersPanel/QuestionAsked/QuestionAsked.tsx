@@ -13,10 +13,9 @@ import { useQuestionsAskedOptions } from '@hooks/use-questions-asked-options'
 
 interface IQuestionAskedProps {
     dashboard: TDashboard
-    title: string
 }
 
-export const QuestionAsked = ({ dashboard, title }: IQuestionAskedProps) => {
+export const QuestionAsked = ({ dashboard }: IQuestionAskedProps) => {
     const { t } = useTranslation(dashboard)
     const questionsAskedOptions = useQuestionsAskedOptions(dashboard)
     const setQuestionAskedCode = useQuestionAskedCodeStore((state) => state.setQuestionAskedCode)
@@ -43,7 +42,7 @@ export const QuestionAsked = ({ dashboard, title }: IQuestionAskedProps) => {
 
     return (
         <Box>
-            <p className="font-bold">{title}:</p>
+            <p className="font-bold">{t('question-asked')}:</p>
 
             {/* Select */}
             {questionsAskedOptions.length > 0 && (
