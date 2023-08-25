@@ -11,7 +11,7 @@ export const useQuestionsAskedOptions = (dashboard: TDashboard) => {
 
     // Campaigns with one question only do not require questions asked options
     if (config.questionsAskedCodes.length < 2) {
-        return questionsAskedOptions
+        return []
     }
 
     // Set questions asked options
