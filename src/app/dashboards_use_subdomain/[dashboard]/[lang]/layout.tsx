@@ -9,6 +9,7 @@ import localFont from 'next/font/local'
 import { dir } from 'i18next'
 import { config as fontAwesomeConfig } from '@fortawesome/fontawesome-svg-core'
 import { TDashboard } from '@types'
+import { classNames } from '@utils'
 
 fontAwesomeConfig.autoAddCss = false
 
@@ -71,7 +72,7 @@ const DashboardLayout = async ({ children, params }: IDashboardLayoutProps) => {
             dir={dir(lang)}
             className={`${notoSansRegular.variable} ${_1point8.variable} ${helvetica.variable} ${proximaNova.variable}`}
         >
-            <body className={`text-base ${layoutClasses}`}>
+            <body className={classNames('text-base', layoutClasses)}>
                 <QueryClientProvider>
                     <Header dashboard={dashboard} lang={lang} title={title} />
                     <main className="mx-7 my-7">{children}</main>

@@ -6,9 +6,9 @@ import { dashboards, defaultLanguage, languages } from '@constants'
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
     const hostname = request.headers.get('host') as string
-    const prodDomains = (process.env.NEXT_PUBLIC_PROD_DOMAINS as string).split(' ')
-    const devDomain = (process.env.NEXT_PUBLIC_DEV_DOMAIN as string) || '.localhost'
-    const mainSubdomain = process.env.NEXT_PUBLIC_MAIN_SUBDOMAIN as string
+    const prodDomains = (process.env.NEXT_PUBLIC_PROD_DOMAINS).split(' ')
+    const devDomain = (process.env.NEXT_PUBLIC_DEV_DOMAIN) || '.localhost'
+    const mainSubdomain = process.env.NEXT_PUBLIC_MAIN_SUBDOMAIN
 
     // Check if there is any supported language in the pathname or not
     const pathnameIsMissingLanguage = languages.every(

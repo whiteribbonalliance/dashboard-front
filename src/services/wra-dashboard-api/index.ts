@@ -1,7 +1,7 @@
 import { ICampaign, ICampaignRequest, IConfiguration, IFilterOptions } from '@interfaces'
 import { TOption } from '@types'
 
-const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL as string
+const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL
 const headers = { 'Content-Type': 'application/json' }
 
 /**

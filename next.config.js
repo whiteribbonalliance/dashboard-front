@@ -7,7 +7,7 @@ const nextConfig = {
     images: {
         unoptimized: true,
         domains: [],
-    }
+    },
 }
 
 module.exports = nextConfig

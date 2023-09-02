@@ -2,7 +2,7 @@
 
 This project contains multiple dashboards for WRA. Each dashboard is made accessible by navigating to a specific
 subdomain. `middleware.ts` is responsible for parsing the subdomain that is calling the app and rewrite the hostname
-as a parameter of route `dashboards_use_subdomain`.
+as a parameter of route `dashboards_use_subdomain` or `dashboards_use_path`.
 
 The file at `app/dashboards_use_subdomain/[dashboard]/[lang]/page.tsx` will generate each dashboard page.
 
@@ -11,6 +11,11 @@ The file at `app/dashboards_use_subdomain/[dashboard]/[lang]/page.tsx` will gene
 ### Install
 
 Configure .env.local.
+
+- `NEXT_PUBLIC_PROD_DOMAINS=` The domains allowed in production.
+- `NEXT_PUBLIC_MAIN_SUBDOMAIN=` The subdomain used in production.
+- `NEXT_PUBLIC_DEV_DOMAIN=` The subdomain used in development.
+- `NEXT_PUBLIC_WRA_DASHBOARD_API_URL=` The url to What Women Want Dashboard API.
 
 On the local machine, map `127.0.0.1` to the following domain names:
 
