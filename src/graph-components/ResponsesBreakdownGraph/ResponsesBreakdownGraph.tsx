@@ -19,13 +19,12 @@ import { classNames, getDashboardConfig, niceNum, toThousandsSep } from '@utils'
 import { GraphLoading } from 'components/GraphLoading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
-import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
+import { useFilterFormsStore } from '@stores/filter-forms'
 import { TDashboard } from '@types'
 import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { Tooltip } from '@components/Tooltip'
 import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 import { IResponseBreakdown } from '@interfaces'
-import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
 
 interface IResponsesBreakdownGraphProps {
     dashboard: TDashboard

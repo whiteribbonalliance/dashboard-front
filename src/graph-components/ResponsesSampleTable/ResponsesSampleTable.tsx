@@ -220,14 +220,14 @@ export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphP
                 {displayTable && (
                     <>
                         <table className="mb-3 mt-3 w-full table-fixed bg-white">
-                            <thead className="border-b border-b-grayLight">
+                            <thead className="border-b-grayLight border-b">
                                 {table.getHeaderGroups().map((headerGroup) => (
                                     <tr key={headerGroup.id}>
                                         {headerGroup.headers.map((header) => (
                                             <th
                                                 key={header.id}
                                                 className={classNames(
-                                                    'border-r border-r-grayLight px-1 text-left',
+                                                    'border-r-grayLight border-r px-1 text-left',
                                                     header.id === 'raw_response' ? 'w-[100%]' : 'w-[35%]',
                                                     thClasses
                                                 )}
@@ -242,12 +242,12 @@ export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphP
                             </thead>
                             <tbody>
                                 {table.getRowModel().rows.map((row) => (
-                                    <tr key={row.id} className="border-b border-b-grayLight">
+                                    <tr key={row.id} className="border-b-grayLight border-b">
                                         {row.getVisibleCells().map((cell) => (
                                             <td
                                                 key={cell.id}
                                                 className={classNames(
-                                                    'break-words border-r border-r-grayLight px-1',
+                                                    'border-r-grayLight break-words border-r px-1',
                                                     cell.column.id === 'raw_response'
                                                         ? getDescriptionColorClass(row)
                                                         : ''

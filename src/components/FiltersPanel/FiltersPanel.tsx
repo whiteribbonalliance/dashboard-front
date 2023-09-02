@@ -368,7 +368,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                     key={tab.id}
                                     className={({ selected }) =>
                                         classNames(
-                                            'w-full bg-grayLighter py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
+                                            'bg-grayLighter w-full py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
                                             selected ? `border-t-2 bg-white ${selectedTabClasses}` : ''
                                         )
                                     }
@@ -622,7 +622,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                         width={1117}
                         height={200}
                     />
-                    <div className="text-center font-1point8 text-4xl uppercase text-pmnchColors-primary">
+                    <div className="font-1point8 text-pmnchColors-primary text-center text-4xl uppercase">
                         {t('scan-share-be-heard')}
                     </div>
                 </div>

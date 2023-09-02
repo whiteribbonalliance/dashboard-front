@@ -16,11 +16,11 @@ export const Title = async ({ dashboard, lang, noHeading }: ITitleProps) => {
     return (
         <>
             {noHeading ? (
-                <div className="mx-2 text-center font-proxima-nova text-4xl font-bold">
+                <div className="font-proxima-nova mx-2 text-center text-4xl font-bold">
                     {t(`${config.campaignCode}-title`)}
                 </div>
             ) : (
-                <h1 className="mx-2 text-center font-proxima-nova text-4xl font-bold">
+                <h1 className="font-proxima-nova mx-2 text-center text-4xl font-bold">
                     {t(`${config.campaignCode}-title`)}
                 </h1>
             )}

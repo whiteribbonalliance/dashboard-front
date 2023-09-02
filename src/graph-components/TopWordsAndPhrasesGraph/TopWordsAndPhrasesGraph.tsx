@@ -155,7 +155,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrases
                                         key={tab.id}
                                         className={({ selected }) =>
                                             classNames(
-                                                'w-full bg-grayLighter py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
+                                                'bg-grayLighter w-full py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
                                                 selected ? `border-t-2 bg-white shadow-none ${selectedTabClasses}` : ''
                                             )
                                         }
