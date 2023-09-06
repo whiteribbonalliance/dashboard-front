@@ -16,7 +16,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Chevron } from '@components/Chevron'
 import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { classNames, getDashboardConfig } from '@utils'
-import { GraphLoading } from 'components/GraphLoading'
+import { Loading } from 'components/Loading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
 import { TDashboard } from '@types'
@@ -214,7 +214,7 @@ export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphP
                 {!data && isError && <GraphError dashboard={dashboard} />}
 
                 {/* Loading (only at first data fetch) */}
-                {!displayTable && !isError && <GraphLoading dashboard={dashboard} />}
+                {!displayTable && !isError && <Loading dashboard={dashboard} />}
 
                 {/* Table */}
                 {displayTable && (

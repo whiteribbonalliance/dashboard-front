@@ -22,12 +22,12 @@ export interface ITopWordsAndPhrases {
 }
 
 interface IHistogram {
-    age: IHistogramData[]
-    age_range: IHistogramData[]
-    gender: IHistogramData[]
-    profession: IHistogramData[]
-    region: IHistogramData[]
-    canonical_country: IHistogramData[]
+    ages: IHistogramData[]
+    age_ranges: IHistogramData[]
+    genders: IHistogramData[]
+    professions: IHistogramData[]
+    regions: IHistogramData[]
+    canonical_countries: IHistogramData[]
 }
 
 interface IGenderData {

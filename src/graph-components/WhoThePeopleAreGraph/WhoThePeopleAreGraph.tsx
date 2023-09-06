@@ -3,7 +3,7 @@
 import { Box } from '@components/Box'
 import { GraphTitle } from '@components/GraphTitle'
 import { GraphError } from '@components/GraphError'
-import { GraphLoading } from '@components/GraphLoading'
+import { Loading } from 'components/Loading'
 import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { SelectSingleValue } from '@components/SelectSingleValue'
 import { TDashboard, TOption } from '@types'
@@ -130,23 +130,23 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
             let histogramData: IHistogramData[]
             switch (showBreakdownByField) {
                 case 'breakdown-age':
-                    histogramData = data.histogram.age
+                    histogramData = data.histogram.ages
                     setParagraph(t('number-ages-respondents'))
                     break
                 case 'breakdown-age-range':
-                    histogramData = data.histogram.age_range
+                    histogramData = data.histogram.age_ranges
                     setParagraph(t('number-ages-respondents'))
                     break
                 case 'breakdown-gender':
-                    histogramData = data.histogram.gender
+                    histogramData = data.histogram.genders
                     setParagraph(t('number-ages-respondents'))
                     break
                 case 'breakdown-profession':
-                    histogramData = data.histogram.profession
+                    histogramData = data.histogram.professions
                     setParagraph(t('number-ages-respondents'))
                     break
                 case 'breakdown-country':
-                    histogramData = data.histogram.canonical_country
+                    histogramData = data.histogram.canonical_countries
                     setParagraph(t('countries-respondents-located-in'))
                     break
                 default:
@@ -235,7 +235,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
             {!data && isError && <GraphError dashboard={dashboard} />}
 
             {/* Loading (only at first data fetch) */}
-            {!displayGraph && !isError && <GraphLoading dashboard={dashboard} />}
+            {!displayGraph && !isError && <Loading dashboard={dashboard} />}
 
             {/* Graph */}
             {displayGraph && (

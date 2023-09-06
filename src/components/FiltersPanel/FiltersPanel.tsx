@@ -27,6 +27,7 @@ import { Input } from '@components/Input'
 import { QuestionAsked } from '@components/FiltersPanel/QuestionAsked'
 import { useQuestionsAskedOptions } from '@hooks/use-questions-asked-options'
 import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
+import { Loading } from 'components/Loading'
 
 interface IFiltersPanelProps {
     dashboard: TDashboard
@@ -63,6 +64,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const config = getDashboardConfig(dashboard)
     const questionsAskedOptions = useQuestionsAskedOptions(dashboard)
     const questionAskedCode = useQuestionAskedCodeStore((state) => state.questionAskedCode)
+    const [tabs, setTabs] = useState<ITab[]>([])
 
     const hideResponseTopicRelatedFilters = dashboard === DashboardName.HEALTHWELLBEING && questionAskedCode == 'q2'
 
@@ -125,10 +127,13 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     useEffect(() => setForm2(form2), [setForm2, form2])
 
     // Tabs
-    const tabs: ITab[] = [
-        { id: 'tab-1', title: t('drill-down'), form: form1 },
-        { id: 'tab-2', title: `${t('compare-to')}...`, form: form2 },
-    ]
+    useEffect(() => {
+        const tmpTabs: ITab[] = [
+            { id: 'tab-1', title: t('drill-down'), form: form1 },
+            { id: 'tab-2', title: `${t('compare-to')}...`, form: form2 },
+        ]
+        setTabs(tmpTabs)
+    }, [t, form1, form2])
 
     // Set selected tab classes
     let selectedTabClasses: string
@@ -361,251 +366,266 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
             {/* Filters */}
             <div className="mb-5 w-full">
                 <Box>
-                    <Tab.Group>
-                        <Tab.List data-tooltip-id="filters-panel-tab-list" className="mb-2 flex flex-col sm:flex-row">
-                            {tabs.map((tab) => (
-                                <Tab
-                                    key={tab.id}
-                                    className={({ selected }) =>
-                                        classNames(
-                                            'bg-grayLighter w-full py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
-                                            selected ? `border-t-2 bg-white ${selectedTabClasses}` : ''
-                                        )
-                                    }
-                                >
-                                    {tab.title}
-                                </Tab>
-                            ))}
-                        </Tab.List>
+                    {tabs.length < 1 ? (
+                        <Loading dashboard={dashboard} />
+                    ) : (
+                        <Tab.Group>
+                            <Tab.List
+                                data-tooltip-id="filters-panel-tab-list"
+                                className="mb-2 flex flex-col sm:flex-row"
+                            >
+                                {tabs.map((tab) => (
+                                    <Tab
+                                        key={tab.id}
+                                        className={({ selected }) =>
+                                            classNames(
+                                                'bg-grayLighter w-full py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
+                                                selected ? `border-t-2 bg-white ${selectedTabClasses}` : ''
+                                            )
+                                        }
+                                    >
+                                        {tab.title}
+                                    </Tab>
+                                ))}
+                            </Tab.List>
 
-                        <Tab.Panels>
-                            {tabs.map(({ id, form }) => (
-                                <Tab.Panel
-                                    key={id}
-                                    className="flex flex-col p-3 ring-transparent ring-offset-2 focus:outline-none"
-                                    unmount={false}
-                                >
-                                    {/* Normal mode */}
-                                    <div className="mb-5 flex flex-col gap-y-3">
-                                        {/* Select countries */}
-                                        <div>
-                                            <div className="mb-1 w-fit" data-tooltip-id="filters-panel-select-country">
-                                                {t('select-countries')}
-                                            </div>
-                                            <SelectCountries
-                                                id={`select-countries-${id}`}
-                                                dashboard={dashboard}
-                                                options={countryOptions}
-                                                control={form.control}
-                                                refetchCampaign={refetchCampaign}
-                                            />
-                                        </div>
-
-                                        {/* Select regions */}
-                                        <div>
-                                            <div className="mb-1">{t('select-regions')}</div>
-                                            <SelectRegions
-                                                id={`select-regions-${id}`}
-                                                dashboard={dashboard}
-                                                options={id === 'tab-1' ? regionOptionsFilter1 : regionOptionsFilter2}
-                                                control={form.control}
-                                                refetchCampaign={refetchCampaign}
-                                            />
-                                        </div>
-
-                                        {/* Select response topics */}
-                                        {/* Do not display if 'healthwellbeing' and 'q2' */}
-                                        {!hideResponseTopicRelatedFilters && (
+                            <Tab.Panels>
+                                {tabs.map(({ id, form }) => (
+                                    <Tab.Panel
+                                        key={id}
+                                        className="flex flex-col p-3 ring-transparent ring-offset-2 focus:outline-none"
+                                        unmount={false}
+                                    >
+                                        {/* Normal mode */}
+                                        <div className="mb-5 flex flex-col gap-y-3">
+                                            {/* Select countries */}
                                             <div>
                                                 <div
                                                     className="mb-1 w-fit"
-                                                    data-tooltip-id="filters-panel-select-response-topics"
+                                                    data-tooltip-id="filters-panel-select-country"
                                                 >
-                                                    {selectResponseTopicsText}
+                                                    {t('select-countries')}
                                                 </div>
-                                                <SelectResponseTopics
-                                                    id={`select-response-topics-${id}`}
+                                                <SelectCountries
+                                                    id={`select-countries-${id}`}
                                                     dashboard={dashboard}
-                                                    options={responseTopicOptions}
+                                                    options={countryOptions}
                                                     control={form.control}
                                                     refetchCampaign={refetchCampaign}
                                                 />
                                             </div>
-                                        )}
-                                    </div>
 
-                                    {/* Advanced mode */}
-                                    <Disclosure as="div" className="flex flex-col justify-end">
-                                        {({ open }) => (
-                                            <>
-                                                {/* Button to display advanced mode */}
-                                                <Disclosure.Button className="flex items-center justify-end font-bold">
-                                                    <span className="mr-2">{t('advanced-mode')}</span>
-                                                    <span className="text-lg">
-                                                        <Chevron direction="down" rotate={open} double={true} />
-                                                    </span>
-                                                </Disclosure.Button>
+                                            {/* Select regions */}
+                                            <div>
+                                                <div className="mb-1">{t('select-regions')}</div>
+                                                <SelectRegions
+                                                    id={`select-regions-${id}`}
+                                                    dashboard={dashboard}
+                                                    options={
+                                                        id === 'tab-1' ? regionOptionsFilter1 : regionOptionsFilter2
+                                                    }
+                                                    control={form.control}
+                                                    refetchCampaign={refetchCampaign}
+                                                />
+                                            </div>
 
-                                                {/* Advanced mode panel */}
-                                                <Transition>
-                                                    <Disclosure.Panel as="div" className="mt-5 flex flex-col gap-y-3">
-                                                        {/* Show responses from categories */}
-                                                        {/* Do not display if 'healthwellbeing' and 'q2' */}
-                                                        {!hideResponseTopicRelatedFilters &&
-                                                            questionAskedCode !== 'q2' && (
-                                                                <div>
-                                                                    <div className="mb-1 w-fit">
-                                                                        {t('responses-from-categories')}
+                                            {/* Select response topics */}
+                                            {/* Do not display if 'healthwellbeing' and 'q2' */}
+                                            {!hideResponseTopicRelatedFilters && (
+                                                <div>
+                                                    <div
+                                                        className="mb-1 w-fit"
+                                                        data-tooltip-id="filters-panel-select-response-topics"
+                                                    >
+                                                        {selectResponseTopicsText}
+                                                    </div>
+                                                    <SelectResponseTopics
+                                                        id={`select-response-topics-${id}`}
+                                                        dashboard={dashboard}
+                                                        options={responseTopicOptions}
+                                                        control={form.control}
+                                                        refetchCampaign={refetchCampaign}
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Advanced mode */}
+                                        <Disclosure as="div" className="flex flex-col justify-end">
+                                            {({ open }) => (
+                                                <>
+                                                    {/* Button to display advanced mode */}
+                                                    <Disclosure.Button className="flex items-center justify-end font-bold">
+                                                        <span className="mr-2">{t('advanced-mode')}</span>
+                                                        <span className="text-lg">
+                                                            <Chevron direction="down" rotate={open} double={true} />
+                                                        </span>
+                                                    </Disclosure.Button>
+
+                                                    {/* Advanced mode panel */}
+                                                    <Transition>
+                                                        <Disclosure.Panel
+                                                            as="div"
+                                                            className="mt-5 flex flex-col gap-y-3"
+                                                        >
+                                                            {/* Show responses from categories */}
+                                                            {/* Do not display if 'healthwellbeing' and 'q2' */}
+                                                            {!hideResponseTopicRelatedFilters &&
+                                                                questionAskedCode !== 'q2' && (
+                                                                    <div>
+                                                                        <div className="mb-1 w-fit">
+                                                                            {t('responses-from-categories')}
+                                                                        </div>
+                                                                        <SelectOnlyResponsesFromCategories
+                                                                            id={`select-only-responses-from-categories-${id}`}
+                                                                            dashboard={dashboard}
+                                                                            options={onlyResponsesFromCategoriesOptions}
+                                                                            control={form.control}
+                                                                            refetchCampaign={refetchCampaign}
+                                                                        />
                                                                     </div>
-                                                                    <SelectOnlyResponsesFromCategories
-                                                                        id={`select-only-responses-from-categories-${id}`}
+                                                                )}
+
+                                                            {/* Filter by age */}
+                                                            <div>
+                                                                <div
+                                                                    className="mb-1 w-fit"
+                                                                    data-tooltip-id="filters-panel-select-age"
+                                                                >
+                                                                    {/* The replace function is usd to replace a text within parenthesis from the translation */}
+                                                                    {t('filter-by-age-or-select-histogram').replace(
+                                                                        / *\([^)]*\) */g,
+                                                                        ''
+                                                                    )}
+                                                                </div>
+                                                                <SelectAges
+                                                                    id={`select-ages-${id}`}
+                                                                    dashboard={dashboard}
+                                                                    options={ageOptions}
+                                                                    control={form.control}
+                                                                    refetchCampaign={refetchCampaign}
+                                                                />
+                                                            </div>
+
+                                                            {/* For whatyoungpeoplewant show select gender */}
+                                                            {dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT && (
+                                                                <>
+                                                                    {/* Filter by gender */}
+                                                                    <div className="flex gap-x-3">
+                                                                        {/* Filter by gender */}
+                                                                        <div className="flex basis-1/2 flex-col">
+                                                                            <div className="mb-1">
+                                                                                {t('filter-by-gender')}
+                                                                            </div>
+                                                                            <SelectGenders
+                                                                                id={`select-genders-${id}`}
+                                                                                dashboard={dashboard}
+                                                                                options={genderOptions}
+                                                                                control={form.control}
+                                                                                refetchCampaign={refetchCampaign}
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                </>
+                                                            )}
+
+                                                            {/* For midwivesvoices show select gender and select profession */}
+                                                            {dashboard === DashboardName.MIDWIVES_VOICES && (
+                                                                <>
+                                                                    {/* Filter by gender & filter by profession */}
+                                                                    <div className="flex gap-x-3">
+                                                                        {/* Filter by gender */}
+                                                                        <div className="flex basis-1/2 flex-col justify-between">
+                                                                            <div className="mb-1">
+                                                                                {t('filter-by-gender')}
+                                                                            </div>
+                                                                            <SelectGenders
+                                                                                id={`select-genders-${id}`}
+                                                                                dashboard={dashboard}
+                                                                                options={genderOptions}
+                                                                                control={form.control}
+                                                                                refetchCampaign={refetchCampaign}
+                                                                            />
+                                                                        </div>
+                                                                        {/* Select profession */}
+                                                                        <div className="flex basis-1/2 flex-col justify-between">
+                                                                            <div className="mb-1">
+                                                                                {t('select-profession')}
+                                                                            </div>
+                                                                            <SelectProfessions
+                                                                                id={`select-professions-${id}`}
+                                                                                dashboard={dashboard}
+                                                                                options={professionOptions}
+                                                                                control={form.control}
+                                                                                refetchCampaign={refetchCampaign}
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                </>
+                                                            )}
+
+                                                            {/* Filter by keyword & exclude keyword */}
+                                                            <div className="flex gap-x-3">
+                                                                {/* Filter by keyword */}
+                                                                <div className="flex basis-1/2 flex-col">
+                                                                    <div
+                                                                        className="mb-1 w-fit"
+                                                                        data-tooltip-id="filters-panel-input-keyword"
+                                                                    >
+                                                                        {t('filter-by-keyword')}
+                                                                    </div>
+                                                                    <InputKeyword
+                                                                        id={`input-keyword-${id}`}
+                                                                        control={form.control}
+                                                                        refetchCampaign={refetchCampaign}
+                                                                    />
+                                                                </div>
+                                                                {/* Exclude keyword */}
+                                                                <div className="flex basis-1/2 flex-col">
+                                                                    <div
+                                                                        className="mb-1 w-fit"
+                                                                        data-tooltip-id="filters-panel-input-keyword"
+                                                                    >
+                                                                        {t('exclude-keyword')}
+                                                                    </div>
+                                                                    <InputExcludeKeyword
+                                                                        id={`input-exclude-keyword-${id}`}
+                                                                        control={form.control}
+                                                                        refetchCampaign={refetchCampaign}
+                                                                    />
+                                                                </div>
+                                                            </div>
+
+                                                            {/* Show multi-word phrases */}
+                                                            {id === 'tab-1' && (
+                                                                <div className="flex flex-col">
+                                                                    <div
+                                                                        className="mb-1 w-fit"
+                                                                        data-tooltip-id="filters-panel-select-only-multi-word-phrases"
+                                                                    >
+                                                                        {t('multi-word-phrases')}
+                                                                    </div>
+                                                                    <SelectOnlyMultiWordPhrasesContainingFilterTerm
+                                                                        id={`select-only-multi-word-phrases-containing-filter-term-${id}`}
                                                                         dashboard={dashboard}
-                                                                        options={onlyResponsesFromCategoriesOptions}
+                                                                        options={
+                                                                            onlyMultiWordPhrasesContainingFilterTermOptions
+                                                                        }
                                                                         control={form.control}
                                                                         refetchCampaign={refetchCampaign}
                                                                     />
                                                                 </div>
                                                             )}
-
-                                                        {/* Filter by age */}
-                                                        <div>
-                                                            <div
-                                                                className="mb-1 w-fit"
-                                                                data-tooltip-id="filters-panel-select-age"
-                                                            >
-                                                                {/* The replace function is usd to replace a text within parenthesis from the translation */}
-                                                                {t('filter-by-age-or-select-histogram').replace(
-                                                                    / *\([^)]*\) */g,
-                                                                    ''
-                                                                )}
-                                                            </div>
-                                                            <SelectAges
-                                                                id={`select-ages-${id}`}
-                                                                dashboard={dashboard}
-                                                                options={ageOptions}
-                                                                control={form.control}
-                                                                refetchCampaign={refetchCampaign}
-                                                            />
-                                                        </div>
-
-                                                        {/* For whatyoungpeoplewant show select gender */}
-                                                        {dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT && (
-                                                            <>
-                                                                {/* Filter by gender */}
-                                                                <div className="flex gap-x-3">
-                                                                    {/* Filter by gender */}
-                                                                    <div className="flex basis-1/2 flex-col">
-                                                                        <div className="mb-1">
-                                                                            {t('filter-by-gender')}
-                                                                        </div>
-                                                                        <SelectGenders
-                                                                            id={`select-genders-${id}`}
-                                                                            dashboard={dashboard}
-                                                                            options={genderOptions}
-                                                                            control={form.control}
-                                                                            refetchCampaign={refetchCampaign}
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                            </>
-                                                        )}
-
-                                                        {/* For midwivesvoices show select gender and select profession */}
-                                                        {dashboard === DashboardName.MIDWIVES_VOICES && (
-                                                            <>
-                                                                {/* Filter by gender & filter by profession */}
-                                                                <div className="flex gap-x-3">
-                                                                    {/* Filter by gender */}
-                                                                    <div className="flex basis-1/2 flex-col justify-between">
-                                                                        <div className="mb-1">
-                                                                            {t('filter-by-gender')}
-                                                                        </div>
-                                                                        <SelectGenders
-                                                                            id={`select-genders-${id}`}
-                                                                            dashboard={dashboard}
-                                                                            options={genderOptions}
-                                                                            control={form.control}
-                                                                            refetchCampaign={refetchCampaign}
-                                                                        />
-                                                                    </div>
-                                                                    {/* Select profession */}
-                                                                    <div className="flex basis-1/2 flex-col justify-between">
-                                                                        <div className="mb-1">
-                                                                            {t('select-profession')}
-                                                                        </div>
-                                                                        <SelectProfessions
-                                                                            id={`select-professions-${id}`}
-                                                                            dashboard={dashboard}
-                                                                            options={professionOptions}
-                                                                            control={form.control}
-                                                                            refetchCampaign={refetchCampaign}
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                            </>
-                                                        )}
-
-                                                        {/* Filter by keyword & exclude keyword */}
-                                                        <div className="flex gap-x-3">
-                                                            {/* Filter by keyword */}
-                                                            <div className="flex basis-1/2 flex-col">
-                                                                <div
-                                                                    className="mb-1 w-fit"
-                                                                    data-tooltip-id="filters-panel-input-keyword"
-                                                                >
-                                                                    {t('filter-by-keyword')}
-                                                                </div>
-                                                                <InputKeyword
-                                                                    id={`input-keyword-${id}`}
-                                                                    control={form.control}
-                                                                    refetchCampaign={refetchCampaign}
-                                                                />
-                                                            </div>
-                                                            {/* Exclude keyword */}
-                                                            <div className="flex basis-1/2 flex-col">
-                                                                <div
-                                                                    className="mb-1 w-fit"
-                                                                    data-tooltip-id="filters-panel-input-keyword"
-                                                                >
-                                                                    {t('exclude-keyword')}
-                                                                </div>
-                                                                <InputExcludeKeyword
-                                                                    id={`input-exclude-keyword-${id}`}
-                                                                    control={form.control}
-                                                                    refetchCampaign={refetchCampaign}
-                                                                />
-                                                            </div>
-                                                        </div>
-
-                                                        {/* Show multi-word phrases */}
-                                                        {id === 'tab-1' && (
-                                                            <div className="flex flex-col">
-                                                                <div
-                                                                    className="mb-1 w-fit"
-                                                                    data-tooltip-id="filters-panel-select-only-multi-word-phrases"
-                                                                >
-                                                                    {t('multi-word-phrases')}
-                                                                </div>
-                                                                <SelectOnlyMultiWordPhrasesContainingFilterTerm
-                                                                    id={`select-only-multi-word-phrases-containing-filter-term-${id}`}
-                                                                    dashboard={dashboard}
-                                                                    options={
-                                                                        onlyMultiWordPhrasesContainingFilterTermOptions
-                                                                    }
-                                                                    control={form.control}
-                                                                    refetchCampaign={refetchCampaign}
-                                                                />
-                                                            </div>
-                                                        )}
-                                                    </Disclosure.Panel>
-                                                </Transition>
-                                            </>
-                                        )}
-                                    </Disclosure>
-                                </Tab.Panel>
-                            ))}
-                        </Tab.Panels>
-                    </Tab.Group>
+                                                        </Disclosure.Panel>
+                                                    </Transition>
+                                                </>
+                                            )}
+                                        </Disclosure>
+                                    </Tab.Panel>
+                                ))}
+                            </Tab.Panels>
+                        </Tab.Group>
+                    )}
                 </Box>
             </div>
 

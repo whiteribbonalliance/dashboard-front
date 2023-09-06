@@ -16,7 +16,7 @@ import {
     YAxis,
 } from 'recharts'
 import { classNames, niceNum, toThousandsSep } from '@utils'
-import { GraphLoading } from 'components/GraphLoading'
+import { Loading } from 'components/Loading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
 import { TDashboard } from '@types'
@@ -161,7 +161,7 @@ export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSetting
                 {!data && isError && <GraphError dashboard={dashboard} />}
 
                 {/* Loading (only at first data fetch) */}
-                {!displayGraph && !isError && <GraphLoading dashboard={dashboard} />}
+                {!displayGraph && !isError && <Loading dashboard={dashboard} />}
 
                 {/* Graph */}
                 {displayGraph && (

@@ -4,7 +4,7 @@ import { Box } from '@components/Box'
 import { GraphTitle } from '@components/GraphTitle'
 import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { GraphError } from '@components/GraphError'
-import { GraphLoading } from '@components/GraphLoading'
+import { Loading } from 'components/Loading'
 import * as d3 from 'd3'
 import { DashboardName } from '@enums'
 import React, { useEffect, useRef, useState } from 'react'
@@ -153,7 +153,7 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
                 {!data && isError && <GraphError dashboard={dashboard} />}
 
                 {/* Loading (only at first data fetch) */}
-                {!displayWorldBubbleMaps && !isError && <GraphLoading dashboard={dashboard} />}
+                {!displayWorldBubbleMaps && !isError && <Loading dashboard={dashboard} />}
 
                 {/* World bubble maps */}
                 {displayWorldBubbleMaps && (

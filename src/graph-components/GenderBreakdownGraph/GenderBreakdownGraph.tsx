@@ -4,7 +4,7 @@ import { Box } from '@components/Box'
 import { GraphTitle } from '@components/GraphTitle'
 import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { GraphError } from '@components/GraphError'
-import { GraphLoading } from '@components/GraphLoading'
+import { Loading } from 'components/Loading'
 import React from 'react'
 import { Cell, Legend, Pie, PieChart, PieLabelRenderProps, ResponsiveContainer, Tooltip, TooltipProps } from 'recharts'
 import { classNames, toThousandsSep } from '@utils'
@@ -92,7 +92,7 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
             {!data && isError && <GraphError dashboard={dashboard} />}
 
             {/* Loading (only at first data fetch) */}
-            {!displayGraph && !isError && <GraphLoading dashboard={dashboard} />}
+            {!displayGraph && !isError && <Loading dashboard={dashboard} />}
 
             {/* Graph */}
             {displayGraph && (

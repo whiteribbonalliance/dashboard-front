@@ -31,8 +31,9 @@ export function useTranslation(lang: string, ns: string = 'translation', options
     } else {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
-            if (i18n.resolvedLanguage === lang) return
-            i18n.changeLanguage(lang).then()
+            if (i18n.resolvedLanguage !== lang) {
+                i18n.changeLanguage(lang).then()
+            }
         }, [lang, i18n])
     }
 
