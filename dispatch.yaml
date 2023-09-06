@@ -1,16 +1,20 @@
 dispatch:
-  # Send all mobile traffic to the mobile frontend.
+  # Original What Women Want
   - url: "*whatwomenwant.whiteribbonalliance.org/*"
     service: dashboardfrontend
 
-  # Send all mobile traffic to the mobile frontend.
+  # Midwives
   - url: "*midwivesvoices.whiteribbonalliance.org/*"
     service: dashboardfrontend
 
-  # Send all mobile traffic to the mobile frontend.
+  # PMNCH
   - url: "*whatyoungpeoplewant.whiteribbonalliance.org/*"
     service: dashboardfrontend
 
-  # Send all mobile traffic to the mobile frontend.
+  # All new clients which don't have their own subdomain
   - url: "*explore.whiteribbonalliance.org/*"
     service: dashboardfrontend
+    
+  # The admin dashboard
+  - url: "*admin.whiteribbonalliance.org/*"
+    service: admindashboard
