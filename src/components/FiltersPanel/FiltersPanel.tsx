@@ -66,7 +66,13 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const questionAskedCode = useQuestionAskedCodeStore((state) => state.questionAskedCode)
     const [tabs, setTabs] = useState<ITab[]>([])
 
-    const hideResponseTopicRelatedFilters = dashboard === DashboardName.HEALTHWELLBEING && questionAskedCode == 'q2'
+    // Hide 'only responses from categories' filter option
+    let hideResponseTopicRelatedFilters = false
+    if (dashboard === DashboardName.HEALTHWELLBEING && questionAskedCode == 'q2') {
+        hideResponseTopicRelatedFilters = true
+    } else if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
+        hideResponseTopicRelatedFilters = true
+    }
 
     // Select options
     const [countryOptions, setCountryOptions] = useState<TOption<string>[]>([])
