@@ -18,3 +18,7 @@ dispatch:
   # The admin dashboard
   - url: "*admin.whiteribbonalliance.org/*"
     service: admindashboard
+    
+  # The API
+  - url: "*api.whiteribbonalliance.org/*"
+    service: www-dashboard-api
