@@ -95,5 +95,5 @@ Check `README.md` inside the back-end project for translations.
 2. At `src/configurations` create a new configuration file for the new dashboard and export it
    from `src/configurations/index.ts`.
 3. At `src/utils/index.ts` map the dashboard to its config at the function `getDashboardConfig`.
-4. Add new translations e.g. the title and subtext.
+4. Add new translations e.g. the title and subtext (check the back-end README).
 5. Modify switch statements in components to reflect changes if necessary.

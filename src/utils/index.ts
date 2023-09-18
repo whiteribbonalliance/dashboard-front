@@ -7,6 +7,7 @@ import {
     whatWomenWantConfig,
     whatWomenWantPakistanConfig,
     whatYoungPeopleWantConfig,
+    womensEconomicEmpowermentConfig,
 } from '@configurations'
 import { TDashboard } from '@types'
 
@@ -38,6 +39,8 @@ export function getDashboardConfig(dashboard: TDashboard) {
             return economicEmpowermentMexicoConfig
         case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
             return whatWomenWantPakistanConfig
+        case DashboardName.WOMENS_ECONOMIC_EMPOWERMENT:
+            return womensEconomicEmpowermentConfig
     }
 }
 

@@ -6,4 +6,5 @@ export const DashboardName = Object.freeze({
     HEALTHWELLBEING: 'healthwellbeing',
     ECONOMIC_EMPOWERMENT_MEXICO: 'giz',
     WHAT_WOMEN_WANT_PAKISTAN: 'wwwpakistan',
+    WOMENS_ECONOMIC_EMPOWERMENT: 'womenseconomicempowerment',
 })
