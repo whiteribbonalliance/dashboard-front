@@ -55,6 +55,7 @@ export interface ILivingSettingBreakdown {
 }
 
 export interface ICampaign {
+    campaign_code: string
     responses_sample: IResponsesSample
     responses_breakdown: IResponseBreakdown[]
     living_settings_breakdown: ILivingSettingBreakdown[]
