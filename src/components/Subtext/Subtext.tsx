@@ -4,7 +4,6 @@ import { applyToThousandsSepOnText, classNames, getDashboardConfig } from '@util
 import { DashboardName } from '@enums'
 import Link from 'next/link'
 import React from 'react'
-import { NodeType } from 'yaml/dist/nodes/Node'
 
 const HtmlToReact = require('html-to-react')
 const HtmlToReactParser = require('html-to-react').Parser
@@ -80,6 +79,9 @@ export const Subtext = async ({ dashboard, lang }: ISubtextProps) => {
 
             // Parse
             subtextElement = new HtmlToReactParser().parseWithInstructions(subtext, () => true, processingInstructions)
+            break
+        case DashboardName.WOMENS_ECONOMIC_EMPOWERMENT:
+            subtextElement = <></>
             break
         default:
             subtextElement = <p>{applyToThousandsSepOnText(t(`${config.campaignCode}-subtext`), lang)}</p>
