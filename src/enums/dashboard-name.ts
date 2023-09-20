@@ -1,4 +1,4 @@
-// The values below will also be used to check the subdomain requesting a dashboard, do not change them
+// The values below will also be used to check the subdomain/path requesting a dashboard, do not change them
 export const DashboardName = Object.freeze({
     WHAT_YOUNG_PEOPLE_WANT: 'whatyoungpeoplewant',
     WHAT_WOMEN_WANT: 'whatwomenwant',
@@ -7,4 +7,5 @@ export const DashboardName = Object.freeze({
     ECONOMIC_EMPOWERMENT_MEXICO: 'giz',
     WHAT_WOMEN_WANT_PAKISTAN: 'wwwpakistan',
     WOMENS_ECONOMIC_EMPOWERMENT: 'womenseconomicempowerment',
+    ALL_CAMPAIGNS: 'allcampaigns',
 })

@@ -25,7 +25,10 @@ import {
 import { DashboardName } from '@enums'
 import { classNames, getDashboardConfig, niceNum, toThousandsSep } from '@utils'
 import { IHistogramData } from '@interfaces'
-import { getCampaignWhoThePeopleAreOptions } from '@services/wra-dashboard-api'
+import {
+    getCampaignsMergedWhoThePeopleAreOptions,
+    getCampaignWhoThePeopleAreOptions,
+} from '@services/wra-dashboard-api'
 import { useTranslation } from '@app/i18n/client'
 
 interface IWhoThePeopleAreGraphProps {
@@ -52,10 +55,16 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
 
     // Fetch options
     useEffect(() => {
-        getCampaignWhoThePeopleAreOptions(config, lang)
-            .then((options) => setWhoThePeopleAreOptions(options))
-            .catch(() => {})
-    }, [config, lang])
+        if (dashboard === DashboardName.ALL_CAMPAIGNS) {
+            getCampaignsMergedWhoThePeopleAreOptions(lang)
+                .then((options) => setWhoThePeopleAreOptions(options))
+                .catch(() => {})
+        } else {
+            getCampaignWhoThePeopleAreOptions(config, lang)
+                .then((options) => setWhoThePeopleAreOptions(options))
+                .catch(() => {})
+        }
+    }, [dashboard, config, lang])
 
     // Form
     const form = useForm<TWhoThePeopleAre>({

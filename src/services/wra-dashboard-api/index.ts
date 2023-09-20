@@ -26,6 +26,26 @@ export async function getCampaignFilterOptions(config: IConfiguration, lang: str
 }
 
 /**
+ * Get campaigns merged filter options
+ *
+ * @param lang The language
+ */
+export async function getCampaignsMergedFilterOptions(lang: string) {
+    const response = await fetch(`${apiUrl}/campaigns-merged/filter-options?lang=${lang}`, {
+        method: 'GET',
+        headers: headers,
+    })
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch campaigns merged filter options')
+    }
+
+    const data: IFilterOptions = await response.json()
+
+    return data
+}
+
+/**
  * Get campaign
  *
  * @param config The campaign configuration
@@ -58,6 +78,34 @@ export async function getCampaign(
 }
 
 /**
+ * Get campaign
+ *
+ * @param campaignRequest The campaign request
+ * @param lang The language
+ * @param signal Signal
+ */
+export async function getCampaignsMerged(
+    campaignRequest: ICampaignRequest,
+    lang: string,
+    signal: AbortSignal | null | undefined
+) {
+    const response = await fetch(`${apiUrl}/campaigns-merged?lang=${lang}`, {
+        signal: signal,
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(campaignRequest),
+    })
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch campaigns merged')
+    }
+
+    const data: ICampaign = await response.json()
+
+    return data
+}
+
+/**
  * Get campaign who the people are options
  *
  * @param config The campaign configuration
@@ -71,6 +119,26 @@ export async function getCampaignWhoThePeopleAreOptions(config: IConfiguration, 
 
     if (!response.ok) {
         throw new Error('Failed to fetch campaign who the people are options')
+    }
+
+    const data: TOption<string>[] = await response.json()
+
+    return data
+}
+
+/**
+ * Get campaigns merged who the people are options
+ *
+ * @param lang The language
+ */
+export async function getCampaignsMergedWhoThePeopleAreOptions(lang: string) {
+    const response = await fetch(`${apiUrl}/campaigns-merged/who-the-people-are-options?lang=${lang}`, {
+        method: 'GET',
+        headers: headers,
+    })
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch campaigns merged who the people are options')
     }
 
     const data: TOption<string>[] = await response.json()

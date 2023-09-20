@@ -71,6 +71,16 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
             bar2Fill = 'var(--defaultTertiary)'
     }
 
+    // Set height
+    let height: number
+    switch (dashboard) {
+        case DashboardName.ALL_CAMPAIGNS:
+            height = 950
+            break
+        default:
+            height = 525
+    }
+
     // Set bars classes
     let bar1Classes: string
     let bar2Classes: string
@@ -222,7 +232,7 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                         <div className="mt-3 flex flex-col">
                             {/* Bar chart */}
                             <div className="mb-3 mt-3 w-full">
-                                <ResponsiveContainer height={525} className="bg-white">
+                                <ResponsiveContainer height={height} className="bg-white">
                                     <BarChart
                                         data={responsesBreakdown}
                                         margin={{ top: 15, right: 50, left: 10, bottom: 15 }}
@@ -273,7 +283,7 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                                                 dataKey="count_2"
                                                 className={classNames('hover:cursor-pointer', bar2Classes)}
                                                 fill={bar2Fill}
-                                                minPointSize={3}
+                                                minPointSize={2}
                                                 onClick={setResponseTopic}
                                                 stackId={0}
                                                 onMouseOver={() => setHoveredBarDataKey('count_2')}
@@ -285,7 +295,7 @@ export const ResponsesBreakdownGraph = ({ dashboard, lang }: IResponsesBreakdown
                                             dataKey="count_1"
                                             className={classNames('hover:cursor-pointer', bar1Classes)}
                                             fill={bar1Fill}
-                                            minPointSize={3}
+                                            minPointSize={2}
                                             onClick={setResponseTopic}
                                             stackId={0}
                                             onMouseOver={() => setHoveredBarDataKey('count_1')}

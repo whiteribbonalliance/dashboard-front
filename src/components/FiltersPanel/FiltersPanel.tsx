@@ -6,7 +6,7 @@ import { DashboardName } from '@enums'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { Box } from '@components/Box'
 import Image from 'next/image'
-import { getCampaignFilterOptions } from '@services/wra-dashboard-api'
+import { getCampaignFilterOptions, getCampaignsMergedFilterOptions } from '@services/wra-dashboard-api'
 import { TDashboard, TOption } from '@types'
 import { ICountryRegionOption, IFilterOptions } from '@interfaces'
 import { Control, Controller, useForm, UseFormReturn } from 'react-hook-form'
@@ -157,7 +157,13 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     // Fetch filter options
     useQuery<IFilterOptions>({
         queryKey: [`campaign-filter-options-${dashboard}`],
-        queryFn: () => getCampaignFilterOptions(config, lang),
+        queryFn: () => {
+            if (dashboard === DashboardName.ALL_CAMPAIGNS) {
+                return getCampaignsMergedFilterOptions(lang)
+            } else {
+                return getCampaignFilterOptions(config, lang)
+            }
+        },
         refetchOnWindowFocus: false,
         retry: 3,
         onSuccess: (filterOptions) => {

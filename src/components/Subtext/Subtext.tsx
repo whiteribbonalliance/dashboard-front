@@ -83,6 +83,9 @@ export const Subtext = async ({ dashboard, lang }: ISubtextProps) => {
         case DashboardName.WOMENS_ECONOMIC_EMPOWERMENT:
             subtextElement = <></>
             break
+        case DashboardName.ALL_CAMPAIGNS:
+            subtextElement = <></>
+            break
         default:
             subtextElement = <p>{applyToThousandsSepOnText(t(`${config.campaignCode}-subtext`), lang)}</p>
     }

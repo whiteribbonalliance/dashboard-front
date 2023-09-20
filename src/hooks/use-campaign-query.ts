@@ -2,7 +2,7 @@
 
 import { useQuery } from 'react-query'
 import { ICampaign } from '@interfaces'
-import { getCampaign } from '@services/wra-dashboard-api'
+import { getCampaign, getCampaignsMerged } from '@services/wra-dashboard-api'
 import { useFiltersStore } from '@stores/filters'
 import { useEffect } from 'react'
 import { defaultFilterValues } from '@constants'
@@ -37,17 +37,33 @@ export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
 
     const campaignQuery = useQuery<ICampaign>({
         queryKey: [`campaign-${dashboard}`],
-        queryFn: ({ signal }) =>
-            getCampaign(
-                config,
-                {
-                    filter_1: filter1,
-                    filter_2: filter2,
-                },
-                lang,
-                questionAskedCode,
-                signal
-            ),
+        queryFn: ({ signal }) => {
+            // Use getCampaignsMerged function (uses a special endpoint to fetch data of all campaigns merged)
+            if (dashboard === DashboardName.ALL_CAMPAIGNS) {
+                return getCampaignsMerged(
+                    {
+                        filter_1: filter1,
+                        filter_2: filter2,
+                    },
+                    lang,
+                    signal
+                )
+            }
+
+            // Use get getCampaign function
+            else {
+                return getCampaign(
+                    config,
+                    {
+                        filter_1: filter1,
+                        filter_2: filter2,
+                    },
+                    lang,
+                    questionAskedCode,
+                    signal
+                )
+            }
+        },
         refetchOnWindowFocus: false,
     })
 

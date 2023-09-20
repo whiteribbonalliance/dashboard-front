@@ -12,6 +12,12 @@ export const whatwomenwantLink: IDashboardLink = {
     link: 'https://whatwomenwant.whiteribbonalliance.org',
 }
 
+export const whatyoungpeoplewantLink: IDashboardLink = {
+    id: 'whatyoungpeoplewant',
+    title: 'What Young People Want',
+    link: 'https://whatyoungpeoplewant.whiteribbonalliance.org',
+}
+
 export const healthliteracyLink: IDashboardLink = {
     id: 'healthliteracy',
     title: 'Health Literacy',
@@ -40,6 +46,12 @@ export const wwwpakistanLink: IDashboardLink = {
     id: 'wwwpakistan',
     title: 'What Women Want Pakistan',
     link: 'https://explore.whiteribbonalliance.org/wwwpakistan',
+}
+
+export const womenseconomicempowermentLink: IDashboardLink = {
+    id: 'womenseconomicempowerment',
+    title: "Women's Economic Empowerment",
+    link: 'https://explore.whiteribbonalliance.org/womenseconomicempowerment',
 }
 
 export const defaultFilterValues: TFilter = {

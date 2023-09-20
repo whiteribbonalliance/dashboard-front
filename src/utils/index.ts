@@ -1,6 +1,7 @@
 import { DashboardName } from '@enums'
 import { parseDomain } from 'parse-domain'
 import {
+    allCampaignsConfig,
     economicEmpowermentMexicoConfig,
     healthwellbeingConfig,
     midwivesVoicesConfig,
@@ -41,6 +42,8 @@ export function getDashboardConfig(dashboard: TDashboard) {
             return whatWomenWantPakistanConfig
         case DashboardName.WOMENS_ECONOMIC_EMPOWERMENT:
             return womensEconomicEmpowermentConfig
+        case DashboardName.ALL_CAMPAIGNS:
+            return allCampaignsConfig
     }
 }
 
