@@ -30,7 +30,7 @@ interface IHistogram {
     canonical_countries: IHistogramData[]
 }
 
-interface IGenderData {
+interface IGenderBreakdown {
     name: string
     count: string
 }
@@ -61,7 +61,7 @@ export interface ICampaign {
     living_settings_breakdown: ILivingSettingBreakdown[]
     top_words_and_phrases: ITopWordsAndPhrases
     histogram: IHistogram
-    genders_breakdown: IGenderData[]
+    genders_breakdown: IGenderBreakdown[]
     world_bubble_maps_coordinates: IWorldBubbleMapsCoordinates
     filter_1_description: string
     filter_2_description: string
