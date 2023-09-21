@@ -1,5 +1,4 @@
 import { IConfiguration } from '@interfaces'
-import { healthliteracyLink, midwivesvoicesLink, whatwomenwantLink } from '@constants'
 import { DashboardName } from '@enums'
 
 const title = 'Results Dashboard'
@@ -11,7 +10,11 @@ export const configuration: IConfiguration = {
     seoMetaDescription: 'What Young People Want Interactive Dashboard',
     respondentsNounSingular: 'respondent',
     respondentsNounPlural: 'respondents',
-    dashboardLinksFooter: [whatwomenwantLink, healthliteracyLink, midwivesvoicesLink],
     showVideoLink: 'https://youtu.be/E6_ERqyI8nA',
     questionsAskedCodes: ['q1'],
+    link: {
+        id: DashboardName.WHAT_YOUNG_PEOPLE_WANT,
+        title: 'What Young People Want',
+        link: 'https://whatyoungpeoplewant.whiteribbonalliance.org',
+    },
 }

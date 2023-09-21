@@ -1,5 +1,5 @@
 import { IConfiguration } from '@interfaces'
-import { healthwellbeingLink, seoMainTitle, whatwomenwantLink } from '@constants'
+import { seoMainTitle } from '@constants'
 import { DashboardName } from '@enums'
 
 const title = "Women's Economic Empowerment"
@@ -11,7 +11,11 @@ export const configuration: IConfiguration = {
     seoMetaDescription: '',
     respondentsNounSingular: 'woman',
     respondentsNounPlural: 'women',
-    dashboardLinksFooter: [whatwomenwantLink, healthwellbeingLink],
     showVideoLink: 'https://www.youtube.com/watch?v=nBzide5J3Hk',
     questionsAskedCodes: ['q1'],
+    link: {
+        id: DashboardName.WOMENS_ECONOMIC_EMPOWERMENT,
+        title: "Women's Economic Empowerment",
+        link: 'https://explore.whiteribbonalliance.org/womenseconomicempowerment',
+    },
 }

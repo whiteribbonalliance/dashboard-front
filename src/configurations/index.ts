@@ -1,8 +1,28 @@
-export { configuration as whatWomenWantConfig } from './what-women-want'
-export { configuration as whatYoungPeopleWantConfig } from './what-young-people-want'
-export { configuration as midwivesVoicesConfig } from './midwives-voices'
-export { configuration as healthwellbeingConfig } from './healthwellbeing'
-export { configuration as economicEmpowermentMexicoConfig } from './economic-empowerment-mexico'
-export { configuration as whatWomenWantPakistanConfig } from './what-women-want-pakistan'
-export { configuration as womensEconomicEmpowermentConfig } from './womens-economic-empowerment'
-export { configuration as allCampaignsConfig } from './all-campaigns'
+import { configuration as whatWomenWantConfig } from './what-women-want'
+import { configuration as whatYoungPeopleWantConfig } from './what-young-people-want'
+import { configuration as midwivesVoicesConfig } from './midwives-voices'
+import { configuration as healthwellbeingConfig } from './healthwellbeing'
+import { configuration as economicEmpowermentMexicoConfig } from './economic-empowerment-mexico'
+import { configuration as whatWomenWantPakistanConfig } from './what-women-want-pakistan'
+import { configuration as womensEconomicEmpowermentConfig } from './womens-economic-empowerment'
+import { configuration as allCampaignsConfig } from './all-campaigns'
+
+export { whatWomenWantConfig }
+export { whatYoungPeopleWantConfig }
+export { midwivesVoicesConfig }
+export { healthwellbeingConfig }
+export { economicEmpowermentMexicoConfig }
+export { whatWomenWantPakistanConfig }
+export { womensEconomicEmpowermentConfig }
+export { allCampaignsConfig }
+
+export const configurations = [
+    whatWomenWantConfig,
+    whatYoungPeopleWantConfig,
+    midwivesVoicesConfig,
+    healthwellbeingConfig,
+    economicEmpowermentMexicoConfig,
+    whatWomenWantPakistanConfig,
+    womensEconomicEmpowermentConfig,
+    allCampaignsConfig,
+]

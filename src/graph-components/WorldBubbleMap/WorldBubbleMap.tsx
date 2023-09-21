@@ -161,7 +161,7 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
                         {/* Toggles to show/hide bubbles */}
                         <div className="flex flex-col gap-y-1 px-3 py-3">
                             <div
-                                className={classNames('flex cursor-pointer', showBubbles1 ? '' : 'opacity-60')}
+                                className={classNames('flex w-fit cursor-pointer', showBubbles1 ? '' : 'opacity-60')}
                                 onClick={() => setShowBubbles1((prev) => !prev)}
                             >
                                 <div className="mr-3 flex items-center justify-center">
@@ -172,7 +172,10 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
 
                             {!data.filters_are_identical && (
                                 <div
-                                    className={classNames('flex cursor-pointer', showBubbles2 ? '' : 'opacity-60')}
+                                    className={classNames(
+                                        'flex w-fit cursor-pointer',
+                                        showBubbles2 ? '' : 'opacity-60'
+                                    )}
                                     onClick={() => setShowBubbles2((prev) => !prev)}
                                 >
                                     <div className="mr-3 flex items-center justify-center">

@@ -1,58 +1,10 @@
 import { DashboardName } from '@enums'
-import { IDashboardLink, ILanguage } from '@interfaces'
+import { ILanguage } from '@interfaces'
 import { TFilter } from '@schemas/filter'
 
 export const dashboards = Object.entries(DashboardName).map(([key, value]) => value)
 
 export const seoMainTitle = 'White Ribbon Alliance'
-
-export const whatwomenwantLink: IDashboardLink = {
-    id: 'whatwomenwant',
-    title: 'What Women Want',
-    link: 'https://whatwomenwant.whiteribbonalliance.org',
-}
-
-export const whatyoungpeoplewantLink: IDashboardLink = {
-    id: 'whatyoungpeoplewant',
-    title: 'What Young People Want',
-    link: 'https://whatyoungpeoplewant.whiteribbonalliance.org',
-}
-
-export const healthliteracyLink: IDashboardLink = {
-    id: 'healthliteracy',
-    title: 'Health Literacy',
-    link: 'https://wwwliteracydashboard.whiteribbonalliance.org',
-}
-
-export const midwivesvoicesLink: IDashboardLink = {
-    id: 'midwivesvoices',
-    title: 'What Midwives Want',
-    link: 'https://midwivesvoices.whiteribbonalliance.org',
-}
-
-export const healthwellbeingLink: IDashboardLink = {
-    id: 'healthwellbeing',
-    title: 'What women want for health and wellbeing',
-    link: 'https://explore.whiteribbonalliance.org/healthwellbeing',
-}
-
-export const gizLink: IDashboardLink = {
-    id: 'giz',
-    title: 'Economic Empowerment in Mexico',
-    link: 'https://explore.whiteribbonalliance.org/giz',
-}
-
-export const wwwpakistanLink: IDashboardLink = {
-    id: 'wwwpakistan',
-    title: 'What Women Want Pakistan',
-    link: 'https://explore.whiteribbonalliance.org/wwwpakistan',
-}
-
-export const womenseconomicempowermentLink: IDashboardLink = {
-    id: 'womenseconomicempowerment',
-    title: "Women's Economic Empowerment",
-    link: 'https://explore.whiteribbonalliance.org/womenseconomicempowerment',
-}
 
 export const defaultFilterValues: TFilter = {
     countries: [],

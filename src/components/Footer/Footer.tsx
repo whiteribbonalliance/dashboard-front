@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import { DashboardName } from '@enums'
 import React from 'react'
-import { applyToThousandsSepOnText, classNames, getDashboardConfig } from '@utils'
+import { applyToThousandsSepOnText, classNames } from '@utils'
 import { useTranslation } from '@app/i18n'
 import { TDashboard } from '@types'
+import { configurations } from '@configurations'
 
 interface IFooterProps {
     dashboard: TDashboard
@@ -12,7 +13,10 @@ interface IFooterProps {
 
 export const Footer = async ({ dashboard, lang }: IFooterProps) => {
     const { t } = await useTranslation(lang)
-    const config = getDashboardConfig(dashboard)
+
+    // Footer links
+    const dashboardLinks = configurations.map((configuration) => configuration.link)
+    const footerLinks = dashboardLinks.filter((dashboardLink) => dashboardLink.id !== dashboard)
 
     // Set footer link classes
     let footerLinkClasses: string
@@ -23,8 +27,6 @@ export const Footer = async ({ dashboard, lang }: IFooterProps) => {
         default:
             footerLinkClasses = 'text-defaultColors-secondary'
     }
-
-    let otherDashboardLinks = config.dashboardLinksFooter
 
     // Set informed consent text
     let informedConsentText: string
@@ -86,21 +88,21 @@ export const Footer = async ({ dashboard, lang }: IFooterProps) => {
             </div>
 
             {/* Other dashboards */}
-            {otherDashboardLinks.length > 0 && (
+            {footerLinks.length > 0 && (
                 <div>
                     <p>
                         {t('other-dashboards')}:{' '}
-                        {otherDashboardLinks.map((otherDashboardLink, index) => {
+                        {footerLinks.map((footerLink, index) => {
                             return (
-                                <span key={otherDashboardLink.id}>
+                                <span key={footerLink.id}>
                                     <Link
-                                        key={otherDashboardLink.id}
-                                        href={otherDashboardLink.link}
+                                        key={footerLink.id}
+                                        href={footerLink.link}
                                         className={classNames('underline', footerLinkClasses)}
                                     >
-                                        {otherDashboardLink.title}
+                                        {footerLink.title}
                                     </Link>
-                                    {index + 1 < otherDashboardLinks.length && <> • </>}
+                                    {index + 1 < footerLinks.length && <> • </>}
                                 </span>
                             )
                         })}

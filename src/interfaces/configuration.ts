@@ -1,5 +1,5 @@
-import { IDashboardLink } from '@interfaces'
 import { TQuestionCode } from '@types'
+import { IDashboardLink } from './dashboard-link'
 
 export interface IConfiguration {
     id: string
@@ -8,7 +8,7 @@ export interface IConfiguration {
     seoMetaDescription: string
     respondentsNounSingular: string
     respondentsNounPlural: string
-    dashboardLinksFooter: IDashboardLink[]
     showVideoLink: string
     questionsAskedCodes: TQuestionCode[]
+    link: IDashboardLink
 }
