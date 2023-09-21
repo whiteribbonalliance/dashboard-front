@@ -1,4 +1,4 @@
-import { IWordcloudWords } from './wordcloud-words'
+import { IWordcloudWord } from './wordcloud-word'
 import { ITopWords } from './top-words'
 import { IHistogramData } from './histogram-data'
 
@@ -15,7 +15,7 @@ export interface IResponseBreakdown {
 }
 
 export interface ITopWordsAndPhrases {
-    wordcloud_words: IWordcloudWords[]
+    wordcloud_words: IWordcloudWord[]
     top_words: ITopWords[]
     two_word_phrases: ITopWords[]
     three_word_phrases: ITopWords[]

@@ -7,15 +7,15 @@ import { scaleLog } from '@visx/scale'
 import { DashboardName } from '@enums'
 import { Wordcloud } from '@visx/wordcloud'
 import { useTooltip, useTooltipInPortal } from '@visx/tooltip'
-import { IWordcloudWords } from '@interfaces'
+import { IWordcloudWord } from '@interfaces'
 import { toThousandsSep } from '@utils'
-import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
+import { useFilterFormsStore } from '@stores/filter-forms'
 import { TDashboard } from '@types'
 
 interface IWordcloudProps {
     dashboard: TDashboard
     lang: string
-    wordcloudWords: IWordcloudWords[]
+    wordcloudWords: IWordcloudWord[]
 }
 
 interface ITooltipData {
@@ -35,7 +35,10 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
     const cachedWordcloud = useMemo(() => {
         // Function to get font size
         const fontScale = scaleLog({
-            domain: [Math.min(...wordcloudWords.map((w) => w.value)), Math.max(...wordcloudWords.map((w) => w.value))],
+            domain: [
+                Math.min(...wordcloudWords.map((w) => w.count_1)),
+                Math.max(...wordcloudWords.map((w) => w.count_1)),
+            ],
             range: [10, 150],
         })
 
@@ -56,7 +59,7 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
         }
 
         // On wordcloud mouse over
-        function handleMouseOver(event: React.MouseEvent<SVGTextElement, MouseEvent>, word: any) {
+        function handleMouseOver(event: React.MouseEvent<SVGTextElement, MouseEvent>, word: IWordcloudWord) {
             const containerX = ('clientX' in event ? event.clientX : 0) - containerBounds.left
             const containerY = ('clientY' in event ? event.clientY : 0) - containerBounds.top
 
@@ -64,7 +67,7 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
             showTooltip({
                 tooltipLeft: containerX,
                 tooltipTop: containerY,
-                tooltipData: { text: word.text, count: word.value },
+                tooltipData: { text: word.text, count: word.count_1 },
             })
         }
 
@@ -82,7 +85,7 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
                         height={parent.height}
                         width={parent.width}
                         words={wordcloudWords}
-                        fontSize={(datum) => fontScale(datum.value)}
+                        fontSize={(datum) => fontScale(datum.count_1)}
                         spiral="rectangular"
                         rotate={0}
                         padding={3}

@@ -16,6 +16,6 @@ export type {
     ITopWordsAndPhrases,
     ILivingSettingBreakdown,
 } from './wra-dashboard-api/campaign'
-export type { IWordcloudWords } from './wra-dashboard-api/wordcloud-words'
+export type { IWordcloudWord } from './wra-dashboard-api/wordcloud-word'
 export type { ITopWords } from './wra-dashboard-api/top-words'
 export type { IHistogramData } from './wra-dashboard-api/histogram-data'
