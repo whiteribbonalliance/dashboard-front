@@ -77,6 +77,20 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
         )
     }
 
+    const FsmLogo = () => {
+        return (
+            <div>
+                <Image
+                    className="max-h-[3rem] w-full max-w-[17rem] xl:max-h-[4rem]"
+                    src="/whatwomenwantpakistan/fsm_logo.png"
+                    alt="fsm logo"
+                    width={1117}
+                    height={200}
+                />
+            </div>
+        )
+    }
+
     // Set logos
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
@@ -91,6 +105,14 @@ export const HeaderLogos = ({ dashboard }: IHeaderLogosProps) => {
                 <div className="flex items-center gap-x-5 xl:gap-x-3">
                     <WhatWomenWantLogo />
                     <PushWithWomenLogo />
+                    <WhiteRibbonAllianceLogo />
+                </div>
+            )
+        case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
+            return (
+                <div className="flex items-center gap-x-5 xl:gap-x-3">
+                    <WhatWomenWantLogo />
+                    <FsmLogo />
                     <WhiteRibbonAllianceLogo />
                 </div>
             )
