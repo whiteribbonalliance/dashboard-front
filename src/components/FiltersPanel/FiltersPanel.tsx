@@ -515,7 +515,8 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                     )}
                                                                 </div>
                                                                 {dashboard === DashboardName.WHAT_WOMEN_WANT ||
-                                                                dashboard === DashboardName.MIDWIVES_VOICES ? (
+                                                                dashboard === DashboardName.MIDWIVES_VOICES ||
+                                                                dashboard === DashboardName.ALL_CAMPAIGNS ? (
                                                                     <SelectAgeRanges
                                                                         id={`select-age-ranges-${id}`}
                                                                         dashboard={dashboard}
