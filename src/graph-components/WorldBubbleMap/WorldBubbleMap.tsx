@@ -23,6 +23,7 @@ import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 import { feature } from 'topojson-client'
 import { Topology } from 'topojson-specification'
 import { FeatureCollection } from 'geojson'
+import _ from 'lodash'
 
 interface IWorldBubbleMapsProps {
     dashboard: TDashboard
@@ -69,7 +70,7 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
 
     // Data geo world query
     const dataGeoQuery = useQuery<FeatureCollection | undefined>({
-        queryKey: ['geo-world'],
+        queryKey: [`geo-world`],
         queryFn: () =>
             d3.json<FeatureCollection>(
                 'https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson'
@@ -79,23 +80,13 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
 
     // Data topo JSON Mexico
     const dataTopoJsonMX = useQuery<Topology | undefined>({
-        queryKey: ['topo-json-mx'],
+        queryKey: [`topo-json-mx`],
         queryFn: () =>
             d3.json<Topology>(
                 'https://gist.githubusercontent.com/diegovalle/5129746/raw/c1c35e439b1d5e688bca20b79f0e53a1fc12bf9e/mx_tj.json'
             ),
         refetchOnWindowFocus: false,
     })
-
-    // Set selected tab classes
-    let selectedTabClasses: string
-    switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            selectedTabClasses = 'border-t-pmnchColors-septenary'
-            break
-        default:
-            selectedTabClasses = 'border-t-defaultColors-tertiary'
-    }
 
     // Set respondents located text
     let respondentsLocatedText: string
@@ -273,9 +264,10 @@ const D3Map = ({
             }
 
             // For 'wwwpakistan', only show the respective country on the map (GeoJSON)
+            const geoJson = _.cloneDeep(geoJsonFeatures)
             switch (dashboard) {
                 case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
-                    geoJsonFeatures.features = geoJsonFeatures.features.filter((d) => d.properties?.name === 'Pakistan')
+                    geoJson.features = geoJsonFeatures.features.filter((d) => d.properties?.name === 'Pakistan')
                     break
                 case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
                     // Uses TopoJSON
@@ -284,7 +276,7 @@ const D3Map = ({
             }
 
             // Hide antarctica
-            geoJsonFeatures.features = geoJsonFeatures.features.filter((d) => d.properties?.name !== 'Antarctica')
+            geoJson.features = geoJson.features.filter((d) => d.properties?.name !== 'Antarctica')
 
             // This variable will be used for the coordinates on the map
             let worldBubbleMapsCoordinates: IWorldBubbleMapsCoordinateWithColor[]
@@ -339,7 +331,7 @@ const D3Map = ({
                     svgEl
                         .append('g')
                         .selectAll('path')
-                        .data(geoJsonFeatures.features)
+                        .data(geoJson.features)
                         .join('path')
                         .attr('fill', fillColor)
                         .style('stroke', 'none')

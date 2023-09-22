@@ -1,9 +1,9 @@
-import { Dashboard } from '@page-components/Dashboard'
+import { DashboardPage } from 'page-components/DashboardPage'
 import { dashboards } from '@constants'
 import { TDashboard as TDashboard } from '@types'
 import { getDashboardConfig } from '@utils'
 
-export default Dashboard
+export default DashboardPage
 
 interface IGenerateMetadataProps {
     params: { dashboard: TDashboard }

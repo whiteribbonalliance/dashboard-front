@@ -1,5 +1,7 @@
+'use client'
+
 import { TDashboard } from '@types'
-import { useTranslation } from '@app/i18n'
+import { useTranslation } from '@app/i18n/client'
 import { applyToThousandsSepOnText, classNames, getDashboardConfig } from '@utils'
 import { DashboardName } from '@enums'
 import Link from 'next/link'
@@ -13,8 +15,8 @@ interface ISubtextProps {
     lang: string
 }
 
-export const Subtext = async ({ dashboard, lang }: ISubtextProps) => {
-    const { t } = await useTranslation(lang)
+export const Subtext = ({ dashboard, lang }: ISubtextProps) => {
+    const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
 
     // Set link classes

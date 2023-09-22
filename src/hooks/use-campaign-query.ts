@@ -10,7 +10,7 @@ import { TDashboard } from '@types'
 import { getDashboardConfig, getDefaultFilterValuesForDashboard } from '@utils'
 import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
 import { DashboardName } from '@enums'
-import { useAllCampaignsActiveDashboardStore } from '@stores/all-campaigns-active-dashboard'
+import { useActiveDashboardStore } from '@stores/active-dashboard'
 
 export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
     let filters = useFiltersStore((state) => state.filters)
@@ -20,9 +20,7 @@ export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
     const questionAskedCode = useQuestionAskedCodeStore((state) => state.questionAskedCode)
 
     // Current selected campaign at allcampaigns dashboard
-    const allCampaignsActiveDashboard = useAllCampaignsActiveDashboardStore(
-        (state) => state.allCampaignsActiveDashboard
-    )
+    const activeDashboard = useActiveDashboardStore((state) => state.activeDashboard)
 
     // 'healthwellbeing' at 'q2' should ignore response topics filtering
     if (dashboard === DashboardName.HEALTHWELLBEING && questionAskedCode === 'q2') {
@@ -46,35 +44,16 @@ export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
         queryFn: ({ signal }) => {
             if (dashboard === DashboardName.ALL_CAMPAIGNS) {
                 // Use getCampaignsMerged function (uses a special endpoint to fetch data of all campaigns merged)
-                if (allCampaignsActiveDashboard === DashboardName.ALL_CAMPAIGNS) {
-                    return getCampaignsMerged(
-                        {
-                            filter_1: filter1,
-                            filter_2: filter2,
-                        },
-                        lang,
-                        signal
-                    )
-                }
-
-                // Use get getCampaign function to fetch allCampaignsActiveDashboard
-                else {
-                    const config = getDashboardConfig(allCampaignsActiveDashboard)
-                    return getCampaign(
-                        config,
-                        {
-                            filter_1: filter1,
-                            filter_2: filter2,
-                        },
-                        lang,
-                        questionAskedCode,
-                        signal
-                    )
-                }
-            }
-
-            // Use get getCampaign function to fetch dashboard
-            else {
+                return getCampaignsMerged(
+                    {
+                        filter_1: filter1,
+                        filter_2: filter2,
+                    },
+                    lang,
+                    signal
+                )
+            } else {
+                // Use get getCampaign function to fetch dashboard
                 const config = getDashboardConfig(dashboard)
                 return getCampaign(
                     config,
@@ -97,7 +76,7 @@ export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
     // Refetch campaign when any of the dependencies change
     useEffect(() => {
         refetch({ cancelRefetch: true }).then()
-    }, [refetch, filters, questionAskedCode, allCampaignsActiveDashboard])
+    }, [refetch, filters, questionAskedCode, activeDashboard])
 
     return campaignQuery
 }

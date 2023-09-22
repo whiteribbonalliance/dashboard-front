@@ -13,8 +13,8 @@ import { LanguageSelect } from '@components/LanguageSelect'
 import { Chevron } from '@components/Chevron'
 import { classNames, getDashboardConfig } from '@utils'
 import { useTranslation } from '@app/i18n/client'
-import { TDashboard } from '@types'
 import Image from 'next/image'
+import { TDashboard } from '@types'
 
 interface IHeaderProps {
     dashboard: TDashboard

@@ -23,13 +23,13 @@ import { useQuery } from 'react-query'
 import { Tooltip } from '@components/Tooltip'
 import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 import { Input } from '@components/Input'
-import { QuestionAsked } from '@components/FiltersPanel/QuestionAsked'
+import { SelectQuestionAsked } from 'components/FiltersPanel/SelectQuestionAsked'
 import { useQuestionsAskedOptions } from '@hooks/use-questions-asked-options'
 import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
 import { Loading } from 'components/Loading'
-import { AllCampaignsActiveDashboard } from 'components/FiltersPanel/AllCampaignsActiveDashboard'
+import { SelectActiveDashboard } from 'components/FiltersPanel/SelectActiveDashboard'
 import { dashboardsConfigs } from '@configurations'
-import { useAllCampaignsActiveDashboardStore } from '@stores/all-campaigns-active-dashboard'
+import { useShowSelectActiveDashboardStore } from '@stores/show-select-active-dashboard'
 
 interface IFiltersPanelProps {
     dashboard: TDashboard
@@ -64,32 +64,11 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const setRefetchCampaign = useRefetchCampaignStore((state) => state.setRefetchCampaign)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
-
     const questionAskedCode = useQuestionAskedCodeStore((state) => state.questionAskedCode)
     const [tabs, setTabs] = useState<ITab[]>([])
 
-    const allCampaignsActiveDashboard = useAllCampaignsActiveDashboardStore(
-        (state) => state.allCampaignsActiveDashboard
-    )
-
-    // Set which dashboard to use for questions asked options
-    let dashboardForQuestionAskedOptions: TDashboard
-    if (dashboard === DashboardName.ALL_CAMPAIGNS) {
-        dashboardForQuestionAskedOptions = allCampaignsActiveDashboard
-    } else {
-        dashboardForQuestionAskedOptions = dashboard
-    }
-
     // Set questions asked options
-    const questionsAskedOptions = useQuestionsAskedOptions(dashboardForQuestionAskedOptions, lang)
-
-    // Hide 'only responses from categories' filter option
-    let hideResponseTopicRelatedFilters = false
-    if (dashboard === DashboardName.HEALTHWELLBEING && questionAskedCode == 'q2') {
-        hideResponseTopicRelatedFilters = true
-    } else if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
-        hideResponseTopicRelatedFilters = true
-    }
+    const questionsAskedOptions = useQuestionsAskedOptions(dashboard, lang)
 
     // Select options
     const [countryOptions, setCountryOptions] = useState<TOption<string>[]>([])
@@ -309,13 +288,34 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     }
 
     // Set active dashboard options
+    const showSelectActiveDashboard = useShowSelectActiveDashboardStore((state) => state.showSelectActiveDashboard)
     const allCampaignsActiveDashboardOptions: TOption<string>[] = []
-    if (dashboard === DashboardName.ALL_CAMPAIGNS) {
+    if (showSelectActiveDashboard) {
         for (let i = 0; i < dashboardsConfigs.length; i++) {
             const value = dashboardsConfigs[i].id
             const label = dashboardsConfigs[i].title
             allCampaignsActiveDashboardOptions.push({ value, label })
         }
+    }
+
+    // Set show select genders
+    let showSelectGenders = false
+    if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT || dashboard === DashboardName.MIDWIVES_VOICES) {
+        showSelectGenders = true
+    }
+
+    // Set show select genders and professions
+    let showSelectGendersAndProfessions = false
+    if (dashboard === DashboardName.MIDWIVES_VOICES) {
+        showSelectGendersAndProfessions = true
+    }
+
+    // Hide 'only responses from categories' filter option
+    let showResponseTopicRelatedFilters = true
+    if (dashboard === DashboardName.HEALTHWELLBEING && questionAskedCode == 'q2') {
+        showResponseTopicRelatedFilters = false
+    } else if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
+        showResponseTopicRelatedFilters = false
     }
 
     return (
@@ -388,23 +388,23 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
             />
 
             {/* Active dashboard within allcampaigns dashboard */}
-            {dashboard === DashboardName.ALL_CAMPAIGNS && allCampaignsActiveDashboardOptions.length > 1 && (
+            {showSelectActiveDashboard && (
                 <div className="mb-5">
-                    <AllCampaignsActiveDashboard lang={lang} options={allCampaignsActiveDashboardOptions} />
+                    <SelectActiveDashboard lang={lang} options={allCampaignsActiveDashboardOptions} />
                 </div>
             )}
 
             {/* Switch between questions asked (for allcampaigns dashboard) */}
             {dashboard === DashboardName.ALL_CAMPAIGNS && questionsAskedOptions.length > 1 && (
                 <div className="mb-5">
-                    <QuestionAsked lang={lang} dashboard={dashboardForQuestionAskedOptions} />
+                    <SelectQuestionAsked lang={lang} dashboard={dashboard} />
                 </div>
             )}
 
             {/* Switch between questions asked (for other dashboards) */}
             {dashboard !== DashboardName.ALL_CAMPAIGNS && questionsAskedOptions.length > 1 && (
                 <div className="mb-5">
-                    <QuestionAsked lang={lang} dashboard={dashboardForQuestionAskedOptions} />
+                    <SelectQuestionAsked lang={lang} dashboard={dashboard} />
                 </div>
             )}
 
@@ -475,8 +475,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                             </div>
 
                                             {/* Select response topics */}
-                                            {/* Do not display if 'healthwellbeing' and 'q2' */}
-                                            {!hideResponseTopicRelatedFilters && (
+                                            {showResponseTopicRelatedFilters && (
                                                 <div>
                                                     <div
                                                         className="mb-1 w-fit"
@@ -515,7 +514,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                         >
                                                             {/* Show responses from categories */}
                                                             {/* Do not display if 'healthwellbeing' and 'q2' */}
-                                                            {!hideResponseTopicRelatedFilters &&
+                                                            {showResponseTopicRelatedFilters &&
                                                                 questionAskedCode !== 'q2' && (
                                                                     <div>
                                                                         <div className="mb-1 w-fit">
@@ -565,7 +564,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                             </div>
 
                                                             {/* For whatyoungpeoplewant show select gender */}
-                                                            {dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT && (
+                                                            {showSelectGenders && (
                                                                 <>
                                                                     {/* Filter by gender */}
                                                                     <div className="flex gap-x-3">
@@ -587,7 +586,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                             )}
 
                                                             {/* For midwivesvoices show select gender and select profession */}
-                                                            {dashboard === DashboardName.MIDWIVES_VOICES && (
+                                                            {showSelectGendersAndProfessions && (
                                                                 <>
                                                                     {/* Filter by gender & filter by profession */}
                                                                     <div className="flex gap-x-3">

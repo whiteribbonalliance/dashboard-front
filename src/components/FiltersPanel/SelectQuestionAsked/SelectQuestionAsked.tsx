@@ -11,12 +11,12 @@ import { SelectSingleValue } from '@components/SelectSingleValue'
 import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
 import { useQuestionsAskedOptions } from '@hooks/use-questions-asked-options'
 
-interface IQuestionAskedProps {
+interface ISelectQuestionAskedProps {
     dashboard: TDashboard
     lang: string
 }
 
-export const QuestionAsked = ({ dashboard, lang }: IQuestionAskedProps) => {
+export const SelectQuestionAsked = ({ dashboard, lang }: ISelectQuestionAskedProps) => {
     const { t } = useTranslation(lang)
     const questionsAskedOptions = useQuestionsAskedOptions(dashboard, lang)
     const setQuestionAskedCode = useQuestionAskedCodeStore((state) => state.setQuestionAskedCode)

@@ -11,7 +11,6 @@ import { ResponsesSampleTable } from '@graph-components/ResponsesSampleTable'
 import { LivingSettingsBreakdownGraph } from '@graph-components/LivingSettingsBreakdownGraph'
 import React from 'react'
 import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
-import { useAllCampaignsActiveDashboardStore } from '@stores/all-campaigns-active-dashboard'
 
 interface IGraphsProps {
     dashboard: TDashboard
@@ -20,38 +19,8 @@ interface IGraphsProps {
 
 export const Graphs = ({ dashboard, lang }: IGraphsProps) => {
     const questionAskedCode = useQuestionAskedCodeStore((state) => state.questionAskedCode)
-    const allCampaignsActiveDashboard = useAllCampaignsActiveDashboardStore(
-        (state) => state.allCampaignsActiveDashboard
-    )
 
     switch (dashboard) {
-        case DashboardName.ALL_CAMPAIGNS:
-            return (
-                <>
-                    <TopWordsAndPhrasesGraph dashboard={dashboard} lang={lang} />
-                    <ResponsesSampleTable dashboard={dashboard} lang={lang} />
-                    <WorldBubbleMap dashboard={dashboard} lang={lang} />
-
-                    {/* Hide graph if dashboard healthwellbeing and q2 */}
-                    {allCampaignsActiveDashboard === DashboardName.HEALTHWELLBEING && questionAskedCode === 'q2' ? (
-                        <></>
-                    ) : (
-                        <ResponsesBreakdownGraph dashboard={dashboard} lang={lang} />
-                    )}
-
-                    {/* Only show if healthwellbeing */}
-                    {allCampaignsActiveDashboard === DashboardName.HEALTHWELLBEING && (
-                        <LivingSettingsBreakdownGraph dashboard={dashboard} lang={lang} />
-                    )}
-
-                    {/* Only show if whatyoungpeoplewant */}
-                    {allCampaignsActiveDashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT && (
-                        <GenderBreakdownGraph dashboard={dashboard} lang={lang} />
-                    )}
-
-                    <WhoThePeopleAreGraph dashboard={dashboard} lang={lang} />
-                </>
-            )
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
             return (
                 <>

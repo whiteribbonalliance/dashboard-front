@@ -1,5 +1,7 @@
+'use client'
+
 import { TDashboard } from '@types'
-import { useTranslation } from '@app/i18n'
+import { useTranslation } from '@app/i18n/client'
 import { getDashboardConfig } from '@utils'
 import { DashboardName } from '@enums'
 
@@ -9,8 +11,8 @@ interface ITitleProps {
     noHeading?: boolean
 }
 
-export const Title = async ({ dashboard, lang, noHeading = false }: ITitleProps) => {
-    const { t } = await useTranslation(lang)
+export const Title = ({ dashboard, lang, noHeading = false }: ITitleProps) => {
+    const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
 
     // Set title

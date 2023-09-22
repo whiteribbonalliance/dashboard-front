@@ -12,18 +12,16 @@ import {
     TAllCampaignsActiveDashboard,
 } from '@schemas/all-campaigns-active-dashboard'
 import { DashboardName } from '@enums'
-import { useAllCampaignsActiveDashboardStore } from '@stores/all-campaigns-active-dashboard'
+import { useActiveDashboardStore } from '@stores/active-dashboard'
 
-interface IAllCampaignsActiveDashboardProps {
+interface ISelectActiveDashboardProps {
     lang: string
     options: TOption<string>[]
 }
 
-export const AllCampaignsActiveDashboard = ({ lang, options }: IAllCampaignsActiveDashboardProps) => {
+export const SelectActiveDashboard = ({ lang, options }: ISelectActiveDashboardProps) => {
     const { t } = useTranslation(lang)
-    const setAllCampaignsActiveDashboard = useAllCampaignsActiveDashboardStore(
-        (state) => state.setAllCampaignsActiveDashboard
-    )
+    const setActiveDashboard = useActiveDashboardStore((state) => state.setActiveDashboard)
 
     // Form
     const form = useForm<TAllCampaignsActiveDashboard>({
@@ -40,12 +38,12 @@ export const AllCampaignsActiveDashboard = ({ lang, options }: IAllCampaignsActi
         }
     }, [form])
 
-    // Set all campaigns active dashboard
+    // Set active dashboard
     useEffect(() => {
         if (activeDashboardField) {
-            setAllCampaignsActiveDashboard(activeDashboardField)
+            setActiveDashboard(activeDashboardField)
         }
-    }, [setAllCampaignsActiveDashboard, activeDashboardField])
+    }, [setActiveDashboard, activeDashboardField])
 
     // Set default value for active_dashboard
     useEffect(() => {

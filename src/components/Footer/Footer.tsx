@@ -1,8 +1,10 @@
+'use client'
+
 import Link from 'next/link'
 import { DashboardName } from '@enums'
 import React from 'react'
 import { applyToThousandsSepOnText, classNames } from '@utils'
-import { useTranslation } from '@app/i18n'
+import { useTranslation } from '@app/i18n/client'
 import { TDashboard } from '@types'
 import { dashboardsConfigs } from '@configurations'
 
@@ -11,8 +13,8 @@ interface IFooterProps {
     lang: string
 }
 
-export const Footer = async ({ dashboard, lang }: IFooterProps) => {
-    const { t } = await useTranslation(lang)
+export const Footer = ({ dashboard, lang }: IFooterProps) => {
+    const { t } = useTranslation(lang)
 
     // Footer links
     const dashboardLinks = dashboardsConfigs.map((configuration) => configuration.link)
