@@ -394,8 +394,15 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                 </div>
             )}
 
-            {/* Switch between questions asked */}
-            {allCampaignsActiveDashboard !== DashboardName.ALL_CAMPAIGNS && questionsAskedOptions.length > 1 && (
+            {/* Switch between questions asked (for allcampaigns dashboard) */}
+            {dashboard === DashboardName.ALL_CAMPAIGNS && allCampaignsActiveDashboard !== DashboardName.ALL_CAMPAIGNS && (
+                <div className="mb-5">
+                    <QuestionAsked lang={lang} dashboard={dashboardForQuestionAskedOptions} />
+                </div>
+            )}
+
+            {/* Switch between questions asked (for other dashboards) */}
+            {dashboard !== DashboardName.ALL_CAMPAIGNS && questionsAskedOptions.length > 1 && (
                 <div className="mb-5">
                     <QuestionAsked lang={lang} dashboard={dashboardForQuestionAskedOptions} />
                 </div>
