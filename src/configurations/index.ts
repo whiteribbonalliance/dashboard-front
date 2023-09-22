@@ -16,7 +16,7 @@ export { whatWomenWantPakistanConfig }
 export { womensEconomicEmpowermentConfig }
 export { allCampaignsConfig }
 
-export const configurations = [
+export const dashboardsConfigs = [
     whatWomenWantConfig,
     whatYoungPeopleWantConfig,
     midwivesVoicesConfig,

@@ -4,7 +4,7 @@ import React from 'react'
 import { applyToThousandsSepOnText, classNames } from '@utils'
 import { useTranslation } from '@app/i18n'
 import { TDashboard } from '@types'
-import { configurations } from '@configurations'
+import { dashboardsConfigs } from '@configurations'
 
 interface IFooterProps {
     dashboard: TDashboard
@@ -15,7 +15,7 @@ export const Footer = async ({ dashboard, lang }: IFooterProps) => {
     const { t } = await useTranslation(lang)
 
     // Footer links
-    const dashboardLinks = configurations.map((configuration) => configuration.link)
+    const dashboardLinks = dashboardsConfigs.map((configuration) => configuration.link)
     const footerLinks = dashboardLinks.filter((dashboardLink) => dashboardLink.id !== dashboard)
 
     // Set footer link classes

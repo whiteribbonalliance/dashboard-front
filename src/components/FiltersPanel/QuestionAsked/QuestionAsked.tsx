@@ -13,11 +13,12 @@ import { useQuestionsAskedOptions } from '@hooks/use-questions-asked-options'
 
 interface IQuestionAskedProps {
     dashboard: TDashboard
+    lang: string
 }
 
-export const QuestionAsked = ({ dashboard }: IQuestionAskedProps) => {
-    const { t } = useTranslation(dashboard)
-    const questionsAskedOptions = useQuestionsAskedOptions(dashboard)
+export const QuestionAsked = ({ dashboard, lang }: IQuestionAskedProps) => {
+    const { t } = useTranslation(lang)
+    const questionsAskedOptions = useQuestionsAskedOptions(dashboard, lang)
     const setQuestionAskedCode = useQuestionAskedCodeStore((state) => state.setQuestionAskedCode)
 
     // Form
@@ -37,7 +38,9 @@ export const QuestionAsked = ({ dashboard }: IQuestionAskedProps) => {
 
     // Set question asked code
     useEffect(() => {
-        setQuestionAskedCode(questionAskedCodeField)
+        if (questionAskedCodeField) {
+            setQuestionAskedCode(questionAskedCodeField)
+        }
     }, [questionAskedCodeField, setQuestionAskedCode])
 
     return (

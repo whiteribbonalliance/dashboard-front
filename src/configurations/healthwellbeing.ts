@@ -6,6 +6,7 @@ const title = 'What women want for health and wellbeing'
 
 export const configuration: IConfiguration = {
     id: DashboardName.HEALTHWELLBEING,
+    title: title,
     campaignCode: 'healthwellbeing',
     seoTitle: `${title} | ${seoMainTitle}`,
     seoMetaDescription: 'We asked women around the world, what they want to improve their health and wellbeing.',
@@ -15,7 +16,7 @@ export const configuration: IConfiguration = {
     questionsAskedCodes: ['q1', 'q2'],
     link: {
         id: DashboardName.HEALTHWELLBEING,
-        title: 'What women want for health and wellbeing',
+        title: title,
         link: 'https://explore.whiteribbonalliance.org/healthwellbeing',
     },
 }

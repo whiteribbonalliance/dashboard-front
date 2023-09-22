@@ -1,12 +1,13 @@
 import { IConfiguration } from '@interfaces'
 import { DashboardName } from '@enums'
 
-const title = 'Results Dashboard'
+const title = 'What Young People Want'
 
 export const configuration: IConfiguration = {
     id: DashboardName.WHAT_YOUNG_PEOPLE_WANT,
+    title: title,
     campaignCode: 'pmn01a',
-    seoTitle: `${title} | PMNCH`,
+    seoTitle: 'Results Dashboard | PMNCH',
     seoMetaDescription: 'What Young People Want Interactive Dashboard',
     respondentsNounSingular: 'respondent',
     respondentsNounPlural: 'respondents',
@@ -14,7 +15,7 @@ export const configuration: IConfiguration = {
     questionsAskedCodes: ['q1'],
     link: {
         id: DashboardName.WHAT_YOUNG_PEOPLE_WANT,
-        title: 'What Young People Want',
+        title: title,
         link: 'https://whatyoungpeoplewant.whiteribbonalliance.org',
     },
 }

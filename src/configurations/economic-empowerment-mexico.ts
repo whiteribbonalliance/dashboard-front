@@ -6,6 +6,7 @@ const title = 'Economic Empowerment in Mexico'
 
 export const configuration: IConfiguration = {
     id: DashboardName.ECONOMIC_EMPOWERMENT_MEXICO,
+    title: title,
     campaignCode: 'giz',
     seoTitle: `${title} | ${seoMainTitle}`,
     seoMetaDescription:
@@ -16,7 +17,7 @@ export const configuration: IConfiguration = {
     questionsAskedCodes: ['q1', 'q2'],
     link: {
         id: DashboardName.ECONOMIC_EMPOWERMENT_MEXICO,
-        title: 'Economic Empowerment in Mexico',
+        title: title,
         link: 'https://explore.whiteribbonalliance.org/giz',
     },
 }

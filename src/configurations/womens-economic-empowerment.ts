@@ -6,6 +6,7 @@ const title = "Women's Economic Empowerment"
 
 export const configuration: IConfiguration = {
     id: DashboardName.WOMENS_ECONOMIC_EMPOWERMENT,
+    title: title,
     campaignCode: 'wee',
     seoTitle: `${title} | ${seoMainTitle}`,
     seoMetaDescription: '',
@@ -15,7 +16,7 @@ export const configuration: IConfiguration = {
     questionsAskedCodes: ['q1'],
     link: {
         id: DashboardName.WOMENS_ECONOMIC_EMPOWERMENT,
-        title: "Women's Economic Empowerment",
+        title: title,
         link: 'https://explore.whiteribbonalliance.org/womenseconomicempowerment',
     },
 }

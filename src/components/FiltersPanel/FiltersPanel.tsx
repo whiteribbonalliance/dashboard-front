@@ -27,6 +27,9 @@ import { QuestionAsked } from '@components/FiltersPanel/QuestionAsked'
 import { useQuestionsAskedOptions } from '@hooks/use-questions-asked-options'
 import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
 import { Loading } from 'components/Loading'
+import { AllCampaignsActiveDashboard } from 'components/FiltersPanel/AllCampaignsActiveDashboard'
+import { dashboardsConfigs } from '@configurations'
+import { useAllCampaignsActiveDashboardStore } from '@stores/all-campaigns-active-dashboard'
 
 interface IFiltersPanelProps {
     dashboard: TDashboard
@@ -61,9 +64,24 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const setRefetchCampaign = useRefetchCampaignStore((state) => state.setRefetchCampaign)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
-    const questionsAskedOptions = useQuestionsAskedOptions(dashboard)
+
     const questionAskedCode = useQuestionAskedCodeStore((state) => state.questionAskedCode)
     const [tabs, setTabs] = useState<ITab[]>([])
+
+    const allCampaignsActiveDashboard = useAllCampaignsActiveDashboardStore(
+        (state) => state.allCampaignsActiveDashboard
+    )
+
+    // Set which dashboard to use for questions asked options
+    let dashboardForQuestionAskedOptions: TDashboard
+    if (dashboard === DashboardName.ALL_CAMPAIGNS) {
+        dashboardForQuestionAskedOptions = allCampaignsActiveDashboard
+    } else {
+        dashboardForQuestionAskedOptions = dashboard
+    }
+
+    // Set questions asked options
+    const questionsAskedOptions = useQuestionsAskedOptions(dashboardForQuestionAskedOptions, lang)
 
     // Hide 'only responses from categories' filter option
     let hideResponseTopicRelatedFilters = false
@@ -290,6 +308,16 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
             selectResponseTopicsText = t('select-response-topics')
     }
 
+    // Set active dashboard options
+    const allCampaignsActiveDashboardOptions: TOption<string>[] = []
+    if (dashboard === DashboardName.ALL_CAMPAIGNS) {
+        for (let i = 0; i < dashboardsConfigs.length; i++) {
+            const value = dashboardsConfigs[i].id
+            const label = dashboardsConfigs[i].title
+            allCampaignsActiveDashboardOptions.push({ value, label })
+        }
+    }
+
     return (
         <div>
             {/* Tooltip: filters */}
@@ -359,10 +387,17 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                 ]}
             />
 
-            {/* Switch between questions */}
-            {questionsAskedOptions.length > 1 && (
+            {/* Active dashboard within allcampaigns dashboard */}
+            {dashboard === DashboardName.ALL_CAMPAIGNS && allCampaignsActiveDashboardOptions.length > 1 && (
                 <div className="mb-5">
-                    <QuestionAsked dashboard={dashboard} />
+                    <AllCampaignsActiveDashboard lang={lang} options={allCampaignsActiveDashboardOptions} />
+                </div>
+            )}
+
+            {/* Switch between questions asked */}
+            {allCampaignsActiveDashboard !== DashboardName.ALL_CAMPAIGNS && questionsAskedOptions.length > 1 && (
+                <div className="mb-5">
+                    <QuestionAsked lang={lang} dashboard={dashboardForQuestionAskedOptions} />
                 </div>
             )}
 

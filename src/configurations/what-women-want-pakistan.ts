@@ -6,6 +6,7 @@ const title = 'What Women Want Pakistan'
 
 export const configuration: IConfiguration = {
     id: DashboardName.WHAT_WOMEN_WANT_PAKISTAN,
+    title: title,
     campaignCode: 'wwwpakistan',
     seoTitle: `${title} | ${seoMainTitle}`,
     seoMetaDescription: 'We asked 245311 women in Pakistan, what they want to improve their health and wellbeing.',
@@ -15,7 +16,7 @@ export const configuration: IConfiguration = {
     questionsAskedCodes: ['q1'],
     link: {
         id: DashboardName.WHAT_WOMEN_WANT_PAKISTAN,
-        title: 'What Women Want Pakistan',
+        title: title,
         link: 'https://explore.whiteribbonalliance.org/wwwpakistan',
     },
 }

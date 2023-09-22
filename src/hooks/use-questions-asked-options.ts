@@ -4,9 +4,9 @@ import { TDashboard, TOption } from '@types'
 import { useTranslation } from '@app/i18n/client'
 import { getDashboardConfig } from '@utils'
 
-export const useQuestionsAskedOptions = (dashboard: TDashboard) => {
+export const useQuestionsAskedOptions = (dashboard: TDashboard, lang: string) => {
     const questionsAskedOptions: TOption<string>[] = []
-    const { t } = useTranslation(dashboard)
+    const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
 
     // Campaigns with one question only do not require questions asked options

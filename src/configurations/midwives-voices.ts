@@ -6,6 +6,7 @@ const title = 'What Midwives Want'
 
 export const configuration: IConfiguration = {
     id: DashboardName.MIDWIVES_VOICES,
+    title: title,
     campaignCode: 'midwife',
     seoTitle: `${title} | ${seoMainTitle}`,
     seoMetaDescription:
@@ -16,7 +17,7 @@ export const configuration: IConfiguration = {
     questionsAskedCodes: ['q1'],
     link: {
         id: DashboardName.MIDWIVES_VOICES,
-        title: 'What Midwives Want',
+        title: title,
         link: 'https://midwivesvoices.whiteribbonalliance.org',
     },
 }

@@ -6,6 +6,7 @@ const title = 'Dashboard of Dashboards'
 
 export const configuration: IConfiguration = {
     id: DashboardName.ALL_CAMPAIGNS,
+    title: title,
     campaignCode: '',
     seoTitle: `${title} | ${seoMainTitle}`,
     seoMetaDescription: 'Dashboard of Dashboards',
@@ -15,7 +16,7 @@ export const configuration: IConfiguration = {
     questionsAskedCodes: ['q1'],
     link: {
         id: DashboardName.ALL_CAMPAIGNS,
-        title: 'Dashboard of dashboards',
+        title: title,
         link: 'https://explore.whiteribbonalliance.org/allcampaigns',
     },
 }
