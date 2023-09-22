@@ -1,5 +1,4 @@
 import { DashboardName } from '@enums'
-import { parseDomain } from 'parse-domain'
 import {
     allCampaignsConfig,
     economicEmpowermentMexicoConfig,
@@ -11,6 +10,7 @@ import {
     womensEconomicEmpowermentConfig,
 } from '@configurations'
 import { TDashboard } from '@types'
+import { defaultFilterValues, TFilter } from '@schemas/filter'
 
 /**
  * Merge Tailwind CSS classes
@@ -89,24 +89,6 @@ export function niceNum(range: number, round: boolean) {
 }
 
 /**
- * Check if url is subdomain
- *
- * @param url The url
- */
-export function isSubdomain(url: string) {
-    url = url.split(':')[0]
-
-    if (url.endsWith('.local')) {
-        url = url.replace('.local', '.com')
-    }
-
-    const parseResult = parseDomain(url)
-    const { subDomains } = parseResult as any
-
-    return !!subDomains
-}
-
-/**
  * Format number to thousands separator
  *
  * @param num
@@ -146,4 +128,25 @@ export function applyToThousandsSepOnText(text: string, lang: string) {
     }
 
     return text
+}
+
+/**
+ * Get default filter values for dashboard
+ *
+ * @param dashboard The dashboard
+ */
+export function getDefaultFilterValuesForDashboard(dashboard: TDashboard) {
+    let defaultFilterValuesForDashboard: TFilter
+    switch (dashboard) {
+        case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
+            defaultFilterValuesForDashboard = { ...defaultFilterValues }
+            defaultFilterValuesForDashboard.countries = ['PK']
+            return defaultFilterValuesForDashboard
+        case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
+            defaultFilterValuesForDashboard = { ...defaultFilterValues }
+            defaultFilterValuesForDashboard.countries = ['MX']
+            return defaultFilterValuesForDashboard
+        default:
+            return defaultFilterValues
+    }
 }

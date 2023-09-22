@@ -5,10 +5,9 @@ import { ICampaign } from '@interfaces'
 import { getCampaign, getCampaignsMerged } from '@services/wra-dashboard-api'
 import { useFiltersStore } from '@stores/filters'
 import { useEffect } from 'react'
-import { defaultFilterValues } from '@schemas/filter'
 import _ from 'lodash'
 import { TDashboard } from '@types'
-import { getDashboardConfig } from '@utils'
+import { getDashboardConfig, getDefaultFilterValuesForDashboard } from '@utils'
 import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
 import { DashboardName } from '@enums'
 
@@ -32,6 +31,7 @@ export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
     }
 
     // If the filter has not changed from the default filter values then do not send it with the request
+    const defaultFilterValues = getDefaultFilterValuesForDashboard(dashboard)
     const filter1 = _.isEqual(filtersClone.filter1, defaultFilterValues) ? undefined : filtersClone.filter1
     const filter2 = _.isEqual(filtersClone.filter2, defaultFilterValues) ? undefined : filtersClone.filter2
 

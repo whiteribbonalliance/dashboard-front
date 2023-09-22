@@ -1,7 +1,7 @@
 'use client'
 
 import { Disclosure, Tab, Transition } from '@headlessui/react'
-import { classNames, getDashboardConfig } from '@utils'
+import { classNames, getDashboardConfig, getDefaultFilterValuesForDashboard } from '@utils'
 import { DashboardName } from '@enums'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { Box } from '@components/Box'
@@ -14,7 +14,6 @@ import { SelectMultiValues } from '@components/SelectMultiValues'
 import { SelectSingleValue } from '@components/SelectSingleValue'
 import { Chevron } from '@components/Chevron'
 import { useFiltersStore } from '@stores/filters'
-import { defaultFilterValues } from '@schemas/filter'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { filterSchema, TFilter } from '@schemas/filter'
 import { Stats } from '@components/FiltersPanel/Stats'
@@ -96,19 +95,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const refetchCampaignTimeout = useRef<NodeJS.Timeout>()
 
     // Set default filter values for form
-    let defaultFilterValuesForForm: TFilter
-    switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
-            defaultFilterValuesForForm = { ...defaultFilterValues }
-            defaultFilterValuesForForm.countries = ['PK']
-            break
-        case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
-            defaultFilterValuesForForm = { ...defaultFilterValues }
-            defaultFilterValuesForForm.countries = ['MX']
-            break
-        default:
-            defaultFilterValuesForForm = defaultFilterValues
-    }
+    let defaultFilterValuesForForm = getDefaultFilterValuesForDashboard(dashboard)
 
     // Set display countries filter tooltip
     let displayCountriesFilterTooltip = true
