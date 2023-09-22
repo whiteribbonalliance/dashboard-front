@@ -14,7 +14,7 @@ import { SelectMultiValues } from '@components/SelectMultiValues'
 import { SelectSingleValue } from '@components/SelectSingleValue'
 import { Chevron } from '@components/Chevron'
 import { useFiltersStore } from '@stores/filters'
-import { defaultFilterValues } from '@constants'
+import { defaultFilterValues } from '@schemas/filter'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { filterSchema, TFilter } from '@schemas/filter'
 import { Stats } from '@components/FiltersPanel/Stats'
@@ -78,6 +78,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const [countryOptions, setCountryOptions] = useState<TOption<string>[]>([])
     const [responseTopicOptions, setResponseTopicOptions] = useState<TOption<string>[]>([])
     const [ageOptions, setAgeOptions] = useState<TOption<string>[]>([])
+    const [ageRangeOptions, setAgeRangeOptions] = useState<TOption<string>[]>([])
     const [genderOptions, setGenderOptions] = useState<TOption<string>[]>([])
     const [professionOptions, setProfessionOptions] = useState<TOption<string>[]>([])
     const [onlyResponsesFromCategoriesOptions, setOnlyResponsesFromCategoriesOptions] = useState<TOption<boolean>[]>([])
@@ -186,6 +187,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
             // Age options
             setAgeOptions(filterOptions.ages)
+
+            // Age range options
+            setAgeRangeOptions(filterOptions.age_ranges)
 
             // Gender options
             setGenderOptions(filterOptions.genders)
@@ -498,7 +502,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                     </div>
                                                                 )}
 
-                                                            {/* Filter by age */}
+                                                            {/* Filter by age or age ranges */}
                                                             <div>
                                                                 <div
                                                                     className="mb-1 w-fit"
@@ -510,13 +514,24 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                         ''
                                                                     )}
                                                                 </div>
-                                                                <SelectAges
-                                                                    id={`select-ages-${id}`}
-                                                                    dashboard={dashboard}
-                                                                    options={ageOptions}
-                                                                    control={form.control}
-                                                                    refetchCampaign={refetchCampaign}
-                                                                />
+                                                                {dashboard === DashboardName.WHAT_WOMEN_WANT ||
+                                                                dashboard === DashboardName.MIDWIVES_VOICES ? (
+                                                                    <SelectAgeRanges
+                                                                        id={`select-age-ranges-${id}`}
+                                                                        dashboard={dashboard}
+                                                                        options={ageRangeOptions}
+                                                                        control={form.control}
+                                                                        refetchCampaign={refetchCampaign}
+                                                                    />
+                                                                ) : (
+                                                                    <SelectAges
+                                                                        id={`select-ages-${id}`}
+                                                                        dashboard={dashboard}
+                                                                        options={ageOptions}
+                                                                        control={form.control}
+                                                                        refetchCampaign={refetchCampaign}
+                                                                    />
+                                                                )}
                                                             </div>
 
                                                             {/* For whatyoungpeoplewant show select gender */}
@@ -839,6 +854,24 @@ const SelectAges = ({ id, options, control, refetchCampaign }: ISelectProps) => 
     return (
         <Controller
             name="ages"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+                <SelectMultiValues
+                    id={id}
+                    options={options}
+                    controllerRenderOnChange={onChange}
+                    value={value}
+                    onChange={refetchCampaign}
+                />
+            )}
+        />
+    )
+}
+
+const SelectAgeRanges = ({ id, options, control, refetchCampaign }: ISelectProps) => {
+    return (
+        <Controller
+            name="age_ranges"
             control={control}
             render={({ field: { onChange, value } }) => (
                 <SelectMultiValues

@@ -1,23 +1,9 @@
 import { DashboardName } from '@enums'
 import { ILanguage } from '@interfaces'
-import { TFilter } from '@schemas/filter'
 
 export const dashboards = Object.entries(DashboardName).map(([key, value]) => value)
 
 export const seoMainTitle = 'White Ribbon Alliance'
-
-export const defaultFilterValues: TFilter = {
-    countries: [],
-    regions: [],
-    ages: [],
-    genders: [],
-    professions: [],
-    response_topics: [],
-    only_responses_from_categories: false,
-    only_multi_word_phrases_containing_filter_term: false,
-    keyword_filter: '',
-    keyword_exclude: '',
-}
 
 // Languages supported by Cloud Translation API
 export const languages: ILanguage[] = [
