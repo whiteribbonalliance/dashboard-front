@@ -7,7 +7,10 @@ import React, { useEffect } from 'react'
 import { useTranslation } from '@app/i18n/client'
 import { TOption } from '@types'
 import { SelectSingleValue } from '@components/SelectSingleValue'
-import { activeDashboardSchema, TActiveDashboard } from '@schemas/all-campaigns-active-dashboard'
+import {
+    allCampaignsActiveDashboardSchema,
+    TAllCampaignsActiveDashboard,
+} from '@schemas/all-campaigns-active-dashboard'
 import { DashboardName } from '@enums'
 import { useAllCampaignsActiveDashboardStore } from '@stores/all-campaigns-active-dashboard'
 
@@ -23,8 +26,8 @@ export const AllCampaignsActiveDashboard = ({ lang, options }: IAllCampaignsActi
     )
 
     // Form
-    const form = useForm<TActiveDashboard>({
-        resolver: zodResolver(activeDashboardSchema),
+    const form = useForm<TAllCampaignsActiveDashboard>({
+        resolver: zodResolver(allCampaignsActiveDashboardSchema),
     })
 
     // Watch field

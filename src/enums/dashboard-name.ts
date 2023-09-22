@@ -1,11 +1,32 @@
 // The values below will also be used to check the subdomain/path requesting a dashboard, do not change them
+
+const WHAT_YOUNG_PEOPLE_WANT = 'whatyoungpeoplewant'
+const WHAT_WOMEN_WANT = 'whatwomenwant'
+const MIDWIVES_VOICES = 'midwivesvoices'
+const HEALTHWELLBEING = 'healthwellbeing'
+const ECONOMIC_EMPOWERMENT_MEXICO = 'giz'
+const WHAT_WOMEN_WANT_PAKISTAN = 'wwwpakistan'
+const WOMENS_ECONOMIC_EMPOWERMENT = 'womenseconomicempowerment'
+const ALL_CAMPAIGNS = 'allcampaigns'
+
+export const dashboardNames = [
+    WHAT_YOUNG_PEOPLE_WANT,
+    WHAT_WOMEN_WANT,
+    MIDWIVES_VOICES,
+    HEALTHWELLBEING,
+    ECONOMIC_EMPOWERMENT_MEXICO,
+    WHAT_WOMEN_WANT_PAKISTAN,
+    WOMENS_ECONOMIC_EMPOWERMENT,
+    ALL_CAMPAIGNS,
+] as const
+
 export const DashboardName = Object.freeze({
-    WHAT_YOUNG_PEOPLE_WANT: 'whatyoungpeoplewant',
-    WHAT_WOMEN_WANT: 'whatwomenwant',
-    MIDWIVES_VOICES: 'midwivesvoices',
-    HEALTHWELLBEING: 'healthwellbeing',
-    ECONOMIC_EMPOWERMENT_MEXICO: 'giz',
-    WHAT_WOMEN_WANT_PAKISTAN: 'wwwpakistan',
-    WOMENS_ECONOMIC_EMPOWERMENT: 'womenseconomicempowerment',
-    ALL_CAMPAIGNS: 'allcampaigns',
+    WHAT_YOUNG_PEOPLE_WANT: WHAT_YOUNG_PEOPLE_WANT,
+    WHAT_WOMEN_WANT: WHAT_WOMEN_WANT,
+    MIDWIVES_VOICES: MIDWIVES_VOICES,
+    HEALTHWELLBEING: HEALTHWELLBEING,
+    ECONOMIC_EMPOWERMENT_MEXICO: ECONOMIC_EMPOWERMENT_MEXICO,
+    WHAT_WOMEN_WANT_PAKISTAN: WHAT_WOMEN_WANT_PAKISTAN,
+    WOMENS_ECONOMIC_EMPOWERMENT: WOMENS_ECONOMIC_EMPOWERMENT,
+    ALL_CAMPAIGNS: ALL_CAMPAIGNS,
 })

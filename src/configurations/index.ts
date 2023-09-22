@@ -17,6 +17,7 @@ export { womensEconomicEmpowermentConfig }
 export { allCampaignsConfig }
 
 export const dashboardsConfigs = [
+    allCampaignsConfig,
     whatWomenWantConfig,
     whatYoungPeopleWantConfig,
     midwivesVoicesConfig,
@@ -24,5 +25,4 @@ export const dashboardsConfigs = [
     economicEmpowermentMexicoConfig,
     whatWomenWantPakistanConfig,
     womensEconomicEmpowermentConfig,
-    allCampaignsConfig,
 ]

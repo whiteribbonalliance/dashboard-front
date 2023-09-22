@@ -1,12 +1,8 @@
 import { z } from 'zod'
-import { DashboardName } from '@enums'
-import _ from 'lodash'
+import { dashboardNames } from '../enums/dashboard-name'
 
-const dashboards = _.values(DashboardName)
-
-export const activeDashboardSchema = z.object({
-    // @ts-ignore
-    active_dashboard: z.enum(dashboards),
+export const allCampaignsActiveDashboardSchema = z.object({
+    active_dashboard: z.enum(dashboardNames),
 })
 
-export type TActiveDashboard = z.infer<typeof activeDashboardSchema>
+export type TAllCampaignsActiveDashboard = z.infer<typeof allCampaignsActiveDashboardSchema>
