@@ -97,8 +97,8 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     // Refetch campaign timeout
     const refetchCampaignTimeout = useRef<NodeJS.Timeout>()
 
-    // Set default filter values for form
-    let defaultFilterValuesForForm = getDashboardDefaultFilterValues(dashboard)
+    // Default filter values for dashboard
+    const defaultFilterValuesForDashboard = getDashboardDefaultFilterValues(dashboard)
 
     // Set display countries filter tooltip
     let displayCountriesFilterTooltip = true
@@ -111,14 +111,14 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
     // Form 1
     const form1 = useForm<TFilter>({
-        defaultValues: defaultFilterValuesForForm,
+        defaultValues: defaultFilterValuesForDashboard,
         resolver: zodResolver(filterSchema),
     })
     useEffect(() => setForm1(form1), [setForm1, form1])
 
     // Form 2
     const form2 = useForm<TFilter>({
-        defaultValues: defaultFilterValuesForForm,
+        defaultValues: defaultFilterValuesForDashboard,
         resolver: zodResolver(filterSchema),
     })
     useEffect(() => setForm2(form2), [setForm2, form2])

@@ -13,6 +13,9 @@ import {
 } from '@schemas/all-campaigns-active-dashboard'
 import { DashboardName } from '@enums'
 import { useActiveDashboardStore } from '@stores/active-dashboard'
+import { useFilterFormsStore } from '@stores/filter-forms'
+import { getDashboardDefaultFilterValues } from '@utils'
+import { useFiltersStore } from '@stores/filters'
 
 interface ISelectActiveDashboardProps {
     lang: string
@@ -22,6 +25,9 @@ interface ISelectActiveDashboardProps {
 export const SelectActiveDashboard = ({ lang, options }: ISelectActiveDashboardProps) => {
     const { t } = useTranslation(lang)
     const setActiveDashboard = useActiveDashboardStore((state) => state.setActiveDashboard)
+    const setFilters = useFiltersStore((state) => state.setFilters)
+    const filterForm1 = useFilterFormsStore((state) => state.form1)
+    const filterForm2 = useFilterFormsStore((state) => state.form2)
 
     // Form
     const form = useForm<TAllCampaignsActiveDashboard>({
@@ -38,12 +44,21 @@ export const SelectActiveDashboard = ({ lang, options }: ISelectActiveDashboardP
         }
     }, [form])
 
-    // Set active dashboard
+    // Set active dashboard and clear filters
     useEffect(() => {
         if (activeDashboardField) {
+            // Set active dashboard
             setActiveDashboard(activeDashboardField)
+
+            // Clear filters
+            if (filterForm1 && filterForm2) {
+                const dashboardDefaultFilterValue = getDashboardDefaultFilterValues(activeDashboardField)
+                filterForm1.reset(dashboardDefaultFilterValue)
+                filterForm2.reset(dashboardDefaultFilterValue)
+                setFilters({ filter1: filterForm1.getValues(), filter2: filterForm2.getValues() })
+            }
         }
-    }, [setActiveDashboard, activeDashboardField])
+    }, [setActiveDashboard, activeDashboardField, filterForm1, filterForm2, setFilters])
 
     // Set default value for active_dashboard
     useEffect(() => {

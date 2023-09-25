@@ -73,6 +73,6 @@ export interface ICampaign {
     filter_2_average_age_bucket: string
     filters_are_identical: boolean
     included_response_years: string[]
-    all_response_years : string[]
+    all_response_years: string[]
     q_codes: string[]
 }

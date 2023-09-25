@@ -63,12 +63,15 @@ export async function getCampaign(
     response_year: string,
     signal: AbortSignal | null | undefined
 ) {
-    const response = await fetch(`${apiUrl}/campaigns/${config.campaignCode}?q_code=${qCode}&response_year=${response_year}&lang=${lang}`, {
-        signal: signal,
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(campaignRequest),
-    })
+    const response = await fetch(
+        `${apiUrl}/campaigns/${config.campaignCode}?q_code=${qCode}&response_year=${response_year}&lang=${lang}`,
+        {
+            signal: signal,
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(campaignRequest),
+        }
+    )
 
     if (!response.ok) {
         throw new Error('Failed to fetch campaign')

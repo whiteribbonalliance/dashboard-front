@@ -1,4 +1,4 @@
-import {DashboardName} from '@enums'
+import { DashboardName } from '@enums'
 import {
     allCampaignsConfig,
     economicEmpowermentMexicoConfig,
@@ -9,8 +9,8 @@ import {
     whatYoungPeopleWantConfig,
     womensEconomicEmpowermentConfig,
 } from '@configurations'
-import {TDashboard} from '@types'
-import {defaultFilterValues, TFilter} from '@schemas/filter'
+import { TDashboard } from '@types'
+import { defaultFilterValues, TFilter } from '@schemas/filter'
 
 /**
  * Merge Tailwind CSS classes
