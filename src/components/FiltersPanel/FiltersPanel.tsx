@@ -305,17 +305,27 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     }
 
     // Set show select genders and professions
-    let showSelectGendersAndProfessions = false
+    let showSelectGendersAndProfessionsFilters = false
     if (dashboard === DashboardName.MIDWIVES_VOICES) {
-        showSelectGendersAndProfessions = true
+        showSelectGendersAndProfessionsFilters = true
     }
 
-    // Hide 'only responses from categories' filter option
-    let showResponseTopicRelatedFilters = true
-    if (dashboard === DashboardName.HEALTHWELLBEING && questionAskedCode == 'q2') {
-        showResponseTopicRelatedFilters = false
+    // Set show age buckets filter
+    let showSelectAgeBuckets = false
+    if (
+        dashboard === DashboardName.WHAT_WOMEN_WANT ||
+        dashboard === DashboardName.MIDWIVES_VOICES ||
+        dashboard === DashboardName.ALL_CAMPAIGNS
+    ) {
+        showSelectAgeBuckets = true
+    }
+
+    // Set show select response topics
+    let showSelectResponseTopics = true
+    if (dashboard === DashboardName.HEALTHWELLBEING && questionAskedCode === 'q2') {
+        showSelectResponseTopics = false
     } else if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
-        showResponseTopicRelatedFilters = false
+        showSelectResponseTopics = false
     }
 
     return (
@@ -475,7 +485,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                             </div>
 
                                             {/* Select response topics */}
-                                            {showResponseTopicRelatedFilters && (
+                                            {showSelectResponseTopics && (
                                                 <div>
                                                     <div
                                                         className="mb-1 w-fit"
@@ -514,21 +524,20 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                         >
                                                             {/* Show responses from categories */}
                                                             {/* Do not display if 'healthwellbeing' and 'q2' */}
-                                                            {showResponseTopicRelatedFilters &&
-                                                                questionAskedCode !== 'q2' && (
-                                                                    <div>
-                                                                        <div className="mb-1 w-fit">
-                                                                            {t('responses-from-categories')}
-                                                                        </div>
-                                                                        <SelectOnlyResponsesFromCategories
-                                                                            id={`select-only-responses-from-categories-${id}`}
-                                                                            dashboard={dashboard}
-                                                                            options={onlyResponsesFromCategoriesOptions}
-                                                                            control={form.control}
-                                                                            refetchCampaign={refetchCampaign}
-                                                                        />
+                                                            {showSelectResponseTopics && questionAskedCode !== 'q2' && (
+                                                                <div>
+                                                                    <div className="mb-1 w-fit">
+                                                                        {t('responses-from-categories')}
                                                                     </div>
-                                                                )}
+                                                                    <SelectOnlyResponsesFromCategories
+                                                                        id={`select-only-responses-from-categories-${id}`}
+                                                                        dashboard={dashboard}
+                                                                        options={onlyResponsesFromCategoriesOptions}
+                                                                        control={form.control}
+                                                                        refetchCampaign={refetchCampaign}
+                                                                    />
+                                                                </div>
+                                                            )}
 
                                                             {/* Filter by ages or age buckets */}
                                                             <div>
@@ -542,9 +551,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                         ''
                                                                     )}
                                                                 </div>
-                                                                {dashboard === DashboardName.WHAT_WOMEN_WANT ||
-                                                                dashboard === DashboardName.MIDWIVES_VOICES ||
-                                                                dashboard === DashboardName.ALL_CAMPAIGNS ? (
+                                                                {showSelectAgeBuckets ? (
                                                                     <SelectAgeBuckets
                                                                         id={`select-age-buckets-${id}`}
                                                                         dashboard={dashboard}
@@ -586,7 +593,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                             )}
 
                                                             {/* For midwivesvoices show select gender and select profession */}
-                                                            {showSelectGendersAndProfessions && (
+                                                            {showSelectGendersAndProfessionsFilters && (
                                                                 <>
                                                                     {/* Filter by gender & filter by profession */}
                                                                     <div className="flex gap-x-3">
