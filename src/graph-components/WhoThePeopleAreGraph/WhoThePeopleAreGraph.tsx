@@ -82,7 +82,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
     useEffect(() => {
         if (form && whoThePeopleAreOptions.length > 0) {
             if (dashboard === DashboardName.HEALTHWELLBEING) {
-                form.setValue('show_breakdown_by', 'breakdown-age-range')
+                form.setValue('show_breakdown_by', 'breakdown-age-bucket')
             } else {
                 form.setValue('show_breakdown_by', whoThePeopleAreOptions[0].value)
             }
@@ -100,7 +100,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
                 } else {
                     return 650
                 }
-            case 'breakdown-age-range':
+            case 'breakdown-age-bucket':
                 return 550
             case 'breakdown-gender':
                 return 550
@@ -144,8 +144,8 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
                     histogramData = data.histogram.ages
                     setParagraph(t('number-ages-respondents'))
                     break
-                case 'breakdown-age-range':
-                    histogramData = data.histogram.age_ranges
+                case 'breakdown-age-bucket':
+                    histogramData = data.histogram.age_buckets
                     setParagraph(t('number-ages-respondents'))
                     break
                 case 'breakdown-gender':

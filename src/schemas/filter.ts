@@ -4,7 +4,7 @@ export const filterSchema = z.object({
     countries: z.array(z.string()),
     regions: z.array(z.string()),
     ages: z.array(z.string()),
-    age_ranges: z.array(z.string()),
+    age_buckets: z.array(z.string()),
     genders: z.array(z.string()),
     professions: z.array(z.string()),
     response_topics: z.array(z.string()),

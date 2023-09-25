@@ -10,7 +10,7 @@ export interface IFilterOptions {
     country_regions: ICountryRegionOption[]
     response_topics: TOption<string>[]
     ages: TOption<string>[]
-    age_ranges: TOption<string>[]
+    age_buckets: TOption<string>[]
     genders: TOption<string>[]
     professions: TOption<string>[]
     only_responses_from_categories: TOption<boolean>[]

@@ -7,6 +7,7 @@ import { toThousandsSep } from '@utils'
 import { TDashboard } from '@types'
 import { Tooltip } from '@components/Tooltip'
 import React from 'react'
+import { DashboardName } from '@enums'
 
 interface IStatsProps {
     dashboard: TDashboard
@@ -16,6 +17,24 @@ interface IStatsProps {
 export const Stats = ({ dashboard, lang }: IStatsProps) => {
     const { data } = useCampaignQuery(dashboard, lang)
     const { t } = useTranslation(lang)
+
+    // Set average age
+    let filter1AverageAge = 'N/A'
+    let filter2AverageAge = 'N/A'
+    switch (dashboard) {
+        case DashboardName.WHAT_WOMEN_WANT:
+            if (data) {
+                filter1AverageAge = data.filter_1_average_age_bucket
+                filter2AverageAge = data.filter_2_average_age_bucket
+            }
+            break
+        case DashboardName.MIDWIVES_VOICES:
+            if (data) {
+                filter1AverageAge = data.filter_1_average_age_bucket
+                filter2AverageAge = data.filter_2_average_age_bucket
+            }
+            break
+    }
 
     if (!data) return null
 
@@ -52,7 +71,7 @@ export const Stats = ({ dashboard, lang }: IStatsProps) => {
                     </div>
                     <div className="flex-1" data-tooltip-id="stats-average-age">
                         <Box>
-                            <div className="text-2xl">{data.filter_1_average_age}</div>
+                            <div className="text-2xl">{filter1AverageAge}</div>
                             <div>{t('average-age')}</div>
                         </Box>
                     </div>
@@ -73,7 +92,7 @@ export const Stats = ({ dashboard, lang }: IStatsProps) => {
                             </div>
                             <div className="flex-1">
                                 <Box>
-                                    <div className="text-2xl">{data.filter_2_average_age}</div>
+                                    <div className="text-2xl">{filter2AverageAge}</div>
                                     <div>{t('average-age')}</div>
                                 </Box>
                             </div>

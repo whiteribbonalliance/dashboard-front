@@ -74,7 +74,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const [countryOptions, setCountryOptions] = useState<TOption<string>[]>([])
     const [responseTopicOptions, setResponseTopicOptions] = useState<TOption<string>[]>([])
     const [ageOptions, setAgeOptions] = useState<TOption<string>[]>([])
-    const [ageRangeOptions, setAgeRangeOptions] = useState<TOption<string>[]>([])
+    const [ageBucketOptions, setAgeBucketOptions] = useState<TOption<string>[]>([])
     const [genderOptions, setGenderOptions] = useState<TOption<string>[]>([])
     const [professionOptions, setProfessionOptions] = useState<TOption<string>[]>([])
     const [onlyResponsesFromCategoriesOptions, setOnlyResponsesFromCategoriesOptions] = useState<TOption<boolean>[]>([])
@@ -172,8 +172,8 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
             // Age options
             setAgeOptions(filterOptions.ages)
 
-            // Age range options
-            setAgeRangeOptions(filterOptions.age_ranges)
+            // Age bucket options
+            setAgeBucketOptions(filterOptions.age_buckets)
 
             // Gender options
             setGenderOptions(filterOptions.genders)
@@ -363,7 +363,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                 title={'Filter by age'}
                 paragraphs={[
                     'Use dropdowns to include only the ages you are filtering for.',
-                    'You can also filter an age range by selecting specific bars on the age bar graph to the right.',
+                    'You can also filter an age bucket by selecting specific bars on the age bar graph to the right.',
                 ]}
             />
 
@@ -530,7 +530,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                     </div>
                                                                 )}
 
-                                                            {/* Filter by age or age ranges */}
+                                                            {/* Filter by ages or age buckets */}
                                                             <div>
                                                                 <div
                                                                     className="mb-1 w-fit"
@@ -545,10 +545,10 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                 {dashboard === DashboardName.WHAT_WOMEN_WANT ||
                                                                 dashboard === DashboardName.MIDWIVES_VOICES ||
                                                                 dashboard === DashboardName.ALL_CAMPAIGNS ? (
-                                                                    <SelectAgeRanges
-                                                                        id={`select-age-ranges-${id}`}
+                                                                    <SelectAgeBuckets
+                                                                        id={`select-age-buckets-${id}`}
                                                                         dashboard={dashboard}
-                                                                        options={ageRangeOptions}
+                                                                        options={ageBucketOptions}
                                                                         control={form.control}
                                                                         refetchCampaign={refetchCampaign}
                                                                     />
@@ -897,10 +897,10 @@ const SelectAges = ({ id, options, control, refetchCampaign }: ISelectProps) => 
     )
 }
 
-const SelectAgeRanges = ({ id, options, control, refetchCampaign }: ISelectProps) => {
+const SelectAgeBuckets = ({ id, options, control, refetchCampaign }: ISelectProps) => {
     return (
         <Controller
-            name="age_ranges"
+            name="age_buckets"
             control={control}
             render={({ field: { onChange, value } }) => (
                 <SelectMultiValues

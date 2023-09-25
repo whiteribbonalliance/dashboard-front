@@ -17,7 +17,7 @@ const defaultFilterValues: TFilter = {
     countries: [],
     regions: [],
     ages: [],
-    age_ranges: [],
+    age_buckets: [],
     genders: [],
     professions: [],
     response_topics: [],

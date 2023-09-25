@@ -16,7 +16,7 @@ export const DashboardPage = ({ params }: IDashboardProps) => {
         notFound()
     }
 
-    // Any data to be fetched server side can be done here and passed to the Dashboard component
+    // Any data that needs to be fetched server side can be done here and passed to the Dashboard component
 
     return <Dashboard dashboard={dashboard} lang={lang} />
 }

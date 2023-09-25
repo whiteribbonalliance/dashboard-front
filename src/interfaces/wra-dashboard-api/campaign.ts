@@ -23,7 +23,7 @@ export interface ITopWordsAndPhrases {
 
 interface IHistogram {
     ages: IHistogramData[]
-    age_ranges: IHistogramData[]
+    age_buckets: IHistogramData[]
     genders: IHistogramData[]
     professions: IHistogramData[]
     regions: IHistogramData[]
@@ -69,5 +69,7 @@ export interface ICampaign {
     filter_2_respondents_count: number
     filter_1_average_age: string
     filter_2_average_age: string
+    filter_1_average_age_bucket: string
+    filter_2_average_age_bucket: string
     filters_are_identical: boolean
 }
