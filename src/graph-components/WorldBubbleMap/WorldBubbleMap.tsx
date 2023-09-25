@@ -183,7 +183,7 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
                             form={form1}
                             refetchCampaign={refetchCampaign}
                             respondents={respondents}
-                            geoJsonFeatures={dataGeoQuery.data as FeatureCollection}
+                            geoJsonFeatures={_.cloneDeep(dataGeoQuery.data) as FeatureCollection}
                             topoJsonMX={dataTopoJsonMX.data as Topology}
                             worldBubbleMapsCoordinates1={
                                 showBubbles1 ? data.world_bubble_maps_coordinates.coordinates_1 : undefined
@@ -264,10 +264,9 @@ const D3Map = ({
             }
 
             // For 'wwwpakistan', only show the respective country on the map (GeoJSON)
-            const geoJson = _.cloneDeep(geoJsonFeatures)
             switch (dashboard) {
                 case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
-                    geoJson.features = geoJsonFeatures.features.filter((d) => d.properties?.name === 'Pakistan')
+                    geoJsonFeatures.features = geoJsonFeatures.features.filter((d) => d.properties?.name === 'Pakistan')
                     break
                 case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
                     // Uses TopoJSON
@@ -276,7 +275,7 @@ const D3Map = ({
             }
 
             // Hide antarctica
-            geoJson.features = geoJson.features.filter((d) => d.properties?.name !== 'Antarctica')
+            geoJsonFeatures.features = geoJsonFeatures.features.filter((d) => d.properties?.name !== 'Antarctica')
 
             // This variable will be used for the coordinates on the map
             let worldBubbleMapsCoordinates: IWorldBubbleMapsCoordinateWithColor[]
@@ -331,7 +330,7 @@ const D3Map = ({
                     svgEl
                         .append('g')
                         .selectAll('path')
-                        .data(geoJson.features)
+                        .data(geoJsonFeatures.features)
                         .join('path')
                         .attr('fill', fillColor)
                         .style('stroke', 'none')

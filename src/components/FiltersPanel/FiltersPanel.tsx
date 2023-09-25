@@ -1,7 +1,7 @@
 'use client'
 
 import { Disclosure, Tab, Transition } from '@headlessui/react'
-import { classNames, getDashboardConfig, getDefaultFilterValuesForDashboard } from '@utils'
+import { classNames, getDashboardConfig, getDashboardDefaultFilterValues } from '@utils'
 import { DashboardName } from '@enums'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { Box } from '@components/Box'
@@ -92,7 +92,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const refetchCampaignTimeout = useRef<NodeJS.Timeout>()
 
     // Set default filter values for form
-    let defaultFilterValuesForForm = getDefaultFilterValuesForDashboard(dashboard)
+    let defaultFilterValuesForForm = getDashboardDefaultFilterValues(dashboard)
 
     // Set display countries filter tooltip
     let displayCountriesFilterTooltip = true
@@ -141,7 +141,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
     // Fetch filter options
     useQuery<IFilterOptions>({
-        queryKey: [`campaign-filter-options-${dashboard}`],
+        queryKey: [`${dashboard}-filter-options`],
         queryFn: () => {
             if (dashboard === DashboardName.ALL_CAMPAIGNS) {
                 return getCampaignsMergedFilterOptions(lang)

@@ -6,7 +6,7 @@ import { HeaderLogos } from 'components/HeaderLogos'
 import { Disclosure, Transition } from '@headlessui/react'
 import Link from 'next/link'
 import { DashboardName } from '@enums'
-import React, { ReactElement, useState } from 'react'
+import React, { useState } from 'react'
 import { Button } from '@components/Button/Button'
 import { FiltersPanel } from '@components/FiltersPanel'
 import { LanguageSelect } from '@components/LanguageSelect'
@@ -15,18 +15,18 @@ import { classNames, getDashboardConfig } from '@utils'
 import { useTranslation } from '@app/i18n/client'
 import Image from 'next/image'
 import { TDashboard } from '@types'
+import { Title } from '@components/Title'
 
 interface IHeaderProps {
     dashboard: TDashboard
     lang: string
-    title: ReactElement
 }
 
 interface IHamburgerMenuProps {
     open: boolean
 }
 
-export const Header = ({ dashboard, lang, title }: IHeaderProps) => {
+export const Header = ({ dashboard, lang }: IHeaderProps) => {
     const [showMobileFiltersPanel, setShowMobileFiltersPanel] = useState<boolean>(false)
     const config = getDashboardConfig(dashboard)
     const { t } = useTranslation(lang)
@@ -85,7 +85,9 @@ export const Header = ({ dashboard, lang, title }: IHeaderProps) => {
                             </div>
 
                             {/* Title */}
-                            <div className="hidden xl:flex">{title}</div>
+                            <div className="hidden xl:flex">
+                                <Title dashboard={dashboard} lang={lang} noHeading />
+                            </div>
 
                             {/* Menu items */}
                             <nav className="hidden gap-x-3 xl:flex xl:items-center">

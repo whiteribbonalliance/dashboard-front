@@ -15,17 +15,3 @@ export const filterSchema = z.object({
 })
 
 export type TFilter = z.infer<typeof filterSchema>
-
-export const defaultFilterValues: TFilter = {
-    countries: [],
-    regions: [],
-    ages: [],
-    age_ranges: [],
-    genders: [],
-    professions: [],
-    response_topics: [],
-    only_responses_from_categories: false,
-    only_multi_word_phrases_containing_filter_term: false,
-    keyword_filter: '',
-    keyword_exclude: '',
-}

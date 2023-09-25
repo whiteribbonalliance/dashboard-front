@@ -25,7 +25,7 @@ export const Dashboard = ({ dashboard, lang }: IDashboardProps) => {
         (state) => state.setShowSelectActiveDashboard
     )
 
-    // Set active dashboard
+    // When activeDashboard is changed, this component will change the current displayed dashboard
     useEffect(() => {
         setActiveDashboard(dashboard)
         if (dashboard === DashboardName.ALL_CAMPAIGNS) {
@@ -34,10 +34,6 @@ export const Dashboard = ({ dashboard, lang }: IDashboardProps) => {
             setShowSelectActiveDashboard(false)
         }
     }, [dashboard, setActiveDashboard, setShowSelectActiveDashboard])
-
-    if (!activeDashboard) return null
-
-    const title = <Title dashboard={activeDashboard} lang={lang} noHeading />
 
     // Set gap-y between boxes
     let boxesGapY: string
@@ -54,17 +50,19 @@ export const Dashboard = ({ dashboard, lang }: IDashboardProps) => {
     switch (activeDashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
             layoutClasses =
-                'font-noto-sans-regular text-pmnchColors-font selection:bg-pmnchColors-primary selection:text-white'
+                'font-noto-sans-regular text-base text-pmnchColors-font selection:bg-pmnchColors-primary selection:text-white'
             break
         default:
             layoutClasses =
-                'font-open-sans text-defaultColors-font selection:bg-defaultColors-tertiary selection:text-white'
+                'font-open-sans text-base text-defaultColors-font selection:bg-defaultColors-tertiary selection:text-white'
     }
+
+    if (!activeDashboard) return null
 
     return (
         <div className={classNames(layoutClasses)}>
             {/* Header */}
-            <Header dashboard={activeDashboard} lang={lang} title={title} />
+            <Header dashboard={activeDashboard} lang={lang} />
 
             {/* Main */}
             <main className="mx-7 my-7">

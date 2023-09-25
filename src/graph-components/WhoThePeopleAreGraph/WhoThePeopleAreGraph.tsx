@@ -30,6 +30,7 @@ import {
     getCampaignWhoThePeopleAreOptions,
 } from '@services/wra-dashboard-api'
 import { useTranslation } from '@app/i18n/client'
+import { useQuery } from 'react-query'
 
 interface IWhoThePeopleAreGraphProps {
     dashboard: TDashboard
@@ -54,17 +55,20 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
     const config = getDashboardConfig(dashboard)
 
     // Fetch options
-    useEffect(() => {
-        if (dashboard === DashboardName.ALL_CAMPAIGNS) {
-            getCampaignsMergedWhoThePeopleAreOptions(lang)
-                .then((options) => setWhoThePeopleAreOptions(options))
-                .catch(() => {})
-        } else {
-            getCampaignWhoThePeopleAreOptions(config, lang)
-                .then((options) => setWhoThePeopleAreOptions(options))
-                .catch(() => {})
-        }
-    }, [dashboard, config, lang])
+    useQuery<TOption<string>[]>({
+        queryKey: [`${dashboard}-who-the-people-are-filter-options`],
+        queryFn: () => {
+            if (dashboard === DashboardName.ALL_CAMPAIGNS) {
+                return getCampaignsMergedWhoThePeopleAreOptions(lang)
+            } else {
+                return getCampaignWhoThePeopleAreOptions(config, lang)
+            }
+        },
+        refetchOnWindowFocus: false,
+        retry: 3,
+        onSuccess: (options) => setWhoThePeopleAreOptions(options),
+        onError: () => {},
+    })
 
     // Form
     const form = useForm<TWhoThePeopleAre>({
@@ -76,16 +80,14 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
 
     // Set default value for show_breakdown_by
     useEffect(() => {
-        if (whoThePeopleAreOptions.length > 0) {
-            if (!showBreakdownByField) {
-                if (dashboard === DashboardName.HEALTHWELLBEING) {
-                    form.setValue('show_breakdown_by', 'breakdown-age-range')
-                } else {
-                    form.setValue('show_breakdown_by', whoThePeopleAreOptions[0].value)
-                }
+        if (form && whoThePeopleAreOptions.length > 0) {
+            if (dashboard === DashboardName.HEALTHWELLBEING) {
+                form.setValue('show_breakdown_by', 'breakdown-age-range')
+            } else {
+                form.setValue('show_breakdown_by', whoThePeopleAreOptions[0].value)
             }
         }
-    }, [dashboard, form, whoThePeopleAreOptions, showBreakdownByField])
+    }, [dashboard, form, whoThePeopleAreOptions])
 
     // Container height
     const containerHeight = useMemo(() => {

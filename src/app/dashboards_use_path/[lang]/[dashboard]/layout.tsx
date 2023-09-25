@@ -1,12 +1,10 @@
 import '@styles/globals.scss'
 import { ReactNode } from 'react'
-import { DashboardName } from '@enums'
 import { QueryClientProvider } from '@providers/QueryClientProvider'
 import localFont from 'next/font/local'
 import { dir } from 'i18next'
 import { config as fontAwesomeConfig } from '@fortawesome/fontawesome-svg-core'
 import { TDashboard } from '@types'
-import { classNames } from '@utils'
 
 fontAwesomeConfig.autoAddCss = false
 
@@ -54,7 +52,7 @@ const DashboardLayout = async ({ children, params }: IDashboardLayoutProps) => {
             dir={dir(lang)}
             className={`${notoSansRegular.variable} ${_1point8.variable} ${helvetica.variable} ${proximaNova.variable}`}
         >
-            <body className={classNames('text-base')}>
+            <body>
                 <QueryClientProvider>{children}</QueryClientProvider>
             </body>
         </html>

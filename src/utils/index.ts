@@ -10,7 +10,22 @@ import {
     womensEconomicEmpowermentConfig,
 } from '@configurations'
 import { TDashboard } from '@types'
-import { defaultFilterValues, TFilter } from '@schemas/filter'
+import { TFilter } from '@schemas/filter'
+
+// Use function
+const defaultFilterValues: TFilter = {
+    countries: [],
+    regions: [],
+    ages: [],
+    age_ranges: [],
+    genders: [],
+    professions: [],
+    response_topics: [],
+    only_responses_from_categories: false,
+    only_multi_word_phrases_containing_filter_term: false,
+    keyword_filter: '',
+    keyword_exclude: '',
+}
 
 /**
  * Merge Tailwind CSS classes
@@ -131,11 +146,18 @@ export function applyToThousandsSepOnText(text: string, lang: string) {
 }
 
 /**
+ * Get default filter values
+ */
+export function getDefaultFilterValues() {
+    return defaultFilterValues
+}
+
+/**
  * Get default filter values for dashboard
  *
  * @param dashboard The dashboard
  */
-export function getDefaultFilterValuesForDashboard(dashboard: TDashboard) {
+export function getDashboardDefaultFilterValues(dashboard: TDashboard) {
     let defaultFilterValuesForDashboard: TFilter
     switch (dashboard) {
         case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
