@@ -34,6 +34,12 @@ export const Stats = ({ dashboard, lang }: IStatsProps) => {
                 filter2AverageAge = data.filter_2_average_age_bucket
             }
             break
+        case DashboardName.ALL_CAMPAIGNS:
+            if (data) {
+                filter1AverageAge = data.filter_1_average_age_bucket
+                filter2AverageAge = data.filter_2_average_age_bucket
+            }
+            break
         default:
             if (data) {
                 filter1AverageAge = data.filter_1_average_age
