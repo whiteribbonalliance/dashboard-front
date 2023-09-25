@@ -10,6 +10,7 @@ import { TDashboard } from '@types'
 import { getDashboardConfig, getDashboardDefaultFilterValues } from '@utils'
 import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
 import { DashboardName } from '@enums'
+import { useResponseYearStore } from '@stores/response-year'
 
 export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
     const filters = useFiltersStore((state) => state.filters)
@@ -17,6 +18,9 @@ export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
 
     // Question asked code
     const questionAskedCode = useQuestionAskedCodeStore((state) => state.questionAskedCode)
+
+    // Response year
+    const responseYear = useResponseYearStore((state) => state.responseYear)
 
     // 'healthwellbeing' at 'q2' should ignore response topics filtering
     if (dashboard === DashboardName.HEALTHWELLBEING && questionAskedCode === 'q2') {
@@ -59,6 +63,7 @@ export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
                     },
                     lang,
                     questionAskedCode,
+                    responseYear,
                     signal
                 )
             }
@@ -73,7 +78,7 @@ export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
     // Refetch campaign when any of the dependencies change
     useEffect(() => {
         refetch({ cancelRefetch: true }).then()
-    }, [refetch, filters, questionAskedCode])
+    }, [refetch, filters, questionAskedCode, responseYear])
 
     return campaignQuery
 }

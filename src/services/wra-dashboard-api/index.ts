@@ -52,6 +52,7 @@ export async function getCampaignsMergedFilterOptions(lang: string) {
  * @param campaignRequest The campaign request
  * @param lang The language
  * @param qCode The question code
+ * @param response_year The response year
  * @param signal Signal
  */
 export async function getCampaign(
@@ -59,9 +60,10 @@ export async function getCampaign(
     campaignRequest: ICampaignRequest,
     lang: string,
     qCode: string,
+    response_year: string,
     signal: AbortSignal | null | undefined
 ) {
-    const response = await fetch(`${apiUrl}/campaigns/${config.campaignCode}?q_code=${qCode}&lang=${lang}`, {
+    const response = await fetch(`${apiUrl}/campaigns/${config.campaignCode}?q_code=${qCode}&response_year=${response_year}&lang=${lang}`, {
         signal: signal,
         method: 'POST',
         headers: headers,

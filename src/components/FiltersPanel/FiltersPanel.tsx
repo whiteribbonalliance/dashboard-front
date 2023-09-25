@@ -30,6 +30,7 @@ import { Loading } from 'components/Loading'
 import { SelectActiveDashboard } from 'components/FiltersPanel/SelectActiveDashboard'
 import { dashboardsConfigs } from '@configurations'
 import { useShowSelectActiveDashboardStore } from '@stores/show-select-active-dashboard'
+import { SelectResponseYear } from '@components/FiltersPanel/SelectResponseYear'
 
 interface IFiltersPanelProps {
     dashboard: TDashboard
@@ -408,6 +409,13 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
             {dashboard === DashboardName.ALL_CAMPAIGNS && questionsAskedOptions.length > 1 && (
                 <div className="mb-5">
                     <SelectQuestionAsked lang={lang} dashboard={dashboard} />
+                </div>
+            )}
+
+            {/* Show select response year for wwwpakistan */}
+            {dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN && (
+                <div className="mb-5">
+                    <SelectResponseYear dashboard={dashboard} lang={lang} />
                 </div>
             )}
 
