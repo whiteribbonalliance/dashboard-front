@@ -1,4 +1,4 @@
-import { DashboardName } from '@enums'
+import {DashboardName} from '@enums'
 import {
     allCampaignsConfig,
     economicEmpowermentMexicoConfig,
@@ -9,23 +9,8 @@ import {
     whatYoungPeopleWantConfig,
     womensEconomicEmpowermentConfig,
 } from '@configurations'
-import { TDashboard } from '@types'
-import { TFilter } from '@schemas/filter'
-
-// Use function
-const defaultFilterValues: TFilter = {
-    countries: [],
-    regions: [],
-    ages: [],
-    age_buckets: [],
-    genders: [],
-    professions: [],
-    response_topics: [],
-    only_responses_from_categories: false,
-    only_multi_word_phrases_containing_filter_term: false,
-    keyword_filter: '',
-    keyword_exclude: '',
-}
+import {TDashboard} from '@types'
+import {defaultFilterValues, TFilter} from '@schemas/filter'
 
 /**
  * Merge Tailwind CSS classes

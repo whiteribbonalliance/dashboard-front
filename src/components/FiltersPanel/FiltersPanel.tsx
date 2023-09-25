@@ -8,7 +8,7 @@ import { Box } from '@components/Box'
 import Image from 'next/image'
 import { getCampaignFilterOptions, getCampaignsMergedFilterOptions } from '@services/wra-dashboard-api'
 import { TDashboard, TOption } from '@types'
-import { ICountryRegionOption, IFilterOptions } from '@interfaces'
+import { ICountryRegionOption, ICountryRegionProvinceOption, IFilterOptions } from '@interfaces'
 import { Control, Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { SelectMultiValues } from '@components/SelectMultiValues'
 import { SelectSingleValue } from '@components/SelectSingleValue'
@@ -82,12 +82,17 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const [onlyMultiWordPhrasesContainingFilterTermOptions, setOnlyMultiWordPhrasesContainingFilterTermOptions] =
         useState<TOption<boolean>[]>([])
 
-    // Select regions options(s) for each filter
+    // Select region and province options(s) for each filter
     const [regionOptionsFilter1, setRegionOptionsFilter1] = useState<TOption<string>[]>([])
     const [regionOptionsFilter2, setRegionOptionsFilter2] = useState<TOption<string>[]>([])
+    const [provinceOptionsFilter1, setProvinceOptionsFilter1] = useState<TOption<string>[]>([])
+    const [provinceOptionsFilter2, setProvinceOptionsFilter2] = useState<TOption<string>[]>([])
 
     // Region options for each country
     const [countriesRegionsOptions, setCountriesRegionsOptions] = useState<ICountryRegionOption[]>([])
+
+    // Province options for each country
+    const [countriesProvincesOptions, setCountriesProvincesOptions] = useState<ICountryRegionProvinceOption[]>([])
 
     // Refetch campaign timeout
     const refetchCampaignTimeout = useRef<NodeJS.Timeout>()
@@ -159,6 +164,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
             // Country Regions options
             setCountriesRegionsOptions(filterOptions.country_regions)
 
+            // Country province options
+            setCountriesProvincesOptions(filterOptions.country_provinces)
+
             // Response topic options
             setResponseTopicOptions(
                 filterOptions.response_topics.map((responseTopic) => {
@@ -198,36 +206,53 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         (
             selectedCountries: string[],
             setRegionOptionsFilter: Dispatch<SetStateAction<TOption<string>[]>>,
+            setProvinceOptionsFilter: Dispatch<SetStateAction<TOption<string>[]>>,
             form: UseFormReturn<TFilter>
         ) => {
             // Only display regions for 1 selected country
             if (selectedCountries.length !== 1) {
                 setRegionOptionsFilter([])
+                setProvinceOptionsFilter([])
                 form.setValue('regions', [])
+                form.setValue('provinces', [])
                 return
             }
 
+            const selectedCountry = selectedCountries[0]
+
             // Set region options for selected country
-            const countryRegionOptions = countriesRegionsOptions.find((countryRegionOption) => {
-                return countryRegionOption.country_alpha2_code === selectedCountries[0]
+            const regionOptions = countriesRegionsOptions.find((countryRegionOption) => {
+                return countryRegionOption.country_alpha2_code === selectedCountry
             })
-            if (countryRegionOptions) {
-                setRegionOptionsFilter(countryRegionOptions.options)
+
+            // Set province options for selected country
+            const provinceOptions = countriesProvincesOptions.find((countryProvinceOption) => {
+                return countryProvinceOption.country_alpha2_code === selectedCountry
+            })
+
+            if (regionOptions) {
+                // Set region options
+                setRegionOptionsFilter(regionOptions.options)
+            }
+
+            if (provinceOptions) {
+                // Set province options
+                setProvinceOptionsFilter(provinceOptions.options)
             }
         },
-        [countriesRegionsOptions]
+        [countriesRegionsOptions, countriesProvincesOptions]
     )
 
     // Set regions for the selected country for filter 1
     const watchCountriesForm1 = form1.watch('countries')
     useEffect(() => {
-        setRegionOptionsForFilter(watchCountriesForm1, setRegionOptionsFilter1, form1)
+        setRegionOptionsForFilter(watchCountriesForm1, setRegionOptionsFilter1, setProvinceOptionsFilter1, form1)
     }, [watchCountriesForm1, form1, setRegionOptionsForFilter])
 
     // Set regions for the selected country for filter 2
     const watchCountriesForm2 = form2.watch('countries')
     useEffect(() => {
-        setRegionOptionsForFilter(watchCountriesForm2, setRegionOptionsFilter2, form2)
+        setRegionOptionsForFilter(watchCountriesForm2, setRegionOptionsFilter2, setProvinceOptionsFilter2, form2)
     }, [watchCountriesForm2, form2, setRegionOptionsForFilter])
 
     // Cleanup refetch campaign timeout
@@ -327,6 +352,12 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         showSelectResponseTopics = false
     } else if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
         showSelectResponseTopics = false
+    }
+
+    // Set show select provinces
+    let showSelectProvinces = false
+    if (dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN) {
+        showSelectProvinces = true
     }
 
     return (
@@ -491,6 +522,24 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                     refetchCampaign={refetchCampaign}
                                                 />
                                             </div>
+
+                                            {/* Select provinces */}
+                                            {showSelectProvinces && (
+                                                <div>
+                                                    <div className="mb-1">{t('select-provinces')}</div>
+                                                    <SelectProvinces
+                                                        id={`select-provinces-${id}`}
+                                                        dashboard={dashboard}
+                                                        options={
+                                                            id === 'tab-1'
+                                                                ? provinceOptionsFilter1
+                                                                : provinceOptionsFilter2
+                                                        }
+                                                        control={form.control}
+                                                        refetchCampaign={refetchCampaign}
+                                                    />
+                                                </div>
+                                            )}
 
                                             {/* Select response topics */}
                                             {showSelectResponseTopics && (
@@ -852,6 +901,24 @@ const SelectRegions = ({ id, options, control, refetchCampaign }: ISelectProps) 
     return (
         <Controller
             name="regions"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+                <SelectMultiValues
+                    id={id}
+                    options={options}
+                    controllerRenderOnChange={onChange}
+                    value={value}
+                    onChange={refetchCampaign}
+                />
+            )}
+        />
+    )
+}
+
+const SelectProvinces = ({ id, options, control, refetchCampaign }: ISelectProps) => {
+    return (
+        <Controller
+            name="provinces"
             control={control}
             render={({ field: { onChange, value } }) => (
                 <SelectMultiValues

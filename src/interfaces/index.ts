@@ -7,6 +7,7 @@ export { type ILanguage } from './language'
 // WRA Dashboard API
 export type { IFilterOptions } from './wra-dashboard-api/filter-options'
 export type { ICountryRegionOption } from './wra-dashboard-api/filter-options'
+export type { ICountryRegionProvinceOption } from './wra-dashboard-api/filter-options'
 export type { ICampaignRequest } from './wra-dashboard-api/campaign-request'
 export type {
     ICampaign,
