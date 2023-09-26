@@ -35,7 +35,7 @@ export const Header = ({ dashboard, lang }: IHeaderProps) => {
 
     // Create menu items
     let menuItems = [
-        { id: 'about-us', title: t('about-us'), url: 'https://whiteribbonalliance.org/campaigns/what-women-want' },
+        { id: 'about-us', title: t('about-us'), url: 'https://whiteribbonalliance.org/movements/womens-health' },
         { id: 'show-video', title: t('show-video'), url: showVideoLink },
     ]
 
