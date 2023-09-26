@@ -13,7 +13,7 @@ export const configuration: IConfiguration = {
     respondentsNounSingular: 'woman',
     respondentsNounPlural: 'women',
     showVideoLink: 'https://www.youtube.com/watch?v=nBzide5J3Hk',
-    questionsAskedCodes: ['q1', 'q2'],
+    questionsAskedCodes: ['q1'],
     link: {
         id: DashboardName.HEALTHWELLBEING,
         title: title,
