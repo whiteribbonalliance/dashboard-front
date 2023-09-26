@@ -183,25 +183,33 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
 
     // Set form value on click
     function setValue(form: UseFormReturn<TFilter>, payload: IHistogramData) {
+        let allowAgeBucketBarClick = false
+        if (
+            dashboard === DashboardName.WHAT_WOMEN_WANT ||
+            dashboard === DashboardName.MIDWIVES_VOICES ||
+            dashboard === DashboardName.ALL_CAMPAIGNS ||
+            dashboard == DashboardName.HEALTHWELLBEING
+        ) {
+            allowAgeBucketBarClick = true
+        }
+
         const value = payload.name
         let currentFormValues: string[] = []
         if (form) {
             switch (showBreakdownByField) {
                 case 'breakdown-age':
-                    currentFormValues = form.getValues('ages')
-                    if (!currentFormValues.includes(value)) {
-                        form.setValue('ages', [...currentFormValues, value])
-                        if (refetchCampaign) refetchCampaign()
+                    if (!allowAgeBucketBarClick) {
+                        currentFormValues = form.getValues('ages')
+                        if (!currentFormValues.includes(value)) {
+                            form.setValue('ages', [...currentFormValues, value])
+                            if (refetchCampaign) refetchCampaign()
+                        }
                     }
                     break
                 case 'breakdown-age-bucket':
                     // Only allow clicking on age bucket bar for these dashboards
                     // These are the only dashboards currently with the option for filtering age buckets
-                    if (
-                        dashboard === DashboardName.WHAT_WOMEN_WANT ||
-                        dashboard === DashboardName.MIDWIVES_VOICES ||
-                        dashboard === DashboardName.ALL_CAMPAIGNS
-                    ) {
+                    if (allowAgeBucketBarClick) {
                         currentFormValues = form.getValues('age_buckets')
                         if (!currentFormValues.includes(value)) {
                             form.setValue('age_buckets', [...currentFormValues, value])
