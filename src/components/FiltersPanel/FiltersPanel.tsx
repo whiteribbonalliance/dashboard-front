@@ -88,10 +88,8 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const [provinceOptionsFilter1, setProvinceOptionsFilter1] = useState<TOption<string>[]>([])
     const [provinceOptionsFilter2, setProvinceOptionsFilter2] = useState<TOption<string>[]>([])
 
-    // Region options for each country
+    // Region options and province options for each country
     const [countriesRegionsOptions, setCountriesRegionsOptions] = useState<ICountryRegionOption[]>([])
-
-    // Province options for each country
     const [countriesProvincesOptions, setCountriesProvincesOptions] = useState<ICountryRegionProvinceOption[]>([])
 
     // Refetch campaign timeout
@@ -201,7 +199,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         onError: () => {},
     })
 
-    // Set countries to countries store
+    // Create countries objects and set countries to countries store
     useEffect(() => {
         if (countryOptions) {
             const countries: ICountry[] = countryOptions.map((country) => {
@@ -253,13 +251,13 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         [countriesRegionsOptions, countriesProvincesOptions]
     )
 
-    // Set regions for the selected country for filter 1
+    // Set regions and provinces for the selected country at filter 1
     const watchCountriesForm1 = form1.watch('countries')
     useEffect(() => {
         setRegionOptionsForFilter(watchCountriesForm1, setRegionOptionsFilter1, setProvinceOptionsFilter1, form1)
     }, [watchCountriesForm1, form1, setRegionOptionsForFilter])
 
-    // Set regions for the selected country for filter 2
+    // Set regions and provinces for the selected country at filter 2
     const watchCountriesForm2 = form2.watch('countries')
     useEffect(() => {
         setRegionOptionsForFilter(watchCountriesForm2, setRegionOptionsFilter2, setProvinceOptionsFilter2, form2)

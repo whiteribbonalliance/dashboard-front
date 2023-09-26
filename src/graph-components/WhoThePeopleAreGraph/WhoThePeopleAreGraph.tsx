@@ -195,7 +195,8 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
                     }
                     break
                 case 'breakdown-age-bucket':
-                    // Only allow clicking on age bucket for these dashboards
+                    // Only allow clicking on age bucket bar for these dashboards
+                    // These are the only dashboards currently with the option for filtering age buckets
                     if (
                         dashboard === DashboardName.WHAT_WOMEN_WANT ||
                         dashboard === DashboardName.MIDWIVES_VOICES ||
