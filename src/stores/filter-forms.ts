@@ -5,17 +5,13 @@ import { UseFormReturn } from 'react-hook-form'
 import { TFilter } from '@schemas/filter'
 
 export interface IFilterFormsState {
-    form1?: UseFormReturn<TFilter, any>
-    form2?: UseFormReturn<TFilter, any>
-    setForm1: (form1: UseFormReturn<TFilter, any>) => void
-    setForm2: (form2: UseFormReturn<TFilter, any>) => void
+    form1?: UseFormReturn<TFilter>
+    form2?: UseFormReturn<TFilter>
+    setForm1: (form1: UseFormReturn<TFilter>) => void
+    setForm2: (form2: UseFormReturn<TFilter>) => void
 }
 
 export const useFilterFormsStore = create<IFilterFormsState>((set, get) => ({
-    form1: undefined,
-
-    form2: undefined,
-
     setForm1: (form1) => {
         set(() => {
             return { form1 }

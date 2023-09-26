@@ -7,7 +7,7 @@ import { Loading } from 'components/Loading'
 import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { SelectSingleValue } from '@components/SelectSingleValue'
 import { TDashboard, TOption } from '@types'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod'
 import { TWhoThePeopleAre, whoThePeopleAreSchema } from '@schemas/who-the-people-are'
@@ -31,6 +31,10 @@ import {
 } from '@services/wra-dashboard-api'
 import { useTranslation } from '@app/i18n/client'
 import { useQuery } from 'react-query'
+import { useFilterFormsStore } from '@stores/filter-forms'
+import { useRefetchCampaignStore } from '@stores/refetch-campaign'
+import { TFilter } from '@schemas/filter'
+import { useCountriesStore } from '@stores/countries'
 
 interface IWhoThePeopleAreGraphProps {
     dashboard: TDashboard
@@ -52,6 +56,10 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
     const [paragraph, setParagraph] = useState<string>('')
     const [whoThePeopleAreOptions, setWhoThePeopleAreOptions] = useState<TOption<string>[]>([])
+    const form1 = useFilterFormsStore((state) => state.form1)
+    const form2 = useFilterFormsStore((state) => state.form2)
+    const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
+    const countries = useCountriesStore((state) => state.countries)
     const config = getDashboardConfig(dashboard)
 
     // Fetch options
@@ -234,6 +242,54 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
         setShowTooltip((prev) => !prev)
     }
 
+    // Set form value on click
+    function setValue(form: UseFormReturn<TFilter>, payload: IHistogramData) {
+        const value = payload.name
+        let currentFormValues: string[] = []
+        if (form) {
+            switch (showBreakdownByField) {
+                case 'breakdown-age':
+                    currentFormValues = form.getValues('ages')
+                    if (!currentFormValues.includes(value)) {
+                        form.setValue('ages', [...currentFormValues, value])
+                        if (refetchCampaign) refetchCampaign()
+                    }
+                    break
+                case 'breakdown-age-bucket':
+                    currentFormValues = form.getValues('age_buckets')
+                    if (!currentFormValues.includes(value)) {
+                        form.setValue('age_buckets', [...currentFormValues, value])
+                        if (refetchCampaign) refetchCampaign()
+                    }
+                    break
+                case 'breakdown-gender':
+                    currentFormValues = form.getValues('genders')
+                    if (!currentFormValues.includes(value)) {
+                        form.setValue('genders', [...currentFormValues, value])
+                        if (refetchCampaign) refetchCampaign()
+                    }
+                    break
+                case 'breakdown-profession':
+                    currentFormValues = form.getValues('professions')
+                    if (!currentFormValues.includes(value)) {
+                        form.setValue('professions', [...currentFormValues, value])
+                        if (refetchCampaign) refetchCampaign()
+                    }
+                    break
+                case 'breakdown-country':
+                    const countryValue = countries.find((country) => country.name === value)?.alpha2code
+                    currentFormValues = form.getValues('countries')
+                    if (countryValue) {
+                        if (!currentFormValues.includes(countryValue)) {
+                            form.setValue('countries', [...currentFormValues, countryValue])
+                            if (refetchCampaign) refetchCampaign()
+                        }
+                    }
+                    break
+            }
+        }
+    }
+
     // Display graph or not
     const displayGraph = !!data && !!currentHistogramData && !!showBreakdownByField
 
@@ -324,6 +380,9 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
                                         onMouseOver={() => setHoveredBarDataKey('count_2')}
                                         onMouseEnter={toggleShowTooltip}
                                         onMouseLeave={toggleShowTooltip}
+                                        onClick={(payload) => {
+                                            if (form2) setValue(form2, payload)
+                                        }}
                                     />
                                 )}
 
@@ -336,6 +395,9 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
                                     onMouseOver={() => setHoveredBarDataKey('count_1')}
                                     onMouseEnter={toggleShowTooltip}
                                     onMouseLeave={toggleShowTooltip}
+                                    onClick={(payload) => {
+                                        if (form1) setValue(form1, payload)
+                                    }}
                                 />
                             </BarChart>
                         </ResponsiveContainer>

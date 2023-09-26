@@ -8,7 +8,7 @@ import { Box } from '@components/Box'
 import Image from 'next/image'
 import { getCampaignFilterOptions, getCampaignsMergedFilterOptions } from '@services/wra-dashboard-api'
 import { TDashboard, TOption } from '@types'
-import { ICountryRegionOption, ICountryRegionProvinceOption, IFilterOptions } from '@interfaces'
+import { ICountry, ICountryRegionOption, ICountryRegionProvinceOption, IFilterOptions } from '@interfaces'
 import { Control, Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { SelectMultiValues } from '@components/SelectMultiValues'
 import { SelectSingleValue } from '@components/SelectSingleValue'
@@ -30,6 +30,7 @@ import { SelectActiveDashboard } from 'components/FiltersPanel/SelectActiveDashb
 import { dashboardsConfigs } from '@configurations'
 import { useShowSelectActiveDashboardStore } from '@stores/show-select-active-dashboard'
 import { SelectResponseYear } from '@components/FiltersPanel/SelectResponseYear'
+import { useCountriesStore } from '@stores/countries'
 
 interface IFiltersPanelProps {
     dashboard: TDashboard
@@ -62,6 +63,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const setForm1 = useFilterFormsStore((state) => state.setForm1)
     const setForm2 = useFilterFormsStore((state) => state.setForm2)
     const setRefetchCampaign = useRefetchCampaignStore((state) => state.setRefetchCampaign)
+    const setCountries = useCountriesStore((state) => state.setCountries)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
     const [tabs, setTabs] = useState<ITab[]>([])
@@ -198,6 +200,16 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         },
         onError: () => {},
     })
+
+    // Set countries to countries store
+    useEffect(() => {
+        if (countryOptions) {
+            const countries: ICountry[] = countryOptions.map((country) => {
+                return { alpha2code: country.value, name: country.label }
+            })
+            setCountries(countries)
+        }
+    }, [countryOptions, setCountries])
 
     // Set region options for filter
     const setRegionOptionsForFilter = useCallback(

@@ -3,6 +3,7 @@ export type { IConfiguration } from './configuration'
 export type { IDashboardLink } from './dashboard-link'
 export type { IInitialData } from './initial-data'
 export { type ILanguage } from './language'
+export type { ICountry } from './country'
 
 // WRA Dashboard API
 export type { IFilterOptions } from './wra-dashboard-api/filter-options'
