@@ -1,4 +1,3 @@
-import { TQuestionCode } from '@types'
 import { IDashboardLink } from './dashboard-link'
 
 export interface IConfiguration {
@@ -10,6 +9,5 @@ export interface IConfiguration {
     respondentsNounSingular: string
     respondentsNounPlural: string
     showVideoLink: string
-    questionsAskedCodes: TQuestionCode[]
     link: IDashboardLink
 }

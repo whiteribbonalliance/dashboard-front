@@ -13,7 +13,6 @@ export const configuration: IConfiguration = {
     respondentsNounSingular: 'respondent',
     respondentsNounPlural: 'respondents',
     showVideoLink: 'https://www.youtube.com/watch?v=nBzide5J3Hk',
-    questionsAskedCodes: ['q1'],
     link: {
         id: DashboardName.ALL_CAMPAIGNS,
         title: title,

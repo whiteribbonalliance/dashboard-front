@@ -22,18 +22,6 @@ export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
     // Response year
     const responseYear = useResponseYearStore((state) => state.responseYear)
 
-    // 'healthwellbeing' at 'q2' should ignore response topics filtering
-    if (dashboard === DashboardName.HEALTHWELLBEING && questionAskedCode === 'q2') {
-        if (filtersClone.filter1) {
-            filtersClone.filter1.response_topics = []
-            filtersClone.filter1.only_responses_from_categories = false
-        }
-        if (filtersClone.filter2) {
-            filtersClone.filter2.response_topics = []
-            filtersClone.filter2.only_responses_from_categories = false
-        }
-    }
-
     // If the filter has not changed from the default filter values then do not send it with the request
     const defaultFilterValues = getDashboardDefaultFilterValues(dashboard)
     const filter1 = _.isEqual(filtersClone.filter1, defaultFilterValues) ? undefined : filtersClone.filter1

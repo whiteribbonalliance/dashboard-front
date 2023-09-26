@@ -25,7 +25,6 @@ import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 import { Input } from '@components/Input'
 import { SelectQuestionAsked } from 'components/FiltersPanel/SelectQuestionAsked'
 import { useQuestionsAskedOptions } from '@hooks/use-questions-asked-options'
-import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
 import { Loading } from 'components/Loading'
 import { SelectActiveDashboard } from 'components/FiltersPanel/SelectActiveDashboard'
 import { dashboardsConfigs } from '@configurations'
@@ -65,7 +64,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const setRefetchCampaign = useRefetchCampaignStore((state) => state.setRefetchCampaign)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
-    const questionAskedCode = useQuestionAskedCodeStore((state) => state.questionAskedCode)
     const [tabs, setTabs] = useState<ITab[]>([])
 
     // Set questions asked options
@@ -348,9 +346,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
     // Set show select response topics
     let showSelectResponseTopics = true
-    if (dashboard === DashboardName.HEALTHWELLBEING && questionAskedCode === 'q2') {
-        showSelectResponseTopics = false
-    } else if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
+    if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
         showSelectResponseTopics = false
     }
 
@@ -580,8 +576,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                             className="mt-5 flex flex-col gap-y-3"
                                                         >
                                                             {/* Show responses from categories */}
-                                                            {/* Do not display if 'healthwellbeing' and 'q2' */}
-                                                            {showSelectResponseTopics && questionAskedCode !== 'q2' && (
+                                                            {showSelectResponseTopics && (
                                                                 <div>
                                                                     <div className="mb-1 w-fit">
                                                                         {t('responses-from-categories')}

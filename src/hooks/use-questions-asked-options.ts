@@ -2,22 +2,22 @@
 
 import { TDashboard, TOption } from '@types'
 import { useTranslation } from '@app/i18n/client'
-import { getDashboardConfig } from '@utils'
+import { useCampaignQuery } from '@hooks/use-campaign-query'
 
 export const useQuestionsAskedOptions = (dashboard: TDashboard, lang: string) => {
     const questionsAskedOptions: TOption<string>[] = []
     const { t } = useTranslation(lang)
-    const config = getDashboardConfig(dashboard)
+    const { data } = useCampaignQuery(dashboard, lang)
 
     // Campaigns with one question only do not require questions asked options
-    if (config.questionsAskedCodes.length < 2) {
+    if (!data || (data && data.all_q_codes.length < 2)) {
         return []
     }
 
     // Set questions asked options
-    for (let i = 0; i < config.questionsAskedCodes.length; i++) {
-        const value = config.questionsAskedCodes[i]
-        const label = t(`${dashboard}-${config.questionsAskedCodes[i]}`)
+    for (let i = 0; i < data.all_q_codes.length; i++) {
+        const value = data.all_q_codes[i]
+        const label = t(`${dashboard}-${data.all_q_codes[i]}`)
         questionsAskedOptions.push({ value, label })
     }
 

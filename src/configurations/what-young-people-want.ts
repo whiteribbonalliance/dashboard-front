@@ -12,7 +12,6 @@ export const configuration: IConfiguration = {
     respondentsNounSingular: 'respondent',
     respondentsNounPlural: 'respondents',
     showVideoLink: 'https://youtu.be/E6_ERqyI8nA',
-    questionsAskedCodes: ['q1'],
     link: {
         id: DashboardName.WHAT_YOUNG_PEOPLE_WANT,
         title: title,

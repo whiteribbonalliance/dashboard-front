@@ -56,6 +56,10 @@ export interface ILivingSettingBreakdown {
 
 export interface ICampaign {
     campaign_code: string
+    q_code: string
+    all_q_codes: string[]
+    included_response_years: string[]
+    all_response_years: string[]
     responses_sample: IResponsesSample
     responses_breakdown: IResponseBreakdown[]
     living_settings_breakdown: ILivingSettingBreakdown[]
@@ -72,7 +76,4 @@ export interface ICampaign {
     filter_1_average_age_bucket: string
     filter_2_average_age_bucket: string
     filters_are_identical: boolean
-    included_response_years: string[]
-    all_response_years: string[]
-    q_codes: string[]
 }
