@@ -277,6 +277,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
                     }
                     break
                 case 'breakdown-country':
+                    // Get the alpha2 code of the country to add to the filter
                     const countryValue = countries.find((country) => country.name === value)?.alpha2code
                     currentFormValues = form.getValues('countries')
                     if (countryValue) {
