@@ -11,6 +11,7 @@ import { classNames, toThousandsSep } from '@utils'
 import { useTranslation } from '@app/i18n/client'
 import { TDashboard } from '@types'
 import _ from 'lodash'
+import { DashboardName } from '@enums'
 
 interface IGenderBreakdownGraphProps {
     dashboard: TDashboard
@@ -21,11 +22,20 @@ interface ICustomTooltip extends TooltipProps<number, string> {
     lang: string
 }
 
-const colors = _.shuffle([
+const defaultColors = _.shuffle([
     'var(--pmnchQuaternary)',
-    //'var(--pmnchSecondaryFaint)',
     'var(--pmnchTertiary)',
-    // 'var(--pmnchTertiaryFaint)',
+    'var(--pmnchQuinary)',
+    'var(--pmnchQuinaryFaint)',
+    'var(--pmnchSenary)',
+    'var(--pmnchPrimary)',
+    'var(--pmnchSeptenary)',
+    'var(--pmnchSecondary)',
+])
+
+const whatYoungPeopleWantColors = _.shuffle([
+    'var(--pmnchQuaternary)',
+    'var(--pmnchTertiary)',
     'var(--pmnchQuinary)',
     'var(--pmnchQuinaryFaint)',
     'var(--pmnchSenary)',
@@ -37,6 +47,16 @@ const colors = _.shuffle([
 export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphProps) => {
     const { data, isError } = useCampaignQuery(dashboard, lang)
     const { t } = useTranslation(lang)
+
+    // Set colors
+    let colors: string[]
+    switch (dashboard) {
+        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+            colors = whatYoungPeopleWantColors
+            break
+        default:
+            colors = defaultColors
+    }
 
     // Legend formatter
     function legendFormatter(value: string) {
