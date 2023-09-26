@@ -181,6 +181,62 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
         }
     }, [data, showBreakdownByField, t])
 
+    // Set form value on click
+    function setValue(form: UseFormReturn<TFilter>, payload: IHistogramData) {
+        const value = payload.name
+        let currentFormValues: string[] = []
+        if (form) {
+            switch (showBreakdownByField) {
+                case 'breakdown-age':
+                    currentFormValues = form.getValues('ages')
+                    if (!currentFormValues.includes(value)) {
+                        form.setValue('ages', [...currentFormValues, value])
+                        if (refetchCampaign) refetchCampaign()
+                    }
+                    break
+                case 'breakdown-age-bucket':
+                    // Only allow clicking on age bucket for these dashboards
+                    if (
+                        dashboard === DashboardName.WHAT_WOMEN_WANT ||
+                        dashboard === DashboardName.MIDWIVES_VOICES ||
+                        dashboard === DashboardName.ALL_CAMPAIGNS
+                    ) {
+                        currentFormValues = form.getValues('age_buckets')
+                        if (!currentFormValues.includes(value)) {
+                            form.setValue('age_buckets', [...currentFormValues, value])
+                            if (refetchCampaign) refetchCampaign()
+                        }
+                    }
+                    break
+                case 'breakdown-gender':
+                    currentFormValues = form.getValues('genders')
+                    if (!currentFormValues.includes(value)) {
+                        form.setValue('genders', [...currentFormValues, value])
+                        if (refetchCampaign) refetchCampaign()
+                    }
+                    break
+                case 'breakdown-profession':
+                    currentFormValues = form.getValues('professions')
+                    if (!currentFormValues.includes(value)) {
+                        form.setValue('professions', [...currentFormValues, value])
+                        if (refetchCampaign) refetchCampaign()
+                    }
+                    break
+                case 'breakdown-country':
+                    // Get the alpha2 code of the country to add to the filter
+                    const countryValue = countries.find((country) => country.name === value)?.alpha2code
+                    currentFormValues = form.getValues('countries')
+                    if (countryValue) {
+                        if (!currentFormValues.includes(countryValue)) {
+                            form.setValue('countries', [...currentFormValues, countryValue])
+                            if (refetchCampaign) refetchCampaign()
+                        }
+                    }
+                    break
+            }
+        }
+    }
+
     // Format x-axis numbers
     function xAxisFormatter(item: number) {
         return toThousandsSep(Math.abs(item), lang).toString()
@@ -240,55 +296,6 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
     // Toggle showTooltip
     function toggleShowTooltip() {
         setShowTooltip((prev) => !prev)
-    }
-
-    // Set form value on click
-    function setValue(form: UseFormReturn<TFilter>, payload: IHistogramData) {
-        const value = payload.name
-        let currentFormValues: string[] = []
-        if (form) {
-            switch (showBreakdownByField) {
-                case 'breakdown-age':
-                    currentFormValues = form.getValues('ages')
-                    if (!currentFormValues.includes(value)) {
-                        form.setValue('ages', [...currentFormValues, value])
-                        if (refetchCampaign) refetchCampaign()
-                    }
-                    break
-                case 'breakdown-age-bucket':
-                    currentFormValues = form.getValues('age_buckets')
-                    if (!currentFormValues.includes(value)) {
-                        form.setValue('age_buckets', [...currentFormValues, value])
-                        if (refetchCampaign) refetchCampaign()
-                    }
-                    break
-                case 'breakdown-gender':
-                    currentFormValues = form.getValues('genders')
-                    if (!currentFormValues.includes(value)) {
-                        form.setValue('genders', [...currentFormValues, value])
-                        if (refetchCampaign) refetchCampaign()
-                    }
-                    break
-                case 'breakdown-profession':
-                    currentFormValues = form.getValues('professions')
-                    if (!currentFormValues.includes(value)) {
-                        form.setValue('professions', [...currentFormValues, value])
-                        if (refetchCampaign) refetchCampaign()
-                    }
-                    break
-                case 'breakdown-country':
-                    // Get the alpha2 code of the country to add to the filter
-                    const countryValue = countries.find((country) => country.name === value)?.alpha2code
-                    currentFormValues = form.getValues('countries')
-                    if (countryValue) {
-                        if (!currentFormValues.includes(countryValue)) {
-                            form.setValue('countries', [...currentFormValues, countryValue])
-                            if (refetchCampaign) refetchCampaign()
-                        }
-                    }
-                    break
-            }
-        }
     }
 
     // Display graph or not
