@@ -339,6 +339,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     if (
         dashboard === DashboardName.WHAT_WOMEN_WANT ||
         dashboard === DashboardName.MIDWIVES_VOICES ||
+        dashboard === DashboardName.HEALTHWELLBEING ||
         dashboard === DashboardName.ALL_CAMPAIGNS
     ) {
         showSelectAgeBuckets = true
