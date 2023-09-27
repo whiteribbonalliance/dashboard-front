@@ -183,6 +183,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
 
     // Set form value on click
     function setValue(form: UseFormReturn<TFilter>, payload: IHistogramData) {
+        // Set allow age bucket bar click
         let allowAgeBucketBarClick = false
         if (
             dashboard === DashboardName.WHAT_WOMEN_WANT ||
