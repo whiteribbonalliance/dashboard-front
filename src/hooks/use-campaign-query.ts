@@ -22,6 +22,16 @@ export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
     // Response year
     const responseYear = useResponseYearStore((state) => state.responseYear)
 
+    // Only filter by province if there is no district selected at wwwpakistan
+    if (dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN) {
+        if (filtersClone.filter1.regions.length > 0) {
+            filtersClone.filter1.provinces = []
+        }
+        if (filtersClone.filter2.regions.length > 0) {
+            filtersClone.filter2.provinces = []
+        }
+    }
+
     // If the filter has not changed from the default filter values then do not send it with the request
     const defaultFilterValues = getDashboardDefaultFilterValues(dashboard)
     const filter1 = _.isEqual(filtersClone.filter1, defaultFilterValues) ? undefined : filtersClone.filter1
