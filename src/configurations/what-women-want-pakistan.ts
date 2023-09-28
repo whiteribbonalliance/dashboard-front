@@ -9,7 +9,7 @@ export const configuration: IConfiguration = {
     title: title,
     campaignCode: 'wwwpakistan',
     seoTitle: `${title} | ${seoMainTitle}`,
-    seoMetaDescription: 'We asked 245311 women in Pakistan, what they want to improve their health and wellbeing.',
+    seoMetaDescription: 'We asked 345,409 women in Pakistan, what they want to improve their health and wellbeing.',
     respondentsNounSingular: 'woman',
     respondentsNounPlural: 'women',
     showVideoLink: 'https://www.youtube.com/watch?v=nBzide5J3Hk',
