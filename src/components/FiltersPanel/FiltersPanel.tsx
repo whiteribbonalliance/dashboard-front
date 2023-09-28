@@ -273,71 +273,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         )
     }, [watchCountriesForm2, form2, setProvinceAndRegionOptionsForFilter])
 
-    const setDistrictsOptions = useCallback(
-        (
-            watchCountriesForm: string[],
-            watchProvincesForm: string[],
-            setRegionOptionsFilter: Dispatch<SetStateAction<TOption<string>[]>>
-        ) => {
-            if (dashboard !== DashboardName.WHAT_WOMEN_WANT_PAKISTAN) return
-            if (watchCountriesForm.length < 1) return
-
-            const selectedCountry = watchCountriesForm[0]
-            if (watchProvincesForm.length > 0) {
-                const tmpDistrictOptionsFilter: TOption<string>[] = []
-
-                // Loop through each selected provinces and find its regions
-                for (const province of watchProvincesForm) {
-                    // Get the districts of the country
-                    const countryDistrictOptions = countriesRegionsOptions.find((option) => {
-                        return option.country_alpha2_code === selectedCountry
-                    })
-
-                    if (countryDistrictOptions) {
-                        for (const districtOption of countryDistrictOptions.options) {
-                            // Extract province name from district
-                            let provinceNameExtractedFromRegion = ''
-                            let regionSplit = districtOption.label.split(',')
-                            if (regionSplit.length === 2) {
-                                provinceNameExtractedFromRegion = regionSplit[regionSplit.length - 1].trim()
-                            }
-
-                            // Check if province name matches
-                            if (provinceNameExtractedFromRegion === province) {
-                                tmpDistrictOptionsFilter.push(districtOption)
-                            }
-                        }
-                        // Set district (region) options
-                        setRegionOptionsFilter(tmpDistrictOptionsFilter)
-                    }
-                }
-            } else {
-                // Get the districts of the country
-                const countryDistrictOptions = countriesRegionsOptions.find((option) => {
-                    return option.country_alpha2_code === selectedCountry
-                })
-
-                // Set district (region) options
-                if (countryDistrictOptions) {
-                    setRegionOptionsFilter(countryDistrictOptions.options)
-                }
-            }
-        },
-        [dashboard, countriesRegionsOptions]
-    )
-
-    // Set district options (form1)
-    const watchProvincesForm1 = form1.watch('provinces')
-    useEffect(() => {
-        setDistrictsOptions(watchCountriesForm1, watchProvincesForm1, setRegionOptionsFilter1)
-    }, [watchCountriesForm1, watchProvincesForm1, setDistrictsOptions])
-
-    // Set district options (form2)
-    const watchProvincesForm2 = form2.watch('provinces')
-    useEffect(() => {
-        setDistrictsOptions(watchCountriesForm2, watchProvincesForm2, setRegionOptionsFilter2)
-    }, [watchCountriesForm2, watchProvincesForm2, setDistrictsOptions])
-
     // Cleanup refetch campaign timeout
     useEffect(() => {
         return () => {
@@ -385,6 +320,88 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
             setRefetchCampaign(refetchCampaign)
         }
     }, [setRefetchCampaign, refetchCampaign])
+
+    // Set district options
+    const setDistrictsOptions = useCallback(
+        (
+            form: UseFormReturn<TFilter>,
+            watchCountriesForm: string[],
+            watchProvincesForm: string[],
+            setRegionOptionsFilter: Dispatch<SetStateAction<TOption<string>[]>>
+        ) => {
+            if (dashboard !== DashboardName.WHAT_WOMEN_WANT_PAKISTAN) return
+            if (watchCountriesForm.length < 1) return
+
+            const selectedCountry = watchCountriesForm[0]
+            if (watchProvincesForm.length > 0) {
+                const tmpDistrictOptionsFilter: TOption<string>[] = []
+
+                // Loop through each selected provinces and find its regions
+                for (const province of watchProvincesForm) {
+                    // Get the districts of the country
+                    const countryDistrictOptions = countriesRegionsOptions.find((option) => {
+                        return option.country_alpha2_code === selectedCountry
+                    })
+
+                    if (countryDistrictOptions) {
+                        for (const districtOption of countryDistrictOptions.options) {
+                            // Extract province name from region
+                            let provinceNameExtractedFromRegion = ''
+                            let regionSplit = districtOption.label.split(',')
+                            if (regionSplit.length === 2) {
+                                provinceNameExtractedFromRegion = regionSplit[regionSplit.length - 1].trim()
+                            }
+
+                            // Check if province name matches
+                            if (provinceNameExtractedFromRegion === province) {
+                                tmpDistrictOptionsFilter.push(districtOption)
+                            }
+                        }
+                        // Set district (region) options
+                        setRegionOptionsFilter(tmpDistrictOptionsFilter)
+
+                        // Check which districts (regions) are allowed to stay selected
+                        const tmpRegions: string[] = []
+                        for (const region of form.getValues('regions')) {
+                            // Extract province name from region
+                            let provinceNameExtractedFromRegion = ''
+                            let regionSplit = region.split(',')
+                            if (regionSplit.length === 2) {
+                                provinceNameExtractedFromRegion = regionSplit[regionSplit.length - 1].trim()
+                            }
+                            for (const province of watchProvincesForm) {
+                                if (province === provinceNameExtractedFromRegion) tmpRegions.push(region)
+                            }
+                        }
+                        form.setValue('regions', tmpRegions)
+                    }
+                }
+            } else {
+                // Get the districts of the country
+                const countryDistrictOptions = countriesRegionsOptions.find((option) => {
+                    return option.country_alpha2_code === selectedCountry
+                })
+
+                // Set district (region) options
+                if (countryDistrictOptions) {
+                    setRegionOptionsFilter(countryDistrictOptions.options)
+                }
+            }
+        },
+        [dashboard, countriesRegionsOptions]
+    )
+
+    // Set district options (form1)
+    const watchProvincesForm1 = form1.watch('provinces')
+    useEffect(() => {
+        setDistrictsOptions(form1, watchCountriesForm1, watchProvincesForm1, setRegionOptionsFilter1)
+    }, [form1, watchCountriesForm1, watchProvincesForm1, setDistrictsOptions])
+
+    // Set district options (form2)
+    const watchProvincesForm2 = form2.watch('provinces')
+    useEffect(() => {
+        setDistrictsOptions(form2, watchCountriesForm2, watchProvincesForm2, setRegionOptionsFilter2)
+    }, [form2, watchCountriesForm2, watchProvincesForm2, setDistrictsOptions])
 
     // Set select response topics text
     let selectResponseTopicsText: string
