@@ -209,8 +209,8 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         }
     }, [countryOptions, setCountries])
 
-    // Set region options for filter
-    const setRegionOptionsForFilter = useCallback(
+    // Set province and region options for filter
+    const setProvinceAndRegionOptionsForFilter = useCallback(
         (
             selectedCountries: string[],
             setRegionOptionsFilter: Dispatch<SetStateAction<TOption<string>[]>>,
@@ -219,8 +219,8 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         ) => {
             // Only display regions for 1 selected country
             if (selectedCountries.length !== 1) {
-                setRegionOptionsFilter([])
                 setProvinceOptionsFilter([])
+                setRegionOptionsFilter([])
                 form.setValue('regions', [])
                 form.setValue('provinces', [])
                 return
@@ -228,24 +228,24 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
             const selectedCountry = selectedCountries[0]
 
-            // Set region options for selected country
-            const regionOptions = countriesRegionsOptions.find((countryRegionOption) => {
-                return countryRegionOption.country_alpha2_code === selectedCountry
-            })
-
             // Set province options for selected country
             const provinceOptions = countriesProvincesOptions.find((countryProvinceOption) => {
                 return countryProvinceOption.country_alpha2_code === selectedCountry
             })
 
-            if (regionOptions) {
-                // Set region options
-                setRegionOptionsFilter(regionOptions.options)
-            }
+            // Set region options for selected country
+            const regionOptions = countriesRegionsOptions.find((countryRegionOption) => {
+                return countryRegionOption.country_alpha2_code === selectedCountry
+            })
 
             if (provinceOptions) {
                 // Set province options
                 setProvinceOptionsFilter(provinceOptions.options)
+            }
+
+            if (regionOptions) {
+                // Set region options
+                setRegionOptionsFilter(regionOptions.options)
             }
         },
         [countriesRegionsOptions, countriesProvincesOptions]
@@ -254,14 +254,89 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     // Set regions and provinces for the selected country at filter 1
     const watchCountriesForm1 = form1.watch('countries')
     useEffect(() => {
-        setRegionOptionsForFilter(watchCountriesForm1, setRegionOptionsFilter1, setProvinceOptionsFilter1, form1)
-    }, [watchCountriesForm1, form1, setRegionOptionsForFilter])
+        setProvinceAndRegionOptionsForFilter(
+            watchCountriesForm1,
+            setRegionOptionsFilter1,
+            setProvinceOptionsFilter1,
+            form1
+        )
+    }, [watchCountriesForm1, form1, setProvinceAndRegionOptionsForFilter])
 
     // Set regions and provinces for the selected country at filter 2
     const watchCountriesForm2 = form2.watch('countries')
     useEffect(() => {
-        setRegionOptionsForFilter(watchCountriesForm2, setRegionOptionsFilter2, setProvinceOptionsFilter2, form2)
-    }, [watchCountriesForm2, form2, setRegionOptionsForFilter])
+        setProvinceAndRegionOptionsForFilter(
+            watchCountriesForm2,
+            setRegionOptionsFilter2,
+            setProvinceOptionsFilter2,
+            form2
+        )
+    }, [watchCountriesForm2, form2, setProvinceAndRegionOptionsForFilter])
+
+    const setDistrictsOptions = useCallback(
+        (
+            watchCountriesForm: string[],
+            watchProvincesForm: string[],
+            setRegionOptionsFilter: Dispatch<SetStateAction<TOption<string>[]>>
+        ) => {
+            if (dashboard !== DashboardName.WHAT_WOMEN_WANT_PAKISTAN) return
+            if (watchCountriesForm.length < 1) return
+
+            const selectedCountry = watchCountriesForm[0]
+            if (watchProvincesForm.length > 0) {
+                const tmpDistrictOptionsFilter: TOption<string>[] = []
+
+                // Loop through each selected provinces and find its regions
+                for (const province of watchProvincesForm) {
+                    // Get the districts of the country
+                    const countryDistrictOptions = countriesRegionsOptions.find((option) => {
+                        return option.country_alpha2_code === selectedCountry
+                    })
+
+                    if (countryDistrictOptions) {
+                        for (const districtOption of countryDistrictOptions.options) {
+                            // Extract province name from district
+                            let provinceNameExtractedFromRegion = ''
+                            let regionSplit = districtOption.label.split(',')
+                            if (regionSplit.length === 2) {
+                                provinceNameExtractedFromRegion = regionSplit[regionSplit.length - 1].trim()
+                            }
+
+                            // Check if province name matches
+                            if (provinceNameExtractedFromRegion === province) {
+                                tmpDistrictOptionsFilter.push(districtOption)
+                            }
+                        }
+                        // Set district (region) options
+                        setRegionOptionsFilter(tmpDistrictOptionsFilter)
+                    }
+                }
+            } else {
+                // Get the districts of the country
+                const countryDistrictOptions = countriesRegionsOptions.find((option) => {
+                    return option.country_alpha2_code === selectedCountry
+                })
+
+                // Set district (region) options
+                if (countryDistrictOptions) {
+                    setRegionOptionsFilter(countryDistrictOptions.options)
+                }
+            }
+        },
+        [dashboard, countriesRegionsOptions]
+    )
+
+    // Set district options (form1)
+    const watchProvincesForm1 = form1.watch('provinces')
+    useEffect(() => {
+        setDistrictsOptions(watchCountriesForm1, watchProvincesForm1, setRegionOptionsFilter1)
+    }, [watchCountriesForm1, watchProvincesForm1, setDistrictsOptions])
+
+    // Set district options (form2)
+    const watchProvincesForm2 = form2.watch('provinces')
+    useEffect(() => {
+        setDistrictsOptions(watchCountriesForm2, watchProvincesForm2, setRegionOptionsFilter2)
+    }, [watchCountriesForm2, watchProvincesForm2, setDistrictsOptions])
 
     // Cleanup refetch campaign timeout
     useEffect(() => {
@@ -361,10 +436,10 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         showSelectResponseTopics = false
     }
 
-    // Set show select provinces
-    let showSelectProvinces = false
+    // Set show district and provinces for wwwpakistan
+    let showDistrictsAndProvincesWwwPakistan = false
     if (dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN) {
-        showSelectProvinces = true
+        showDistrictsAndProvincesWwwPakistan = true
     }
 
     return (
@@ -517,35 +592,53 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                             </div>
 
                                             {/* Select regions */}
-                                            <div>
-                                                <div className="mb-1">{t('select-regions')}</div>
-                                                <SelectRegions
-                                                    id={`select-regions-${id}`}
-                                                    dashboard={dashboard}
-                                                    options={
-                                                        id === 'tab-1' ? regionOptionsFilter1 : regionOptionsFilter2
-                                                    }
-                                                    control={form.control}
-                                                    refetchCampaign={refetchCampaign}
-                                                />
-                                            </div>
-
-                                            {/* Select provinces */}
-                                            {showSelectProvinces && (
+                                            {!showDistrictsAndProvincesWwwPakistan && (
                                                 <div>
-                                                    <div className="mb-1">{t('select-provinces')}</div>
-                                                    <SelectProvinces
-                                                        id={`select-provinces-${id}`}
+                                                    <div className="mb-1">{t('select-regions')}</div>
+                                                    <SelectRegions
+                                                        id={`select-regions-${id}`}
                                                         dashboard={dashboard}
                                                         options={
-                                                            id === 'tab-1'
-                                                                ? provinceOptionsFilter1
-                                                                : provinceOptionsFilter2
+                                                            id === 'tab-1' ? regionOptionsFilter1 : regionOptionsFilter2
                                                         }
                                                         control={form.control}
                                                         refetchCampaign={refetchCampaign}
                                                     />
                                                 </div>
+                                            )}
+
+                                            {/* Select district and select provinces for wwwpakistan */}
+                                            {showDistrictsAndProvincesWwwPakistan && (
+                                                <>
+                                                    <div>
+                                                        <div className="mb-1">{t('select-provinces')}</div>
+                                                        <SelectProvinces
+                                                            id={`select-provinces-${id}`}
+                                                            dashboard={dashboard}
+                                                            options={
+                                                                id === 'tab-1'
+                                                                    ? provinceOptionsFilter1
+                                                                    : provinceOptionsFilter2
+                                                            }
+                                                            control={form.control}
+                                                            refetchCampaign={refetchCampaign}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <div className="mb-1">{t('select-districts')}</div>
+                                                        <SelectRegions
+                                                            id={`select-regions-${id}`}
+                                                            dashboard={dashboard}
+                                                            options={
+                                                                id === 'tab-1'
+                                                                    ? regionOptionsFilter1
+                                                                    : regionOptionsFilter2
+                                                            }
+                                                            control={form.control}
+                                                            refetchCampaign={refetchCampaign}
+                                                        />
+                                                    </div>
+                                                </>
                                             )}
 
                                             {/* Select response topics */}
