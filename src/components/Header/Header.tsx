@@ -72,16 +72,22 @@ export const Header = ({ dashboard, lang }: IHeaderProps) => {
                         <div className="flex items-center justify-between px-7 py-7">
                             <div className="flex items-center">
                                 {/* Button to display filters panel */}
-                                <div onClick={() => setShowMobileFiltersPanel((prev) => !prev)} title="Filters">
-                                    <div className="flex text-3xl xl:hidden">
+                                <div
+                                    className="xl:hidden"
+                                    onClick={() => setShowMobileFiltersPanel((prev) => !prev)}
+                                    title="Filters"
+                                >
+                                    <div className="flex text-3xl">
                                         <Chevron direction="left" double={true} rotate={showMobileFiltersPanel} />
                                     </div>
                                 </div>
 
                                 {/* Logo */}
-                                <div className="mx-3 flex items-center xl:mx-0">
-                                    <HeaderLogos dashboard={dashboard} />
-                                </div>
+                                {dashboard !== DashboardName.HEALTHWELLBEING && (
+                                    <div className="mx-3 flex items-center xl:mx-0">
+                                        <HeaderLogos dashboard={dashboard} />
+                                    </div>
+                                )}
                             </div>
 
                             {/* Title */}

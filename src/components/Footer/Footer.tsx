@@ -7,6 +7,7 @@ import { applyToThousandsSepOnText, classNames } from '@utils'
 import { useTranslation } from '@app/i18n/client'
 import { TDashboard } from '@types'
 import { dashboardsConfigs } from '@configurations'
+import { HeaderLogos } from '@components/HeaderLogos'
 
 interface IFooterProps {
     dashboard: TDashboard
@@ -63,13 +64,20 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
 
     return (
         <footer className="mx-7 my-7 flex flex-col gap-y-5 text-lg">
+            {/* Logo */}
+            {dashboard === DashboardName.HEALTHWELLBEING && (
+                <div className="mx-3 flex items-center xl:mx-0">
+                    <HeaderLogos dashboard={dashboard} />
+                </div>
+            )}
+
             {/* Results analyzed */}
             {dashboard === DashboardName.HEALTHWELLBEING && (
                 <div className="max-w-5xl">
                     <p>{t('healthwellbeing-results-analyzed')}</p>
                 </div>
             )}
-            
+
             <div>
                 {/* Data displayed survey */}
                 {dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT && (
