@@ -66,10 +66,10 @@ export const Header = ({ dashboard, lang }: IHeaderProps) => {
 
     return (
         <>
-            <Disclosure as="header" className="sticky top-0 z-50 bg-white shadow-md xl:static xl:shadow-none">
+            <Disclosure as="header" className="sticky top-0 z-50 h-24 bg-white shadow-md xl:static xl:shadow-none">
                 {({ open }) => (
                     <>
-                        <div className="flex items-center justify-between px-7 py-7">
+                        <div className="flex h-full items-center justify-between px-7 py-7">
                             <div className="flex items-center">
                                 {/* Button to display filters panel */}
                                 <div
