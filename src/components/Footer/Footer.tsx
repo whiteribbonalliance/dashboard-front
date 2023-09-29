@@ -63,6 +63,13 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
 
     return (
         <footer className="mx-7 my-7 flex flex-col gap-y-5 text-lg">
+            {/* Results analyzed */}
+            {dashboard === DashboardName.HEALTHWELLBEING && (
+                <div className="max-w-5xl">
+                    <p>{t('healthwellbeing-results-analyzed')}</p>
+                </div>
+            )}
+            
             <div>
                 {/* Data displayed survey */}
                 {dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT && (

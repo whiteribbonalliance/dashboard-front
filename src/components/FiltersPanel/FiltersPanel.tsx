@@ -329,7 +329,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         }
     }
 
-    // Set district options
+    // Set district (region) options at wwwpakistan
     const setDistrictOptions = useCallback(
         (
             form: UseFormReturn<TFilter>,
