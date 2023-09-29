@@ -321,8 +321,16 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         }
     }, [setRefetchCampaign, refetchCampaign])
 
+    // Extract province name from region (used for wwwpakistan)
+    function extractProvinceNameFromRegion(region: string) {
+        const regionSplit = region.split(',')
+        if (regionSplit.length > 1) {
+            return regionSplit[regionSplit.length - 1].trim()
+        }
+    }
+
     // Set district options
-    const setDistrictsOptions = useCallback(
+    const setDistrictOptions = useCallback(
         (
             form: UseFormReturn<TFilter>,
             watchCountriesForm: string[],
@@ -338,19 +346,15 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
                 // Loop through each selected provinces and find its regions
                 for (const province of watchProvincesForm) {
-                    // Get the districts of the country
+                    // Get the districts (regions) of the country
                     const countryDistrictOptions = countriesRegionsOptions.find((option) => {
                         return option.country_alpha2_code === selectedCountry
                     })
 
                     if (countryDistrictOptions) {
                         for (const districtOption of countryDistrictOptions.options) {
-                            // Extract province name from region
-                            let provinceNameExtractedFromRegion = ''
-                            let regionSplit = districtOption.label.split(',')
-                            if (regionSplit.length === 2) {
-                                provinceNameExtractedFromRegion = regionSplit[regionSplit.length - 1].trim()
-                            }
+                            // Extract province name from district (region)
+                            const provinceNameExtractedFromRegion = extractProvinceNameFromRegion(districtOption.label)
 
                             // Check if province name matches
                             if (provinceNameExtractedFromRegion === province) {
@@ -364,20 +368,21 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                         const tmpRegions: string[] = []
                         for (const region of form.getValues('regions')) {
                             // Extract province name from region
-                            let provinceNameExtractedFromRegion = ''
-                            let regionSplit = region.split(',')
-                            if (regionSplit.length === 2) {
-                                provinceNameExtractedFromRegion = regionSplit[regionSplit.length - 1].trim()
-                            }
+                            const provinceNameExtractedFromRegion = extractProvinceNameFromRegion(region)
+
+                            // Check if province name matches
                             for (const province of watchProvincesForm) {
-                                if (province === provinceNameExtractedFromRegion) tmpRegions.push(region)
+                                if (provinceNameExtractedFromRegion === province) {
+                                    tmpRegions.push(region)
+                                }
                             }
                         }
+                        // Set district (region) values in form
                         form.setValue('regions', tmpRegions)
                     }
                 }
             } else {
-                // Get the districts of the country
+                // Get the districts (regions) of the country
                 const countryDistrictOptions = countriesRegionsOptions.find((option) => {
                     return option.country_alpha2_code === selectedCountry
                 })
@@ -391,17 +396,17 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         [dashboard, countriesRegionsOptions]
     )
 
-    // Set district options (form1)
+    // Set district (region) options for form1
     const watchProvincesForm1 = form1.watch('provinces')
     useEffect(() => {
-        setDistrictsOptions(form1, watchCountriesForm1, watchProvincesForm1, setRegionOptionsFilter1)
-    }, [form1, watchCountriesForm1, watchProvincesForm1, setDistrictsOptions])
+        setDistrictOptions(form1, watchCountriesForm1, watchProvincesForm1, setRegionOptionsFilter1)
+    }, [form1, watchCountriesForm1, watchProvincesForm1, setDistrictOptions])
 
-    // Set district options (form2)
+    // Set district (region) options for form2
     const watchProvincesForm2 = form2.watch('provinces')
     useEffect(() => {
-        setDistrictsOptions(form2, watchCountriesForm2, watchProvincesForm2, setRegionOptionsFilter2)
-    }, [form2, watchCountriesForm2, watchProvincesForm2, setDistrictsOptions])
+        setDistrictOptions(form2, watchCountriesForm2, watchProvincesForm2, setRegionOptionsFilter2)
+    }, [form2, watchCountriesForm2, watchProvincesForm2, setDistrictOptions])
 
     // Set select response topics text
     let selectResponseTopicsText: string
