@@ -7,11 +7,16 @@ export interface IResponsesSample {
     data: any
 }
 
-export interface IResponseBreakdown {
+export interface IResponseBreakdownData {
     count_1: number
     count_2: number
     code: string
     description: string
+}
+
+export interface IResponseBreakdown {
+    parent_categories: IResponseBreakdownData[]
+    sub_categories: IResponseBreakdownData[]
 }
 
 export interface ITopWordsAndPhrases {
@@ -61,7 +66,7 @@ export interface ICampaign {
     included_response_years: string[]
     all_response_years: string[]
     responses_sample: IResponsesSample
-    responses_breakdown: IResponseBreakdown[]
+    responses_breakdown: IResponseBreakdown
     living_settings_breakdown: ILivingSettingBreakdown[]
     top_words_and_phrases: ITopWordsAndPhrases
     histogram: IHistogram

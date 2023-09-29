@@ -104,6 +104,9 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
                 )}
             </div>
 
+            {/* Export dataset */}
+            {/*{dashboard === DashboardName.HEALTHWELLBEING && <div>{t('export-dataset')}</div>}*/}
+
             {/* Other dashboards */}
             {footerLinks.length > 0 && (
                 <div>

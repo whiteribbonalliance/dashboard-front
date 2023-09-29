@@ -2,7 +2,7 @@
 
 import { TDashboard } from '@types'
 import { DashboardName } from '@enums'
-import { ResponsesBreakdownGraph } from '@graph-components/ResponsesBreakdownGraph'
+import { ResponsesBreakdownGraphs } from 'graph-components/ResponsesBreakdownGraphs'
 import { WorldBubbleMap } from '@graph-components/WorldBubbleMap'
 import { WhoThePeopleAreGraph } from '@graph-components/WhoThePeopleAreGraph'
 import { GenderBreakdownGraph } from '@graph-components/GenderBreakdownGraph'
@@ -21,7 +21,7 @@ export const Graphs = ({ dashboard, lang }: IGraphsProps) => {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
             return (
                 <>
-                    <ResponsesBreakdownGraph dashboard={dashboard} lang={lang} />
+                    <ResponsesBreakdownGraphs dashboard={dashboard} lang={lang} />
                     <WorldBubbleMap dashboard={dashboard} lang={lang} />
                     <WhoThePeopleAreGraph dashboard={dashboard} lang={lang} />
                     <GenderBreakdownGraph dashboard={dashboard} lang={lang} />
@@ -36,7 +36,7 @@ export const Graphs = ({ dashboard, lang }: IGraphsProps) => {
                     <ResponsesSampleTable dashboard={dashboard} lang={lang} />
                     <WorldBubbleMap dashboard={dashboard} lang={lang} />
                     <GenderBreakdownGraph dashboard={dashboard} lang={lang} />
-                    <ResponsesBreakdownGraph dashboard={dashboard} lang={lang} />
+                    <ResponsesBreakdownGraphs dashboard={dashboard} lang={lang} />
                     <LivingSettingsBreakdownGraph dashboard={dashboard} lang={lang} />
                     <WhoThePeopleAreGraph dashboard={dashboard} lang={lang} />
                 </>
@@ -47,7 +47,7 @@ export const Graphs = ({ dashboard, lang }: IGraphsProps) => {
                     <TopWordsAndPhrasesGraph dashboard={dashboard} lang={lang} />
                     <ResponsesSampleTable dashboard={dashboard} lang={lang} />
                     <WorldBubbleMap dashboard={dashboard} lang={lang} />
-                    <ResponsesBreakdownGraph dashboard={dashboard} lang={lang} />
+                    <ResponsesBreakdownGraphs dashboard={dashboard} lang={lang} />
                     <WhoThePeopleAreGraph dashboard={dashboard} lang={lang} />
                 </>
             )

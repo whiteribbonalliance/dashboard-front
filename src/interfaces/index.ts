@@ -1,4 +1,6 @@
 // App
+import { IResponseBreakdownData } from './wra-dashboard-api/campaign'
+
 export type { IConfiguration } from './configuration'
 export type { IDashboardLink } from './dashboard-link'
 export type { IInitialData } from './initial-data'
@@ -21,3 +23,4 @@ export type {
 export type { IWordcloudWord } from './wra-dashboard-api/wordcloud-word'
 export type { ITopWords } from './wra-dashboard-api/top-words'
 export type { IHistogramData } from './wra-dashboard-api/histogram-data'
+export type { IResponseBreakdownData } from './wra-dashboard-api/campaign'
