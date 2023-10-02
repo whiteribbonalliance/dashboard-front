@@ -199,13 +199,12 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
         if (form) {
             switch (showBreakdownByField) {
                 case 'breakdown-age':
-                    if (!allowAgeBucketBarClick) {
-                        currentFormValues = form.getValues('ages')
-                        if (!currentFormValues.includes(value)) {
-                            form.setValue('ages', [...currentFormValues, value])
-                            if (refetchCampaign) refetchCampaign()
-                        }
+                    currentFormValues = form.getValues('ages')
+                    if (!currentFormValues.includes(value)) {
+                        form.setValue('ages', [...currentFormValues, value])
+                        if (refetchCampaign) refetchCampaign()
                     }
+
                     break
                 case 'breakdown-age-bucket':
                     // Only allow clicking on age bucket bar for these dashboards
