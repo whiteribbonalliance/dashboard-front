@@ -153,8 +153,13 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
                     setParagraph(t('number-ages-respondents'))
                     break
                 case 'breakdown-age-bucket':
-                    histogramData = data.histogram.age_buckets
-                    setParagraph(t('number-ages-respondents'))
+                    if (dashboard === DashboardName.ALL_CAMPAIGNS) {
+                        histogramData = data.histogram.age_buckets_default
+                        setParagraph(t('number-ages-respondents'))
+                    } else {
+                        histogramData = data.histogram.age_buckets
+                        setParagraph(t('number-ages-respondents'))
+                    }
                     break
                 case 'breakdown-gender':
                     histogramData = data.histogram.genders
