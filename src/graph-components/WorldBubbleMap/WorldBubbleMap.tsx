@@ -30,13 +30,15 @@ interface IWorldBubbleMapsProps {
     lang: string
 }
 
-interface IWorldBubbleMapsCoordinateWithColor extends IWorldBubbleMapsCoordinate {
+interface IWorldBubbleMapsCoordinateWithExtra extends IWorldBubbleMapsCoordinate {
+    coordinatesSequence: 'coordinates_1' | 'coordinates_2'
     color: string
 }
 
 interface ID3MapProps {
     dashboard: TDashboard
-    form: UseFormReturn<TFilter>
+    form1: UseFormReturn<TFilter>
+    form2: UseFormReturn<TFilter>
     refetchCampaign: () => void
     respondents: string
     geoJsonFeatures: FeatureCollection
@@ -61,6 +63,7 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
     const { t } = useTranslation(lang)
 
     const form1 = useFilterFormsStore((state) => state.form1)
+    const form2 = useFilterFormsStore((state) => state.form2)
     const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
 
     const config = getDashboardConfig(dashboard)
@@ -116,7 +119,7 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
 
     // Display world bubble maps or not
     const displayWorldBubbleMaps =
-        !!data && !!dataGeoQuery.data && !!dataTopoJsonMX.data && !!form1 && !!refetchCampaign
+        !!data && !!dataGeoQuery.data && !!dataTopoJsonMX.data && !!form1 && !!form2 && !!refetchCampaign
 
     return (
         <div>
@@ -180,7 +183,8 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
                         {/* Map */}
                         <D3Map
                             dashboard={dashboard}
-                            form={form1}
+                            form1={form1}
+                            form2={form2}
                             refetchCampaign={refetchCampaign}
                             respondents={respondents}
                             geoJsonFeatures={_.cloneDeep(dataGeoQuery.data) as FeatureCollection}
@@ -206,7 +210,8 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
 
 const D3Map = ({
     dashboard,
-    form,
+    form1,
+    form2,
     refetchCampaign,
     respondents,
     geoJsonFeatures,
@@ -278,21 +283,29 @@ const D3Map = ({
             geoJsonFeatures.features = geoJsonFeatures.features.filter((d) => d.properties?.name !== 'Antarctica')
 
             // This variable will be used for the coordinates on the map
-            let worldBubbleMapsCoordinates: IWorldBubbleMapsCoordinateWithColor[]
+            let worldBubbleMapsCoordinates: IWorldBubbleMapsCoordinateWithExtra[]
 
             // Set colors for world bubble maps coordinates 1
-            let worldBubbleMapsCoordinatesWithColors1: IWorldBubbleMapsCoordinateWithColor[] = []
+            let worldBubbleMapsCoordinatesWithColors1: IWorldBubbleMapsCoordinateWithExtra[] = []
             if (worldBubbleMapsCoordinates1) {
                 worldBubbleMapsCoordinatesWithColors1 = worldBubbleMapsCoordinates1.map((c) => {
-                    return { ...c, color: bubbleColor1 } as IWorldBubbleMapsCoordinateWithColor
+                    return {
+                        ...c,
+                        color: bubbleColor1,
+                        coordinatesSequence: 'coordinates_1',
+                    } as IWorldBubbleMapsCoordinateWithExtra
                 })
             }
 
             // Set colors for world bubble maps coordinates 2
-            let worldBubbleMapsCoordinatesWithColors2: IWorldBubbleMapsCoordinateWithColor[] = []
+            let worldBubbleMapsCoordinatesWithColors2: IWorldBubbleMapsCoordinateWithExtra[] = []
             if (worldBubbleMapsCoordinates2) {
                 worldBubbleMapsCoordinatesWithColors2 = worldBubbleMapsCoordinates2.map((c) => {
-                    return { ...c, color: bubbleColor2 } as IWorldBubbleMapsCoordinateWithColor
+                    return {
+                        ...c,
+                        color: bubbleColor2,
+                        coordinatesSequence: 'coordinates_2',
+                    } as IWorldBubbleMapsCoordinateWithExtra
                 })
             }
 
@@ -304,7 +317,7 @@ const D3Map = ({
             //  Scale for bubble size
             const valueExtent: any = d3.extent(
                 worldBubbleMapsCoordinates,
-                (d: IWorldBubbleMapsCoordinateWithColor) => +d.n
+                (d: IWorldBubbleMapsCoordinateWithExtra) => +d.n
             )
 
             // Circle size
@@ -356,7 +369,7 @@ const D3Map = ({
             const onMouseOver = () => tooltip.style('opacity', 1)
 
             // On mouse move
-            const onMouseMove = (event: MouseEvent, d: IWorldBubbleMapsCoordinateWithColor) =>
+            const onMouseMove = (event: MouseEvent, d: IWorldBubbleMapsCoordinateWithExtra) =>
                 tooltip
                     .html(d.location_name + '<br>' + toThousandsSep(d.n, lang) + ' ' + respondents)
                     .style('left', `${event.offsetX}px`)
@@ -369,16 +382,30 @@ const D3Map = ({
             const onMouseLeave = () => tooltip.style('opacity', 0).style('display', 'none')
 
             // On click (show country or region info)
-            const onClick = (e: MouseEvent, d: IWorldBubbleMapsCoordinateWithColor) => {
+            const onClick = (e: MouseEvent, d: IWorldBubbleMapsCoordinateWithExtra) => {
+                let form: UseFormReturn<TFilter>
+                if (d.coordinatesSequence == 'coordinates_1') {
+                    form = form1
+                } else {
+                    form = form2
+                }
+                const currentRegionsValues = form.getValues('regions')
+                const currentCountriesValues = form.getValues('countries')
                 switch (dashboard) {
                     case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
-                        form.setValue('regions', [d.location_code])
+                        if (!currentRegionsValues.includes(d.location_code)) {
+                            form.setValue('regions', [...currentRegionsValues, d.location_code])
+                        }
                         break
                     case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
-                        form.setValue('regions', [d.location_code])
+                        if (!currentRegionsValues.includes(d.location_code)) {
+                            form.setValue('regions', [...currentRegionsValues, d.location_code])
+                        }
                         break
                     default:
-                        form.setValue('countries', [d.location_code])
+                        if (!currentCountriesValues.includes(d.location_code)) {
+                            form.setValue('countries', [...currentCountriesValues, d.location_code])
+                        }
                 }
 
                 refetchCampaign()
@@ -390,18 +417,18 @@ const D3Map = ({
                 .data(worldBubbleMapsCoordinates)
                 .join('circle')
                 .attr('class', 'bubble-map-circle')
-                .attr('cx', (d: IWorldBubbleMapsCoordinateWithColor) => {
+                .attr('cx', (d: IWorldBubbleMapsCoordinateWithExtra) => {
                     const point = projection([d.lon, d.lat])
                     if (point) return point[0]
                     return 0
                 })
-                .attr('cy', (d: IWorldBubbleMapsCoordinateWithColor) => {
+                .attr('cy', (d: IWorldBubbleMapsCoordinateWithExtra) => {
                     const point = projection([d.lon, d.lat])
                     if (point) return point[1]
                     return 0
                 })
-                .attr('r', (d: IWorldBubbleMapsCoordinateWithColor) => circleSize(d.n))
-                .style('fill', (d: IWorldBubbleMapsCoordinateWithColor) => d.color)
+                .attr('r', (d: IWorldBubbleMapsCoordinateWithExtra) => circleSize(d.n))
+                .style('fill', (d: IWorldBubbleMapsCoordinateWithExtra) => d.color)
                 .style('cursor', 'pointer')
                 .attr('stroke', () => 'var(--white)')
                 .attr('stroke-width', 1)
@@ -420,7 +447,8 @@ const D3Map = ({
         respondents,
         dashboard,
         lang,
-        form,
+        form1,
+        form2,
         refetchCampaign,
         bubbleColor1,
         bubbleColor2,

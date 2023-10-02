@@ -19,6 +19,8 @@ import { TDashboard } from '@types'
 import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 import { IResponsesBreakdownData } from '@interfaces'
+import { UseFormReturn } from 'react-hook-form'
+import { TFilter } from '@schemas/filter'
 
 interface IResponsesBreakdownGraphProps {
     dashboard: TDashboard
@@ -48,6 +50,7 @@ export const ResponsesBreakdownGraph = ({
 }: IResponsesBreakdownGraphProps) => {
     const [responsesBreakdown, setResponsesBreakdown] = useState<IResponsesBreakdownData[]>(data)
     const form1 = useFilterFormsStore((state) => state.form1)
+    const form2 = useFilterFormsStore((state) => state.form2)
     const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
@@ -151,10 +154,11 @@ export const ResponsesBreakdownGraph = ({
             title = ''
     }
 
-    // Set response topic
-    function setResponseTopic(payload: any) {
-        if (form1) {
-            form1.setValue('response_topics', [payload.code])
+    // Set response topics
+    function setResponseTopics(payload: any, form: UseFormReturn<TFilter>) {
+        const currentValues = form.getValues('response_topics')
+        if (!currentValues.includes(payload.code)) {
+            form.setValue('response_topics', [...currentValues, payload.code])
             if (refetchCampaign) {
                 refetchCampaign()
             }
@@ -250,7 +254,9 @@ export const ResponsesBreakdownGraph = ({
                                     className={classNames('hover:cursor-pointer', bar2Classes)}
                                     fill={bar2Fill}
                                     minPointSize={2}
-                                    onClick={setResponseTopic}
+                                    onClick={(payload) => {
+                                        if (form2) setResponseTopics(payload, form2)
+                                    }}
                                     stackId={0}
                                     onMouseOver={() => setHoveredBarDataKey('count_2')}
                                     onMouseEnter={toggleShowTooltip}
@@ -262,7 +268,9 @@ export const ResponsesBreakdownGraph = ({
                                 className={classNames('hover:cursor-pointer', bar1Classes)}
                                 fill={bar1Fill}
                                 minPointSize={2}
-                                onClick={setResponseTopic}
+                                onClick={(payload) => {
+                                    if (form1) setResponseTopics(payload, form1)
+                                }}
                                 stackId={0}
                                 onMouseOver={() => setHoveredBarDataKey('count_1')}
                                 onMouseEnter={toggleShowTooltip}
