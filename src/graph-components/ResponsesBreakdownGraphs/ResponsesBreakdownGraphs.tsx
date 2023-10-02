@@ -49,6 +49,27 @@ export const ResponsesBreakdownGraphs = ({ dashboard, lang }: IResponsesBreakdow
             clickViewTopicResponsesText = t('click-view-topic-responses')
     }
 
+    // Set can display categories
+    let canDisplayParentOrSubCategories: boolean
+    let canDisplayParentCategories: boolean
+    let canDisplaySubCategories: boolean
+    switch (dashboard) {
+        case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
+            canDisplayParentOrSubCategories = true
+            canDisplayParentCategories = false
+            canDisplaySubCategories = false
+            break
+        case DashboardName.HEALTHWELLBEING:
+            canDisplayParentOrSubCategories = false
+            canDisplayParentCategories = true
+            canDisplaySubCategories = true
+            break
+        default:
+            canDisplayParentOrSubCategories = false
+            canDisplayParentCategories = false
+            canDisplaySubCategories = true
+    }
+
     // Display graphs or not
     const displayGraphs = !!data
 
@@ -80,24 +101,44 @@ export const ResponsesBreakdownGraphs = ({ dashboard, lang }: IResponsesBreakdow
                 {/* Graphs */}
                 {displayGraphs && (
                     <div>
-                        <ResponsesBreakdownGraph
-                            dashboard={dashboard}
-                            lang={lang}
-                            data={data.responses_breakdown.parent_categories}
-                            filtersAreIdentical={data.filters_are_identical}
-                            filter1Description={data.filter_1_description}
-                            filter2Description={data.filter_2_description}
-                            is_sub={false}
-                        />
-                        <ResponsesBreakdownGraph
-                            dashboard={dashboard}
-                            lang={lang}
-                            data={data.responses_breakdown.sub_categories}
-                            filtersAreIdentical={data.filters_are_identical}
-                            filter1Description={data.filter_1_description}
-                            filter2Description={data.filter_2_description}
-                            is_sub={true}
-                        />
+                        {/* Parent or sub-categories */}
+                        {canDisplayParentOrSubCategories && (
+                            <ResponsesBreakdownGraph
+                                dashboard={dashboard}
+                                lang={lang}
+                                data={data.responses_breakdown.parent_or_sub_categories}
+                                filtersAreIdentical={data.filters_are_identical}
+                                filter1Description={data.filter_1_description}
+                                filter2Description={data.filter_2_description}
+                                isParent={false}
+                            />
+                        )}
+
+                        {/* Parent categories */}
+                        {canDisplayParentCategories && (
+                            <ResponsesBreakdownGraph
+                                dashboard={dashboard}
+                                lang={lang}
+                                data={data.responses_breakdown.parent_categories}
+                                filtersAreIdentical={data.filters_are_identical}
+                                filter1Description={data.filter_1_description}
+                                filter2Description={data.filter_2_description}
+                                isParent={true}
+                            />
+                        )}
+
+                        {/* Sub-categories */}
+                        {canDisplaySubCategories && (
+                            <ResponsesBreakdownGraph
+                                dashboard={dashboard}
+                                lang={lang}
+                                data={data.responses_breakdown.sub_categories}
+                                filtersAreIdentical={data.filters_are_identical}
+                                filter1Description={data.filter_1_description}
+                                filter2Description={data.filter_2_description}
+                                isParent={false}
+                            />
+                        )}
                     </div>
                 )}
             </Box>

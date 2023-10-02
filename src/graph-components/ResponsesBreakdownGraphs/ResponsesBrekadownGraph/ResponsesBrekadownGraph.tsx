@@ -18,13 +18,13 @@ import { useFilterFormsStore } from '@stores/filter-forms'
 import { TDashboard } from '@types'
 import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { useRefetchCampaignStore } from '@stores/refetch-campaign'
-import { IResponseBreakdownData } from '@interfaces'
+import { IResponsesBreakdownData } from '@interfaces'
 
 interface IResponsesBreakdownGraphProps {
     dashboard: TDashboard
     lang: string
-    data: IResponseBreakdownData[]
-    is_sub: boolean
+    data: IResponsesBreakdownData[]
+    isParent: boolean
     filtersAreIdentical: boolean
     filter1Description: string
     filter2Description: string
@@ -41,12 +41,12 @@ export const ResponsesBreakdownGraph = ({
     dashboard,
     lang,
     data,
-    is_sub,
+    isParent,
     filtersAreIdentical,
     filter1Description,
     filter2Description,
 }: IResponsesBreakdownGraphProps) => {
-    const [responsesBreakdown, setResponsesBreakdown] = useState<IResponseBreakdownData[]>(data)
+    const [responsesBreakdown, setResponsesBreakdown] = useState<IResponsesBreakdownData[]>(data)
     const form1 = useFilterFormsStore((state) => state.form1)
     const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
     const hoveredBarDataKey = useRef<string>(undefined as any)
@@ -68,7 +68,9 @@ export const ResponsesBreakdownGraph = ({
 
     // Set height
     let height: number
-    if (!is_sub) {
+    if (dashboard === DashboardName.HEALTHWELLBEING && !isParent) {
+        height = 950
+    } else {
         switch (dashboard) {
             case DashboardName.ALL_CAMPAIGNS:
                 height = 950
@@ -76,8 +78,6 @@ export const ResponsesBreakdownGraph = ({
             default:
                 height = 525
         }
-    } else {
-        height = 950
     }
 
     // Set bars classes
@@ -127,7 +127,7 @@ export const ResponsesBreakdownGraph = ({
     // Set responses breakdown
     useEffect(() => {
         // Set count 2 values as negative
-        const tmpModifiedResponsesBreakdown: IResponseBreakdownData[] = []
+        const tmpModifiedResponsesBreakdown: IResponsesBreakdownData[] = []
         for (const datum of data) {
             const tmpDatum = datum
             tmpDatum.count_2 = -tmpDatum.count_2
@@ -136,6 +136,20 @@ export const ResponsesBreakdownGraph = ({
 
         setResponsesBreakdown(tmpModifiedResponsesBreakdown)
     }, [data])
+
+    // Set title
+    let title: string
+    switch (dashboard) {
+        case DashboardName.HEALTHWELLBEING:
+            if (isParent) {
+                title = '[TITLE PARENT CATEGORIES HERE]'
+            } else {
+                title = '[TITLE SUB-CATEGORIES HERE]'
+            }
+            break
+        default:
+            title = ''
+    }
 
     // Set response topic
     function setResponseTopic(payload: any) {
@@ -178,7 +192,10 @@ export const ResponsesBreakdownGraph = ({
     return (
         <div>
             {/* Graph */}
-            <div className="mt-3 flex flex-col">
+            <div className="mb-3 flex flex-col">
+                {/* Title */}
+                <div className="mt-3">{title && title}</div>
+
                 {/* Bar chart */}
                 <div className="mb-3 mt-3 w-full">
                     <ResponsiveContainer height={height} className="bg-white">
