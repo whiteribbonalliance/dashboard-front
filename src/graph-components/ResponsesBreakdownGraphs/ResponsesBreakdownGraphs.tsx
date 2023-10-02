@@ -110,7 +110,7 @@ export const ResponsesBreakdownGraphs = ({ dashboard, lang }: IResponsesBreakdow
                                 filtersAreIdentical={data.filters_are_identical}
                                 filter1Description={data.filter_1_description}
                                 filter2Description={data.filter_2_description}
-                                isParent={false}
+                                type="parent_or_sub"
                             />
                         )}
 
@@ -123,7 +123,7 @@ export const ResponsesBreakdownGraphs = ({ dashboard, lang }: IResponsesBreakdow
                                 filtersAreIdentical={data.filters_are_identical}
                                 filter1Description={data.filter_1_description}
                                 filter2Description={data.filter_2_description}
-                                isParent={true}
+                                type="parent"
                             />
                         )}
 
@@ -136,7 +136,7 @@ export const ResponsesBreakdownGraphs = ({ dashboard, lang }: IResponsesBreakdow
                                 filtersAreIdentical={data.filters_are_identical}
                                 filter1Description={data.filter_1_description}
                                 filter2Description={data.filter_2_description}
-                                isParent={false}
+                                type="sub"
                             />
                         )}
                     </div>

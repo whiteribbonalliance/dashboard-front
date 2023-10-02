@@ -24,7 +24,7 @@ interface IResponsesBreakdownGraphProps {
     dashboard: TDashboard
     lang: string
     data: IResponsesBreakdownData[]
-    isParent: boolean
+    type: 'parent' | 'sub' | 'parent_or_sub'
     filtersAreIdentical: boolean
     filter1Description: string
     filter2Description: string
@@ -41,7 +41,7 @@ export const ResponsesBreakdownGraph = ({
     dashboard,
     lang,
     data,
-    isParent,
+    type,
     filtersAreIdentical,
     filter1Description,
     filter2Description,
@@ -68,7 +68,7 @@ export const ResponsesBreakdownGraph = ({
 
     // Set height
     let height: number
-    if (dashboard === DashboardName.HEALTHWELLBEING && !isParent) {
+    if (dashboard === DashboardName.HEALTHWELLBEING && type !== 'parent') {
         height = 950
     } else {
         switch (dashboard) {
@@ -141,10 +141,10 @@ export const ResponsesBreakdownGraph = ({
     let title: string
     switch (dashboard) {
         case DashboardName.HEALTHWELLBEING:
-            if (isParent) {
-                title = '[TITLE PARENT CATEGORIES HERE]'
+            if (type === 'parent') {
+                title = t('categories')
             } else {
-                title = '[TITLE SUB-CATEGORIES HERE]'
+                title = t('subcategories')
             }
             break
         default:
@@ -194,7 +194,7 @@ export const ResponsesBreakdownGraph = ({
             {/* Graph */}
             <div className="mb-3 flex flex-col">
                 {/* Title */}
-                <div className="mt-3">{title && title}</div>
+                {title && <div className="mt-3 text-lg font-bold">{title}</div>}
 
                 {/* Bar chart */}
                 <div className="mb-3 mt-3 w-full">
