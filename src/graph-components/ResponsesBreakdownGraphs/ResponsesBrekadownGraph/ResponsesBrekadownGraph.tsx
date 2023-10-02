@@ -73,7 +73,7 @@ export const ResponsesBreakdownGraph = ({
     } else {
         switch (dashboard) {
             case DashboardName.ALL_CAMPAIGNS:
-                height = 950
+                height = 1750
                 break
             default:
                 height = 525
