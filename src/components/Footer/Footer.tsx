@@ -2,8 +2,8 @@
 
 import Link from 'next/link'
 import { DashboardName } from '@enums'
-import React from 'react'
-import { applyToThousandsSepOnText, classNames } from '@utils'
+import React, { useState } from 'react'
+import { applyToThousandsSepOnText, classNames, getDashboardConfig } from '@utils'
 import { useTranslation } from '@app/i18n/client'
 import { TDashboard } from '@types'
 import { dashboardsConfigs } from '@configurations'
@@ -15,7 +15,20 @@ interface IFooterProps {
 }
 
 export const Footer = ({ dashboard, lang }: IFooterProps) => {
+    const [exportDatasetLinkClicked, setExportDatasetLinkClicked] = useState<boolean>(false)
     const { t } = useTranslation(lang)
+    const config = getDashboardConfig(dashboard)
+    const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL
+
+    // Set export dataset link
+    let exportDatasetLink
+    switch (dashboard) {
+        case DashboardName.HEALTHWELLBEING:
+            exportDatasetLink = `${apiUrl}/campaigns/${config.campaignCode}/public/data`
+            break
+        default:
+            exportDatasetLink = ''
+    }
 
     // Footer links
     // TODO: Temporarily hide womenseconomicempowerment
@@ -108,7 +121,18 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
             </div>
 
             {/* Export dataset */}
-            {/*{dashboard === DashboardName.HEALTHWELLBEING && <div>{t('export-dataset')}</div>}*/}
+            {exportDatasetLink && (
+                <div>
+                    <Link
+                        href={exportDatasetLink}
+                        className="font-bold"
+                        onClick={() => setExportDatasetLinkClicked(true)}
+                    >
+                        {t('click-export-dataset')}
+                    </Link>
+                    {exportDatasetLinkClicked && <div>{t('download-start-shortly')}</div>}
+                </div>
+            )}
 
             {/* Other dashboards */}
             {footerLinks.length > 0 && (
