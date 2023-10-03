@@ -30,6 +30,12 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
             exportDatasetLink = ''
     }
 
+    // Set export dataset text
+    let exportDatasetText = t('export-dataset')
+    if (exportDatasetText.charAt(exportDatasetText.length - 1) === '.') {
+        exportDatasetText = exportDatasetText.slice(0, -1)
+    }
+
     // Footer links
     // TODO: Temporarily hide womenseconomicempowerment
     const dashboardLinks = dashboardsConfigs.map((configuration) => configuration.link)
@@ -128,7 +134,7 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
                         className="font-bold"
                         onClick={() => setExportDatasetLinkClicked(true)}
                     >
-                        {t('click-export-dataset')}
+                        {exportDatasetText}
                     </Link>
                     {exportDatasetLinkClicked && <div>{t('download-start-shortly')}</div>}
                 </div>
