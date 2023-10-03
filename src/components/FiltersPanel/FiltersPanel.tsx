@@ -431,7 +431,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
     // Set show select genders
     let showSelectGenders = false
-    if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT || dashboard === DashboardName.MIDWIVES_VOICES) {
+    if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
         showSelectGenders = true
     }
 
