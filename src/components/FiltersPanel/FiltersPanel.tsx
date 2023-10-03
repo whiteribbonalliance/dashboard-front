@@ -766,9 +766,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                             {showSelectGenders && (
                                                                 <>
                                                                     {/* Filter by gender */}
-                                                                    <div className="flex gap-x-3">
+                                                                    <div className="flex">
                                                                         {/* Filter by gender */}
-                                                                        <div className="flex basis-1/2 flex-col">
+                                                                        <div className="flex w-full flex-col">
                                                                             <div className="mb-1">
                                                                                 {t('filter-by-gender')}
                                                                             </div>
