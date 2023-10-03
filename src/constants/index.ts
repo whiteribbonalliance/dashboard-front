@@ -1,7 +1,10 @@
 import { DashboardName } from '@enums'
 import { ILanguage } from '@interfaces'
 
-export const dashboards = Object.entries(DashboardName).map(([key, value]) => value)
+// TODO: Temporarily hide womenseconomicempowerment
+export const dashboards = Object.entries(DashboardName)
+    .map(([key, value]) => value)
+    .filter((d) => d !== 'womenseconomicempowerment')
 
 export const seoMainTitle = 'White Ribbon Alliance'
 

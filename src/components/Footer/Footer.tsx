@@ -18,8 +18,11 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
     const { t } = useTranslation(lang)
 
     // Footer links
+    // TODO: Temporarily hide womenseconomicempowerment
     const dashboardLinks = dashboardsConfigs.map((configuration) => configuration.link)
-    const footerLinks = dashboardLinks.filter((dashboardLink) => dashboardLink.id !== dashboard)
+    const footerLinks = dashboardLinks
+        .filter((dashboardLink) => dashboardLink.id !== dashboard)
+        .filter((d) => d.id !== 'womenseconomicempowerment')
 
     // Set footer link classes
     let footerLinkClasses: string

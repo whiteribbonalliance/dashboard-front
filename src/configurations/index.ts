@@ -16,6 +16,7 @@ export { whatWomenWantPakistanConfig }
 export { womensEconomicEmpowermentConfig }
 export { allCampaignsConfig }
 
+// TODO: Temporarily hide womenseconomicempowerment
 export const dashboardsConfigs = [
     allCampaignsConfig,
     whatWomenWantConfig,
@@ -24,5 +25,5 @@ export const dashboardsConfigs = [
     healthwellbeingConfig,
     economicEmpowermentMexicoConfig,
     whatWomenWantPakistanConfig,
-    womensEconomicEmpowermentConfig,
+    // womensEconomicEmpowermentConfig,
 ]
