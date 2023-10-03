@@ -1,9 +1,6 @@
 // App
-import { IResponsesBreakdownData } from './wra-dashboard-api/campaign'
-
 export type { IConfiguration } from './configuration'
 export type { IDashboardLink } from './dashboard-link'
-export type { IInitialData } from './initial-data'
 export { type ILanguage } from './language'
 export type { ICountry } from './country'
 

@@ -111,19 +111,19 @@ export async function getCampaignsMerged(
 }
 
 /**
- * Get campaign who the people are options
+ * Get campaign histogram options
  *
  * @param config The campaign configuration
  * @param lang The language
  */
-export async function getCampaignWhoThePeopleAreOptions(config: IConfiguration, lang: string) {
-    const response = await fetch(`${apiUrl}/campaigns/${config.campaignCode}/who-the-people-are-options?lang=${lang}`, {
+export async function getCampaignHistogramOptions(config: IConfiguration, lang: string) {
+    const response = await fetch(`${apiUrl}/campaigns/${config.campaignCode}/histogram-options?lang=${lang}`, {
         method: 'GET',
         headers: headers,
     })
 
     if (!response.ok) {
-        throw new Error('Failed to fetch campaign who the people are options')
+        throw new Error('Failed to fetch campaign histogram options')
     }
 
     const data: TOption<string>[] = await response.json()
@@ -132,18 +132,18 @@ export async function getCampaignWhoThePeopleAreOptions(config: IConfiguration, 
 }
 
 /**
- * Get campaigns merged who the people are options
+ * Get campaigns merged histogram options
  *
  * @param lang The language
  */
-export async function getCampaignsMergedWhoThePeopleAreOptions(lang: string) {
-    const response = await fetch(`${apiUrl}/campaigns-merged/who-the-people-are-options?lang=${lang}`, {
+export async function getCampaignsMergedHistogramOptions(lang: string) {
+    const response = await fetch(`${apiUrl}/campaigns-merged/histogram-options?lang=${lang}`, {
         method: 'GET',
         headers: headers,
     })
 
     if (!response.ok) {
-        throw new Error('Failed to fetch campaigns merged who the people are options')
+        throw new Error('Failed to fetch campaigns merged histogram options')
     }
 
     const data: TOption<string>[] = await response.json()

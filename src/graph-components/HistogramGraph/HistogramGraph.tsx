@@ -10,7 +10,7 @@ import { TDashboard, TOption } from '@types'
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod'
-import { TWhoThePeopleAre, whoThePeopleAreSchema } from '@schemas/who-the-people-are'
+import { histogramSchema, THistogram } from '@schemas/histogram'
 import {
     Bar,
     BarChart,
@@ -25,10 +25,7 @@ import {
 import { DashboardName } from '@enums'
 import { classNames, getDashboardConfig, niceNum, toThousandsSep } from '@utils'
 import { IHistogramData } from '@interfaces'
-import {
-    getCampaignsMergedWhoThePeopleAreOptions,
-    getCampaignWhoThePeopleAreOptions,
-} from '@services/wra-dashboard-api'
+import { getCampaignHistogramOptions, getCampaignsMergedHistogramOptions } from '@services/wra-dashboard-api'
 import { useTranslation } from '@app/i18n/client'
 import { useQuery } from 'react-query'
 import { useFilterFormsStore } from '@stores/filter-forms'
@@ -36,7 +33,7 @@ import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 import { TFilter } from '@schemas/filter'
 import { useCountriesStore } from '@stores/countries'
 
-interface IWhoThePeopleAreGraphProps {
+interface IHistogramGraphProps {
     dashboard: TDashboard
     lang: string
 }
@@ -48,14 +45,14 @@ interface ICustomTooltip extends TooltipProps<number, string> {
     lang: string
 }
 
-export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphProps) => {
+export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
     const { data, isError } = useCampaignQuery(dashboard, lang)
     const { t } = useTranslation(lang)
     const [currentHistogramData, setCurrentHistogramData] = useState<IHistogramData[]>([])
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
     const [paragraph, setParagraph] = useState<string>('')
-    const [whoThePeopleAreOptions, setWhoThePeopleAreOptions] = useState<TOption<string>[]>([])
+    const [histogramOptions, setHistogramOptions] = useState<TOption<string>[]>([])
     const form1 = useFilterFormsStore((state) => state.form1)
     const form2 = useFilterFormsStore((state) => state.form2)
     const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
@@ -64,23 +61,23 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
 
     // Fetch options
     useQuery<TOption<string>[]>({
-        queryKey: [`${dashboard}-who-the-people-are-filter-options`],
+        queryKey: [`${dashboard}-histogram-options`],
         queryFn: () => {
             if (dashboard === DashboardName.ALL_CAMPAIGNS) {
-                return getCampaignsMergedWhoThePeopleAreOptions(lang)
+                return getCampaignsMergedHistogramOptions(lang)
             } else {
-                return getCampaignWhoThePeopleAreOptions(config, lang)
+                return getCampaignHistogramOptions(config, lang)
             }
         },
         refetchOnWindowFocus: false,
         retry: 3,
-        onSuccess: (options) => setWhoThePeopleAreOptions(options),
+        onSuccess: (options) => setHistogramOptions(options),
         onError: () => {},
     })
 
     // Form
-    const form = useForm<TWhoThePeopleAre>({
-        resolver: zodResolver(whoThePeopleAreSchema),
+    const form = useForm<THistogram>({
+        resolver: zodResolver(histogramSchema),
     })
 
     // Watch field
@@ -88,14 +85,14 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
 
     // Set default value for show_breakdown_by
     useEffect(() => {
-        if (form && whoThePeopleAreOptions.length > 0) {
+        if (form && histogramOptions.length > 0) {
             if (dashboard === DashboardName.HEALTHWELLBEING) {
                 form.setValue('show_breakdown_by', 'breakdown-age-bucket')
             } else {
-                form.setValue('show_breakdown_by', whoThePeopleAreOptions[0].value)
+                form.setValue('show_breakdown_by', histogramOptions[0].value)
             }
         }
-    }, [dashboard, form, whoThePeopleAreOptions])
+    }, [dashboard, form, histogramOptions])
 
     // Container height
     const containerHeight = useMemo(() => {
@@ -184,7 +181,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
 
             setCurrentHistogramData(histogramData)
         }
-    }, [data, showBreakdownByField, t])
+    }, [dashboard, data, showBreakdownByField, t])
 
     // Set form value on click
     function setValue(form: UseFormReturn<TFilter>, payload: IHistogramData) {
@@ -337,7 +334,7 @@ export const WhoThePeopleAreGraph = ({ dashboard, lang }: IWhoThePeopleAreGraphP
                             render={({ field: { onChange, value } }) => (
                                 <SelectSingleValue
                                     id="select-show-breakdown-by"
-                                    options={whoThePeopleAreOptions}
+                                    options={histogramOptions}
                                     value={value}
                                     controllerRenderOnChange={onChange}
                                 />
