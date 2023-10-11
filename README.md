@@ -20,9 +20,7 @@ Configure .env.local.
 On the local machine, map `127.0.0.1` to the following domain names:
 
 ```text
-127.0.0.1   whatyoungpeoplewant.localhost
-127.0.0.1   whatwomenwant.localhost
-127.0.0.1   midwivesvoices.localhost
+127.0.0.1   explore.whiteribbonalliance.local
 ```
 
 Then
@@ -37,7 +35,7 @@ npm install
 npm run dev
 ```
 
-On the local machine visit `http://whatyoungpeoplewant.localhost:3000`.
+On the local machine visit `http://explore.whiteribbonalliance.local:3000/en/whatwomenwant`.
 
 ### Lint project
 
