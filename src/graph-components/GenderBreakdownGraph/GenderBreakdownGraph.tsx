@@ -22,26 +22,33 @@ interface ICustomTooltip extends TooltipProps<number, string> {
     lang: string
 }
 
+// 9 unique colors
+// If there are more than 9 genders, include more colors
 const defaultColors = _.shuffle([
-    'var(--pmnchQuaternary)',
-    'var(--pmnchTertiary)',
-    'var(--pmnchQuinary)',
-    'var(--pmnchQuinaryFaint)',
-    'var(--pmnchSenary)',
-    'var(--pmnchPrimary)',
-    'var(--pmnchSeptenary)',
-    'var(--pmnchSecondary)',
+    'var(--defaultPrimaryFaint)',
+    'var(--defaultPrimary)',
+    'var(--defaultPrimaryLessFaint)',
+    'var(--defaultSecondary)',
+    'var(--defaultSecondaryFaint)',
+    'var(--defaultSecondaryLessFaint)',
+    'var(--defaultTertiary)',
+    'var(--defaultTertiaryDark)',
+    'var(--defaultQuaternary)',
 ])
 
+// 10 unique colors
+// If there are more than 10 genders, include more colors
 const whatYoungPeopleWantColors = _.shuffle([
+    'var(--pmnchPrimary)',
+    'var(--pmnchSecondary)',
+    'var(--pmnchSecondaryFaint)',
     'var(--pmnchQuaternary)',
     'var(--pmnchTertiary)',
+    'var(--pmnchTertiaryFaint)',
     'var(--pmnchQuinary)',
-    'var(--pmnchQuinaryFaint)',
     'var(--pmnchSenary)',
-    'var(--pmnchPrimary)',
     'var(--pmnchSeptenary)',
-    'var(--pmnchSecondary)',
+    'var(--pmnchSeptenaryFaint)',
 ])
 
 export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphProps) => {
