@@ -93,6 +93,25 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
                 </div>
             )}
 
+            {/* Learn more about categories */}
+            {dashboard === DashboardName.HEALTHWELLBEING && (
+                <div className="max-w-5xl">
+                    <p>
+                        <span>{t('healthwellbeing-learn-more-about-categories')}</span>
+                        &nbsp;
+                        <span className="font-bold">
+                            <Link
+                                href="https://docs.google.com/spreadsheets/d/1pd5bjiZpU_j082LRMJ1OFDk3FVjT7HqzqV9eYtLi48w/edit?usp=sharing"
+                                target="_blank"
+                            >
+                                {t('here-capitalized')}
+                            </Link>
+                            <span>.</span>
+                        </span>
+                    </p>
+                </div>
+            )}
+
             {/* Results analyzed */}
             {dashboard === DashboardName.HEALTHWELLBEING && (
                 <div className="max-w-5xl">
