@@ -119,7 +119,7 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
                 </div>
             )}
 
-            {/* AI constantly being improved text */}
+            {/* Our AI is constantly being improved */}
             {dashboard === DashboardName.HEALTHWELLBEING && (
                 <div className="max-w-5xl">
                     <p>
