@@ -119,6 +119,22 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
                 </div>
             )}
 
+            {/* AI constantly being improved text */}
+            {dashboard === DashboardName.HEALTHWELLBEING && (
+                <div className="max-w-5xl">
+                    <p>
+                        <span>{t('healthwellbeing-ai-constantly-improved')}</span>
+                        &nbsp;
+                        <span className="font-bold">
+                            <Link href="https://forms.gle/1zebtW3hBxGgZX2K6" target="_blank">
+                                {t('here-capitalized')}
+                            </Link>
+                            <span>.</span>
+                        </span>
+                    </p>
+                </div>
+            )}
+
             <div>
                 {/* Data displayed survey */}
                 {dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT && (
