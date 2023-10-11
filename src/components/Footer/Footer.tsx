@@ -95,7 +95,7 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
 
             {/* Learn more about categories */}
             {dashboard === DashboardName.HEALTHWELLBEING && (
-                <div className="max-w-5xl">
+                <div className="max-w-7xl">
                     <p>
                         <span>{t('healthwellbeing-learn-more-about-categories')}</span>
                         &nbsp;
