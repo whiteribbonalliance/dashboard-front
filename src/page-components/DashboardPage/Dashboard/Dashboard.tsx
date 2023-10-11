@@ -5,7 +5,7 @@ import { Title } from '@components/Title'
 import { Subtext } from '@components/Subtext'
 import { FiltersPanel } from '@components/FiltersPanel'
 import { classNames } from '@utils'
-import { Graphs } from '@components/Graphs'
+import { GraphsWrapper } from 'components/GraphsWrapper'
 import { Footer } from '@components/Footer'
 import React, { useEffect } from 'react'
 import { TDashboard } from '@types'
@@ -85,7 +85,7 @@ export const Dashboard = ({ dashboard, lang }: IDashboardProps) => {
 
                     {/* Graphs */}
                     <section className={classNames('col-span-2 grid grid-cols-1', boxesGapY)}>
-                        <Graphs dashboard={activeDashboard} lang={lang} />
+                        <GraphsWrapper dashboard={activeDashboard} lang={lang} />
                     </section>
                 </div>
             </main>

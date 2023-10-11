@@ -11,12 +11,12 @@ import { ResponsesSampleTable } from '@graph-components/ResponsesSampleTable'
 import { LivingSettingsBreakdownGraph } from '@graph-components/LivingSettingsBreakdownGraph'
 import React from 'react'
 
-interface IGraphsProps {
+interface IGraphsWrapperProps {
     dashboard: TDashboard
     lang: string
 }
 
-export const Graphs = ({ dashboard, lang }: IGraphsProps) => {
+export const GraphsWrapper = ({ dashboard, lang }: IGraphsWrapperProps) => {
     switch (dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
             return (
@@ -32,12 +32,22 @@ export const Graphs = ({ dashboard, lang }: IGraphsProps) => {
         case DashboardName.HEALTHWELLBEING:
             return (
                 <>
+                    <ResponsesBreakdownGraphs dashboard={dashboard} lang={lang} />
                     <TopWordsAndPhrasesGraph dashboard={dashboard} lang={lang} />
                     <ResponsesSampleTable dashboard={dashboard} lang={lang} />
                     <WorldBubbleMap dashboard={dashboard} lang={lang} />
                     <GenderBreakdownGraph dashboard={dashboard} lang={lang} />
-                    <ResponsesBreakdownGraphs dashboard={dashboard} lang={lang} />
                     <LivingSettingsBreakdownGraph dashboard={dashboard} lang={lang} />
+                    <HistogramGraph dashboard={dashboard} lang={lang} />
+                </>
+            )
+        case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
+            return (
+                <>
+                    <ResponsesBreakdownGraphs dashboard={dashboard} lang={lang} />
+                    <TopWordsAndPhrasesGraph dashboard={dashboard} lang={lang} />
+                    <ResponsesSampleTable dashboard={dashboard} lang={lang} />
+                    <WorldBubbleMap dashboard={dashboard} lang={lang} />
                     <HistogramGraph dashboard={dashboard} lang={lang} />
                 </>
             )

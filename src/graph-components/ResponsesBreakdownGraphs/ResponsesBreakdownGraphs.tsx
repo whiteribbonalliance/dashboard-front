@@ -98,7 +98,7 @@ export const ResponsesBreakdownGraphs = ({ dashboard, lang }: IResponsesBreakdow
                 {/* Loading (only at first data fetch) */}
                 {!displayGraphs && !isError && <Loading dashboard={dashboard} />}
 
-                {/* Graphs */}
+                {/* GraphsWrapper */}
                 {displayGraphs && (
                     <div>
                         {/* Parent or sub-categories */}
