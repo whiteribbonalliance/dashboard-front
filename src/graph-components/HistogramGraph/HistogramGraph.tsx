@@ -183,8 +183,8 @@ export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
         }
     }, [dashboard, data, showBreakdownByField, t])
 
-    // Set form value on click
-    function setValue(form: UseFormReturn<TFilter>, payload: IHistogramData) {
+    // Set form value
+    function setValue(form: UseFormReturn<TFilter>, payload: any) {
         // Set allow age bucket bar click
         let allowAgeBucketBarClick = false
         if (
@@ -196,53 +196,54 @@ export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
             allowAgeBucketBarClick = true
         }
 
-        const value = payload.name
-        let currentFormValues: string[] = []
-        switch (showBreakdownByField) {
-            case 'breakdown-age':
-                currentFormValues = form.getValues('ages')
-                if (!currentFormValues.includes(value)) {
-                    form.setValue('ages', [...currentFormValues, value])
-                    if (refetchCampaign) refetchCampaign()
-                }
-
-                break
-            case 'breakdown-age-bucket':
-                // Only allow clicking on age bucket bar for these dashboards
-                // These are the only dashboards currently with the option for filtering age buckets
-                if (allowAgeBucketBarClick) {
-                    currentFormValues = form.getValues('age_buckets')
+        const value = payload?.payload?.value
+        if (value) {
+            let currentFormValues: string[] = []
+            switch (showBreakdownByField) {
+                case 'breakdown-age':
+                    currentFormValues = form.getValues('ages')
                     if (!currentFormValues.includes(value)) {
-                        form.setValue('age_buckets', [...currentFormValues, value])
+                        form.setValue('ages', [...currentFormValues, value])
                         if (refetchCampaign) refetchCampaign()
                     }
-                }
-                break
-            case 'breakdown-gender':
-                currentFormValues = form.getValues('genders')
-                if (!currentFormValues.includes(value)) {
-                    form.setValue('genders', [...currentFormValues, value])
-                    if (refetchCampaign) refetchCampaign()
-                }
-                break
-            case 'breakdown-profession':
-                currentFormValues = form.getValues('professions')
-                if (!currentFormValues.includes(value)) {
-                    form.setValue('professions', [...currentFormValues, value])
-                    if (refetchCampaign) refetchCampaign()
-                }
-                break
-            case 'breakdown-country':
-                // Get the alpha2 code of the country to add to the filter
-                const countryValue = countries.find((country) => country.name === value)?.alpha2code
-                currentFormValues = form.getValues('countries')
-                if (countryValue) {
-                    if (!currentFormValues.includes(countryValue)) {
-                        form.setValue('countries', [...currentFormValues, countryValue])
+                    break
+                case 'breakdown-age-bucket':
+                    // Only allow clicking on age bucket bar for these dashboards
+                    // These are the only dashboards currently with the option for filtering age buckets
+                    if (allowAgeBucketBarClick) {
+                        currentFormValues = form.getValues('age_buckets')
+                        if (!currentFormValues.includes(value)) {
+                            form.setValue('age_buckets', [...currentFormValues, value])
+                            if (refetchCampaign) refetchCampaign()
+                        }
+                    }
+                    break
+                case 'breakdown-gender':
+                    currentFormValues = form.getValues('genders')
+                    if (!currentFormValues.includes(value)) {
+                        form.setValue('genders', [...currentFormValues, value])
                         if (refetchCampaign) refetchCampaign()
                     }
-                }
-                break
+                    break
+                case 'breakdown-profession':
+                    currentFormValues = form.getValues('professions')
+                    if (!currentFormValues.includes(value)) {
+                        form.setValue('professions', [...currentFormValues, value])
+                        if (refetchCampaign) refetchCampaign()
+                    }
+                    break
+                case 'breakdown-country':
+                    // Get the alpha2 code of the country to add to the filter
+                    const countryValue = countries.find((country) => country.name === value)?.alpha2code
+                    currentFormValues = form.getValues('countries')
+                    if (countryValue) {
+                        if (!currentFormValues.includes(countryValue)) {
+                            form.setValue('countries', [...currentFormValues, countryValue])
+                            if (refetchCampaign) refetchCampaign()
+                        }
+                    }
+                    break
+            }
         }
     }
 
@@ -366,7 +367,7 @@ export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
                                     tickFormatter={(item) => xAxisFormatter(item)}
                                 />
                                 <YAxis
-                                    dataKey="name"
+                                    dataKey="value"
                                     type="category"
                                     axisLine={false}
                                     tickLine={false}

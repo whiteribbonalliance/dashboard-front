@@ -18,7 +18,7 @@ export type {
     ILivingSettingBreakdown,
 } from './wra-dashboard-api/campaign'
 export type { IWordcloudWord } from './wra-dashboard-api/wordcloud-word'
-export type { ITopWords } from './wra-dashboard-api/top-words'
+export type { ITopWord } from './wra-dashboard-api/top-words'
 export type { IHistogramData } from './wra-dashboard-api/histogram-data'
 export type { IResponsesBreakdownData } from './wra-dashboard-api/campaign'
 export type { IGenderBreakdown } from './wra-dashboard-api/campaign'

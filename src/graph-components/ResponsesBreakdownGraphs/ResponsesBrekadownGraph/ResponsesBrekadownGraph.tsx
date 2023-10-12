@@ -154,14 +154,12 @@ export const ResponsesBreakdownGraph = ({
             title = ''
     }
 
-    // Set response topics
-    function setResponseTopics(payload: any, form: UseFormReturn<TFilter>) {
+    // Set form value
+    function setValue(payload: any, form: UseFormReturn<TFilter>) {
         const currentValues = form.getValues('response_topics')
         if (!currentValues.includes(payload.code)) {
             form.setValue('response_topics', [...currentValues, payload.code])
-            if (refetchCampaign) {
-                refetchCampaign()
-            }
+            if (refetchCampaign) refetchCampaign()
         }
     }
 
@@ -255,7 +253,7 @@ export const ResponsesBreakdownGraph = ({
                                     fill={bar2Fill}
                                     minPointSize={2}
                                     onClick={(payload) => {
-                                        if (form2) setResponseTopics(payload, form2)
+                                        if (form2) setValue(payload, form2)
                                     }}
                                     stackId={0}
                                     onMouseOver={() => setHoveredBarDataKey('count_2')}
@@ -269,7 +267,7 @@ export const ResponsesBreakdownGraph = ({
                                 fill={bar1Fill}
                                 minPointSize={2}
                                 onClick={(payload) => {
-                                    if (form1) setResponseTopics(payload, form1)
+                                    if (form1) setValue(payload, form1)
                                 }}
                                 stackId={0}
                                 onMouseOver={() => setHoveredBarDataKey('count_1')}

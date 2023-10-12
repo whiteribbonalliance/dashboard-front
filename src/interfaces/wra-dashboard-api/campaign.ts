@@ -1,5 +1,5 @@
 import { IWordcloudWord } from './wordcloud-word'
-import { ITopWords } from './top-words'
+import { ITopWord } from './top-words'
 import { IHistogramData } from './histogram-data'
 
 export interface IResponsesSample {
@@ -22,9 +22,9 @@ export interface IResponsesBreakdown {
 
 export interface ITopWordsAndPhrases {
     wordcloud_words: IWordcloudWord[]
-    top_words: ITopWords[]
-    two_word_phrases: ITopWords[]
-    three_word_phrases: ITopWords[]
+    top_words: ITopWord[]
+    two_word_phrases: ITopWord[]
+    three_word_phrases: ITopWord[]
 }
 
 interface IHistogram {
@@ -38,7 +38,8 @@ interface IHistogram {
 }
 
 export interface IGenderBreakdown {
-    name: string
+    value: string
+    label: string
     count: string
 }
 
@@ -56,7 +57,8 @@ interface IWorldBubbleMapsCoordinates {
 }
 
 export interface ILivingSettingBreakdown {
-    name: string
+    value: string
+    label: string
     count_1: number
     count_2: number
 }

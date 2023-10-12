@@ -14,16 +14,16 @@ import {
 import { DashboardName } from '@enums'
 import { classNames, toThousandsSep } from '@utils'
 import { MutableRefObject, useRef } from 'react'
-import { ITopWords } from '@interfaces'
+import { ITopWord } from '@interfaces'
 import { useTranslation } from '@app/i18n/client'
-import { IFilterFormsState, useFilterFormsStore } from '@stores/filter-forms'
+import { useFilterFormsStore } from '@stores/filter-forms'
 import { TDashboard } from '@types'
 import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 
 interface ITopWordsOrPhrasesProps {
     dashboard: TDashboard
     lang: string
-    words: ITopWords[]
+    words: ITopWord[]
     filter1Description: string
     filter2Description: string
     filtersAreIdentical: boolean
@@ -97,23 +97,21 @@ export const TopWordsOrPhrases = ({
         hoveredBarDataKey.current = dataKey
     }
 
-    // Set keyword 1
-    function setKeyword1(payload: any) {
-        if (form1) {
-            form1.setValue('keyword_filter', payload.word)
-            if (refetchCampaign) {
-                refetchCampaign()
-            }
+    // Set form value 1
+    function setValue1(payload: any) {
+        const value = payload?.payload?.value
+        if (form1 && value) {
+            form1.setValue('keyword_filter', value)
+            if (refetchCampaign) refetchCampaign()
         }
     }
 
-    // Set keyword 2
-    function setKeyword2(payload: any) {
-        if (form2) {
-            form2.setValue('keyword_filter', payload.word)
-            if (refetchCampaign) {
-                refetchCampaign()
-            }
+    // Set form value 2
+    function setValue2(payload: any) {
+        const value = payload?.payload?.value
+        if (form2 && value) {
+            form2.setValue('keyword_filter', value)
+            if (refetchCampaign) refetchCampaign()
         }
     }
 
@@ -141,7 +139,7 @@ export const TopWordsOrPhrases = ({
 
                         <XAxis dataKey="count_1" type="number" axisLine={false} tickCount={7} />
                         <YAxis
-                            dataKey="word"
+                            dataKey="label"
                             type="category"
                             axisLine={false}
                             tickLine={false}
@@ -160,7 +158,7 @@ export const TopWordsOrPhrases = ({
                             fill={bar1Fill}
                             minPointSize={3}
                             onMouseOver={() => setHoveredBarDataKey('count_1')}
-                            onClick={setKeyword1}
+                            onClick={setValue1}
                         />
 
                         {/* Only display the second bar if filters are not identical */}
@@ -171,7 +169,7 @@ export const TopWordsOrPhrases = ({
                                 fill={bar2Fill}
                                 minPointSize={3}
                                 onMouseOver={() => setHoveredBarDataKey('count_2')}
-                                onClick={setKeyword2}
+                                onClick={setValue2}
                             />
                         )}
                     </BarChart>

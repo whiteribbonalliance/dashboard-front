@@ -16,7 +16,6 @@ import { UseFormReturn } from 'react-hook-form'
 import { TFilter } from '@schemas/filter'
 import { useFilterFormsStore } from '@stores/filter-forms'
 import { useRefetchCampaignStore } from '@stores/refetch-campaign'
-import { IGenderBreakdown } from '@interfaces'
 
 interface IGenderBreakdownGraphProps {
     dashboard: TDashboard
@@ -115,12 +114,15 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
         return null
     }
 
-    // Set form value on click
-    function setValue(form: UseFormReturn<TFilter>, payload: IGenderBreakdown) {
-        const currentFormValues = form.getValues('genders')
-        if (!currentFormValues.includes(payload.name)) {
-            form.setValue('genders', [...currentFormValues, payload.name])
-            if (refetchCampaign) refetchCampaign()
+    // Set form value
+    function setValue(form: UseFormReturn<TFilter>, payload: any) {
+        const value = payload?.payload?.value
+        if (value) {
+            const currentFormValues = form.getValues('genders')
+            if (!currentFormValues.includes(value)) {
+                form.setValue('genders', [...currentFormValues, value])
+                if (refetchCampaign) refetchCampaign()
+            }
         }
     }
 
@@ -152,7 +154,7 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
                                 data={data.genders_breakdown}
                                 label={customLabel}
                                 dataKey="count"
-                                nameKey="name"
+                                nameKey="label"
                                 cx="50%"
                                 cy="50%"
                                 outerRadius={220}
@@ -162,7 +164,7 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
                                 }}
                             >
                                 {data.genders_breakdown.map((datum, index) => (
-                                    <Cell key={`cell-${datum.name}`} fill={colors[index % colors.length]} />
+                                    <Cell key={`cell-${datum.label}`} fill={colors[index % colors.length]} />
                                 ))}
                             </Pie>
                         </PieChart>

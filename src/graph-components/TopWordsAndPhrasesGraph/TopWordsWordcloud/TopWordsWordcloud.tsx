@@ -11,6 +11,7 @@ import { IWordcloudWord } from '@interfaces'
 import { toThousandsSep } from '@utils'
 import { useFilterFormsStore } from '@stores/filter-forms'
 import { TDashboard } from '@types'
+import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 
 interface IWordcloudProps {
     dashboard: TDashboard
@@ -30,6 +31,7 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
         scroll: true,
         detectBounds: true,
     })
+    const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
 
     // Cache the wordcloud
     const cachedWordcloud = useMemo(() => {
@@ -72,9 +74,10 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
         }
 
         // On word click
-        function handleOnClick(word: any) {
+        function handleOnClick(word: IWordcloudWord) {
             if (form1) {
-                form1.setValue('keyword_filter', word.text)
+                form1.setValue('keyword_filter', word.value)
+                if (refetchCampaign) refetchCampaign()
             }
         }
 

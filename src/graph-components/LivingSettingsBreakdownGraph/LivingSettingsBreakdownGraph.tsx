@@ -21,8 +21,7 @@ import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
 import { TDashboard } from '@types'
 import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
-import { IHistogramData, ILivingSettingBreakdown } from '@interfaces'
-import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
+import { ILivingSettingBreakdown } from '@interfaces'
 import { useFilterFormsStore } from '@stores/filter-forms'
 import { UseFormReturn } from 'react-hook-form'
 import { TFilter } from '@schemas/filter'
@@ -144,12 +143,15 @@ export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSetting
         return null
     }
 
-    // Set form value on click
-    function setValue(form: UseFormReturn<TFilter>, payload: ILivingSettingBreakdown) {
-        const currentFormValues = form.getValues('living_settings')
-        if (!currentFormValues.includes(payload.name)) {
-            form.setValue('living_settings', [...currentFormValues, payload.name])
-            if (refetchCampaign) refetchCampaign()
+    // Set form value
+    function setValue(form: UseFormReturn<TFilter>, payload: any) {
+        const value = payload?.payload?.value
+        if (value) {
+            const currentFormValues = form.getValues('living_settings')
+            if (!currentFormValues.includes(value)) {
+                form.setValue('living_settings', [...currentFormValues, value])
+                if (refetchCampaign) refetchCampaign()
+            }
         }
     }
 
@@ -210,7 +212,7 @@ export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSetting
                                             tickFormatter={(item) => xAxisFormatter(item)}
                                         />
                                         <YAxis
-                                            dataKey="name"
+                                            dataKey="value"
                                             type="category"
                                             axisLine={false}
                                             tickLine={false}
