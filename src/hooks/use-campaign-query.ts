@@ -7,10 +7,11 @@ import { useFiltersStore } from '@stores/filters'
 import { useEffect } from 'react'
 import _ from 'lodash'
 import { TDashboard } from '@types'
-import { getDashboardConfig, getDashboardDefaultFilterValues } from '@utils'
+import { getDashboardConfig } from '@utils'
 import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
 import { DashboardName } from '@enums'
 import { useResponseYearStore } from '@stores/response-year'
+import { defaultFilterValues } from '@schemas/filter'
 
 export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
     const filters = useFiltersStore((state) => state.filters)
@@ -33,12 +34,11 @@ export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
     }
 
     // If the filter has not changed from the default filter values then do not send it with the request
-    const defaultFilterValues = getDashboardDefaultFilterValues(dashboard)
     const filter1 = _.isEqual(filtersClone.filter1, defaultFilterValues) ? undefined : filtersClone.filter1
     const filter2 = _.isEqual(filtersClone.filter2, defaultFilterValues) ? undefined : filtersClone.filter2
 
     const campaignQuery = useQuery<ICampaign>({
-        queryKey: [`${dashboard}-campaign`],
+        queryKey: [`${dashboard}-${lang}-campaign`],
         queryFn: ({ signal }) => {
             if (dashboard === DashboardName.ALL_CAMPAIGNS) {
                 // Use getCampaignsMerged function (uses a special endpoint to fetch data of all campaigns merged)

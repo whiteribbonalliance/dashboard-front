@@ -1,7 +1,7 @@
 'use client'
 
 import { Disclosure, Tab, Transition } from '@headlessui/react'
-import { classNames, getDashboardConfig, getDashboardDefaultFilterValues } from '@utils'
+import { classNames, getDashboardConfig } from '@utils'
 import { DashboardName } from '@enums'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { Box } from '@components/Box'
@@ -59,6 +59,7 @@ interface ITab {
 }
 
 export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
+    const filters = useFiltersStore((state) => state.filters)
     const setFilters = useFiltersStore((state) => state.setFilters)
     const setForm1 = useFilterFormsStore((state) => state.setForm1)
     const setForm2 = useFilterFormsStore((state) => state.setForm2)
@@ -96,9 +97,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     // Refetch campaign timeout
     const refetchCampaignTimeout = useRef<NodeJS.Timeout>()
 
-    // Default filter values for dashboard
-    const defaultFilterValuesForDashboard = getDashboardDefaultFilterValues(dashboard)
-
     // Set display countries filter tooltip
     let displayCountriesFilterTooltip = true
     if (
@@ -110,14 +108,14 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
     // Form 1
     const form1 = useForm<TFilter>({
-        defaultValues: defaultFilterValuesForDashboard,
+        defaultValues: filters.filter1,
         resolver: zodResolver(filterSchema),
     })
     useEffect(() => setForm1(form1), [setForm1, form1])
 
     // Form 2
     const form2 = useForm<TFilter>({
-        defaultValues: defaultFilterValuesForDashboard,
+        defaultValues: filters.filter2,
         resolver: zodResolver(filterSchema),
     })
     useEffect(() => setForm2(form2), [setForm2, form2])
@@ -146,7 +144,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
     // Fetch filter options
     useQuery<IFilterOptions>({
-        queryKey: [`${dashboard}-filter-options`],
+        queryKey: [`${dashboard}-${lang}-filter-options`],
         queryFn: () => {
             if (dashboard === DashboardName.ALL_CAMPAIGNS) {
                 return getCampaignsMergedFilterOptions(lang)
@@ -1117,6 +1115,23 @@ const SelectCountries = ({ id, dashboard, options, control, refetchCampaign }: I
         disabled = true
     }
 
+    // Set placeholder
+    let placeHolder: string | undefined = undefined
+    switch (dashboard) {
+        case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
+            const PakistanOption = options.find((option) => option.value === 'PK')
+            if (PakistanOption) {
+                placeHolder = PakistanOption.label
+            }
+            break
+        case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
+            const MexicoOption = options.find((option) => option.value === 'MX')
+            if (MexicoOption) {
+                placeHolder = MexicoOption.label
+            }
+            break
+    }
+
     return (
         <Controller
             name="countries"
@@ -1124,6 +1139,7 @@ const SelectCountries = ({ id, dashboard, options, control, refetchCampaign }: I
             render={({ field: { onChange, value } }) => (
                 <SelectMultiValues
                     id={id}
+                    placeHolder={placeHolder}
                     isDisabled={disabled}
                     options={options}
                     controllerRenderOnChange={onChange}

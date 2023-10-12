@@ -116,7 +116,7 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
                 )}
             </ParentSize>
         )
-    }, [dashboard, form1, wordcloudWords, hideTooltip, showTooltip, containerBounds])
+    }, [dashboard, refetchCampaign, form1, wordcloudWords, hideTooltip, showTooltip, containerBounds])
 
     return (
         <div className="mb-3 h-[40rem]">

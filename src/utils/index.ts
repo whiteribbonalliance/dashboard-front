@@ -136,24 +136,3 @@ export function applyToThousandsSepOnText(text: string, lang: string) {
 export function getDefaultFilterValues() {
     return defaultFilterValues
 }
-
-/**
- * Get default filter values for dashboard
- *
- * @param dashboard The dashboard
- */
-export function getDashboardDefaultFilterValues(dashboard: TDashboard) {
-    let defaultFilterValuesForDashboard: TFilter
-    switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
-            defaultFilterValuesForDashboard = { ...defaultFilterValues }
-            defaultFilterValuesForDashboard.countries = ['PK']
-            return defaultFilterValuesForDashboard
-        case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
-            defaultFilterValuesForDashboard = { ...defaultFilterValues }
-            defaultFilterValuesForDashboard.countries = ['MX']
-            return defaultFilterValuesForDashboard
-        default:
-            return defaultFilterValues
-    }
-}

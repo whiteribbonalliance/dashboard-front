@@ -1,6 +1,7 @@
 import Select from 'react-select'
 import React from 'react'
 import { TOption } from '@types'
+import placeholder from 'lodash/fp/placeholder'
 
 interface ISelectMultiValuesProps {
     id: string
@@ -9,6 +10,7 @@ interface ISelectMultiValuesProps {
     value: string[]
     controllerRenderOnChange: (...event: any[]) => void
     onChange?: () => void // A function to run when the value of this select changes
+    placeHolder?: string
 }
 
 export const SelectMultiValues = ({
@@ -18,9 +20,11 @@ export const SelectMultiValues = ({
     value,
     controllerRenderOnChange,
     onChange,
+    placeHolder = 'Select...',
 }: ISelectMultiValuesProps) => {
     return (
         <Select
+            placeholder={placeHolder}
             menuPosition="fixed"
             isDisabled={isDisabled}
             isMulti
