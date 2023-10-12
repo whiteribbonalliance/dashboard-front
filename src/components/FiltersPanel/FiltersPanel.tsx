@@ -77,6 +77,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const [ageOptions, setAgeOptions] = useState<TOption<string>[]>([])
     const [ageBucketOptions, setAgeBucketOptions] = useState<TOption<string>[]>([])
     const [genderOptions, setGenderOptions] = useState<TOption<string>[]>([])
+    const [livingSettingOptions, setLivingSettingOptions] = useState<TOption<string>[]>([])
     const [professionOptions, setProfessionOptions] = useState<TOption<string>[]>([])
     const [onlyResponsesFromCategoriesOptions, setOnlyResponsesFromCategoriesOptions] = useState<TOption<boolean>[]>([])
     const [onlyMultiWordPhrasesContainingFilterTermOptions, setOnlyMultiWordPhrasesContainingFilterTermOptions] =
@@ -184,6 +185,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
             // Gender options
             setGenderOptions(filterOptions.genders)
+
+            // Living setting options
+            setLivingSettingOptions(filterOptions.living_settings)
 
             // Profession options
             setProfessionOptions(filterOptions.professions)
@@ -429,9 +433,15 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         }
     }
 
+    // Set show select living settings
+    let setShowSelectLivingSettings = false
+    if (dashboard === DashboardName.HEALTHWELLBEING) {
+        setShowSelectLivingSettings = true
+    }
+
     // Set show select genders
     let showSelectGenders = false
-    if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
+    if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT || dashboard === DashboardName.HEALTHWELLBEING) {
         showSelectGenders = true
     }
 
@@ -701,6 +711,8 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                             as="div"
                                                             className="mt-5 flex flex-col gap-y-3"
                                                         >
+                                                            {}
+
                                                             {/* Show responses from categories */}
                                                             {showSelectResponseTopics && (
                                                                 <div>
@@ -717,7 +729,25 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                 </div>
                                                             )}
 
-                                                            {/* Filter by ages */}
+                                                            {/* Filter living settings */}
+                                                            {setShowSelectLivingSettings && (
+                                                                <div className="flex">
+                                                                    <div className="flex w-full flex-col">
+                                                                        <div className="mb-1">
+                                                                            {t('filter-by-living-setting')}
+                                                                        </div>
+                                                                        <SelectLivingSettings
+                                                                            id={`select-living-settings-${id}`}
+                                                                            dashboard={dashboard}
+                                                                            options={livingSettingOptions}
+                                                                            control={form.control}
+                                                                            refetchCampaign={refetchCampaign}
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                            )}
+
+                                                            {/* Filter ages */}
                                                             {(!showSelectAgeBuckets ||
                                                                 dashboard === DashboardName.HEALTHWELLBEING) && (
                                                                 <div>
@@ -739,7 +769,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                 </div>
                                                             )}
 
-                                                            {/* Filter by age buckets */}
+                                                            {/* Filter age buckets */}
                                                             {showSelectAgeBuckets && (
                                                                 <div>
                                                                     <div
@@ -762,34 +792,28 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                 </div>
                                                             )}
 
-                                                            {/* For whatyoungpeoplewant show select gender */}
+                                                            {/* Filter genders */}
                                                             {showSelectGenders && (
-                                                                <>
-                                                                    {/* Filter by gender */}
-                                                                    <div className="flex">
-                                                                        {/* Filter by gender */}
-                                                                        <div className="flex w-full flex-col">
-                                                                            <div className="mb-1">
-                                                                                {t('filter-by-gender')}
-                                                                            </div>
-                                                                            <SelectGenders
-                                                                                id={`select-genders-${id}`}
-                                                                                dashboard={dashboard}
-                                                                                options={genderOptions}
-                                                                                control={form.control}
-                                                                                refetchCampaign={refetchCampaign}
-                                                                            />
+                                                                <div className="flex">
+                                                                    <div className="flex w-full flex-col">
+                                                                        <div className="mb-1">
+                                                                            {t('filter-by-gender')}
                                                                         </div>
+                                                                        <SelectGenders
+                                                                            id={`select-genders-${id}`}
+                                                                            dashboard={dashboard}
+                                                                            options={genderOptions}
+                                                                            control={form.control}
+                                                                            refetchCampaign={refetchCampaign}
+                                                                        />
                                                                     </div>
-                                                                </>
+                                                                </div>
                                                             )}
 
-                                                            {/* For midwivesvoices show select gender and select profession */}
+                                                            {/* Filter genders and professions */}
                                                             {showSelectGendersAndProfessionsFilters && (
                                                                 <>
-                                                                    {/* Filter by gender & filter by profession */}
                                                                     <div className="flex gap-x-3">
-                                                                        {/* Filter by gender */}
                                                                         <div className="flex basis-1/2 flex-col justify-between">
                                                                             <div className="mb-1">
                                                                                 {t('filter-by-gender')}
@@ -802,7 +826,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                                 refetchCampaign={refetchCampaign}
                                                                             />
                                                                         </div>
-                                                                        {/* Select profession */}
                                                                         <div className="flex basis-1/2 flex-col justify-between">
                                                                             <div className="mb-1">
                                                                                 {t('select-profession')}
@@ -821,7 +844,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
                                                             {/* Filter by keyword & exclude keyword */}
                                                             <div className="flex gap-x-3">
-                                                                {/* Filter by keyword */}
                                                                 <div className="flex basis-1/2 flex-col">
                                                                     <div
                                                                         className="mb-1 w-fit"
@@ -835,7 +857,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                         refetchCampaign={refetchCampaign}
                                                                     />
                                                                 </div>
-                                                                {/* Exclude keyword */}
                                                                 <div className="flex basis-1/2 flex-col">
                                                                     <div
                                                                         className="mb-1 w-fit"
@@ -982,6 +1003,24 @@ const SelectGenders = ({ id, options, control, refetchCampaign }: ISelectProps) 
     return (
         <Controller
             name="genders"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+                <SelectMultiValues
+                    id={id}
+                    options={options}
+                    controllerRenderOnChange={onChange}
+                    value={value}
+                    onChange={refetchCampaign}
+                />
+            )}
+        />
+    )
+}
+
+const SelectLivingSettings = ({ id, options, control, refetchCampaign }: ISelectProps) => {
+    return (
+        <Controller
+            name="living_settings"
             control={control}
             render={({ field: { onChange, value } }) => (
                 <SelectMultiValues

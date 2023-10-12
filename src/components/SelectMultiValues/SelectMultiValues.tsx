@@ -21,6 +21,7 @@ export const SelectMultiValues = ({
 }: ISelectMultiValuesProps) => {
     return (
         <Select
+            menuPosition="fixed"
             isDisabled={isDisabled}
             isMulti
             instanceId={id}

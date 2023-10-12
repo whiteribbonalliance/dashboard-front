@@ -21,8 +21,12 @@ import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
 import { TDashboard } from '@types'
 import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
-import { ILivingSettingBreakdown } from '@interfaces'
+import { IHistogramData, ILivingSettingBreakdown } from '@interfaces'
 import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
+import { useFilterFormsStore } from '@stores/filter-forms'
+import { UseFormReturn } from 'react-hook-form'
+import { TFilter } from '@schemas/filter'
+import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 
 interface ILivingSettingsBreakdownGraphProps {
     dashboard: TDashboard
@@ -38,6 +42,9 @@ interface ICustomTooltip extends TooltipProps<number, string> {
 
 export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSettingsBreakdownGraphProps) => {
     const { data, isError } = useCampaignQuery(dashboard, lang)
+    const form1 = useFilterFormsStore((state) => state.form1)
+    const form2 = useFilterFormsStore((state) => state.form2)
+    const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
     const [livingSettingsBreakdown, setLivingSettingsBreakdown] = useState<ILivingSettingBreakdown[]>([])
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
@@ -137,6 +144,15 @@ export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSetting
         return null
     }
 
+    // Set form value on click
+    function setValue(form: UseFormReturn<TFilter>, payload: ILivingSettingBreakdown) {
+        const currentFormValues = form.getValues('living_settings')
+        if (!currentFormValues.includes(payload.name)) {
+            form.setValue('living_settings', [...currentFormValues, payload.name])
+            if (refetchCampaign) refetchCampaign()
+        }
+    }
+
     // Toggle showTooltip
     function toggleShowTooltip() {
         setShowTooltip((prev) => !prev)
@@ -226,6 +242,9 @@ export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSetting
                                                 onMouseOver={() => setHoveredBarDataKey('count_2')}
                                                 onMouseEnter={toggleShowTooltip}
                                                 onMouseLeave={toggleShowTooltip}
+                                                onClick={(payload) => {
+                                                    if (form2) setValue(form2, payload)
+                                                }}
                                             />
                                         )}
                                         <Bar
@@ -237,6 +256,9 @@ export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSetting
                                             onMouseOver={() => setHoveredBarDataKey('count_1')}
                                             onMouseEnter={toggleShowTooltip}
                                             onMouseLeave={toggleShowTooltip}
+                                            onClick={(payload) => {
+                                                if (form1) setValue(form1, payload)
+                                            }}
                                         />
                                     </BarChart>
                                 </ResponsiveContainer>

@@ -12,6 +12,11 @@ import { useTranslation } from '@app/i18n/client'
 import { TDashboard } from '@types'
 import _ from 'lodash'
 import { DashboardName } from '@enums'
+import { UseFormReturn } from 'react-hook-form'
+import { TFilter } from '@schemas/filter'
+import { useFilterFormsStore } from '@stores/filter-forms'
+import { useRefetchCampaignStore } from '@stores/refetch-campaign'
+import { IGenderBreakdown } from '@interfaces'
 
 interface IGenderBreakdownGraphProps {
     dashboard: TDashboard
@@ -53,6 +58,8 @@ const whatYoungPeopleWantColors = _.shuffle([
 
 export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphProps) => {
     const { data, isError } = useCampaignQuery(dashboard, lang)
+    const form1 = useFilterFormsStore((state) => state.form1)
+    const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
     const { t } = useTranslation(lang)
 
     // Set colors
@@ -108,6 +115,15 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
         return null
     }
 
+    // Set form value on click
+    function setValue(form: UseFormReturn<TFilter>, payload: IGenderBreakdown) {
+        const currentFormValues = form.getValues('genders')
+        if (!currentFormValues.includes(payload.name)) {
+            form.setValue('genders', [...currentFormValues, payload.name])
+            if (refetchCampaign) refetchCampaign()
+        }
+    }
+
     // Display graph or not
     const displayGraph = !!data
 
@@ -141,6 +157,9 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
                                 cy="50%"
                                 outerRadius={220}
                                 minAngle={1.8}
+                                onClick={(payload) => {
+                                    if (form1) setValue(form1, payload)
+                                }}
                             >
                                 {data.genders_breakdown.map((datum, index) => (
                                     <Cell key={`cell-${datum.name}`} fill={colors[index % colors.length]} />

@@ -18,6 +18,7 @@ export interface IFilterOptions {
     ages: TOption<string>[]
     age_buckets: TOption<string>[]
     genders: TOption<string>[]
+    living_settings: TOption<string>[]
     professions: TOption<string>[]
     only_responses_from_categories: TOption<boolean>[]
     only_multi_word_phrases_containing_filter_term: TOption<boolean>[]

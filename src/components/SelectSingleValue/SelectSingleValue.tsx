@@ -19,6 +19,7 @@ export const SelectSingleValue = ({
 }: ISelectSingleValueProps) => {
     return (
         <Select
+            menuPosition="fixed"
             instanceId={id}
             options={options}
             value={options.find((option) => option.value === value)}

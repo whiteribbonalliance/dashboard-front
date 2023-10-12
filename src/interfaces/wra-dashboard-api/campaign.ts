@@ -37,7 +37,7 @@ interface IHistogram {
     canonical_countries: IHistogramData[]
 }
 
-interface IGenderBreakdown {
+export interface IGenderBreakdown {
     name: string
     count: string
 }
