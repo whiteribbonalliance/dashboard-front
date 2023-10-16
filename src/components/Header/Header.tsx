@@ -2,7 +2,7 @@
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { HeaderLogos } from 'components/HeaderLogos'
+import { OrganizationLogos } from 'components/OrganizationLogos'
 import { Disclosure, Transition } from '@headlessui/react'
 import Link from 'next/link'
 import { DashboardName } from '@enums'
@@ -88,7 +88,7 @@ export const Header = ({ dashboard, lang }: IHeaderProps) => {
                                 {/* Logo */}
                                 {dashboard !== DashboardName.HEALTHWELLBEING && (
                                     <div className="mx-3 flex items-center xl:mx-0">
-                                        <HeaderLogos dashboard={dashboard} />
+                                        <OrganizationLogos dashboard={dashboard} />
                                     </div>
                                 )}
                             </div>
@@ -196,7 +196,7 @@ const PmnchLogo = () => {
             <Link href={'https://pmnch.who.int'} target="_blank" className="flex w-full justify-center">
                 <Image
                     className="max-h-[4.5rem] w-full max-w-[17rem] object-contain xl:max-h-[4rem]"
-                    src="/whatyoungpeoplewant/pmnch_logo_2.png"
+                    src="/logos/pmnch_logo_2.png"
                     alt="pmnch logo"
                     width={1117}
                     height={200}
