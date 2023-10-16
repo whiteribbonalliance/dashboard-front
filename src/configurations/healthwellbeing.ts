@@ -2,7 +2,7 @@ import { IConfiguration } from '@interfaces'
 import { seoMainTitle } from '@constants'
 import { DashboardName } from '@enums'
 
-const title = 'What women want for health and wellbeing'
+const title = 'Women’s Health and Well Being'
 
 export const configuration: IConfiguration = {
     id: DashboardName.HEALTHWELLBEING,
