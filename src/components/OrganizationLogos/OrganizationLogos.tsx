@@ -31,7 +31,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             <div>
                 <Link href="https://childhelplinecambodia.org" target="_blank">
                     <Image
-                        className="max-h-[3rem] w-full max-w-[17rem] object-contain xl:max-h-[9rem]"
+                        className="max-h-[7rem] w-full max-w-[17rem] object-contain xl:max-h-[9rem]"
                         src="/logos/chc_logo.jpg"
                         alt="child helpline cambodia logo"
                         width={1117}
@@ -45,7 +45,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
         return (
             <div>
                 <Image
-                    className="max-h-[3rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
+                    className="max-h-[6rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
                     src="/logos/cini_logo.jpg"
                     alt="child in need institute logo"
                     width={1117}
@@ -74,7 +74,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             <div>
                 <Link href="https://cose.org.ph" target="_blank">
                     <Image
-                        className="max-h-[3rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
+                        className="max-h-[6rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
                         src="/logos/cose_logo.png"
                         alt="cose logo"
                         width={1117}
@@ -89,7 +89,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             <div>
                 <Link href="http://www.diyafoundation-india.org" target="_blank">
                     <Image
-                        className="max-h-[3rem] w-full max-w-[17rem] object-contain xl:max-h-[5rem]"
+                        className="max-h-[6rem] w-full max-w-[17rem] object-contain xl:max-h-[5rem]"
                         src="/logos/diya_logo.png"
                         alt="diya logo"
                         width={1117}
@@ -104,7 +104,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             <div>
                 <Link href="https://collectifdafadoy.org" target="_blank">
                     <Image
-                        className="max-h-[3rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
+                        className="max-h-[6rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
                         src="/logos/dafadoy_logo.png"
                         alt="dafadoy logo"
                         width={1117}
@@ -119,7 +119,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             <div>
                 <Link href="https://desmasgh.com" target="_blank">
                     <Image
-                        className="max-h-[3rem] w-full max-w-[17rem] object-contain xl:max-h-[9rem]"
+                        className="max-h-[9rem] w-full max-w-[17rem] object-contain xl:max-h-[9rem]"
                         src="/logos/desmas_logo.png"
                         alt="desmas logo"
                         width={1117}
@@ -134,7 +134,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             <div>
                 <Link href="https://equidad.org.mx" target="_blank">
                     <Image
-                        className="max-h-[3rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
+                        className="max-h-[6rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
                         src="/logos/equidad_de_genero_logo.png"
                         alt="equidad de genero logo"
                         width={1117}
@@ -148,7 +148,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
         return (
             <div>
                 <Image
-                    className="max-h-[3rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
+                    className="max-h-[6rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
                     src="/logos/giwyn_logo.png"
                     alt="giwyn logo"
                     width={1117}
@@ -177,7 +177,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             <div>
                 <Link href="https://madevegypt.org/ar" target="_blank">
                     <Image
-                        className="max-h-[3rem] w-full max-w-[17rem] object-contain xl:max-h-[7rem]"
+                        className="max-h-[8rem] w-full max-w-[17rem] object-contain xl:max-h-[7rem]"
                         src="/logos/madev_logo.png"
                         alt="media arts for development logo"
                         width={1117}
@@ -192,7 +192,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             <div>
                 <Link href="https://www.muthande.org.za" target="_blank">
                     <Image
-                        className="max-h-[3rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
+                        className="max-h-[6rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
                         src="/logos/musa_logo.png"
                         alt="muthande society for the aged logo"
                         width={1117}
@@ -207,7 +207,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             <div>
                 <Link href="https://nigeriahealthwatch.com" target="_blank">
                     <Image
-                        className="max-h-[3rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
+                        className="max-h-[6rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
                         src="/logos/nigeria_health_watch_logo.jpg"
                         alt="nigeria health watch logo"
                         width={1117}
@@ -222,7 +222,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             <div>
                 <Link href="https://sosjd.org/" target="_blank">
                     <Image
-                        className="max-h-[3rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
+                        className="max-h-[6rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
                         src="/logos/sos_jd_logo.png"
                         alt="sos jeunesse & défi logo"
                         width={1117}
@@ -237,7 +237,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             <div>
                 <Link href="https://www.sweat.org.za" target="_blank">
                     <Image
-                        className="max-h-[3rem] w-full max-w-[17rem] object-contain xl:max-h-[5rem]"
+                        className="max-h-[6rem] w-full max-w-[17rem] object-contain xl:max-h-[5rem]"
                         src="/logos/sweat_logo.jpg"
                         alt="sweat logo"
                         width={1117}
@@ -252,7 +252,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             <div>
                 <Link href="https://www.whiteribbonalliancekenya.org" target="_blank">
                     <Image
-                        className="max-h-[3rem] w-full max-w-[17rem] object-contain xl:max-h-[7rem]"
+                        className="max-h-[6rem] w-full max-w-[17rem] object-contain xl:max-h-[7rem]"
                         src="/logos/wra_kenya_logo.png"
                         alt="wra kenya logo"
                         width={1117}
