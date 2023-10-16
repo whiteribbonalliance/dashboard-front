@@ -120,6 +120,22 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     })
     useEffect(() => setForm2(form2), [setForm2, form2])
 
+    // Set the country value selected as default
+    useEffect(() => {
+        if (form1 && form2) {
+            switch (dashboard) {
+                case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
+                    form1.setValue('countries', ['PK'])
+                    form2.setValue('countries', ['PK'])
+                    break
+                case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
+                    form1.setValue('countries', ['MX'])
+                    form2.setValue('countries', ['MX'])
+                    break
+            }
+        }
+    }, [dashboard, form1, form2])
+
     // Tabs
     useEffect(() => {
         const tmpTabs: ITab[] = [
@@ -1115,23 +1131,6 @@ const SelectCountries = ({ id, dashboard, options, control, refetchCampaign }: I
         disabled = true
     }
 
-    // Set placeholder
-    let placeHolder: string | undefined = undefined
-    switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
-            const PakistanOption = options.find((option) => option.value === 'PK')
-            if (PakistanOption) {
-                placeHolder = PakistanOption.label
-            }
-            break
-        case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
-            const MexicoOption = options.find((option) => option.value === 'MX')
-            if (MexicoOption) {
-                placeHolder = MexicoOption.label
-            }
-            break
-    }
-
     return (
         <Controller
             name="countries"
@@ -1139,7 +1138,6 @@ const SelectCountries = ({ id, dashboard, options, control, refetchCampaign }: I
             render={({ field: { onChange, value } }) => (
                 <SelectMultiValues
                     id={id}
-                    placeHolder={placeHolder}
                     isDisabled={disabled}
                     options={options}
                     controllerRenderOnChange={onChange}

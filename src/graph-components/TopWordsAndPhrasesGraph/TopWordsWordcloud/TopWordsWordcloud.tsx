@@ -73,10 +73,10 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
             })
         }
 
-        // On word click
-        function handleOnClick(word: IWordcloudWord) {
+        // Set form value
+        function setFormValue(word: IWordcloudWord) {
             if (form1) {
-                form1.setValue('keyword_filter', word.value)
+                form1.setValue('keyword_filter', word.text)
                 if (refetchCampaign) refetchCampaign()
             }
         }
@@ -106,7 +106,7 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
                                     fontFamily={w.font}
                                     onMouseEnter={(e) => handleMouseOver(e, w)}
                                     onMouseLeave={hideTooltip}
-                                    onClick={() => handleOnClick(w)}
+                                    onClick={() => setFormValue(w)}
                                 >
                                     {w.text}
                                 </Text>

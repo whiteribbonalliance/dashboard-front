@@ -144,12 +144,12 @@ export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSetting
     }
 
     // Set form value
-    function setValue(form: UseFormReturn<TFilter>, payload: any) {
-        const value = payload?.payload?.value
-        if (value) {
+    function setFormValue(form: UseFormReturn<TFilter>, payload: any) {
+        const data = payload?.payload as ILivingSettingBreakdown
+        if (data?.value) {
             const currentFormValues = form.getValues('living_settings')
-            if (!currentFormValues.includes(value)) {
-                form.setValue('living_settings', [...currentFormValues, value])
+            if (!currentFormValues.includes(data.value)) {
+                form.setValue('living_settings', [...currentFormValues, data.value])
                 if (refetchCampaign) refetchCampaign()
             }
         }
@@ -245,7 +245,7 @@ export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSetting
                                                 onMouseEnter={toggleShowTooltip}
                                                 onMouseLeave={toggleShowTooltip}
                                                 onClick={(payload) => {
-                                                    if (form2) setValue(form2, payload)
+                                                    if (form2) setFormValue(form2, payload)
                                                 }}
                                             />
                                         )}
@@ -259,7 +259,7 @@ export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSetting
                                             onMouseEnter={toggleShowTooltip}
                                             onMouseLeave={toggleShowTooltip}
                                             onClick={(payload) => {
-                                                if (form1) setValue(form1, payload)
+                                                if (form1) setFormValue(form1, payload)
                                             }}
                                         />
                                     </BarChart>

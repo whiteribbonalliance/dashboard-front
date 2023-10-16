@@ -84,6 +84,17 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
             footerNote = undefined
     }
 
+    // Remove last char from string if it is a dot
+    function removeLastCharIfDot(text: string) {
+        if (text.length > 0) {
+            if (text.slice(-1) === '.') {
+                return text.slice(0, -1)
+            }
+        }
+
+        return text
+    }
+
     return (
         <footer className="mx-7 my-7 flex flex-col gap-y-5 text-lg">
             {/* Logo */}
@@ -97,7 +108,7 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
             {dashboard === DashboardName.HEALTHWELLBEING && (
                 <div className="max-w-7xl">
                     <p>
-                        <span>{t('healthwellbeing-learn-more-about-categories')}</span>
+                        <span>{removeLastCharIfDot(t('healthwellbeing-learn-more-about-categories'))}</span>
                         &nbsp;
                         <span className="font-bold">
                             <Link
@@ -123,7 +134,7 @@ export const Footer = ({ dashboard, lang }: IFooterProps) => {
             {dashboard === DashboardName.HEALTHWELLBEING && (
                 <div className="max-w-5xl">
                     <p>
-                        <span>{t('healthwellbeing-ai-constantly-improved')}</span>
+                        <span>{removeLastCharIfDot(t('healthwellbeing-ai-constantly-improved'))}</span>
                         &nbsp;
                         <span className="font-bold">
                             <Link href="https://forms.gle/1zebtW3hBxGgZX2K6" target="_blank">

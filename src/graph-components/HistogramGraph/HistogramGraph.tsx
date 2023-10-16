@@ -61,7 +61,7 @@ export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
 
     // Fetch options
     useQuery<TOption<string>[]>({
-        queryKey: [`${dashboard}-histogram-options`],
+        queryKey: [`${dashboard}-${lang}-histogram-options`],
         queryFn: () => {
             if (dashboard === DashboardName.ALL_CAMPAIGNS) {
                 return getCampaignsMergedHistogramOptions(lang)
@@ -184,7 +184,7 @@ export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
     }, [dashboard, data, showBreakdownByField, t])
 
     // Set form value
-    function setValue(form: UseFormReturn<TFilter>, payload: any) {
+    function setFormValue(form: UseFormReturn<TFilter>, payload: any) {
         // Set allow age bucket bar click
         let allowAgeBucketBarClick = false
         if (
@@ -196,14 +196,14 @@ export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
             allowAgeBucketBarClick = true
         }
 
-        const value = payload?.payload?.value
-        if (value) {
+        const data = payload?.payload as IHistogramData
+        if (data?.value) {
             let currentFormValues: string[] = []
             switch (showBreakdownByField) {
                 case 'breakdown-age':
                     currentFormValues = form.getValues('ages')
-                    if (!currentFormValues.includes(value)) {
-                        form.setValue('ages', [...currentFormValues, value])
+                    if (!currentFormValues.includes(data.value)) {
+                        form.setValue('ages', [...currentFormValues, data.value])
                         if (refetchCampaign) refetchCampaign()
                     }
                     break
@@ -212,29 +212,29 @@ export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
                     // These are the only dashboards currently with the option for filtering age buckets
                     if (allowAgeBucketBarClick) {
                         currentFormValues = form.getValues('age_buckets')
-                        if (!currentFormValues.includes(value)) {
-                            form.setValue('age_buckets', [...currentFormValues, value])
+                        if (!currentFormValues.includes(data.value)) {
+                            form.setValue('age_buckets', [...currentFormValues, data.value])
                             if (refetchCampaign) refetchCampaign()
                         }
                     }
                     break
                 case 'breakdown-gender':
                     currentFormValues = form.getValues('genders')
-                    if (!currentFormValues.includes(value)) {
-                        form.setValue('genders', [...currentFormValues, value])
+                    if (!currentFormValues.includes(data.value)) {
+                        form.setValue('genders', [...currentFormValues, data.value])
                         if (refetchCampaign) refetchCampaign()
                     }
                     break
                 case 'breakdown-profession':
                     currentFormValues = form.getValues('professions')
-                    if (!currentFormValues.includes(value)) {
-                        form.setValue('professions', [...currentFormValues, value])
+                    if (!currentFormValues.includes(data.value)) {
+                        form.setValue('professions', [...currentFormValues, data.value])
                         if (refetchCampaign) refetchCampaign()
                     }
                     break
                 case 'breakdown-country':
                     // Get the alpha2 code of the country to add to the filter
-                    const countryValue = countries.find((country) => country.name === value)?.alpha2code
+                    const countryValue = countries.find((country) => country.name === data.value)?.alpha2code
                     currentFormValues = form.getValues('countries')
                     if (countryValue) {
                         if (!currentFormValues.includes(countryValue)) {
@@ -399,7 +399,7 @@ export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
                                         onMouseEnter={toggleShowTooltip}
                                         onMouseLeave={toggleShowTooltip}
                                         onClick={(payload) => {
-                                            if (form2) setValue(form2, payload)
+                                            if (form2) setFormValue(form2, payload)
                                         }}
                                     />
                                 )}
@@ -414,7 +414,7 @@ export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
                                     onMouseEnter={toggleShowTooltip}
                                     onMouseLeave={toggleShowTooltip}
                                     onClick={(payload) => {
-                                        if (form1) setValue(form1, payload)
+                                        if (form1) setFormValue(form1, payload)
                                     }}
                                 />
                             </BarChart>

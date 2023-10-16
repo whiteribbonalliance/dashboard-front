@@ -98,19 +98,19 @@ export const TopWordsOrPhrases = ({
     }
 
     // Set form value 1
-    function setValue1(payload: any) {
-        const value = payload?.payload?.value
-        if (form1 && value) {
-            form1.setValue('keyword_filter', value)
+    function setFormValue1(payload: any) {
+        const data = payload?.payload as ITopWord
+        if (data?.label && form1) {
+            form1.setValue('keyword_filter', data.label)
             if (refetchCampaign) refetchCampaign()
         }
     }
 
     // Set form value 2
-    function setValue2(payload: any) {
-        const value = payload?.payload?.value
-        if (form2 && value) {
-            form2.setValue('keyword_filter', value)
+    function setFormValue2(payload: any) {
+        const data = payload?.payload as ITopWord
+        if (data?.label && form2) {
+            form2.setValue('keyword_filter', data.label)
             if (refetchCampaign) refetchCampaign()
         }
     }
@@ -158,7 +158,7 @@ export const TopWordsOrPhrases = ({
                             fill={bar1Fill}
                             minPointSize={3}
                             onMouseOver={() => setHoveredBarDataKey('count_1')}
-                            onClick={setValue1}
+                            onClick={setFormValue1}
                         />
 
                         {/* Only display the second bar if filters are not identical */}
@@ -169,7 +169,7 @@ export const TopWordsOrPhrases = ({
                                 fill={bar2Fill}
                                 minPointSize={3}
                                 onMouseOver={() => setHoveredBarDataKey('count_2')}
-                                onClick={setValue2}
+                                onClick={setFormValue2}
                             />
                         )}
                     </BarChart>

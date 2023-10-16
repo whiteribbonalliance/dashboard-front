@@ -155,11 +155,14 @@ export const ResponsesBreakdownGraph = ({
     }
 
     // Set form value
-    function setValue(payload: any, form: UseFormReturn<TFilter>) {
-        const currentValues = form.getValues('response_topics')
-        if (!currentValues.includes(payload.code)) {
-            form.setValue('response_topics', [...currentValues, payload.code])
-            if (refetchCampaign) refetchCampaign()
+    function setFormValue(payload: any, form: UseFormReturn<TFilter>) {
+        const data = payload?.payload as IResponsesBreakdownData
+        if (data?.value) {
+            const currentValues = form.getValues('response_topics')
+            if (!currentValues.includes(data.value)) {
+                form.setValue('response_topics', [...currentValues, data.value])
+                if (refetchCampaign) refetchCampaign()
+            }
         }
     }
 
@@ -224,7 +227,7 @@ export const ResponsesBreakdownGraph = ({
                                 tickFormatter={(item) => xAxisFormatter(item)}
                             />
                             <YAxis
-                                dataKey="description"
+                                dataKey="label"
                                 type="category"
                                 axisLine={false}
                                 tickLine={false}
@@ -253,7 +256,7 @@ export const ResponsesBreakdownGraph = ({
                                     fill={bar2Fill}
                                     minPointSize={2}
                                     onClick={(payload) => {
-                                        if (form2) setValue(payload, form2)
+                                        if (form2) setFormValue(payload, form2)
                                     }}
                                     stackId={0}
                                     onMouseOver={() => setHoveredBarDataKey('count_2')}
@@ -267,7 +270,7 @@ export const ResponsesBreakdownGraph = ({
                                 fill={bar1Fill}
                                 minPointSize={2}
                                 onClick={(payload) => {
-                                    if (form1) setValue(payload, form1)
+                                    if (form1) setFormValue(payload, form1)
                                 }}
                                 stackId={0}
                                 onMouseOver={() => setHoveredBarDataKey('count_1')}

@@ -16,6 +16,7 @@ import { UseFormReturn } from 'react-hook-form'
 import { TFilter } from '@schemas/filter'
 import { useFilterFormsStore } from '@stores/filter-forms'
 import { useRefetchCampaignStore } from '@stores/refetch-campaign'
+import { IGenderBreakdown } from '@interfaces'
 
 interface IGenderBreakdownGraphProps {
     dashboard: TDashboard
@@ -115,12 +116,12 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
     }
 
     // Set form value
-    function setValue(form: UseFormReturn<TFilter>, payload: any) {
-        const value = payload?.payload?.value
-        if (value) {
+    function setFormValue(form: UseFormReturn<TFilter>, payload: any) {
+        const data = payload?.payload as IGenderBreakdown
+        if (data?.value) {
             const currentFormValues = form.getValues('genders')
-            if (!currentFormValues.includes(value)) {
-                form.setValue('genders', [...currentFormValues, value])
+            if (!currentFormValues.includes(data.value)) {
+                form.setValue('genders', [...currentFormValues, data.value])
                 if (refetchCampaign) refetchCampaign()
             }
         }
@@ -160,7 +161,7 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
                                 outerRadius={220}
                                 minAngle={1.8}
                                 onClick={(payload) => {
-                                    if (form1) setValue(form1, payload)
+                                    if (form1) setFormValue(form1, payload)
                                 }}
                             >
                                 {data.genders_breakdown.map((datum, index) => (

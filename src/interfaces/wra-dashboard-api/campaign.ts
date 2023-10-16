@@ -10,8 +10,8 @@ export interface IResponsesSample {
 export interface IResponsesBreakdownData {
     count_1: number
     count_2: number
-    code: string
-    description: string
+    value: string
+    label: string
 }
 
 export interface IResponsesBreakdown {
