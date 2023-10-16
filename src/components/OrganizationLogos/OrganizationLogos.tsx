@@ -221,6 +221,21 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             </div>
         )
     }
+    const RedCrossSerbiaLogo = () => {
+        return (
+            <div>
+                <Link href="https://redcross.org.rs/en" target="_blank">
+                    <Image
+                        className="max-h-[6rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
+                        src="/logos/red_cross_serbia_logo.png"
+                        alt="red cross serbia logo"
+                        width={1117}
+                        height={200}
+                    />
+                </Link>
+            </div>
+        )
+    }
     const SosJdLogo = () => {
         return (
             <div>
@@ -327,17 +342,19 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
         )
     }
 
-    // These logos are used at wwwpakistan
+    // These logos are used at healthwellbeing and wwwpakistan
     const FsmLogo = () => {
         return (
             <div>
-                <Image
-                    className="max-h-[3rem] w-full max-w-[17rem] object-contain xl:max-h-[4rem]"
-                    src="/logos/fsm_logo.png"
-                    alt="fsm logo"
-                    width={1117}
-                    height={200}
-                />
+                <Link href="https://fsm.org.pk" target="_blank">
+                    <Image
+                        className="max-h-[3rem] w-full max-w-[17rem] object-contain xl:max-h-[3rem]"
+                        src="/logos/fsm_logo.png"
+                        alt="fsm logo"
+                        width={1117}
+                        height={200}
+                    />
+                </Link>
             </div>
         )
     }
@@ -383,11 +400,13 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
                         <DafadoyLogo />
                         <DesmasLogo />
                         <EquidadDeGeneroLogo />
+                        <FsmLogo />
                         <GiwynLogo />
                         <HelpAgeIndiaLogo />
                         <MadevLogo />
                         <MusaLogo />
                         <NigeriaHealthWatchLogo />
+                        <RedCrossSerbiaLogo />
                         <SosJdLogo />
                         <SweatLogo />
                         <WraKenyaLogo />
