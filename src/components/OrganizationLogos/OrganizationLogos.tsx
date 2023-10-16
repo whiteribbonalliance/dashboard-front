@@ -365,26 +365,29 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             )
         case DashboardName.HEALTHWELLBEING:
             return (
-                <div className="grid w-full max-w-[125rem] grid-cols-3 items-center gap-x-3 gap-y-5 xl:grid-cols-5 xl:gap-x-1">
-                    <WhiteRibbonAllianceLogo />
-                    <WhatWomenWantLogo />
-
-                    <CHCLogo />
-                    <CiniLogo />
-                    <CorhaLogo />
-                    <CoseLogo />
-                    <DiyaLogo />
-                    <DafadoyLogo />
-                    <DesmasLogo />
-                    <EquidadDeGeneroLogo />
-                    <GiwynLogo />
-                    <HelpAgeIndiaLogo />
-                    <MadevLogo />
-                    <MusaLogo />
-                    <NigeriaHealthWatchLogo />
-                    <SosJdLogo />
-                    <SweatLogo />
-                    <WraKenyaLogo />
+                <div className="flex w-full flex-col gap-y-5">
+                    <div className="grid w-full max-w-[125rem] grid-cols-3 items-center gap-x-3 gap-y-5 xl:grid-cols-5 xl:gap-x-1">
+                        <WhiteRibbonAllianceLogo />
+                        <WhatWomenWantLogo />
+                    </div>
+                    <div className="grid w-full max-w-[125rem] grid-cols-3 items-center gap-x-3 gap-y-5 xl:grid-cols-5 xl:gap-x-1">
+                        <CHCLogo />
+                        <CiniLogo />
+                        <CorhaLogo />
+                        <CoseLogo />
+                        <DiyaLogo />
+                        <DafadoyLogo />
+                        <DesmasLogo />
+                        <EquidadDeGeneroLogo />
+                        <GiwynLogo />
+                        <HelpAgeIndiaLogo />
+                        <MadevLogo />
+                        <MusaLogo />
+                        <NigeriaHealthWatchLogo />
+                        <SosJdLogo />
+                        <SweatLogo />
+                        <WraKenyaLogo />
+                    </div>
                 </div>
             )
         default:
