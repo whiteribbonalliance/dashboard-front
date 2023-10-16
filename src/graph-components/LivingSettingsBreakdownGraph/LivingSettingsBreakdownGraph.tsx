@@ -212,7 +212,7 @@ export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSetting
                                             tickFormatter={(item) => xAxisFormatter(item)}
                                         />
                                         <YAxis
-                                            dataKey="value"
+                                            dataKey="label"
                                             type="category"
                                             axisLine={false}
                                             tickLine={false}
