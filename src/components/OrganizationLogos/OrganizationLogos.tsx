@@ -44,13 +44,15 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
     const CiniLogo = () => {
         return (
             <div>
-                <Image
-                    className="max-h-[6rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
-                    src="/logos/cini_logo.jpg"
-                    alt="child in need institute logo"
-                    width={1117}
-                    height={200}
-                />
+                <Link href="https://www.cini-india.org" target="_blank">
+                    <Image
+                        className="max-h-[6rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
+                        src="/logos/cini_logo.jpg"
+                        alt="child in need institute logo"
+                        width={1117}
+                        height={200}
+                    />
+                </Link>
             </div>
         )
     }
@@ -147,13 +149,15 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
     const GiwynLogo = () => {
         return (
             <div>
-                <Image
-                    className="max-h-[6rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
-                    src="/logos/giwyn_logo.png"
-                    alt="giwyn logo"
-                    width={1117}
-                    height={200}
-                />
+                <Link href="https://giwyn.org" target="_blank">
+                    <Image
+                        className="max-h-[6rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
+                        src="/logos/giwyn_logo.png"
+                        alt="giwyn logo"
+                        width={1117}
+                        height={200}
+                    />
+                </Link>
             </div>
         )
     }
