@@ -15,7 +15,7 @@ import { SelectSingleValue } from '@components/SelectSingleValue'
 import { Chevron } from '@components/Chevron'
 import { useFiltersStore } from '@stores/filters'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { getDefaultFilterValues, filterSchema, TFilter } from '@schemas/filter'
+import { filterSchema, TFilter } from '@schemas/filter'
 import { Stats } from '@components/FiltersPanel/Stats'
 import { useTranslation } from '@app/i18n/client'
 import { useFilterFormsStore } from '@stores/filter-forms'
@@ -365,6 +365,9 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         setDistrictOptions(form2, watchCountriesForm2, watchProvincesForm2, setRegionOptionsFilter2)
     }, [form2, watchCountriesForm2, watchProvincesForm2, setDistrictOptions])
 
+    // Apply button
+    const applyButton = <ApplyFiltersButton form1={form1} form2={form2} dashboard={dashboard} lang={lang} />
+
     // Set select response topics text
     let selectResponseTopicsText: string
     switch (dashboard) {
@@ -641,14 +644,8 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                             )}
                                         </div>
 
-                                        <div className="mb-5 flex justify-end">
-                                            <ApplyFiltersButton
-                                                form1={form1}
-                                                form2={form2}
-                                                dashboard={dashboard}
-                                                lang={lang}
-                                            />
-                                        </div>
+                                        {/* Apply button */}
+                                        <div className="mb-5 flex justify-end">{applyButton}</div>
 
                                         {/* Advanced mode */}
                                         <Disclosure as="div" className="flex flex-col justify-end">
