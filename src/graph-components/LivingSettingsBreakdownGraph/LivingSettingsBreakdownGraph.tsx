@@ -25,7 +25,6 @@ import { ILivingSettingBreakdown } from '@interfaces'
 import { useFilterFormsStore } from '@stores/filter-forms'
 import { UseFormReturn } from 'react-hook-form'
 import { TFilter } from '@schemas/filter'
-import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 
 interface ILivingSettingsBreakdownGraphProps {
     dashboard: TDashboard
@@ -40,10 +39,9 @@ interface ICustomTooltip extends TooltipProps<number, string> {
 }
 
 export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSettingsBreakdownGraphProps) => {
-    const { data, isError } = useCampaignQuery(dashboard, lang)
+    const { data, isError, isLoading, isFetching } = useCampaignQuery(dashboard, lang)
     const form1 = useFilterFormsStore((state) => state.form1)
     const form2 = useFilterFormsStore((state) => state.form2)
-    const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
     const [livingSettingsBreakdown, setLivingSettingsBreakdown] = useState<ILivingSettingBreakdown[]>([])
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
@@ -150,7 +148,6 @@ export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSetting
             const currentFormValues = form.getValues('living_settings')
             if (!currentFormValues.includes(data.value)) {
                 form.setValue('living_settings', [...currentFormValues, data.value])
-                if (refetchCampaign) refetchCampaign()
             }
         }
     }
@@ -165,8 +162,7 @@ export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSetting
         hoveredBarDataKey.current = dataKey
     }
 
-    // Display graph or not
-    const displayGraph = !!data && !!livingSettingsBreakdown
+    const displayGraph = !!data && !isLoading && !isFetching && !!livingSettingsBreakdown
 
     return (
         <div>
@@ -192,7 +188,6 @@ export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSetting
                                         data={livingSettingsBreakdown}
                                         margin={{ top: 15, right: 50, left: 10, bottom: 15 }}
                                         width={750}
-                                        height={500}
                                         layout="vertical"
                                         barCategoryGap={5}
                                         stackOffset="sign"

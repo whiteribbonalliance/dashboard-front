@@ -18,7 +18,6 @@ import { ITopWord } from '@interfaces'
 import { useTranslation } from '@app/i18n/client'
 import { useFilterFormsStore } from '@stores/filter-forms'
 import { TDashboard } from '@types'
-import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 
 interface ITopWordsOrPhrasesProps {
     dashboard: TDashboard
@@ -47,7 +46,6 @@ export const TopWordsOrPhrases = ({
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const form1 = useFilterFormsStore((state) => state.form1)
     const form2 = useFilterFormsStore((state) => state.form2)
-    const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
     const { t } = useTranslation(lang)
 
     // Set bars fill
@@ -102,7 +100,6 @@ export const TopWordsOrPhrases = ({
         const data = payload?.payload as ITopWord
         if (data?.label && form1) {
             form1.setValue('keyword_filter', data.label)
-            if (refetchCampaign) refetchCampaign()
         }
     }
 
@@ -111,7 +108,6 @@ export const TopWordsOrPhrases = ({
         const data = payload?.payload as ITopWord
         if (data?.label && form2) {
             form2.setValue('keyword_filter', data.label)
-            if (refetchCampaign) refetchCampaign()
         }
     }
 

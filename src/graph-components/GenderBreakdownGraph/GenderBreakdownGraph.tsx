@@ -15,7 +15,6 @@ import { DashboardName } from '@enums'
 import { UseFormReturn } from 'react-hook-form'
 import { TFilter } from '@schemas/filter'
 import { useFilterFormsStore } from '@stores/filter-forms'
-import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 import { IGenderBreakdown } from '@interfaces'
 
 interface IGenderBreakdownGraphProps {
@@ -57,9 +56,8 @@ const whatYoungPeopleWantColors = _.shuffle([
 ])
 
 export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphProps) => {
-    const { data, isError } = useCampaignQuery(dashboard, lang)
+    const { data, isError, isLoading, isRefetching } = useCampaignQuery(dashboard, lang)
     const form1 = useFilterFormsStore((state) => state.form1)
-    const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
     const { t } = useTranslation(lang)
 
     // Set colors
@@ -122,13 +120,11 @@ export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphP
             const currentFormValues = form.getValues('genders')
             if (!currentFormValues.includes(data.value)) {
                 form.setValue('genders', [...currentFormValues, data.value])
-                if (refetchCampaign) refetchCampaign()
             }
         }
     }
 
-    // Display graph or not
-    const displayGraph = !!data
+    const displayGraph = !!data && !isLoading && !isRefetching
 
     return (
         <Box>

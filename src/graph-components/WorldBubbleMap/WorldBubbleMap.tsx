@@ -19,7 +19,6 @@ import { TDashboard } from '@types'
 import { Tooltip } from '@components/Tooltip'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle } from '@fortawesome/free-solid-svg-icons'
-import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 import { feature } from 'topojson-client'
 import { Topology } from 'topojson-specification'
 import { FeatureCollection } from 'geojson'
@@ -39,7 +38,6 @@ interface ID3MapProps {
     dashboard: TDashboard
     form1: UseFormReturn<TFilter>
     form2: UseFormReturn<TFilter>
-    refetchCampaign: () => void
     respondents: string
     geoJsonFeatures: FeatureCollection
     topoJsonMX: Topology
@@ -55,7 +53,7 @@ const svgWidth = 900
 const svgHeight = 600
 
 export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
-    const { data, isError } = useCampaignQuery(dashboard, lang)
+    const { data, isError, isLoading, isRefetching } = useCampaignQuery(dashboard, lang)
 
     const [showBubbles1, setShowBubbles1] = useState<boolean>(true)
     const [showBubbles2, setShowBubbles2] = useState<boolean>(true)
@@ -64,7 +62,6 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
 
     const form1 = useFilterFormsStore((state) => state.form1)
     const form2 = useFilterFormsStore((state) => state.form2)
-    const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
 
     const config = getDashboardConfig(dashboard)
 
@@ -119,7 +116,7 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
 
     // Display world bubble maps or not
     const displayWorldBubbleMaps =
-        !!data && !!dataGeoQuery.data && !!dataTopoJsonMX.data && !!form1 && !!form2 && !!refetchCampaign
+        !!data && !isLoading && !isRefetching && !!dataGeoQuery.data && !!dataTopoJsonMX.data && !!form1 && !!form2
 
     return (
         <div>
@@ -185,7 +182,6 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
                             dashboard={dashboard}
                             form1={form1}
                             form2={form2}
-                            refetchCampaign={refetchCampaign}
                             respondents={respondents}
                             geoJsonFeatures={_.cloneDeep(dataGeoQuery.data) as FeatureCollection}
                             topoJsonMX={dataTopoJsonMX.data as Topology}
@@ -212,7 +208,6 @@ const D3Map = ({
     dashboard,
     form1,
     form2,
-    refetchCampaign,
     respondents,
     geoJsonFeatures,
     topoJsonMX,
@@ -407,8 +402,6 @@ const D3Map = ({
                             form.setValue('countries', [...currentCountriesValues, d.location_code])
                         }
                 }
-
-                refetchCampaign()
             }
 
             // Add circles
@@ -449,7 +442,6 @@ const D3Map = ({
         lang,
         form1,
         form2,
-        refetchCampaign,
         bubbleColor1,
         bubbleColor2,
         topoJsonMX,

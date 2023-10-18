@@ -71,7 +71,7 @@ export const LanguageSelect = ({ dashboard, lang }: ILanguageSelectProps) => {
                 <div className="relative">
                     <Listbox.Button
                         className={classNames(
-                            'relative w-full cursor-pointer rounded-md border py-[0.55rem] pl-3 text-left',
+                            'relative w-full cursor-pointer rounded-md border py-2 pl-3 text-left',
                             listboxButtonClasses
                         )}
                     >

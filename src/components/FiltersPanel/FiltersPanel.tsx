@@ -3,7 +3,7 @@
 import { Disclosure, Tab, Transition } from '@headlessui/react'
 import { classNames, getDashboardConfig } from '@utils'
 import { DashboardName } from '@enums'
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react'
 import { Box } from '@components/Box'
 import Image from 'next/image'
 import { getCampaignFilterOptions, getCampaignsMergedFilterOptions } from '@services/wra-dashboard-api'
@@ -31,6 +31,15 @@ import { dashboardsConfigs } from '@configurations'
 import { useShowSelectActiveDashboardStore } from '@stores/show-select-active-dashboard'
 import { SelectResponseYear } from '@components/FiltersPanel/SelectResponseYear'
 import { useCountriesStore } from '@stores/countries'
+import { Button } from '@components/Button'
+import _ from 'lodash'
+
+interface IApplyFiltersButtonProps {
+    form1: UseFormReturn<TFilter>
+    form2: UseFormReturn<TFilter>
+    dashboard: TDashboard
+    lang: string
+}
 
 interface IFiltersPanelProps {
     dashboard: TDashboard
@@ -39,7 +48,6 @@ interface IFiltersPanelProps {
 
 interface IFieldProps {
     id: string
-    refetchCampaign: () => void
 }
 
 interface ISelectProps extends IFieldProps {
@@ -60,10 +68,8 @@ interface ITab {
 
 export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     const filters = useFiltersStore((state) => state.filters)
-    const setFilters = useFiltersStore((state) => state.setFilters)
     const setForm1 = useFilterFormsStore((state) => state.setForm1)
     const setForm2 = useFilterFormsStore((state) => state.setForm2)
-    const setRefetchCampaign = useRefetchCampaignStore((state) => state.setRefetchCampaign)
     const setCountries = useCountriesStore((state) => state.setCountries)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
@@ -93,9 +99,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     // Region options and province options for each country
     const [countriesRegionsOptions, setCountriesRegionsOptions] = useState<ICountryRegionOption[]>([])
     const [countriesProvincesOptions, setCountriesProvincesOptions] = useState<ICountryRegionProvinceOption[]>([])
-
-    // Refetch campaign timeout
-    const refetchCampaignTimeout = useRef<NodeJS.Timeout>()
 
     // Set display countries filter tooltip
     let displayCountriesFilterTooltip = true
@@ -290,54 +293,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
             form2
         )
     }, [watchCountriesForm2, form2, setProvinceAndRegionOptionsForFilter])
-
-    // Cleanup refetch campaign timeout
-    useEffect(() => {
-        return () => {
-            if (refetchCampaignTimeout.current) {
-                clearTimeout(refetchCampaignTimeout.current)
-            }
-        }
-    }, [refetchCampaignTimeout])
-
-    // Refetch campaign
-    const refetchCampaign = useCallback(() => {
-        if (!form1 || !form2 || !setFilters) return
-
-        // Clear the current refetch campaign timeout
-        if (refetchCampaignTimeout.current) {
-            clearTimeout(refetchCampaignTimeout.current)
-        }
-
-        // Add a small delay before refetching campaign
-        refetchCampaignTimeout.current = setTimeout(() => {
-            // Lowercase keyword_exclude and keyword_filter
-            if (form1.getValues().keyword_exclude) {
-                form1.getValues().keyword_exclude = form1.getValues().keyword_exclude.toLowerCase()
-            }
-            if (form1.getValues().keyword_filter) {
-                form1.getValues().keyword_filter = form1.getValues().keyword_filter.toLowerCase()
-            }
-
-            // Lowercase keyword_exclude and keyword_filter
-            if (form2.getValues().keyword_exclude) {
-                form2.getValues().keyword_exclude = form2.getValues().keyword_exclude.toLowerCase()
-            }
-            if (form2.getValues().keyword_filter) {
-                form2.getValues().keyword_filter = form2.getValues().keyword_filter.toLowerCase()
-            }
-
-            // Update the filters store (when filters are updated, useCampaignQuery will refetch campaign data)
-            setFilters({ filter1: form1.getValues(), filter2: form2.getValues() })
-        }, 450)
-    }, [form1, form2, setFilters])
-
-    // Set refetch campaign
-    useEffect(() => {
-        if (refetchCampaign) {
-            setRefetchCampaign(refetchCampaign)
-        }
-    }, [setRefetchCampaign, refetchCampaign])
 
     // Extract province name from region (used for wwwpakistan)
     function extractProvinceNameFromRegion(region: string) {
@@ -633,7 +588,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                     dashboard={dashboard}
                                                     options={countryOptions}
                                                     control={form.control}
-                                                    refetchCampaign={refetchCampaign}
                                                 />
                                             </div>
 
@@ -648,7 +602,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                             id === 'tab-1' ? regionOptionsFilter1 : regionOptionsFilter2
                                                         }
                                                         control={form.control}
-                                                        refetchCampaign={refetchCampaign}
                                                     />
                                                 </div>
                                             )}
@@ -667,7 +620,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                     : provinceOptionsFilter2
                                                             }
                                                             control={form.control}
-                                                            refetchCampaign={refetchCampaign}
                                                         />
                                                     </div>
                                                     <div>
@@ -681,7 +633,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                     : regionOptionsFilter2
                                                             }
                                                             control={form.control}
-                                                            refetchCampaign={refetchCampaign}
                                                         />
                                                     </div>
                                                 </>
@@ -701,10 +652,18 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                         dashboard={dashboard}
                                                         options={responseTopicOptions}
                                                         control={form.control}
-                                                        refetchCampaign={refetchCampaign}
                                                     />
                                                 </div>
                                             )}
+                                        </div>
+
+                                        <div className="mb-5 flex justify-end">
+                                            <ApplyFiltersButton
+                                                form1={form1}
+                                                form2={form2}
+                                                dashboard={dashboard}
+                                                lang={lang}
+                                            />
                                         </div>
 
                                         {/* Advanced mode */}
@@ -738,7 +697,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                         dashboard={dashboard}
                                                                         options={onlyResponsesFromCategoriesOptions}
                                                                         control={form.control}
-                                                                        refetchCampaign={refetchCampaign}
                                                                     />
                                                                 </div>
                                                             )}
@@ -755,7 +713,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                             dashboard={dashboard}
                                                                             options={livingSettingOptions}
                                                                             control={form.control}
-                                                                            refetchCampaign={refetchCampaign}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -777,7 +734,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                             dashboard={dashboard}
                                                                             options={ageOptions}
                                                                             control={form.control}
-                                                                            refetchCampaign={refetchCampaign}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -799,7 +755,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                                 dashboard={dashboard}
                                                                                 options={ageBucketOptions}
                                                                                 control={form.control}
-                                                                                refetchCampaign={refetchCampaign}
                                                                             />
                                                                         </div>
                                                                     </div>
@@ -818,7 +773,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                             dashboard={dashboard}
                                                                             options={genderOptions}
                                                                             control={form.control}
-                                                                            refetchCampaign={refetchCampaign}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -837,7 +791,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                                 dashboard={dashboard}
                                                                                 options={genderOptions}
                                                                                 control={form.control}
-                                                                                refetchCampaign={refetchCampaign}
                                                                             />
                                                                         </div>
                                                                         <div className="flex basis-1/2 flex-col justify-between">
@@ -849,7 +802,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                                 dashboard={dashboard}
                                                                                 options={professionOptions}
                                                                                 control={form.control}
-                                                                                refetchCampaign={refetchCampaign}
                                                                             />
                                                                         </div>
                                                                     </div>
@@ -868,7 +820,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                     <InputKeyword
                                                                         id={`input-keyword-${id}`}
                                                                         control={form.control}
-                                                                        refetchCampaign={refetchCampaign}
                                                                     />
                                                                 </div>
                                                                 <div className="flex basis-1/2 flex-col">
@@ -881,7 +832,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                     <InputExcludeKeyword
                                                                         id={`input-exclude-keyword-${id}`}
                                                                         control={form.control}
-                                                                        refetchCampaign={refetchCampaign}
                                                                     />
                                                                 </div>
                                                             </div>
@@ -902,7 +852,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                                             onlyMultiWordPhrasesContainingFilterTermOptions
                                                                         }
                                                                         control={form.control}
-                                                                        refetchCampaign={refetchCampaign}
                                                                     />
                                                                 </div>
                                                             )}
@@ -941,187 +890,127 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     )
 }
 
-const InputKeyword = ({ id, control, refetchCampaign }: IInputProps) => {
+const InputKeyword = ({ id, control }: IInputProps) => {
     return (
         <Controller
             name="keyword_filter"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <Input
-                    id={id}
-                    placeHolder={'Enter keyword...'}
-                    controllerRenderOnChange={onChange}
-                    value={value}
-                    onChange={refetchCampaign}
-                />
+                <Input id={id} placeHolder={'Enter keyword...'} controllerRenderOnChange={onChange} value={value} />
             )}
         />
     )
 }
 
-const InputExcludeKeyword = ({ id, control, refetchCampaign }: IInputProps) => {
+const InputExcludeKeyword = ({ id, control }: IInputProps) => {
     return (
         <Controller
             name="keyword_exclude"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <Input
-                    id={id}
-                    placeHolder={'Enter keyword...'}
-                    controllerRenderOnChange={onChange}
-                    value={value}
-                    onChange={refetchCampaign}
-                />
+                <Input id={id} placeHolder={'Enter keyword...'} controllerRenderOnChange={onChange} value={value} />
             )}
         />
     )
 }
 
-const SelectOnlyMultiWordPhrasesContainingFilterTerm = ({ id, options, control, refetchCampaign }: ISelectProps) => {
+const SelectOnlyMultiWordPhrasesContainingFilterTerm = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="only_multi_word_phrases_containing_filter_term"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <SelectSingleValue
-                    id={id}
-                    options={options}
-                    value={value}
-                    controllerRenderOnChange={onChange}
-                    onChange={refetchCampaign}
-                />
+                <SelectSingleValue id={id} options={options} value={value} controllerRenderOnChange={onChange} />
             )}
         />
     )
 }
 
-const SelectProfessions = ({ id, options, control, refetchCampaign }: ISelectProps) => {
+const SelectProfessions = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="professions"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <SelectMultiValues
-                    id={id}
-                    options={options}
-                    controllerRenderOnChange={onChange}
-                    value={value}
-                    onChange={refetchCampaign}
-                />
+                <SelectMultiValues id={id} options={options} controllerRenderOnChange={onChange} value={value} />
             )}
         />
     )
 }
 
-const SelectGenders = ({ id, options, control, refetchCampaign }: ISelectProps) => {
+const SelectGenders = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="genders"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <SelectMultiValues
-                    id={id}
-                    options={options}
-                    controllerRenderOnChange={onChange}
-                    value={value}
-                    onChange={refetchCampaign}
-                />
+                <SelectMultiValues id={id} options={options} controllerRenderOnChange={onChange} value={value} />
             )}
         />
     )
 }
 
-const SelectLivingSettings = ({ id, options, control, refetchCampaign }: ISelectProps) => {
+const SelectLivingSettings = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="living_settings"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <SelectMultiValues
-                    id={id}
-                    options={options}
-                    controllerRenderOnChange={onChange}
-                    value={value}
-                    onChange={refetchCampaign}
-                />
+                <SelectMultiValues id={id} options={options} controllerRenderOnChange={onChange} value={value} />
             )}
         />
     )
 }
 
-const SelectOnlyResponsesFromCategories = ({ id, options, control, refetchCampaign }: ISelectProps) => {
+const SelectOnlyResponsesFromCategories = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="only_responses_from_categories"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <SelectSingleValue
-                    id={id}
-                    options={options}
-                    value={value}
-                    controllerRenderOnChange={onChange}
-                    onChange={refetchCampaign}
-                />
+                <SelectSingleValue id={id} options={options} value={value} controllerRenderOnChange={onChange} />
             )}
         />
     )
 }
 
-const SelectResponseTopics = ({ id, options, control, refetchCampaign }: ISelectProps) => {
+const SelectResponseTopics = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="response_topics"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <SelectMultiValues
-                    id={id}
-                    options={options}
-                    controllerRenderOnChange={onChange}
-                    value={value}
-                    onChange={refetchCampaign}
-                />
+                <SelectMultiValues id={id} options={options} controllerRenderOnChange={onChange} value={value} />
             )}
         />
     )
 }
 
-const SelectRegions = ({ id, options, control, refetchCampaign }: ISelectProps) => {
+const SelectRegions = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="regions"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <SelectMultiValues
-                    id={id}
-                    options={options}
-                    controllerRenderOnChange={onChange}
-                    value={value}
-                    onChange={refetchCampaign}
-                />
+                <SelectMultiValues id={id} options={options} controllerRenderOnChange={onChange} value={value} />
             )}
         />
     )
 }
 
-const SelectProvinces = ({ id, options, control, refetchCampaign }: ISelectProps) => {
+const SelectProvinces = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="provinces"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <SelectMultiValues
-                    id={id}
-                    options={options}
-                    controllerRenderOnChange={onChange}
-                    value={value}
-                    onChange={refetchCampaign}
-                />
+                <SelectMultiValues id={id} options={options} controllerRenderOnChange={onChange} value={value} />
             )}
         />
     )
 }
 
-const SelectCountries = ({ id, dashboard, options, control, refetchCampaign }: ISelectProps) => {
+const SelectCountries = ({ id, dashboard, options, control }: ISelectProps) => {
     // Set disabled
     let disabled = false
     if (
@@ -1142,45 +1031,91 @@ const SelectCountries = ({ id, dashboard, options, control, refetchCampaign }: I
                     options={options}
                     controllerRenderOnChange={onChange}
                     value={value}
-                    onChange={refetchCampaign}
                 />
             )}
         />
     )
 }
 
-const SelectAges = ({ id, options, control, refetchCampaign }: ISelectProps) => {
+const SelectAges = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="ages"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <SelectMultiValues
-                    id={id}
-                    options={options}
-                    controllerRenderOnChange={onChange}
-                    value={value}
-                    onChange={refetchCampaign}
-                />
+                <SelectMultiValues id={id} options={options} controllerRenderOnChange={onChange} value={value} />
             )}
         />
     )
 }
 
-const SelectAgeBuckets = ({ id, options, control, refetchCampaign }: ISelectProps) => {
+const SelectAgeBuckets = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="age_buckets"
             control={control}
             render={({ field: { onChange, value } }) => (
-                <SelectMultiValues
-                    id={id}
-                    options={options}
-                    controllerRenderOnChange={onChange}
-                    value={value}
-                    onChange={refetchCampaign}
-                />
+                <SelectMultiValues id={id} options={options} controllerRenderOnChange={onChange} value={value} />
             )}
         />
+    )
+}
+
+const ApplyFiltersButton = ({ form1, form2, dashboard, lang }: IApplyFiltersButtonProps) => {
+    const { t } = useTranslation(lang)
+    const setRefetchCampaign = useRefetchCampaignStore((state) => state.setRefetchCampaign)
+    const filters = useFiltersStore((state) => state.filters)
+    const setFilters = useFiltersStore((state) => state.setFilters)
+    const [filtersHaveChanged, setFiltersHaveChanged] = useState<boolean>(false)
+    const watchForm1 = form1.watch()
+    const watchForm2 = form2.watch()
+
+    // Refetch campaign
+    const refetchCampaign = useCallback(() => {
+        // Update the filters (when filters are updated, useCampaignQuery will refetch campaign data)
+        // If the filters have not changed, do not update
+        if (filtersHaveChanged) {
+            // Lowercase keyword_exclude and keyword_filter
+            if (form1.getValues().keyword_exclude) {
+                form1.getValues().keyword_exclude = form1.getValues().keyword_exclude.toLowerCase()
+            }
+            if (form1.getValues().keyword_filter) {
+                form1.getValues().keyword_filter = form1.getValues().keyword_filter.toLowerCase()
+            }
+
+            // Lowercase keyword_exclude and keyword_filter
+            if (form2.getValues().keyword_exclude) {
+                form2.getValues().keyword_exclude = form2.getValues().keyword_exclude.toLowerCase()
+            }
+            if (form2.getValues().keyword_filter) {
+                form2.getValues().keyword_filter = form2.getValues().keyword_filter.toLowerCase()
+            }
+
+            setFilters({ filter1: form1.getValues(), filter2: form2.getValues() })
+
+            setFiltersHaveChanged(false)
+        }
+    }, [form1, form2, setFilters, filtersHaveChanged, setFiltersHaveChanged])
+
+    // Set refetch campaign
+    useEffect(() => {
+        if (refetchCampaign) {
+            setRefetchCampaign(refetchCampaign)
+        }
+    }, [setRefetchCampaign, refetchCampaign])
+
+    // Set filters have changed
+    useEffect(() => {
+        if (!_.isEqual(filters.filter1, watchForm1) || !_.isEqual(filters.filter2, watchForm2)) {
+            if (!filtersHaveChanged) setFiltersHaveChanged(true)
+        } else {
+            if (filtersHaveChanged) setFiltersHaveChanged(false)
+        }
+    }, [filters, watchForm1, watchForm2, filtersHaveChanged, setFiltersHaveChanged])
+
+    return (
+        <div onClick={refetchCampaign}>
+            <Button text={t('apply')} size="text-base" dashboard={dashboard} disabled={!filtersHaveChanged} />
+        </div>
     )
 }

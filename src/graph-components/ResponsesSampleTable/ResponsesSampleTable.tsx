@@ -43,7 +43,7 @@ const columnHelper = createColumnHelper<any>()
 
 export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphProps) => {
     const [tableData, setTableData] = useState<ITableData>({ data: [], columns: [] })
-    const { data, isError } = useCampaignQuery(dashboard, lang)
+    const { data, isError, isLoading, isRefetching } = useCampaignQuery(dashboard, lang)
     const [responsesSample, setResponsesSample] = useState<IResponsesSample>(undefined as any)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
@@ -186,8 +186,7 @@ export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphP
         [descriptionsCountAndColor]
     )
 
-    // Display table or not
-    const displayTable = !!data
+    const displayTable = !!data && !isLoading && !isRefetching
 
     return (
         <div>

@@ -17,7 +17,6 @@ import { useTranslation } from '@app/i18n/client'
 import { useFilterFormsStore } from '@stores/filter-forms'
 import { TDashboard } from '@types'
 import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
-import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 import { IResponsesBreakdownData } from '@interfaces'
 import { UseFormReturn } from 'react-hook-form'
 import { TFilter } from '@schemas/filter'
@@ -51,7 +50,6 @@ export const ResponsesBreakdownGraph = ({
     const [responsesBreakdown, setResponsesBreakdown] = useState<IResponsesBreakdownData[]>(data)
     const form1 = useFilterFormsStore((state) => state.form1)
     const form2 = useFilterFormsStore((state) => state.form2)
-    const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
     const { t } = useTranslation(lang)
@@ -133,7 +131,7 @@ export const ResponsesBreakdownGraph = ({
         const tmpModifiedResponsesBreakdown: IResponsesBreakdownData[] = []
         for (const datum of data) {
             const tmpDatum = datum
-            tmpDatum.count_2 = -tmpDatum.count_2
+            tmpDatum.count_2 = -tmpDatum.count_1
             tmpModifiedResponsesBreakdown.push(tmpDatum)
         }
 
@@ -161,7 +159,6 @@ export const ResponsesBreakdownGraph = ({
             const currentValues = form.getValues('response_topics')
             if (!currentValues.includes(data.value)) {
                 form.setValue('response_topics', [...currentValues, data.value])
-                if (refetchCampaign) refetchCampaign()
             }
         }
     }

@@ -29,7 +29,6 @@ import { getCampaignHistogramOptions, getCampaignsMergedHistogramOptions } from 
 import { useTranslation } from '@app/i18n/client'
 import { useQuery } from 'react-query'
 import { useFilterFormsStore } from '@stores/filter-forms'
-import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 import { TFilter } from '@schemas/filter'
 import { useCountriesStore } from '@stores/countries'
 
@@ -46,7 +45,7 @@ interface ICustomTooltip extends TooltipProps<number, string> {
 }
 
 export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
-    const { data, isError } = useCampaignQuery(dashboard, lang)
+    const { data, isError, isLoading, isRefetching } = useCampaignQuery(dashboard, lang)
     const { t } = useTranslation(lang)
     const [currentHistogramData, setCurrentHistogramData] = useState<IHistogramData[]>([])
     const hoveredBarDataKey = useRef<string>(undefined as any)
@@ -55,7 +54,6 @@ export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
     const [histogramOptions, setHistogramOptions] = useState<TOption<string>[]>([])
     const form1 = useFilterFormsStore((state) => state.form1)
     const form2 = useFilterFormsStore((state) => state.form2)
-    const refetchCampaign = useRefetchCampaignStore((state) => state.refetchCampaign)
     const countries = useCountriesStore((state) => state.countries)
     const config = getDashboardConfig(dashboard)
 
@@ -204,7 +202,6 @@ export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
                     currentFormValues = form.getValues('ages')
                     if (!currentFormValues.includes(data.value)) {
                         form.setValue('ages', [...currentFormValues, data.value])
-                        if (refetchCampaign) refetchCampaign()
                     }
                     break
                 case 'breakdown-age-bucket':
@@ -214,7 +211,6 @@ export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
                         currentFormValues = form.getValues('age_buckets')
                         if (!currentFormValues.includes(data.value)) {
                             form.setValue('age_buckets', [...currentFormValues, data.value])
-                            if (refetchCampaign) refetchCampaign()
                         }
                     }
                     break
@@ -222,14 +218,12 @@ export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
                     currentFormValues = form.getValues('genders')
                     if (!currentFormValues.includes(data.value)) {
                         form.setValue('genders', [...currentFormValues, data.value])
-                        if (refetchCampaign) refetchCampaign()
                     }
                     break
                 case 'breakdown-profession':
                     currentFormValues = form.getValues('professions')
                     if (!currentFormValues.includes(data.value)) {
                         form.setValue('professions', [...currentFormValues, data.value])
-                        if (refetchCampaign) refetchCampaign()
                     }
                     break
                 case 'breakdown-country':
@@ -239,7 +233,6 @@ export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
                     if (countryValue) {
                         if (!currentFormValues.includes(countryValue)) {
                             form.setValue('countries', [...currentFormValues, countryValue])
-                            if (refetchCampaign) refetchCampaign()
                         }
                     }
                     break
@@ -308,8 +301,7 @@ export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
         setShowTooltip((prev) => !prev)
     }
 
-    // Display graph or not
-    const displayGraph = !!data && !!currentHistogramData && !!showBreakdownByField
+    const displayGraph = !!data && !isLoading && !isRefetching && !!currentHistogramData && !!showBreakdownByField
 
     return (
         <Box>

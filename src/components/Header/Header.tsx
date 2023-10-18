@@ -105,11 +105,18 @@ export const Header = ({ dashboard, lang }: IHeaderProps) => {
                                     if (item.url) {
                                         return (
                                             <Link key={item.id} href={item.url} target="_blank">
-                                                <Button dashboard={dashboard} text={item.title} />
+                                                <Button dashboard={dashboard} text={item.title} size="text-xl" />
                                             </Link>
                                         )
                                     } else {
-                                        return <Button dashboard={dashboard} key={item.id} text={item.title} />
+                                        return (
+                                            <Button
+                                                dashboard={dashboard}
+                                                key={item.id}
+                                                text={item.title}
+                                                size="text-xl"
+                                            />
+                                        )
                                     }
                                 })}
                                 {dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT && <PmnchLogo />}

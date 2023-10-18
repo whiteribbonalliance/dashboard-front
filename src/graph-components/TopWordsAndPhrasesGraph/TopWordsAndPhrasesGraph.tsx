@@ -22,7 +22,7 @@ interface ITopWordsAndPhrasesGraphProps {
 }
 
 export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrasesGraphProps) => {
-    const { data, isError } = useCampaignQuery(dashboard, lang)
+    const { data, isError, isLoading, isRefetching } = useCampaignQuery(dashboard, lang)
     const [topWordsAndPhrases, setTopWordsAndPhrases] = useState<ITopWordsAndPhrases>(undefined as any)
     const { t } = useTranslation(lang)
 
@@ -106,8 +106,7 @@ export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrases
         }
     }, [data])
 
-    // Display graph or not
-    const displayGraph = !!data
+    const displayGraph = !!data && !isLoading && !isRefetching
 
     return (
         <div>

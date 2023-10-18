@@ -19,7 +19,7 @@ interface IResponsesBreakdownGraphsProps {
 }
 
 export const ResponsesBreakdownGraphs = ({ dashboard, lang }: IResponsesBreakdownGraphsProps) => {
-    const { data, isError } = useCampaignQuery(dashboard, lang)
+    const { data, isError, isLoading, isRefetching } = useCampaignQuery(dashboard, lang)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
 
@@ -70,8 +70,7 @@ export const ResponsesBreakdownGraphs = ({ dashboard, lang }: IResponsesBreakdow
             canDisplaySubCategories = true
     }
 
-    // Display graphs or not
-    const displayGraphs = !!data
+    const displayGraphs = !!data && !isLoading && !isRefetching
 
     return (
         <div>
