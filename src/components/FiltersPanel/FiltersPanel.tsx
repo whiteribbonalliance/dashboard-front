@@ -1051,6 +1051,10 @@ const ApplyFiltersButton = ({ form1, form2, dashboard, lang }: IApplyFiltersButt
     const filters = useFiltersStore((state) => state.filters)
     const setFilters = useFiltersStore((state) => state.setFilters)
     const [filtersHaveChanged, setFiltersHaveChanged] = useState<boolean>(false)
+
+    // Only applies for 'wwwpakistan' and 'giz'
+    const [canCheckIfFiltersHaveChanged, setCanCheckIfFiltersHaveChanged] = useState<boolean>(false)
+
     const watchForm1 = form1.watch()
     const watchForm2 = form2.watch()
 
@@ -1090,12 +1094,28 @@ const ApplyFiltersButton = ({ form1, form2, dashboard, lang }: IApplyFiltersButt
 
     // Set filters have changed
     useEffect(() => {
+        if (
+            (dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN ||
+                dashboard === DashboardName.ECONOMIC_EMPOWERMENT_MEXICO) &&
+            !canCheckIfFiltersHaveChanged
+        ) {
+            return
+        }
+
         if (!_.isEqual(filters.filter1, watchForm1) || !_.isEqual(filters.filter2, watchForm2)) {
             if (!filtersHaveChanged) setFiltersHaveChanged(true)
         } else {
             if (filtersHaveChanged) setFiltersHaveChanged(false)
         }
-    }, [dashboard, filters, watchForm1, watchForm2, filtersHaveChanged, setFiltersHaveChanged])
+    }, [
+        dashboard,
+        filters,
+        watchForm1,
+        watchForm2,
+        filtersHaveChanged,
+        setFiltersHaveChanged,
+        canCheckIfFiltersHaveChanged,
+    ])
 
     // Set the country value selected as default
     useEffect(() => {
@@ -1106,12 +1126,14 @@ const ApplyFiltersButton = ({ form1, form2, dashboard, lang }: IApplyFiltersButt
                     form2.setValue('countries', ['PK'])
                     filters.filter1.countries = ['PK']
                     filters.filter2.countries = ['PK']
+                    setCanCheckIfFiltersHaveChanged(true)
                     break
                 case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
                     form1.setValue('countries', ['MX'])
                     form2.setValue('countries', ['MX'])
                     filters.filter1.countries = ['MX']
                     filters.filter2.countries = ['MX']
+                    setCanCheckIfFiltersHaveChanged(true)
                     break
             }
         }
