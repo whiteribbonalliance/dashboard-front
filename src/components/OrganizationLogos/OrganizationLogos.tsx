@@ -403,7 +403,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
                         <FsmLogo />
                         <GiwynLogo />
                         <HelpAgeIndiaLogo />
-                        <MadevLogo />
+                        {/*<MadevLogo />*/}
                         <MusaLogo />
                         <NigeriaHealthWatchLogo />
                         <RedCrossSerbiaLogo />
