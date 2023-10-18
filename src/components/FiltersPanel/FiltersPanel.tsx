@@ -15,7 +15,7 @@ import { SelectSingleValue } from '@components/SelectSingleValue'
 import { Chevron } from '@components/Chevron'
 import { useFiltersStore } from '@stores/filters'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { filterSchema, TFilter } from '@schemas/filter'
+import { getDefaultFilterValues, filterSchema, TFilter } from '@schemas/filter'
 import { Stats } from '@components/FiltersPanel/Stats'
 import { useTranslation } from '@app/i18n/client'
 import { useFilterFormsStore } from '@stores/filter-forms'
@@ -122,22 +122,6 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         resolver: zodResolver(filterSchema),
     })
     useEffect(() => setForm2(form2), [setForm2, form2])
-
-    // Set the country value selected as default
-    useEffect(() => {
-        if (form1 && form2) {
-            switch (dashboard) {
-                case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
-                    form1.setValue('countries', ['PK'])
-                    form2.setValue('countries', ['PK'])
-                    break
-                case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
-                    form1.setValue('countries', ['MX'])
-                    form2.setValue('countries', ['MX'])
-                    break
-            }
-        }
-    }, [dashboard, form1, form2])
 
     // Tabs
     useEffect(() => {
@@ -1111,7 +1095,27 @@ const ApplyFiltersButton = ({ form1, form2, dashboard, lang }: IApplyFiltersButt
         } else {
             if (filtersHaveChanged) setFiltersHaveChanged(false)
         }
-    }, [filters, watchForm1, watchForm2, filtersHaveChanged, setFiltersHaveChanged])
+    }, [dashboard, filters, watchForm1, watchForm2, filtersHaveChanged, setFiltersHaveChanged])
+
+    // Set the country value selected as default
+    useEffect(() => {
+        if (form1 && form2) {
+            switch (dashboard) {
+                case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
+                    form1.setValue('countries', ['PK'])
+                    form2.setValue('countries', ['PK'])
+                    filters.filter1.countries = ['PK']
+                    filters.filter2.countries = ['PK']
+                    break
+                case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
+                    form1.setValue('countries', ['MX'])
+                    form2.setValue('countries', ['MX'])
+                    filters.filter1.countries = ['MX']
+                    filters.filter2.countries = ['MX']
+                    break
+            }
+        }
+    }, [dashboard, form1, form2, filters])
 
     return (
         <div onClick={refetchCampaign}>

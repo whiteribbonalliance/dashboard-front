@@ -11,7 +11,7 @@ import { getDashboardConfig } from '@utils'
 import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
 import { DashboardName } from '@enums'
 import { useResponseYearStore } from '@stores/response-year'
-import { defaultFilterValues } from '@schemas/filter'
+import { getDefaultFilterValues } from '@schemas/filter'
 
 export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
     const filters = useFiltersStore((state) => state.filters)
@@ -34,8 +34,8 @@ export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
     }
 
     // If the filter has not changed from the default filter values then do not send it with the request
-    const filter1 = _.isEqual(filtersClone.filter1, defaultFilterValues) ? undefined : filtersClone.filter1
-    const filter2 = _.isEqual(filtersClone.filter2, defaultFilterValues) ? undefined : filtersClone.filter2
+    const filter1 = _.isEqual(filtersClone.filter1, getDefaultFilterValues()) ? undefined : filtersClone.filter1
+    const filter2 = _.isEqual(filtersClone.filter2, getDefaultFilterValues()) ? undefined : filtersClone.filter2
 
     const campaignQuery = useQuery<ICampaign>({
         queryKey: [`${dashboard}-${lang}-campaign`],

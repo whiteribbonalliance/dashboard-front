@@ -10,7 +10,6 @@ import {
     womensEconomicEmpowermentConfig,
 } from '@configurations'
 import { TDashboard } from '@types'
-import { defaultFilterValues, TFilter } from '@schemas/filter'
 
 /**
  * Merge Tailwind CSS classes
@@ -128,11 +127,4 @@ export function applyToThousandsSepOnText(text: string, lang: string) {
     }
 
     return text
-}
-
-/**
- * Get default filter values
- */
-export function getDefaultFilterValues() {
-    return defaultFilterValues
 }

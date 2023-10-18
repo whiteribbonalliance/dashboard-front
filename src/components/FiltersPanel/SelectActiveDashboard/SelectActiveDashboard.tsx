@@ -15,7 +15,7 @@ import { DashboardName } from '@enums'
 import { useActiveDashboardStore } from '@stores/active-dashboard'
 import { useFilterFormsStore } from '@stores/filter-forms'
 import { useFiltersStore } from '@stores/filters'
-import { defaultFilterValues } from '@schemas/filter'
+import { getDefaultFilterValues } from '@schemas/filter'
 
 interface ISelectActiveDashboardProps {
     lang: string
@@ -52,8 +52,8 @@ export const SelectActiveDashboard = ({ lang, options }: ISelectActiveDashboardP
 
             // Clear filters
             if (filterForm1 && filterForm2) {
-                filterForm1.reset(defaultFilterValues)
-                filterForm2.reset(defaultFilterValues)
+                filterForm1.reset(getDefaultFilterValues())
+                filterForm2.reset(getDefaultFilterValues())
                 setFilters({ filter1: filterForm1.getValues(), filter2: filterForm2.getValues() })
             }
         }

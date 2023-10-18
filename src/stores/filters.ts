@@ -1,8 +1,7 @@
 'use client'
 
 import { create } from 'zustand'
-import { TFilter } from '@schemas/filter'
-import { getDefaultFilterValues } from '@utils'
+import { getDefaultFilterValues, TFilter } from '@schemas/filter'
 
 interface IFilters {
     filter1: TFilter
