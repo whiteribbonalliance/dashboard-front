@@ -174,7 +174,7 @@ export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSetting
                 {/* Error */}
                 {!data && isError && <GraphError dashboard={dashboard} />}
 
-                {/* Loading (only at first data fetch) */}
+                {/* Loading */}
                 {!displayGraph && !isError && <Loading dashboard={dashboard} />}
 
                 {/* Graph */}

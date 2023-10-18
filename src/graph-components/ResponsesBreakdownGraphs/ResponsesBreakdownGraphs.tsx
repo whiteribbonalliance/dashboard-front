@@ -94,7 +94,7 @@ export const ResponsesBreakdownGraphs = ({ dashboard, lang }: IResponsesBreakdow
                 {/* Error */}
                 {!data && isError && <GraphError dashboard={dashboard} />}
 
-                {/* Loading (only at first data fetch) */}
+                {/* Loading */}
                 {!displayGraphs && !isError && <Loading dashboard={dashboard} />}
 
                 {/* GraphsWrapper */}

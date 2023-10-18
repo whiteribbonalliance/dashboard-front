@@ -212,7 +212,7 @@ export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphP
                 {/* Error */}
                 {!data && isError && <GraphError dashboard={dashboard} />}
 
-                {/* Loading (only at first data fetch) */}
+                {/* Loading */}
                 {!displayTable && !isError && <Loading dashboard={dashboard} />}
 
                 {/* Table */}

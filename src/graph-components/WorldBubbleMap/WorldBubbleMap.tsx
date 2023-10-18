@@ -143,7 +143,7 @@ export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
                 {/* Error */}
                 {!data && isError && <GraphError dashboard={dashboard} />}
 
-                {/* Loading (only at first data fetch) */}
+                {/* Loading */}
                 {!displayWorldBubbleMaps && !isError && <Loading dashboard={dashboard} />}
 
                 {/* World bubble maps */}
