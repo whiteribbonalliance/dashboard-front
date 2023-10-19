@@ -1,4 +1,6 @@
 import { z } from 'zod'
+import { TDashboard } from '@types'
+import { DashboardName } from '@enums'
 
 export const filterSchema = z.object({
     countries: z.array(z.string()),
@@ -19,20 +21,73 @@ export const filterSchema = z.object({
 export type TFilter = z.infer<typeof filterSchema>
 
 // Default filter values
-export function getDefaultFilterValues() {
-    return {
-        countries: [],
-        regions: [],
-        provinces: [],
-        ages: [],
-        age_buckets: [],
-        genders: [],
-        living_settings: [],
-        professions: [],
-        response_topics: [],
-        only_responses_from_categories: false,
-        only_multi_word_phrases_containing_filter_term: false,
-        keyword_filter: '',
-        keyword_exclude: '',
-    } as TFilter
+export function getDefaultFilterValues(dashboard?: TDashboard) {
+    if (!dashboard) {
+        return {
+            countries: [],
+            regions: [],
+            provinces: [],
+            ages: [],
+            age_buckets: [],
+            genders: [],
+            living_settings: [],
+            professions: [],
+            response_topics: [],
+            only_responses_from_categories: false,
+            only_multi_word_phrases_containing_filter_term: false,
+            keyword_filter: '',
+            keyword_exclude: '',
+        } as TFilter
+    }
+
+    switch (dashboard) {
+        case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
+            return {
+                countries: ['PK'],
+                regions: [],
+                provinces: [],
+                ages: [],
+                age_buckets: [],
+                genders: [],
+                living_settings: [],
+                professions: [],
+                response_topics: [],
+                only_responses_from_categories: false,
+                only_multi_word_phrases_containing_filter_term: false,
+                keyword_filter: '',
+                keyword_exclude: '',
+            } as TFilter
+        case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
+            return {
+                countries: ['MX'],
+                regions: [],
+                provinces: [],
+                ages: [],
+                age_buckets: [],
+                genders: [],
+                living_settings: [],
+                professions: [],
+                response_topics: [],
+                only_responses_from_categories: false,
+                only_multi_word_phrases_containing_filter_term: false,
+                keyword_filter: '',
+                keyword_exclude: '',
+            } as TFilter
+        default:
+            return {
+                countries: [],
+                regions: [],
+                provinces: [],
+                ages: [],
+                age_buckets: [],
+                genders: [],
+                living_settings: [],
+                professions: [],
+                response_topics: [],
+                only_responses_from_categories: false,
+                only_multi_word_phrases_containing_filter_term: false,
+                keyword_filter: '',
+                keyword_exclude: '',
+            } as TFilter
+    }
 }

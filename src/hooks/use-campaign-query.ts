@@ -34,8 +34,16 @@ export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
     }
 
     // If the filter has not changed from the default filter values then do not send it with the request
-    const filter1 = _.isEqual(filtersClone.filter1, getDefaultFilterValues()) ? undefined : filtersClone.filter1
-    const filter2 = _.isEqual(filtersClone.filter2, getDefaultFilterValues()) ? undefined : filtersClone.filter2
+    const filter1 =
+        _.isEqual(filtersClone.filter1, getDefaultFilterValues(dashboard)) ||
+        _.isEqual(filtersClone.filter1, getDefaultFilterValues())
+            ? undefined
+            : filtersClone.filter1
+    const filter2 =
+        _.isEqual(filtersClone.filter2, getDefaultFilterValues(dashboard)) ||
+        _.isEqual(filtersClone.filter2, getDefaultFilterValues())
+            ? undefined
+            : filtersClone.filter2
 
     const campaignQuery = useQuery<ICampaign>({
         queryKey: [`${dashboard}-${lang}-campaign`],

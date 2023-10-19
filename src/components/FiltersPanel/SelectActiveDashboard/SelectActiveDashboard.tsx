@@ -16,6 +16,7 @@ import { useActiveDashboardStore } from '@stores/active-dashboard'
 import { useFilterFormsStore } from '@stores/filter-forms'
 import { useFiltersStore } from '@stores/filters'
 import { getDefaultFilterValues } from '@schemas/filter'
+import {act} from "react-dom/test-utils";
 
 interface ISelectActiveDashboardProps {
     lang: string
@@ -52,8 +53,8 @@ export const SelectActiveDashboard = ({ lang, options }: ISelectActiveDashboardP
 
             // Clear filters
             if (filterForm1 && filterForm2) {
-                filterForm1.reset(getDefaultFilterValues())
-                filterForm2.reset(getDefaultFilterValues())
+                filterForm1.reset(getDefaultFilterValues(activeDashboardField))
+                filterForm2.reset(getDefaultFilterValues(activeDashboardField))
                 setFilters({ filter1: filterForm1.getValues(), filter2: filterForm2.getValues() })
             }
         }
