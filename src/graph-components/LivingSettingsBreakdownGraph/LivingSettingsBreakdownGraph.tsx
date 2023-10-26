@@ -114,7 +114,7 @@ export const LivingSettingsBreakdownGraph = () => {
             const tmpModifiedLivingSettingsBreakdown: ILivingSettingBreakdown[] = []
             for (const datum of tmpLivingSettingsBreakdown) {
                 const tmpDatum = datum
-                tmpDatum.count_2 = -tmpDatum.count_2
+                tmpDatum.count_2 = -Math.abs(tmpDatum.count_2)
                 tmpModifiedLivingSettingsBreakdown.push(tmpDatum)
             }
 

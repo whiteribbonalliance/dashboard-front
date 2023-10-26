@@ -131,7 +131,7 @@ export const ResponsesBreakdownGraph = ({
         const tmpModifiedResponsesBreakdown: IResponsesBreakdownData[] = []
         for (const datum of data) {
             const tmpDatum = datum
-            tmpDatum.count_2 = -tmpDatum.count_1
+            tmpDatum.count_2 = -Math.abs(tmpDatum.count_2)
             tmpModifiedResponsesBreakdown.push(tmpDatum)
         }
 

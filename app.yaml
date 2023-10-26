@@ -18,3 +18,4 @@ env_variables:
 # Environment variables that need to be exposed to the client (with NEXT_PUBLIC_) should be added at build time
 build_env_variables:
   NEXT_PUBLIC_WRA_DASHBOARD_API_URL: "https://api.whiteribbonalliance.org/api/v1"
+  NEXT_PUBLIC_GOOGLE_ANALYTICS: "G-PQ6PBP7QDG"

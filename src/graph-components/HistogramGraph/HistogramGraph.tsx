@@ -173,7 +173,7 @@ export const HistogramGraph = () => {
 
             // Set count 2 values as negative
             for (const datum of histogramData) {
-                datum.count_2 = -datum.count_2
+                datum.count_2 = -Math.abs(datum.count_2)
             }
 
             setCurrentHistogramData(histogramData)
