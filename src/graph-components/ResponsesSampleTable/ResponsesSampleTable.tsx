@@ -12,7 +12,7 @@ import {
     Row,
     useReactTable,
 } from '@tanstack/react-table'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Chevron } from '@components/Chevron'
 import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { classNames, getDashboardConfig } from '@utils'
@@ -22,11 +22,7 @@ import { useTranslation } from '@app/i18n/client'
 import { TDashboard } from '@types'
 import { Tooltip } from '@components/Tooltip'
 import { IResponsesSample } from '@interfaces'
-
-interface IResponsesSampleGraphProps {
-    dashboard: TDashboard
-    lang: string
-}
+import { ParamsContext } from '@contexts/params'
 
 interface IDescriptionCountAndColor {
     description: string
@@ -41,9 +37,12 @@ interface ITableData {
 
 const columnHelper = createColumnHelper<any>()
 
-export const ResponsesSampleTable = ({ dashboard, lang }: IResponsesSampleGraphProps) => {
+export const ResponsesSampleTable = () => {
+    const { params } = useContext(ParamsContext)
+    const { dashboard, lang } = params
+
     const [tableData, setTableData] = useState<ITableData>({ data: [], columns: [] })
-    const { data, isError, isLoading, isRefetching } = useCampaignQuery(dashboard, lang)
+    const { data, isError, isLoading, isRefetching } = useCampaignQuery()
     const [responsesSample, setResponsesSample] = useState<IResponsesSample>(undefined as any)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)

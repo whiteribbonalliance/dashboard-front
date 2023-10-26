@@ -31,7 +31,7 @@ const options = languages.map((language) => {
 })
 
 export const LanguageSelect = ({ dashboard, lang }: ILanguageSelectProps) => {
-    const [selectedOption, setSelectedOption] = useState<LanguageOption>(undefined as any)
+    const [selectedOption, setSelectedOption] = useState<LanguageOption | undefined>(undefined)
     const router = useRouter()
     const pathname = usePathname()
 
@@ -59,11 +59,11 @@ export const LanguageSelect = ({ dashboard, lang }: ILanguageSelectProps) => {
     async function handleLanguageChange(option: LanguageOption) {
         if (lang !== option.value) {
             const pathnameWithoutLang = pathname.replace(`/${lang}`, '')
-            await router.replace(`/${option.value}/${pathnameWithoutLang}`)
+            router.replace(`/${option.value}/${pathnameWithoutLang}`)
         }
     }
 
-    if (!selectedOption) return null
+    if (!selectedOption) return <div></div>
 
     return (
         <div className="w-52 text-xl">

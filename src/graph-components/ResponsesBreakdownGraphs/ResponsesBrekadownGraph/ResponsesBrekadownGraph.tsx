@@ -16,14 +16,13 @@ import { classNames, niceNum, toThousandsSep } from '@utils'
 import { useTranslation } from '@app/i18n/client'
 import { useFilterFormsStore } from '@stores/filter-forms'
 import { TDashboard } from '@types'
-import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
+import React, { MutableRefObject, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { IResponsesBreakdownData } from '@interfaces'
 import { UseFormReturn } from 'react-hook-form'
 import { TFilter } from '@schemas/filter'
+import { ParamsContext } from '@contexts/params'
 
 interface IResponsesBreakdownGraphProps {
-    dashboard: TDashboard
-    lang: string
     data: IResponsesBreakdownData[]
     type: 'parent' | 'sub' | 'parent_or_sub'
     filtersAreIdentical: boolean
@@ -39,14 +38,15 @@ interface ICustomTooltip extends TooltipProps<number, string> {
 }
 
 export const ResponsesBreakdownGraph = ({
-    dashboard,
-    lang,
     data,
     type,
     filtersAreIdentical,
     filter1Description,
     filter2Description,
 }: IResponsesBreakdownGraphProps) => {
+    const { params } = useContext(ParamsContext)
+    const { dashboard, lang } = params
+
     const [responsesBreakdown, setResponsesBreakdown] = useState<IResponsesBreakdownData[]>(data)
     const form1 = useFilterFormsStore((state) => state.form1)
     const form2 = useFilterFormsStore((state) => state.form2)

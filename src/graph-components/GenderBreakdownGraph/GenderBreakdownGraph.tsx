@@ -5,22 +5,17 @@ import { GraphTitle } from '@components/GraphTitle'
 import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { GraphError } from '@components/GraphError'
 import { Loading } from 'components/Loading'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Cell, Legend, Pie, PieChart, PieLabelRenderProps, ResponsiveContainer, Tooltip, TooltipProps } from 'recharts'
 import { classNames, toThousandsSep } from '@utils'
 import { useTranslation } from '@app/i18n/client'
-import { TDashboard } from '@types'
 import _ from 'lodash'
 import { DashboardName } from '@enums'
 import { UseFormReturn } from 'react-hook-form'
 import { TFilter } from '@schemas/filter'
 import { useFilterFormsStore } from '@stores/filter-forms'
 import { IGenderBreakdown } from '@interfaces'
-
-interface IGenderBreakdownGraphProps {
-    dashboard: TDashboard
-    lang: string
-}
+import { ParamsContext } from '@contexts/params'
 
 interface ICustomTooltip extends TooltipProps<number, string> {
     lang: string
@@ -55,8 +50,11 @@ const whatYoungPeopleWantColors = _.shuffle([
     'var(--pmnchSeptenaryFaint)',
 ])
 
-export const GenderBreakdownGraph = ({ dashboard, lang }: IGenderBreakdownGraphProps) => {
-    const { data, isError, isLoading, isRefetching } = useCampaignQuery(dashboard, lang)
+export const GenderBreakdownGraph = () => {
+    const { params } = useContext(ParamsContext)
+    const { dashboard, lang } = params
+
+    const { data, isError, isLoading, isRefetching } = useCampaignQuery()
     const form1 = useFilterFormsStore((state) => state.form1)
     const { t } = useTranslation(lang)
 

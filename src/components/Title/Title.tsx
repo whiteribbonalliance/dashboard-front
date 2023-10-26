@@ -1,17 +1,19 @@
 'use client'
 
-import { TDashboard } from '@types'
 import { useTranslation } from '@app/i18n/client'
 import { getDashboardConfig } from '@utils'
 import { DashboardName } from '@enums'
+import { useContext } from 'react'
+import { ParamsContext } from '@contexts/params'
 
 interface ITitleProps {
-    dashboard: TDashboard
-    lang: string
     noHeading?: boolean
 }
 
-export const Title = ({ dashboard, lang, noHeading = false }: ITitleProps) => {
+export const Title = ({ noHeading = false }: ITitleProps) => {
+    const { params } = useContext(ParamsContext)
+    const { dashboard, lang } = params
+
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
 

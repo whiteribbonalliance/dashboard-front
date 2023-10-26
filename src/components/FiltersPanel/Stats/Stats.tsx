@@ -4,18 +4,16 @@ import { Box } from '@components/Box'
 import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { useTranslation } from '@app/i18n/client'
 import { toThousandsSep } from '@utils'
-import { TDashboard } from '@types'
 import { Tooltip } from '@components/Tooltip'
-import React from 'react'
+import React, { useContext } from 'react'
 import { DashboardName } from '@enums'
+import { ParamsContext } from '@contexts/params'
 
-interface IStatsProps {
-    dashboard: TDashboard
-    lang: string
-}
+export const Stats = () => {
+    const { params } = useContext(ParamsContext)
+    const { dashboard, lang } = params
 
-export const Stats = ({ dashboard, lang }: IStatsProps) => {
-    const { data } = useCampaignQuery(dashboard, lang)
+    const { data } = useCampaignQuery()
     const { t } = useTranslation(lang)
 
     // Set average age

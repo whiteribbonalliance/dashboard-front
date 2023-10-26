@@ -7,11 +7,13 @@ import { FiltersPanel } from '@components/FiltersPanel'
 import { classNames } from '@utils'
 import { GraphsWrapper } from 'components/GraphsWrapper'
 import { Footer } from '@components/Footer'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TDashboard } from '@types'
 import { DashboardName } from '@enums'
-import { useActiveDashboardStore } from '@stores/active-dashboard'
 import { useShowSelectActiveDashboardStore } from '@stores/show-select-active-dashboard'
+import { IParams } from '@interfaces'
+import { ParamsContext } from '@contexts/params'
+import { getDefaultFilterValues } from '@schemas/filter'
 
 interface IDashboardProps {
     dashboard: TDashboard
@@ -19,25 +21,30 @@ interface IDashboardProps {
 }
 
 export const Dashboard = ({ dashboard, lang }: IDashboardProps) => {
-    const activeDashboard = useActiveDashboardStore((state) => state.activeDashboard)
-    const setActiveDashboard = useActiveDashboardStore((state) => state.setActiveDashboard)
+    const defaultFilterValues = getDefaultFilterValues(dashboard)
+    const [params, setParams] = useState<IParams>({
+        dashboard: dashboard,
+        lang: lang,
+        filters: { filter1: defaultFilterValues, filter2: defaultFilterValues },
+        questionAskedCode: 'q1',
+        responseYear: '',
+    })
     const setShowSelectActiveDashboard = useShowSelectActiveDashboardStore(
         (state) => state.setShowSelectActiveDashboard
     )
 
-    // When activeDashboard is changed, this component will change the current displayed dashboard
+    // Set show select active dashboard
     useEffect(() => {
-        setActiveDashboard(dashboard)
         if (dashboard === DashboardName.ALL_CAMPAIGNS) {
             setShowSelectActiveDashboard(true)
         } else {
             setShowSelectActiveDashboard(false)
         }
-    }, [dashboard, setActiveDashboard, setShowSelectActiveDashboard])
+    }, [dashboard, setShowSelectActiveDashboard])
 
     // Set gap-y between boxes
     let boxesGapY: string
-    switch (activeDashboard) {
+    switch (params.dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
             boxesGapY = 'gap-y-[80px]'
             break
@@ -47,7 +54,7 @@ export const Dashboard = ({ dashboard, lang }: IDashboardProps) => {
 
     // Set layout classes
     let layoutClasses: string
-    switch (activeDashboard) {
+    switch (params.dashboard) {
         case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
             layoutClasses =
                 'font-noto-sans-regular text-base text-pmnchColors-font selection:bg-pmnchColors-primary selection:text-white'
@@ -57,41 +64,41 @@ export const Dashboard = ({ dashboard, lang }: IDashboardProps) => {
                 'font-open-sans text-base text-defaultColors-font selection:bg-defaultColors-tertiary selection:text-white'
     }
 
-    if (!activeDashboard) return null
-
     return (
         <div className={classNames(layoutClasses)}>
-            {/* Header */}
-            <Header dashboard={activeDashboard} lang={lang} />
+            <ParamsContext.Provider value={{ params, setParams }}>
+                {/* Header */}
+                <Header />
 
-            {/* Main */}
-            <main className="mx-7 my-7">
-                {/* Title */}
-                <div className="mb-3 flex justify-center xl:hidden">
-                    <Title dashboard={activeDashboard} lang={lang} />
-                </div>
+                {/* Main */}
+                <main className="mx-7 my-7">
+                    {/* Title */}
+                    <div className="mb-3 flex justify-center xl:hidden">
+                        <Title />
+                    </div>
 
-                {/* Subtext */}
-                <div className="mb-10 flex justify-center">
-                    <Subtext dashboard={activeDashboard} lang={lang} />
-                </div>
+                    {/* Subtext */}
+                    <div className="mb-10 flex justify-center">
+                        <Subtext />
+                    </div>
 
-                {/* Content */}
-                <div className="grid grid-cols-1 items-start gap-x-[10%] xl:grid-cols-3">
-                    {/* Filters panel */}
-                    <section className="hidden xl:sticky xl:top-5 xl:col-span-1 xl:block">
-                        <FiltersPanel dashboard={activeDashboard} lang={lang} />
-                    </section>
+                    {/* Content */}
+                    <div className="grid grid-cols-1 items-start gap-x-[10%] xl:grid-cols-3">
+                        {/* Filters panel */}
+                        <section className="hidden xl:sticky xl:top-5 xl:col-span-1 xl:block">
+                            <FiltersPanel />
+                        </section>
 
-                    {/* Graphs */}
-                    <section className={classNames('col-span-2 grid grid-cols-1', boxesGapY)}>
-                        <GraphsWrapper dashboard={activeDashboard} lang={lang} />
-                    </section>
-                </div>
-            </main>
+                        {/* Graphs */}
+                        <section className={classNames('col-span-2 grid grid-cols-1', boxesGapY)}>
+                            <GraphsWrapper />
+                        </section>
+                    </div>
+                </main>
 
-            {/* Footer */}
-            <Footer dashboard={activeDashboard} lang={lang} />
+                {/* Footer */}
+                <Footer />
+            </ParamsContext.Provider>
         </div>
     )
 }

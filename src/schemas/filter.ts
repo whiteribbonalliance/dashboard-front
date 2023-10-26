@@ -21,25 +21,7 @@ export const filterSchema = z.object({
 export type TFilter = z.infer<typeof filterSchema>
 
 // Default filter values
-export function getDefaultFilterValues(dashboard?: TDashboard) {
-    if (!dashboard) {
-        return {
-            countries: [],
-            regions: [],
-            provinces: [],
-            ages: [],
-            age_buckets: [],
-            genders: [],
-            living_settings: [],
-            professions: [],
-            response_topics: [],
-            only_responses_from_categories: false,
-            only_multi_word_phrases_containing_filter_term: false,
-            keyword_filter: '',
-            keyword_exclude: '',
-        } as TFilter
-    }
-
+export function getDefaultFilterValues(dashboard: TDashboard) {
     switch (dashboard) {
         case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
             return {

@@ -2,19 +2,17 @@
 
 import Link from 'next/link'
 import { DashboardName } from '@enums'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { applyToThousandsSepOnText, classNames, getDashboardConfig } from '@utils'
 import { useTranslation } from '@app/i18n/client'
-import { TDashboard } from '@types'
 import { dashboardsConfigs } from '@configurations'
 import { OrganizationLogos } from 'components/OrganizationLogos'
+import { ParamsContext } from '@contexts/params'
 
-interface IFooterProps {
-    dashboard: TDashboard
-    lang: string
-}
+export const Footer = () => {
+    const { params } = useContext(ParamsContext)
+    const { dashboard, lang } = params
 
-export const Footer = ({ dashboard, lang }: IFooterProps) => {
     const [exportDatasetLinkClicked, setExportDatasetLinkClicked] = useState<boolean>(false)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)

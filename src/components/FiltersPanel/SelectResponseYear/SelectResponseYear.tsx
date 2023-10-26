@@ -3,24 +3,26 @@
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Box } from '@components/Box'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from '@app/i18n/client'
-import { TDashboard, TOption } from '@types'
+import { TOption } from '@types'
 import { SelectSingleValue } from '@components/SelectSingleValue'
-import { useResponseYearStore } from '@stores/response-year'
 import { responseYearSchema, TResponseYear } from '@schemas/response-year'
 import { useCampaignQuery } from '@hooks/use-campaign-query'
+import { ParamsContext } from '@contexts/params'
+import { produce } from 'immer'
 
 interface ISelectResponseYearProps {
-    dashboard: TDashboard
-    lang: string
+    hideWhileLoading?: boolean
 }
 
-export const SelectResponseYear = ({ dashboard, lang }: ISelectResponseYearProps) => {
+export const SelectResponseYear = ({ hideWhileLoading = false }: ISelectResponseYearProps) => {
+    const { params, setParams } = useContext(ParamsContext)
+    const { lang } = params
+
     const { t } = useTranslation(lang)
-    const { data } = useCampaignQuery(dashboard, lang)
+    const { data, isLoading, isRefetching } = useCampaignQuery()
     const [options, setOptions] = useState<TOption<string>[]>([])
-    const setResponseYear = useResponseYearStore((state) => state.setResponseYear)
 
     // Set options
     useEffect(() => {
@@ -38,25 +40,29 @@ export const SelectResponseYear = ({ dashboard, lang }: ISelectResponseYearProps
 
     // Form
     const form = useForm<TResponseYear>({
+        defaultValues: { response_year: params.responseYear },
         resolver: zodResolver(responseYearSchema),
     })
 
     // Watch field
     const responseYearField = form.watch('response_year')
 
-    // Set default value for response_year
-    useEffect(() => {
-        if (form) {
-            form.setValue('response_year', '')
-        }
-    }, [form])
-
     // Set response year
     useEffect(() => {
         if (responseYearField || responseYearField === '') {
-            setResponseYear(responseYearField)
+            setParams((prev) => {
+                return produce(prev, (draft) => {
+                    draft.responseYear = responseYearField
+                })
+            })
         }
-    }, [responseYearField, setResponseYear])
+    }, [responseYearField, setParams])
+
+    if (options.length < 1) return null
+
+    if (hideWhileLoading) {
+        if (isLoading || isRefetching) return null
+    }
 
     return (
         <Box>

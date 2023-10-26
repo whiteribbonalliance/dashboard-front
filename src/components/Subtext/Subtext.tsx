@@ -1,21 +1,21 @@
 'use client'
 
-import { TDashboard } from '@types'
 import { useTranslation } from '@app/i18n/client'
 import { applyToThousandsSepOnText, classNames, getDashboardConfig } from '@utils'
 import { DashboardName } from '@enums'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { IParams } from '@interfaces'
+import { ParamsContext } from '@contexts/params'
 
 const HtmlToReact = require('html-to-react')
 const HtmlToReactParser = require('html-to-react').Parser
 
-interface ISubtextProps {
-    dashboard: TDashboard
-    lang: string
-}
+interface ISubtextProps {}
 
-export const Subtext = ({ dashboard, lang }: ISubtextProps) => {
+export const Subtext = () => {
+    const { params } = useContext(ParamsContext)
+    const { dashboard, lang } = params
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
     const [subtextElement, setSubtextElement] = useState<React.JSX.Element>()

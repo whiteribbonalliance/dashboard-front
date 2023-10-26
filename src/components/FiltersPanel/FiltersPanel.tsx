@@ -3,7 +3,7 @@
 import { Disclosure, Tab, Transition } from '@headlessui/react'
 import { classNames, getDashboardConfig } from '@utils'
 import { DashboardName } from '@enums'
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react'
 import { Box } from '@components/Box'
 import Image from 'next/image'
 import { getCampaignFilterOptions, getCampaignsMergedFilterOptions } from '@services/wra-dashboard-api'
@@ -13,9 +13,8 @@ import { Control, Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { SelectMultiValues } from '@components/SelectMultiValues'
 import { SelectSingleValue } from '@components/SelectSingleValue'
 import { Chevron } from '@components/Chevron'
-import { useFiltersStore } from '@stores/filters'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { filterSchema, TFilter } from '@schemas/filter'
+import { filterSchema, getDefaultFilterValues, TFilter } from '@schemas/filter'
 import { Stats } from '@components/FiltersPanel/Stats'
 import { useTranslation } from '@app/i18n/client'
 import { useFilterFormsStore } from '@stores/filter-forms'
@@ -24,7 +23,6 @@ import { Tooltip } from '@components/Tooltip'
 import { useRefetchCampaignStore } from '@stores/refetch-campaign'
 import { Input } from '@components/Input'
 import { SelectQuestionAsked } from 'components/FiltersPanel/SelectQuestionAsked'
-import { useQuestionsAskedOptions } from '@hooks/use-questions-asked-options'
 import { Loading } from 'components/Loading'
 import { SelectActiveDashboard } from 'components/FiltersPanel/SelectActiveDashboard'
 import { dashboardsConfigs } from '@configurations'
@@ -33,17 +31,12 @@ import { SelectResponseYear } from '@components/FiltersPanel/SelectResponseYear'
 import { useCountriesStore } from '@stores/countries'
 import { Button } from '@components/Button'
 import _ from 'lodash'
+import { ParamsContext } from '@contexts/params'
+import { produce } from 'immer'
 
 interface IApplyFiltersButtonProps {
     form1: UseFormReturn<TFilter>
     form2: UseFormReturn<TFilter>
-    dashboard: TDashboard
-    lang: string
-}
-
-interface IFiltersPanelProps {
-    dashboard: TDashboard
-    lang: string
 }
 
 interface IFieldProps {
@@ -66,17 +59,16 @@ interface ITab {
     form: UseFormReturn<TFilter>
 }
 
-export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
-    const filters = useFiltersStore((state) => state.filters)
+export const FiltersPanel = () => {
+    const { params } = useContext(ParamsContext)
+    const { dashboard, lang } = params
+
     const setForm1 = useFilterFormsStore((state) => state.setForm1)
     const setForm2 = useFilterFormsStore((state) => state.setForm2)
     const setCountries = useCountriesStore((state) => state.setCountries)
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
     const [tabs, setTabs] = useState<ITab[]>([])
-
-    // Set questions asked options
-    const questionsAskedOptions = useQuestionsAskedOptions(dashboard, lang)
 
     // Select options
     const [countryOptions, setCountryOptions] = useState<TOption<string>[]>([])
@@ -111,14 +103,14 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
 
     // Form 1
     const form1 = useForm<TFilter>({
-        defaultValues: filters.filter1,
+        defaultValues: getDefaultFilterValues(dashboard),
         resolver: zodResolver(filterSchema),
     })
     useEffect(() => setForm1(form1), [setForm1, form1])
 
     // Form 2
     const form2 = useForm<TFilter>({
-        defaultValues: filters.filter2,
+        defaultValues: getDefaultFilterValues(dashboard),
         resolver: zodResolver(filterSchema),
     })
     useEffect(() => setForm2(form2), [setForm2, form2])
@@ -366,7 +358,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
     }, [form2, watchCountriesForm2, watchProvincesForm2, setDistrictOptions])
 
     // Apply button
-    const applyButton = <ApplyFiltersButton form1={form1} form2={form2} dashboard={dashboard} lang={lang} />
+    const applyButton = <ApplyFiltersButton form1={form1} form2={form2} />
 
     // Set select response topics text
     let selectResponseTopicsText: string
@@ -418,10 +410,10 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
         showSelectAgeBuckets = true
     }
 
-    // Set show select response topics
-    let showSelectResponseTopics = true
+    // Set show only responses from categories
+    let showOnlyResponsesFromCategories = true
     if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
-        showSelectResponseTopics = false
+        showOnlyResponsesFromCategories = false
     }
 
     // Set show district and provinces for wwwpakistan
@@ -502,28 +494,21 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
             {/* Active dashboard within allcampaigns dashboard */}
             {showSelectActiveDashboard && (
                 <div className="mb-5">
-                    <SelectActiveDashboard lang={lang} options={allCampaignsActiveDashboardOptions} />
+                    <SelectActiveDashboard options={allCampaignsActiveDashboardOptions} />
                 </div>
             )}
 
-            {/* Switch between questions asked (for allcampaigns dashboard) */}
-            {dashboard === DashboardName.ALL_CAMPAIGNS && questionsAskedOptions.length > 1 && (
+            {/* Switch between questions asked for giz */}
+            {dashboard === DashboardName.ECONOMIC_EMPOWERMENT_MEXICO && (
                 <div className="mb-5">
-                    <SelectQuestionAsked lang={lang} dashboard={dashboard} />
+                    <SelectQuestionAsked hideWhileLoading={false} />
                 </div>
             )}
 
             {/* Show select response year for wwwpakistan */}
             {dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN && (
                 <div className="mb-5">
-                    <SelectResponseYear dashboard={dashboard} lang={lang} />
-                </div>
-            )}
-
-            {/* Switch between questions asked (for other dashboards) */}
-            {dashboard !== DashboardName.ALL_CAMPAIGNS && questionsAskedOptions.length > 1 && (
-                <div className="mb-5">
-                    <SelectQuestionAsked lang={lang} dashboard={dashboard} />
+                    <SelectResponseYear />
                 </div>
             )}
 
@@ -626,22 +611,20 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                             )}
 
                                             {/* Select response topics */}
-                                            {showSelectResponseTopics && (
-                                                <div>
-                                                    <div
-                                                        className="mb-1 w-fit"
-                                                        data-tooltip-id="filters-panel-select-response-topics"
-                                                    >
-                                                        {selectResponseTopicsText}
-                                                    </div>
-                                                    <SelectResponseTopics
-                                                        id={`select-response-topics-${id}`}
-                                                        dashboard={dashboard}
-                                                        options={responseTopicOptions}
-                                                        control={form.control}
-                                                    />
+                                            <div>
+                                                <div
+                                                    className="mb-1 w-fit"
+                                                    data-tooltip-id="filters-panel-select-response-topics"
+                                                >
+                                                    {selectResponseTopicsText}
                                                 </div>
-                                            )}
+                                                <SelectResponseTopics
+                                                    id={`select-response-topics-${id}`}
+                                                    dashboard={dashboard}
+                                                    options={responseTopicOptions}
+                                                    control={form.control}
+                                                />
+                                            </div>
                                         </div>
 
                                         {/* Apply button */}
@@ -667,8 +650,8 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
                                                         >
                                                             {}
 
-                                                            {/* Show responses from categories */}
-                                                            {showSelectResponseTopics && (
+                                                            {/* Show only responses from categories */}
+                                                            {showOnlyResponsesFromCategories && (
                                                                 <div>
                                                                     <div className="mb-1 w-fit">
                                                                         {t('responses-from-categories')}
@@ -850,7 +833,7 @@ export const FiltersPanel = ({ dashboard, lang }: IFiltersPanelProps) => {
             </div>
 
             {/* Stats */}
-            <Stats dashboard={dashboard} lang={lang} />
+            <Stats />
 
             {/* PMNCH QR code */}
             {displayPmnchQrCode && (
@@ -1042,11 +1025,12 @@ const SelectAgeBuckets = ({ id, options, control }: ISelectProps) => {
     )
 }
 
-const ApplyFiltersButton = ({ form1, form2, dashboard, lang }: IApplyFiltersButtonProps) => {
+const ApplyFiltersButton = ({ form1, form2 }: IApplyFiltersButtonProps) => {
+    const { params, setParams } = useContext(ParamsContext)
+    const { dashboard, lang } = params
+
     const { t } = useTranslation(lang)
     const setRefetchCampaign = useRefetchCampaignStore((state) => state.setRefetchCampaign)
-    const filters = useFiltersStore((state) => state.filters)
-    const setFilters = useFiltersStore((state) => state.setFilters)
     const [filtersHaveChanged, setFiltersHaveChanged] = useState<boolean>(false)
 
     // Only applies for 'wwwpakistan' and 'giz'
@@ -1076,11 +1060,15 @@ const ApplyFiltersButton = ({ form1, form2, dashboard, lang }: IApplyFiltersButt
                 form2.getValues().keyword_filter = form2.getValues().keyword_filter.toLowerCase()
             }
 
-            setFilters({ filter1: form1.getValues(), filter2: form2.getValues() })
+            setParams((prev) => {
+                return produce(prev, (draft) => {
+                    draft.filters = { filter1: form1.getValues(), filter2: form2.getValues() }
+                })
+            })
 
             setFiltersHaveChanged(false)
         }
-    }, [form1, form2, setFilters, filtersHaveChanged, setFiltersHaveChanged])
+    }, [form1, form2, setParams, filtersHaveChanged, setFiltersHaveChanged])
 
     // Set refetch campaign
     useEffect(() => {
@@ -1099,14 +1087,14 @@ const ApplyFiltersButton = ({ form1, form2, dashboard, lang }: IApplyFiltersButt
             return
         }
 
-        if (!_.isEqual(filters.filter1, watchForm1) || !_.isEqual(filters.filter2, watchForm2)) {
+        if (!_.isEqual(params.filters.filter1, watchForm1) || !_.isEqual(params.filters.filter2, watchForm2)) {
             if (!filtersHaveChanged) setFiltersHaveChanged(true)
         } else {
             if (filtersHaveChanged) setFiltersHaveChanged(false)
         }
     }, [
         dashboard,
-        filters,
+        params,
         watchForm1,
         watchForm2,
         filtersHaveChanged,
@@ -1121,20 +1109,16 @@ const ApplyFiltersButton = ({ form1, form2, dashboard, lang }: IApplyFiltersButt
                 case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
                     form1.setValue('countries', ['PK'])
                     form2.setValue('countries', ['PK'])
-                    filters.filter1.countries = ['PK']
-                    filters.filter2.countries = ['PK']
                     setCanCheckIfFiltersHaveChanged(true)
                     break
                 case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
                     form1.setValue('countries', ['MX'])
                     form2.setValue('countries', ['MX'])
-                    filters.filter1.countries = ['MX']
-                    filters.filter2.countries = ['MX']
                     setCanCheckIfFiltersHaveChanged(true)
                     break
             }
         }
-    }, [dashboard, form1, form2, filters])
+    }, [dashboard, form1, form2])
 
     return (
         <div onClick={refetchCampaign}>

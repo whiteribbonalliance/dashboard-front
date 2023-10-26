@@ -3,7 +3,7 @@
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Box } from '@components/Box'
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useTranslation } from '@app/i18n/client'
 import { TOption } from '@types'
 import { SelectSingleValue } from '@components/SelectSingleValue'
@@ -12,53 +12,52 @@ import {
     TAllCampaignsActiveDashboard,
 } from '@schemas/all-campaigns-active-dashboard'
 import { DashboardName } from '@enums'
-import { useActiveDashboardStore } from '@stores/active-dashboard'
-import { useFilterFormsStore } from '@stores/filter-forms'
-import { useFiltersStore } from '@stores/filters'
+import { ParamsContext } from '@contexts/params'
 import { getDefaultFilterValues } from '@schemas/filter'
-import {act} from "react-dom/test-utils";
+import { useFilterFormsStore } from '@stores/filter-forms'
+import { produce } from 'immer'
 
 interface ISelectActiveDashboardProps {
-    lang: string
     options: TOption<string>[]
 }
 
-export const SelectActiveDashboard = ({ lang, options }: ISelectActiveDashboardProps) => {
+export const SelectActiveDashboard = ({ options }: ISelectActiveDashboardProps) => {
+    const { params, setParams } = useContext(ParamsContext)
+    const { lang } = params
+
     const { t } = useTranslation(lang)
-    const setActiveDashboard = useActiveDashboardStore((state) => state.setActiveDashboard)
-    const setFilters = useFiltersStore((state) => state.setFilters)
     const filterForm1 = useFilterFormsStore((state) => state.form1)
     const filterForm2 = useFilterFormsStore((state) => state.form2)
 
     // Form
     const form = useForm<TAllCampaignsActiveDashboard>({
+        defaultValues: { active_dashboard: DashboardName.ALL_CAMPAIGNS },
         resolver: zodResolver(allCampaignsActiveDashboardSchema),
     })
 
     // Watch field
     const activeDashboardField = form.watch('active_dashboard')
 
-    // Set default value for active_dashboard
-    useEffect(() => {
-        if (form) {
-            form.setValue('active_dashboard', DashboardName.ALL_CAMPAIGNS)
-        }
-    }, [form])
-
-    // Set active dashboard and clear filters
+    // Set active dashboard
     useEffect(() => {
         if (activeDashboardField) {
-            // Set active dashboard
-            setActiveDashboard(activeDashboardField)
+            const defaultFilterValues = getDefaultFilterValues(activeDashboardField)
+            setParams((prev) => {
+                return produce(prev, (draft) => {
+                    draft.dashboard = activeDashboardField
+                    draft.filters = { filter1: defaultFilterValues, filter2: defaultFilterValues }
+                    draft.questionAskedCode = 'q1'
+                    draft.responseYear = ''
+                })
+            })
 
-            // Clear filters
+            // Clear forms
             if (filterForm1 && filterForm2) {
-                filterForm1.reset(getDefaultFilterValues(activeDashboardField))
-                filterForm2.reset(getDefaultFilterValues(activeDashboardField))
-                setFilters({ filter1: filterForm1.getValues(), filter2: filterForm2.getValues() })
+                filterForm1.reset(defaultFilterValues)
+                filterForm2.reset(defaultFilterValues)
             }
         }
-    }, [setActiveDashboard, activeDashboardField, filterForm1, filterForm2, setFilters])
+    }, [activeDashboardField, setParams, filterForm1, filterForm2])
 
     // Set default value for active_dashboard
     useEffect(() => {

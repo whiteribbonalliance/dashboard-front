@@ -5,7 +5,7 @@ import { GraphTitle } from '@components/GraphTitle'
 import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { Tab } from '@headlessui/react'
 import { classNames } from '@utils'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { DashboardName } from '@enums'
 import { TopWordsWordcloud } from 'graph-components/TopWordsAndPhrasesGraph/TopWordsWordcloud'
 import { TopWordsOrPhrases } from 'graph-components/TopWordsAndPhrasesGraph/TopWordsOrPhrases'
@@ -15,14 +15,13 @@ import { useTranslation } from '@app/i18n/client'
 import { TDashboard } from '@types'
 import { Tooltip } from '@components/Tooltip'
 import { ITopWordsAndPhrases } from '@interfaces'
+import { ParamsContext } from '@contexts/params'
 
-interface ITopWordsAndPhrasesGraphProps {
-    dashboard: TDashboard
-    lang: string
-}
+export const TopWordsAndPhrasesGraph = () => {
+    const { params } = useContext(ParamsContext)
+    const { dashboard, lang } = params
 
-export const TopWordsAndPhrasesGraph = ({ dashboard, lang }: ITopWordsAndPhrasesGraphProps) => {
-    const { data, isError, isLoading, isRefetching } = useCampaignQuery(dashboard, lang)
+    const { data, isError, isLoading, isRefetching } = useCampaignQuery()
     const [topWordsAndPhrases, setTopWordsAndPhrases] = useState<ITopWordsAndPhrases>(undefined as any)
     const { t } = useTranslation(lang)
 

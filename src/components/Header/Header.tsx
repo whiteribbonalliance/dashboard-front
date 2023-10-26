@@ -6,7 +6,7 @@ import { OrganizationLogos } from 'components/OrganizationLogos'
 import { Disclosure, Transition } from '@headlessui/react'
 import Link from 'next/link'
 import { DashboardName } from '@enums'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Button } from '@components/Button/Button'
 import { FiltersPanel } from '@components/FiltersPanel'
 import { LanguageSelect } from '@components/LanguageSelect'
@@ -14,19 +14,17 @@ import { Chevron } from '@components/Chevron'
 import { classNames, getDashboardConfig } from '@utils'
 import { useTranslation } from '@app/i18n/client'
 import Image from 'next/image'
-import { TDashboard } from '@types'
 import { Title } from '@components/Title'
-
-interface IHeaderProps {
-    dashboard: TDashboard
-    lang: string
-}
+import { ParamsContext } from '@contexts/params'
 
 interface IHamburgerMenuProps {
     open: boolean
 }
 
-export const Header = ({ dashboard, lang }: IHeaderProps) => {
+export const Header = () => {
+    const { params } = useContext(ParamsContext)
+    const { dashboard, lang } = params
+
     const [showMobileFiltersPanel, setShowMobileFiltersPanel] = useState<boolean>(false)
     const config = getDashboardConfig(dashboard)
     const { t } = useTranslation(lang)
@@ -95,7 +93,7 @@ export const Header = ({ dashboard, lang }: IHeaderProps) => {
 
                             {/* Title */}
                             <div className="hidden xl:flex">
-                                <Title dashboard={dashboard} lang={lang} noHeading />
+                                <Title noHeading />
                             </div>
 
                             {/* Menu items */}
@@ -187,7 +185,7 @@ export const Header = ({ dashboard, lang }: IHeaderProps) => {
                     showMobileFiltersPanel ? 'flex flex-col' : 'hidden'
                 )}
             >
-                <FiltersPanel dashboard={dashboard} lang={lang} />
+                <FiltersPanel />
             </div>
         </>
     )

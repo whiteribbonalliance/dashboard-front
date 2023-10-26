@@ -7,7 +7,7 @@ import { GraphError } from '@components/GraphError'
 import { Loading } from 'components/Loading'
 import * as d3 from 'd3'
 import { DashboardName } from '@enums'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { IWorldBubbleMapsCoordinate } from '@interfaces'
 import { classNames, getDashboardConfig, toThousandsSep } from '@utils'
 import { useQuery } from 'react-query'
@@ -23,11 +23,7 @@ import { feature } from 'topojson-client'
 import { Topology } from 'topojson-specification'
 import { FeatureCollection } from 'geojson'
 import _ from 'lodash'
-
-interface IWorldBubbleMapsProps {
-    dashboard: TDashboard
-    lang: string
-}
+import { ParamsContext } from '@contexts/params'
 
 interface IWorldBubbleMapsCoordinateWithExtra extends IWorldBubbleMapsCoordinate {
     coordinatesSequence: 'coordinates_1' | 'coordinates_2'
@@ -52,8 +48,11 @@ interface ID3MapProps {
 const svgWidth = 900
 const svgHeight = 600
 
-export const WorldBubbleMap = ({ dashboard, lang }: IWorldBubbleMapsProps) => {
-    const { data, isError, isLoading, isRefetching } = useCampaignQuery(dashboard, lang)
+export const WorldBubbleMap = () => {
+    const { params } = useContext(ParamsContext)
+    const { dashboard, lang } = params
+
+    const { data, isError, isLoading, isRefetching } = useCampaignQuery()
 
     const [showBubbles1, setShowBubbles1] = useState<boolean>(true)
     const [showBubbles2, setShowBubbles2] = useState<boolean>(true)

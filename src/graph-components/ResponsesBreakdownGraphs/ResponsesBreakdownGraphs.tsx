@@ -8,18 +8,16 @@ import { getDashboardConfig } from '@utils'
 import { Loading } from 'components/Loading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
-import { TDashboard } from '@types'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Tooltip } from '@components/Tooltip'
 import { ResponsesBreakdownGraph } from '@graph-components/ResponsesBreakdownGraphs/ResponsesBrekadownGraph'
+import { ParamsContext } from '@contexts/params'
 
-interface IResponsesBreakdownGraphsProps {
-    dashboard: TDashboard
-    lang: string
-}
+export const ResponsesBreakdownGraphs = () => {
+    const { params } = useContext(ParamsContext)
+    const { dashboard, lang } = params
 
-export const ResponsesBreakdownGraphs = ({ dashboard, lang }: IResponsesBreakdownGraphsProps) => {
-    const { data, isError, isLoading, isRefetching } = useCampaignQuery(dashboard, lang)
+    const { data, isError, isLoading, isRefetching } = useCampaignQuery()
     const { t } = useTranslation(lang)
     const config = getDashboardConfig(dashboard)
 
@@ -103,8 +101,6 @@ export const ResponsesBreakdownGraphs = ({ dashboard, lang }: IResponsesBreakdow
                         {/* Parent or sub-categories */}
                         {canDisplayParentOrSubCategories && (
                             <ResponsesBreakdownGraph
-                                dashboard={dashboard}
-                                lang={lang}
                                 data={data.responses_breakdown.parent_or_sub_categories}
                                 filtersAreIdentical={data.filters_are_identical}
                                 filter1Description={data.filter_1_description}
@@ -116,8 +112,6 @@ export const ResponsesBreakdownGraphs = ({ dashboard, lang }: IResponsesBreakdow
                         {/* Parent categories */}
                         {canDisplayParentCategories && (
                             <ResponsesBreakdownGraph
-                                dashboard={dashboard}
-                                lang={lang}
                                 data={data.responses_breakdown.parent_categories}
                                 filtersAreIdentical={data.filters_are_identical}
                                 filter1Description={data.filter_1_description}
@@ -129,8 +123,6 @@ export const ResponsesBreakdownGraphs = ({ dashboard, lang }: IResponsesBreakdow
                         {/* Sub-categories */}
                         {canDisplaySubCategories && (
                             <ResponsesBreakdownGraph
-                                dashboard={dashboard}
-                                lang={lang}
                                 data={data.responses_breakdown.sub_categories}
                                 filtersAreIdentical={data.filters_are_identical}
                                 filter1Description={data.filter_1_description}

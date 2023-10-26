@@ -20,16 +20,12 @@ import { Loading } from 'components/Loading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
 import { TDashboard } from '@types'
-import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
+import React, { MutableRefObject, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { ILivingSettingBreakdown } from '@interfaces'
 import { useFilterFormsStore } from '@stores/filter-forms'
 import { UseFormReturn } from 'react-hook-form'
 import { TFilter } from '@schemas/filter'
-
-interface ILivingSettingsBreakdownGraphProps {
-    dashboard: TDashboard
-    lang: string
-}
+import { ParamsContext } from '@contexts/params'
 
 interface ICustomTooltip extends TooltipProps<number, string> {
     dashboard: TDashboard
@@ -38,8 +34,11 @@ interface ICustomTooltip extends TooltipProps<number, string> {
     lang: string
 }
 
-export const LivingSettingsBreakdownGraph = ({ dashboard, lang }: ILivingSettingsBreakdownGraphProps) => {
-    const { data, isError, isLoading, isFetching } = useCampaignQuery(dashboard, lang)
+export const LivingSettingsBreakdownGraph = () => {
+    const { params } = useContext(ParamsContext)
+    const { dashboard, lang } = params
+
+    const { data, isError, isLoading, isFetching } = useCampaignQuery()
     const form1 = useFilterFormsStore((state) => state.form1)
     const form2 = useFilterFormsStore((state) => state.form2)
     const [livingSettingsBreakdown, setLivingSettingsBreakdown] = useState<ILivingSettingBreakdown[]>([])

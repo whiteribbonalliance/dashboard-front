@@ -8,7 +8,7 @@ import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { SelectSingleValue } from '@components/SelectSingleValue'
 import { TDashboard, TOption } from '@types'
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
-import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
+import React, { MutableRefObject, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod'
 import { histogramSchema, THistogram } from '@schemas/histogram'
 import {
@@ -31,11 +31,7 @@ import { useQuery } from 'react-query'
 import { useFilterFormsStore } from '@stores/filter-forms'
 import { TFilter } from '@schemas/filter'
 import { useCountriesStore } from '@stores/countries'
-
-interface IHistogramGraphProps {
-    dashboard: TDashboard
-    lang: string
-}
+import { ParamsContext } from '@contexts/params'
 
 interface ICustomTooltip extends TooltipProps<number, string> {
     dashboard: TDashboard
@@ -44,8 +40,11 @@ interface ICustomTooltip extends TooltipProps<number, string> {
     lang: string
 }
 
-export const HistogramGraph = ({ dashboard, lang }: IHistogramGraphProps) => {
-    const { data, isError, isLoading, isRefetching } = useCampaignQuery(dashboard, lang)
+export const HistogramGraph = () => {
+    const { params } = useContext(ParamsContext)
+    const { dashboard, lang } = params
+
+    const { data, isError, isLoading, isRefetching } = useCampaignQuery()
     const { t } = useTranslation(lang)
     const [currentHistogramData, setCurrentHistogramData] = useState<IHistogramData[]>([])
     const hoveredBarDataKey = useRef<string>(undefined as any)

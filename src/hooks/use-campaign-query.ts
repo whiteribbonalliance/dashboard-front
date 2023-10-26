@@ -3,50 +3,36 @@
 import { useQuery } from 'react-query'
 import { ICampaign } from '@interfaces'
 import { getCampaign, getCampaignsMerged } from '@services/wra-dashboard-api'
-import { useFiltersStore } from '@stores/filters'
-import { useEffect } from 'react'
 import _ from 'lodash'
-import { TDashboard } from '@types'
 import { getDashboardConfig } from '@utils'
-import { useQuestionAskedCodeStore } from '@stores/question-asked-code'
 import { DashboardName } from '@enums'
-import { useResponseYearStore } from '@stores/response-year'
 import { getDefaultFilterValues } from '@schemas/filter'
+import { useContext } from 'react'
+import { ParamsContext } from '@contexts/params'
 
-export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
-    const filters = useFiltersStore((state) => state.filters)
-    const filtersClone = _.cloneDeep(filters)
+export const useCampaignQuery = () => {
+    const { params } = useContext(ParamsContext)
+    const { dashboard, lang } = params
 
-    // Question asked code
-    const questionAskedCode = useQuestionAskedCodeStore((state) => state.questionAskedCode)
-
-    // Response year
-    const responseYear = useResponseYearStore((state) => state.responseYear)
+    const filtersClone = _.cloneDeep(params.filters)
 
     // Only filter by province if there is no district selected at wwwpakistan
     if (dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN) {
-        if (filtersClone.filter1.regions.length > 0) {
+        if (filtersClone.filter1 && filtersClone.filter1.regions.length > 0) {
             filtersClone.filter1.provinces = []
         }
-        if (filtersClone.filter2.regions.length > 0) {
+        if (filtersClone.filter2 && filtersClone.filter2.regions.length > 0) {
             filtersClone.filter2.provinces = []
         }
     }
 
     // If the filter has not changed from the default filter values then do not send it with the request
-    const filter1 =
-        _.isEqual(filtersClone.filter1, getDefaultFilterValues(dashboard)) ||
-        _.isEqual(filtersClone.filter1, getDefaultFilterValues())
-            ? undefined
-            : filtersClone.filter1
-    const filter2 =
-        _.isEqual(filtersClone.filter2, getDefaultFilterValues(dashboard)) ||
-        _.isEqual(filtersClone.filter2, getDefaultFilterValues())
-            ? undefined
-            : filtersClone.filter2
+    const defaultFilterValues = getDefaultFilterValues(dashboard)
+    const filter1 = _.isEqual(filtersClone.filter1, defaultFilterValues) ? undefined : filtersClone.filter1
+    const filter2 = _.isEqual(filtersClone.filter2, defaultFilterValues) ? undefined : filtersClone.filter2
 
-    const campaignQuery = useQuery<ICampaign>({
-        queryKey: [`${dashboard}-${lang}-campaign`],
+    return useQuery<ICampaign>({
+        queryKey: [params, 'campaign'],
         queryFn: ({ signal }) => {
             if (dashboard === DashboardName.ALL_CAMPAIGNS) {
                 // Use getCampaignsMerged function (uses a special endpoint to fetch data of all campaigns merged)
@@ -68,23 +54,14 @@ export const useCampaignQuery = (dashboard: TDashboard, lang: string) => {
                         filter_2: filter2,
                     },
                     lang,
-                    questionAskedCode,
-                    responseYear,
+                    params.questionAskedCode,
+                    params.responseYear,
                     signal
                 )
             }
         },
         refetchOnWindowFocus: false,
         retry: 3,
+        cacheTime: 0,
     })
-
-    // Refetch function
-    const refetch = campaignQuery.refetch
-
-    // Refetch campaign when any of the dependencies change
-    useEffect(() => {
-        refetch({ cancelRefetch: true }).then()
-    }, [refetch, filters, questionAskedCode, responseYear])
-
-    return campaignQuery
 }
