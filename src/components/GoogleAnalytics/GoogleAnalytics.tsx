@@ -2,11 +2,7 @@ import Script from 'next/script'
 
 export const GoogleAnalytics = ({ gaId }: { gaId: string }) => (
     <>
-        <Script
-            async
-            src={`https://www.googletagmanager.com/gtag.js? 
-      id=${gaId}`}
-        ></Script>
+        <Script async src={`https://www.googletagmanager.com/gtag.js?id=${gaId}`}></Script>
         <Script
             id="google-analytics"
             dangerouslySetInnerHTML={{
