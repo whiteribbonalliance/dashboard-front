@@ -12,9 +12,9 @@ import { ParamsContext } from '@contexts/params'
 
 export const useCampaignQuery = () => {
     const { params } = useContext(ParamsContext)
-    const { dashboard, lang } = params
+    const { dashboard, filters, lang, questionAskedCode, responseYear } = params
 
-    const filtersClone = _.cloneDeep(params.filters)
+    const filtersClone = _.cloneDeep(filters)
 
     // Only filter by province if there is no district selected at wwwpakistan
     if (dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN) {
@@ -54,8 +54,8 @@ export const useCampaignQuery = () => {
                         filter_2: filter2,
                     },
                     lang,
-                    params.questionAskedCode,
-                    params.responseYear,
+                    questionAskedCode,
+                    responseYear,
                     signal
                 )
             }
