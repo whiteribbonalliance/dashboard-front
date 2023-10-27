@@ -16,6 +16,7 @@ Configure .env.local.
 - `NEXT_PUBLIC_MAIN_SUBDOMAIN=` The subdomain used in production.
 - `NEXT_PUBLIC_DEV_DOMAIN=` The subdomain used in development.
 - `NEXT_PUBLIC_WRA_DASHBOARD_API_URL=` The url to What Women Want Dashboard API.
+- `NEXT_PUBLIC_GOOGLE_ANALYTICS=` Google Analytics ID.
 
 On the local machine, map `127.0.0.1` to the following domain names:
 
