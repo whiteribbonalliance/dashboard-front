@@ -174,7 +174,7 @@ export const Footer = () => {
                 )}
             </div>
 
-            {/* Export dataset */}
+            {/* Export dataset at healthwellbeing */}
             {dashboard === DashboardName.HEALTHWELLBEING && (
                 <div>
                     <span className="cursor-pointer font-bold" onClick={onExportDatasetClick}>
