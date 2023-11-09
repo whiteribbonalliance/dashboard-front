@@ -175,12 +175,14 @@ export const Footer = () => {
             </div>
 
             {/* Export dataset */}
-            <div>
-                <span className="cursor-pointer font-bold" onClick={onExportDatasetClick}>
-                    {exportDatasetText}
-                </span>
-                {exportingDataset && <div>{t('download-start-shortly')}</div>}
-            </div>
+            {dashboard === DashboardName.HEALTHWELLBEING && (
+                <div>
+                    <span className="cursor-pointer font-bold" onClick={onExportDatasetClick}>
+                        {exportDatasetText}
+                    </span>
+                    {exportingDataset && <div>{t('download-start-shortly')}</div>}
+                </div>
+            )}
 
             {/* Other dashboards */}
             {footerLinks.length > 0 && (
