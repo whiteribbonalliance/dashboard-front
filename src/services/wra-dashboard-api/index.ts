@@ -1,5 +1,6 @@
 import { ICampaign, ICampaignRequest, IConfiguration, IFilterOptions } from '@interfaces'
 import { TOption } from '@types'
+import { downloadCsvBlob, getCsvFileNameFromHeaders } from '@utils'
 
 const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL
 const headers = { 'Content-Type': 'application/json' }
@@ -149,4 +150,39 @@ export async function getCampaignsMergedHistogramOptions(lang: string) {
     const data: TOption<string>[] = await response.json()
 
     return data
+}
+
+/**
+ * Get campaign public data
+ *
+ * @param config The campaign configuration
+ * @param campaignRequest The campaign request
+ * @param response_year The response year
+ */
+export async function getCampaignPublicData(
+    config: IConfiguration,
+    campaignRequest: ICampaignRequest,
+    response_year: string
+) {
+    const response = await fetch(
+        `${apiUrl}/campaigns/${config.campaignCode}/public/data?response_year=${response_year}`,
+        {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(campaignRequest),
+        }
+    )
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch campaign public data')
+    }
+
+    // Get file name from headers
+    const filename = getCsvFileNameFromHeaders(response.headers)
+
+    // Create blob
+    const blob = await response.blob()
+
+    // Download
+    downloadCsvBlob(blob, filename)
 }

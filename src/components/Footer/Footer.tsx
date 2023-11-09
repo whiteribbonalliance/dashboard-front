@@ -3,30 +3,19 @@
 import Link from 'next/link'
 import { DashboardName } from '@enums'
 import React, { useContext, useState } from 'react'
-import { applyToThousandsSepOnText, classNames, getDashboardConfig } from '@utils'
+import { applyToThousandsSepOnText, classNames, getCampaignRequest, getDashboardConfig } from '@utils'
 import { useTranslation } from '@app/i18n/client'
 import { dashboardsConfigs } from '@configurations'
 import { OrganizationLogos } from 'components/OrganizationLogos'
 import { ParamsContext } from '@contexts/params'
+import { getCampaignPublicData } from '@services/wra-dashboard-api'
 
 export const Footer = () => {
     const { params } = useContext(ParamsContext)
-    const { dashboard, lang } = params
+    const { dashboard, lang, filters, responseYear } = params
 
-    const [exportDatasetLinkClicked, setExportDatasetLinkClicked] = useState<boolean>(false)
+    const [exportingDataset, setExportingDataset] = useState<boolean>(false)
     const { t } = useTranslation(lang)
-    const config = getDashboardConfig(dashboard)
-    const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL
-
-    // Set export dataset link
-    let exportDatasetLink
-    switch (dashboard) {
-        case DashboardName.HEALTHWELLBEING:
-            exportDatasetLink = `${apiUrl}/campaigns/${config.campaignCode}/public/data`
-            break
-        default:
-            exportDatasetLink = ''
-    }
 
     // Set export dataset text
     let exportDatasetText = t('export-dataset')
@@ -91,6 +80,21 @@ export const Footer = () => {
         }
 
         return text
+    }
+
+    // On export dataset click
+    async function onExportDatasetClick() {
+        if (!exportingDataset) {
+            setExportingDataset(true)
+            const config = getDashboardConfig(dashboard)
+            const campaignRequest = getCampaignRequest(dashboard, filters)
+
+            try {
+                await getCampaignPublicData(config, campaignRequest, responseYear)
+            } catch (error) {
+                setExportingDataset(false)
+            }
+        }
     }
 
     return (
@@ -171,18 +175,12 @@ export const Footer = () => {
             </div>
 
             {/* Export dataset */}
-            {exportDatasetLink && (
-                <div>
-                    <Link
-                        href={exportDatasetLink}
-                        className="font-bold"
-                        onClick={() => setExportDatasetLinkClicked(true)}
-                    >
-                        {exportDatasetText}
-                    </Link>
-                    {exportDatasetLinkClicked && <div>{t('download-start-shortly')}</div>}
-                </div>
-            )}
+            <div>
+                <span className="cursor-pointer font-bold" onClick={onExportDatasetClick}>
+                    {exportDatasetText}
+                </span>
+                {exportingDataset && <div>{t('download-start-shortly')}</div>}
+            </div>
 
             {/* Other dashboards */}
             {footerLinks.length > 0 && (
