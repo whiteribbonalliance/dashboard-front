@@ -153,13 +153,13 @@ export async function getCampaignsMergedHistogramOptions(lang: string) {
 }
 
 /**
- * Get campaign public data
+ * Download campaign public data
  *
  * @param config The campaign configuration
  * @param campaignRequest The campaign request
  * @param response_year The response year
  */
-export async function getCampaignPublicData(
+export async function downloadCampaignPublicData(
     config: IConfiguration,
     campaignRequest: ICampaignRequest,
     response_year: string

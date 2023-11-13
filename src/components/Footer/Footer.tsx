@@ -8,7 +8,7 @@ import { useTranslation } from '@app/i18n/client'
 import { dashboardsConfigs } from '@configurations'
 import { OrganizationLogos } from 'components/OrganizationLogos'
 import { ParamsContext } from '@contexts/params'
-import { getCampaignPublicData } from '@services/wra-dashboard-api'
+import { downloadCampaignPublicData } from '@services/wra-dashboard-api'
 
 export const Footer = () => {
     const { params } = useContext(ParamsContext)
@@ -90,7 +90,8 @@ export const Footer = () => {
             const campaignRequest = getCampaignRequest(dashboard, filters)
 
             try {
-                await getCampaignPublicData(config, campaignRequest, responseYear)
+                await downloadCampaignPublicData(config, campaignRequest, responseYear)
+                setExportingDataset(false)
             } catch (error) {
                 setExportingDataset(false)
             }
