@@ -135,7 +135,8 @@ export const FiltersPanel = () => {
     }
 
     // Whether the PMNCH QR code should be displayed
-    const displayPmnchQrCode = dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT
+    // const displayPmnchQrCode = dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT
+    const displayPmnchQrCode = false
 
     // Fetch filter options
     useQuery<IFilterOptions>({
