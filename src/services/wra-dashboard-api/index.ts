@@ -165,7 +165,7 @@ export async function downloadCampaignPublicData(
     response_year: string
 ) {
     const response = await fetch(
-        `${apiUrl}/campaigns/${config.campaignCode}/public/data?response_year=${response_year}`,
+        `${apiUrl}/campaigns/${config.campaignCode}/data/public?response_year=${response_year}`,
         {
             method: 'POST',
             headers: headers,
