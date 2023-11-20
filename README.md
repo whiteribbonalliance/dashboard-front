@@ -96,3 +96,46 @@ Check `README.md` inside the back-end project for translations.
 3. At `src/utils/index.ts` map the dashboard to its config at the function `getDashboardConfig`.
 4. Add new translations e.g. the title and subtext (check the back-end README).
 5. Modify switch statements in components to reflect changes if necessary.
+
+## PMNCH
+
+Because of organization policies, the dashboard at `https://whatyoungpeoplewant.whiteribbonalliance.org` should be
+hosted on `Azure` and make use of its services instead of `Google`. To solve this issue, two new repositories are
+created and deployed on `Azure`, these repositories should always stay in sync with the original repositories.
+
+For development locally for any of the campaigns, please work on the original repositories:
+
+- Back-end: https://github.com/whiteribbonalliance/wwwdashboardapi
+- Front-end: https://github.com/whiteribbonalliance/global_directory_dashboard
+
+`PMNCH` Will use the following repositories:
+
+- Back-end: https://github.com/pmnch/pmnch-dashboard-api
+- Front-end: https://github.com/pmnch/pmnch-dashboard
+
+These `PMNCH` repositories are exact copies of the original repositories, but they will be deployed on `Azure`.
+When a change has been pushed to the original repositories, pull these changes into the repositories for `PMNCH` if a
+new deployment is needed at that moment for `PMNCH`.
+
+#### Remotes
+
+After cloning the `PMNCH` repositories locally, change the remote urls.
+
+Back-end:
+
+```bash
+git remote set-url origin https://github.com/whiteribbonalliance/wwwdashboardapi.git
+git remote set-url --push origin https://github.com/pmnch/pmnch-dashboard-api.git
+```
+
+Front-end:
+
+```bash
+git remote set-url origin https://github.com/whiteribbonalliance/global_directory_dashboard.git
+git remote set-url --push origin https://github.com/pmnch/pmnch-dashboard.git
+```
+
+`git pull origin main` will pull from the original repository, and `git push origin main` will push into the repository
+for `PMNCH`.
+
+`git remote -v` to check the remotes.
