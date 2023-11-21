@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: "Google App Engine: Build and deploy dashboard (Next.js)"
 
 on:
   push:
