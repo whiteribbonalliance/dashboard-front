@@ -14,7 +14,7 @@ handlers:
 env_variables:
   NEXT_PUBLIC_PROD_DOMAINS: ".whiteribbonalliance.org .freelancedatascientist.net"
   NEXT_PUBLIC_MAIN_SUBDOMAIN: "explore"
-  NEXT_PUBLIC_ONLY_PMNCH: False
+  ONLY_PMNCH: False
 
 # Environment variables that need to be exposed to the client (with NEXT_PUBLIC_) should be added at build time
 build_env_variables:

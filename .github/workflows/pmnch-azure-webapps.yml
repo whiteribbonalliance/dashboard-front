@@ -37,6 +37,7 @@ env:
   AZURE_WEBAPP_NAME: pmnch-front # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '18.x' # set this to the node version to use
+  ONLY_PMNCH: True
   NEXT_PUBLIC_GOOGLE_ANALYTICS: G-PQ6PBP7QDG
   NEXT_PUBLIC_WRA_DASHBOARD_API_URL: https://pmnch-api.azurewebsites.net/api/v1
 

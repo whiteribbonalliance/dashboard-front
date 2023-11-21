@@ -27,7 +27,7 @@ export function middleware(request: NextRequest) {
     const nextUrl = request.nextUrl
 
     // If ONLY_PMNCH, use path
-    if (process.env.NEXT_PUBLIC_ONLY_PMNCH.toLowerCase() === 'true') {
+    if (process.env.ONLY_PMNCH.toLowerCase() === 'true') {
         const dashboardNameFromPath = nextUrl.pathname.split('/').at(-1)
         if (dashboardNameFromPath === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
             // e.g. '/dashboards_use_path/en/whatyoungpeoplewant'
