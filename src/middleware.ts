@@ -10,7 +10,7 @@ export function middleware(request: NextRequest) {
     const devDomain = process.env.NEXT_PUBLIC_DEV_DOMAIN || '.localhost'
     const mainSubdomain = process.env.NEXT_PUBLIC_MAIN_SUBDOMAIN
 
-    // Check if there is any supported language in the pathname or not
+    // Check if there is any supported language in the pathname
     const pathnameIsMissingLanguage = languages.every(
         (language) => !pathname.startsWith(`/${language.code}/`) && pathname !== `/${language.code}`
     )
