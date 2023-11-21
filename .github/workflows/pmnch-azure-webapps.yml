@@ -52,12 +52,12 @@ jobs:
 
       - name: Set Environment Variables
         run: |
-          echo "NEXT_PUBLIC_PROD_DOMAINS=" >> .env.local
-          echo "NEXT_PUBLIC_MAIN_SUBDOMAIN=" >> .env.local
-          echo "NEXT_PUBLIC_DEV_DOMAIN=" >> .env.local
+          touch .env.local
+          echo "PROD_DOMAINS=" >> .env.local
+          echo "MAIN_SUBDOMAIN=" >> .env.local
+          echo "ONLY_PMNCH=True" >> .env.local
           echo "NEXT_PUBLIC_WRA_DASHBOARD_API_URL=https://pmnch-api.azurewebsites.net/api/v1" >> .env.local
           echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=G-PQ6PBP7QDG" >> .env.local
-          echo "ONLY_PMNCH=True" >> .env.local
 
       - name: npm install, build, and test
         run: |

@@ -12,12 +12,12 @@ The file at `app/dashboards_use_subdomain/[dashboard]/[lang]/page.tsx` will gene
 
 Configure .env.local.
 
-- `NEXT_PUBLIC_PROD_DOMAINS=` The domains allowed in production.
-- `NEXT_PUBLIC_MAIN_SUBDOMAIN=` The subdomain used in production.
-- `NEXT_PUBLIC_DEV_DOMAIN=` The subdomain used in development.
+- `PROD_DOMAINS=` The domains allowed in production.
+- `MAIN_SUBDOMAIN=` The subdomain used in production.
+- `DEV_DOMAIN=` The subdomain used in development.
+- `ONLY_PMNCH=` Whether to only display `pmnch` or not. Accepts `True` or `False`.
 - `NEXT_PUBLIC_WRA_DASHBOARD_API_URL=` The url to What Women Want Dashboard API.
 - `NEXT_PUBLIC_GOOGLE_ANALYTICS=` Google Analytics ID.
-- `ONLY_PMNCH=` Whether to only display `pmnch` or not. Accepts `True` or `False`.
 
 On the local machine, map `127.0.0.1` to the following domain names:
 
