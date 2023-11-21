@@ -97,38 +97,38 @@ Check `README.md` inside the back-end project for translations.
 4. Add new translations e.g. the title and subtext (check the back-end README).
 5. Modify switch statements in components to reflect changes if necessary.
 
-## PMNCH
+## PMNCH - Azure deployment
 
 Because of organization policies, the dashboard at `https://whatyoungpeoplewant.whiteribbonalliance.org` should be
-hosted on `Azure` and make use of its services instead of `Google`. To solve this issue, two new repositories are
-created and deployed on `Azure`, these repositories should always stay in sync with the original repositories.
+deployed on `Azure` and make use of its services instead of `Google`. To solve this issue, two new repositories are
+created, these repositories should always stay in sync with the original repositories.
 
-For development locally for any of the campaigns, please work on the original repositories:
+For development locally regarding any of the campaigns, please work on the original repositories:
 
 - Back-end: https://github.com/whiteribbonalliance/wwwdashboardapi
 - Front-end: https://github.com/whiteribbonalliance/global_directory_dashboard
 
-`PMNCH` Will use the following repositories:
+`PMNCH` Will use the following repositories for deployment:
 
 - Back-end: https://github.com/pmnch/pmnch-dashboard-api
 - Front-end: https://github.com/pmnch/pmnch-dashboard
 
 These `PMNCH` repositories are exact copies of the original repositories, but they will be deployed on `Azure`.
-When a change has been pushed to the original repositories, pull these changes into the repositories for `PMNCH` if a
-new deployment is needed at that moment for `PMNCH`.
+When a change has been pushed to the original repositories, keep the `PMNCH` repositories in sync by pulling from
+the original repository and pushing into the `PMNCH` repository.
 
 #### Remotes
 
 After cloning the `PMNCH` repositories locally, change the remote urls.
 
-Back-end:
+On the back-end repository:
 
 ```bash
 git remote set-url origin https://github.com/whiteribbonalliance/wwwdashboardapi.git
 git remote set-url --push origin https://github.com/pmnch/pmnch-dashboard-api.git
 ```
 
-Front-end:
+On the front-end repository:
 
 ```bash
 git remote set-url origin https://github.com/whiteribbonalliance/global_directory_dashboard.git
@@ -139,3 +139,9 @@ git remote set-url --push origin https://github.com/pmnch/pmnch-dashboard.git
 for `PMNCH`.
 
 `git remote -v` to check the remotes.
+
+#### Workflows
+
+In each repository there's two workflows (To deploy to `Google` or `Azure`), make sure to only enable the correct
+workflow in
+the repository on GitHub: `https://docs.github.com/en/actions/using-workflows/disabling-and-enabling-a-workflow`.
