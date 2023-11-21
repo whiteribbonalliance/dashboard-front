@@ -97,4 +97,3 @@ export const config = {
     // Exclude these paths
     matcher: '/((?!api|.*\\..*|_next).*)',
 }
-
