@@ -5,5 +5,6 @@ namespace NodeJS {
         NEXT_PUBLIC_DEV_DOMAIN: string
         NEXT_PUBLIC_WRA_DASHBOARD_API_URL: string
         NEXT_PUBLIC_GOOGLE_ANALYTICS: string
+        NEXT_PUBLIC_ONLY_PMNCH: string
     }
 }

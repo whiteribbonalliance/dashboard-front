@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { dashboards, defaultLanguage, languages } from '@constants'
+import { DashboardName } from '@enums'
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
@@ -20,6 +21,22 @@ export function middleware(request: NextRequest) {
         // e.g. incoming request is /products
         // The new URL is now /en/products
         return NextResponse.redirect(new URL(`/${defaultLanguage.code}/${pathname}`, request.url))
+    }
+
+    // Next url
+    const nextUrl = request.nextUrl
+
+    // If ONLY_PMNCH, use path
+    const dashboardNameFromPath = nextUrl.pathname.split('/').at(-1)
+    if (
+        process.env.NEXT_PUBLIC_ONLY_PMNCH.toLowerCase() === 'true' &&
+        dashboardNameFromPath === DashboardName.WHAT_YOUNG_PEOPLE_WANT
+    ) {
+        // e.g. '/dashboards_use_path/en/whatyoungpeoplewant'
+        nextUrl.pathname = `/dashboards_use_path${nextUrl.pathname}`
+
+        // Rewrite to the current hostname under the app/dashboards_use_path folder
+        return NextResponse.rewrite(nextUrl)
     }
 
     // Get the custom domain/subdomain value by removing the root URL
@@ -53,7 +70,6 @@ export function middleware(request: NextRequest) {
             }
 
             // e.g. '/dashboards_use_path/en/whatwomenwant'
-            const nextUrl = request.nextUrl
             nextUrl.pathname = `/dashboards_use_path${nextUrl.pathname}`
 
             // Rewrite to the current hostname under the app/dashboards_use_path folder
@@ -70,7 +86,6 @@ export function middleware(request: NextRequest) {
     }
 
     // e.g. '/dashboards_use_subdomain/whatwomenwant/en'
-    const nextUrl = request.nextUrl
     nextUrl.pathname = `/dashboards_use_subdomain/${currentHost}${nextUrl.pathname}`
 
     // Rewrite to the current hostname under the app/dashboards_use_subdomain folder
