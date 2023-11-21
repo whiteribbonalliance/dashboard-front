@@ -27,16 +27,17 @@ export function middleware(request: NextRequest) {
     const nextUrl = request.nextUrl
 
     // If ONLY_PMNCH, use path
-    const dashboardNameFromPath = nextUrl.pathname.split('/').at(-1)
-    if (
-        process.env.NEXT_PUBLIC_ONLY_PMNCH.toLowerCase() === 'true' &&
-        dashboardNameFromPath === DashboardName.WHAT_YOUNG_PEOPLE_WANT
-    ) {
-        // e.g. '/dashboards_use_path/en/whatyoungpeoplewant'
-        nextUrl.pathname = `/dashboards_use_path${nextUrl.pathname}`
+    if (process.env.NEXT_PUBLIC_ONLY_PMNCH.toLowerCase() === 'true') {
+        const dashboardNameFromPath = nextUrl.pathname.split('/').at(-1)
+        if (dashboardNameFromPath === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
+            // e.g. '/dashboards_use_path/en/whatyoungpeoplewant'
+            nextUrl.pathname = `/dashboards_use_path${nextUrl.pathname}`
 
-        // Rewrite to the current hostname under the app/dashboards_use_path folder
-        return NextResponse.rewrite(nextUrl)
+            // Rewrite to the current hostname under the app/dashboards_use_path folder
+            return NextResponse.rewrite(nextUrl)
+        } else {
+            return new Response('404', { status: 404 })
+        }
     }
 
     // Get the custom domain/subdomain value by removing the root URL
