@@ -50,13 +50,17 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: npm install & build
+      - name: Create .env.local file for public env variables
+        run: |
+          touch .env.local
+          echo "NEXT_PUBLIC_WRA_DASHBOARD_API_URL=https://pmnch-api.azurewebsites.net/api/v1" > .env.local
+          echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=G-PQ6PBP7QDG" >> .env.local
+          cat .env.local
+
+      - name: Install & build
         run: |
           npm install
-          npm run build --if-present
-        env:
-          NEXT_PUBLIC_WRA_DASHBOARD_API_URL: https://pmnch-api.azurewebsites.net/api/v1
-          NEXT_PUBLIC_GOOGLE_ANALYTICS: G-PQ6PBP7QDG
+          npm run build
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
