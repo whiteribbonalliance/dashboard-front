@@ -97,4 +97,7 @@ export function middleware(request: NextRequest) {
 export const config = {
     // Exclude these paths
     matcher: '/((?!api|.*\\..*|_next).*)',
+
+    // Allow dynamic code evaluation for Lodash
+    unstable_allowDynamic: ['**/node_modules/lodash/lodash.js'],
 }
