@@ -37,8 +37,6 @@ env:
   AZURE_WEBAPP_NAME: pmnch-front # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '18.x' # set this to the node version to use
-  NEXT_PUBLIC_WRA_DASHBOARD_API_URL: 'https://pmnch-api.azurewebsites.net/api/v1'
-  NEXT_PUBLIC_GOOGLE_ANALYTICS: 'G-PQ6PBP7QDG'
 
 jobs:
   build:
@@ -51,6 +49,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
+
+      - name: Create .env.local file for public env variables
+        env:
+          NEXT_PUBLIC_API_BASE_URL: ${{ vars.DEV_NEXT_PUBLIC_API_BASE_URL }}
+        run: |
+          touch .env.local
+          echo NEXT_PUBLIC_WRA_DASHBOARD_API_URL=https://pmnch-api.azurewebsites.net/api/v1 >> .env.local
+          echo NEXT_PUBLIC_GOOGLE_ANALYTICS=G-PQ6PBP7QDG >> .env.local
 
       - name: npm install, build, and test
         run: |
