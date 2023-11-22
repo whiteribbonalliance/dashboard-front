@@ -14,6 +14,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { getDefaultFilterValues, TFilter } from '@schemas/filter'
 import _ from 'lodash'
 import { ICampaignRequest } from '@interfaces'
+import { languagesAzure, languagesGoogle } from '@constants'
 
 /**
  * Merge Tailwind CSS classes
@@ -198,4 +199,17 @@ export function getCampaignRequest(
     const campaignRequest: ICampaignRequest = { filter_1: filter1, filter_2: filter2 }
 
     return campaignRequest
+}
+
+/**
+ * Get languages by dashboard
+ *
+ * @param dashboard The dashboard
+ */
+export function getLanguagesByDashboard(dashboard: TDashboard) {
+    if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
+        return languagesAzure
+    } else {
+        return languagesGoogle
+    }
 }

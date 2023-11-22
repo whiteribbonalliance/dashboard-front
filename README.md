@@ -13,7 +13,7 @@ The file at `app/dashboards_use_subdomain/[dashboard]/[lang]/page.tsx` will gene
 Configure .env.local.
 
 - `PROD_DOMAINS=` The domains allowed in production.
-- `MAIN_SUBDOMAIN=` The subdomain used in production.
+- `SUBDOMAIN=` The subdomain used in production.
 - `DEV_DOMAIN=` The subdomain used in development.
 - `ONLY_PMNCH=` Whether to only display `pmnch` or not. Accepts `True` or `False`.
 - `NEXT_PUBLIC_WRA_DASHBOARD_API_URL=` The url to What Women Want Dashboard API.

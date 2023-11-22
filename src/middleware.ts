@@ -8,10 +8,11 @@ export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
     const hostname = request.headers.get('host') as string
     const prodDomains = process.env.PROD_DOMAINS.split(' ')
-    const devDomain = process.env.DEV_DOMAIN ?? '.localhost'
-    const mainSubdomain = process.env.MAIN_SUBDOMAIN
+    const devDomain = process.env.DEV_DOMAIN || '.localhost'
+    const mainSubdomain = process.env.SUBDOMAIN
+    const onlyPmnch = process.env.ONLY_PMNCH.toLowerCase() === 'true'
 
-    // Check if there is any supported language in the pathname
+    // Check if there is any supported language in the pathname or not
     const pathnameIsMissingLanguage = languages.every(
         (language) => !pathname.startsWith(`/${language.code}/`) && pathname !== `/${language.code}`
     )
@@ -23,11 +24,9 @@ export function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL(`/${defaultLanguage.code}/${pathname}`, request.url))
     }
 
-    // Next url
-    const nextUrl = request.nextUrl
-
     // If ONLY_PMNCH, use path
-    if (process.env.ONLY_PMNCH.toLowerCase() === 'true') {
+    if (onlyPmnch) {
+        const nextUrl = request.nextUrl
         const dashboardNameFromPath = nextUrl.pathname.split('/').at(-1)
         if (dashboardNameFromPath === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
             // e.g. '/dashboards_use_path/en/whatyoungpeoplewant'
@@ -71,6 +70,7 @@ export function middleware(request: NextRequest) {
             }
 
             // e.g. '/dashboards_use_path/en/whatwomenwant'
+            const nextUrl = request.nextUrl
             nextUrl.pathname = `/dashboards_use_path${nextUrl.pathname}`
 
             // Rewrite to the current hostname under the app/dashboards_use_path folder
@@ -87,6 +87,7 @@ export function middleware(request: NextRequest) {
     }
 
     // e.g. '/dashboards_use_subdomain/whatwomenwant/en'
+    const nextUrl = request.nextUrl
     nextUrl.pathname = `/dashboards_use_subdomain/${currentHost}${nextUrl.pathname}`
 
     // Rewrite to the current hostname under the app/dashboards_use_subdomain folder

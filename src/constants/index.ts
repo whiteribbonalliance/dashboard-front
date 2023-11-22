@@ -1,5 +1,6 @@
 import { DashboardName } from '@enums'
 import { ILanguage } from '@interfaces'
+import _ from 'lodash'
 
 // TODO: Temporarily hide womenseconomicempowerment
 export const dashboards = Object.entries(DashboardName)
@@ -8,8 +9,7 @@ export const dashboards = Object.entries(DashboardName)
 
 export const seoMainTitle = 'White Ribbon Alliance'
 
-// Languages supported by Cloud Translation API
-export const languages: ILanguage[] = [
+export const languagesGoogle: ILanguage[] = [
     { code: 'af', name: 'Afrikaans' },
     { code: 'ak', name: 'Akan' },
     { code: 'am', name: 'አማርኛ' },
@@ -145,6 +145,545 @@ export const languages: ILanguage[] = [
     { code: 'zh_tw', name: '中國人' },
     { code: 'zu', name: 'isiZulu' },
 ]
+
+export const languagesAzure: ILanguage[] = [
+    {
+        code: 'af',
+        name: 'Afrikaans',
+    },
+    {
+        code: 'sq',
+        name: 'shqip',
+    },
+    {
+        code: 'am',
+        name: 'አማርኛ',
+    },
+    {
+        code: 'ar',
+        name: 'العربية',
+    },
+    {
+        code: 'hy',
+        name: 'հայերեն',
+    },
+    {
+        code: 'as',
+        name: 'অসমীয়া',
+    },
+    {
+        code: 'az',
+        name: 'azərbaycan',
+    },
+    {
+        code: 'bn',
+        name: 'বাংলা',
+    },
+    {
+        code: 'ba',
+        name: 'Bashkir',
+    },
+    {
+        code: 'eu',
+        name: 'euskara',
+    },
+    {
+        code: 'bho',
+        name: 'भोजपुरी',
+    },
+    {
+        code: 'brx',
+        name: 'Bodo',
+    },
+    {
+        code: 'bs',
+        name: 'bosanski',
+    },
+    {
+        code: 'bg',
+        name: 'български',
+    },
+    {
+        code: 'yue',
+        name: 'Cantonese (Traditional)',
+    },
+    {
+        code: 'ca',
+        name: 'català',
+    },
+    {
+        code: 'lzh',
+        name: 'Chinese (Literary)',
+    },
+    {
+        code: 'zh-Hans',
+        name: 'Chinese Simplified',
+    },
+    {
+        code: 'zh-Hant',
+        name: 'Chinese Traditional',
+    },
+    {
+        code: 'sn',
+        name: 'chiShona',
+    },
+    {
+        code: 'hr',
+        name: 'hrvatski',
+    },
+    {
+        code: 'cs',
+        name: 'čeština',
+    },
+    {
+        code: 'da',
+        name: 'dansk',
+    },
+    {
+        code: 'prs',
+        name: 'Dari',
+    },
+    {
+        code: 'dv',
+        name: 'ދިވެހި',
+    },
+    {
+        code: 'doi',
+        name: 'डोगरी',
+    },
+    {
+        code: 'nl',
+        name: 'Nederlands',
+    },
+    {
+        code: 'en',
+        name: 'English',
+    },
+    {
+        code: 'et',
+        name: 'eesti',
+    },
+    {
+        code: 'fo',
+        name: 'Faroese',
+    },
+    {
+        code: 'fj',
+        name: 'Fijian',
+    },
+    {
+        code: 'fil',
+        name: 'Filipino',
+    },
+    {
+        code: 'fi',
+        name: 'suomi',
+    },
+    {
+        code: 'fr',
+        name: 'français',
+    },
+    {
+        code: 'fr-ca',
+        name: 'French (Canada)',
+    },
+    {
+        code: 'gl',
+        name: 'galego',
+    },
+    {
+        code: 'ka',
+        name: 'ქართული',
+    },
+    {
+        code: 'de',
+        name: 'Deutsch',
+    },
+    {
+        code: 'el',
+        name: 'Ελληνικά',
+    },
+    {
+        code: 'gu',
+        name: 'ગુજરાતી',
+    },
+    {
+        code: 'ht',
+        name: 'kreyòl ayisyen',
+    },
+    {
+        code: 'ha',
+        name: 'Hausa',
+    },
+    {
+        code: 'he',
+        name: 'עברית',
+    },
+    {
+        code: 'hi',
+        name: 'हिन्दी',
+    },
+    {
+        code: 'mww',
+        name: 'Hmong Daw (Latin)',
+    },
+    {
+        code: 'hu',
+        name: 'magyar',
+    },
+    {
+        code: 'is',
+        name: 'íslenska',
+    },
+    {
+        code: 'ig',
+        name: 'Asụsụ Igbo',
+    },
+    {
+        code: 'id',
+        name: 'Indonesia',
+    },
+    {
+        code: 'ikt',
+        name: 'Inuinnaqtun',
+    },
+    {
+        code: 'iu',
+        name: 'Inuktitut',
+    },
+    {
+        code: 'iu-Latn',
+        name: 'Inuktitut (Latin)',
+    },
+    {
+        code: 'ga',
+        name: 'Gaeilge',
+    },
+    {
+        code: 'it',
+        name: 'italiano',
+    },
+    {
+        code: 'ja',
+        name: '日本語',
+    },
+    {
+        code: 'kn',
+        name: 'ಕನ್ನಡ',
+    },
+    {
+        code: 'ks',
+        name: 'Kashmiri',
+    },
+    {
+        code: 'kk',
+        name: 'қазақ тілі',
+    },
+    {
+        code: 'km',
+        name: 'ខ្មែរ',
+    },
+    {
+        code: 'rw',
+        name: 'Kinyarwanda',
+    },
+    {
+        code: 'tlh-Latn',
+        name: 'Klingon',
+    },
+    {
+        code: 'tlh-Piqd',
+        name: 'Klingon (plqaD)',
+    },
+    {
+        code: 'gom',
+        name: 'कोंकणी',
+    },
+    {
+        code: 'ko',
+        name: '한국어',
+    },
+    {
+        code: 'ku',
+        name: 'kurdî',
+    },
+    {
+        code: 'kmr',
+        name: 'Kurdish (Northern)',
+    },
+    {
+        code: 'ky',
+        name: 'кыргызча',
+    },
+    {
+        code: 'lo',
+        name: 'ລາວ',
+    },
+    {
+        code: 'lv',
+        name: 'latviešu',
+    },
+    {
+        code: 'lt',
+        name: 'lietuvių',
+    },
+    {
+        code: 'ln',
+        name: 'lingála',
+    },
+    {
+        code: 'dsb',
+        name: 'Lower Sorbian',
+    },
+    {
+        code: 'lug',
+        name: 'Luganda',
+    },
+    {
+        code: 'mk',
+        name: 'македонски',
+    },
+    {
+        code: 'mai',
+        name: 'मैथिली',
+    },
+    {
+        code: 'mg',
+        name: 'Malagasy',
+    },
+    {
+        code: 'ms',
+        name: 'Melayu',
+    },
+    {
+        code: 'ml',
+        name: 'മലയാളം',
+    },
+    {
+        code: 'mt',
+        name: 'Malti',
+    },
+    {
+        code: 'mi',
+        name: 'Māori',
+    },
+    {
+        code: 'mr',
+        name: 'मराठी',
+    },
+    {
+        code: 'mn-Cyrl',
+        name: 'Mongolian (Cyrillic)',
+    },
+    {
+        code: 'mn-Mong',
+        name: 'Mongolian (Traditional)',
+    },
+    {
+        code: 'my',
+        name: 'မြန်မာ',
+    },
+    {
+        code: 'ne',
+        name: 'नेपाली',
+    },
+    {
+        code: 'nb',
+        name: 'Norwegian',
+    },
+    {
+        code: 'nya',
+        name: 'Nyanja',
+    },
+    {
+        code: 'or',
+        name: 'ଓଡ଼ିଆ',
+    },
+    {
+        code: 'ps',
+        name: 'پښتو',
+    },
+    {
+        code: 'fa',
+        name: 'فارسی',
+    },
+    {
+        code: 'pl',
+        name: 'polski',
+    },
+    {
+        code: 'pt',
+        name: 'português',
+    },
+    {
+        code: 'pt-pt',
+        name: 'Portuguese (Portugal)',
+    },
+    {
+        code: 'pa',
+        name: 'ਪੰਜਾਬੀ',
+    },
+    {
+        code: 'otq',
+        name: 'Queretaro Otomi',
+    },
+    {
+        code: 'ro',
+        name: 'română',
+    },
+    {
+        code: 'run',
+        name: 'Rundi',
+    },
+    {
+        code: 'ru',
+        name: 'русский',
+    },
+    {
+        code: 'sm',
+        name: 'Gagana faʻa Sāmoa',
+    },
+    {
+        code: 'sr-Cyrl',
+        name: 'Serbian (Cyrillic)',
+    },
+    {
+        code: 'sr-Latn',
+        name: 'Serbian (Latin)',
+    },
+    {
+        code: 'st',
+        name: 'Sesotho',
+    },
+    {
+        code: 'nso',
+        name: 'Sepedi',
+    },
+    {
+        code: 'tn',
+        name: 'Setswana',
+    },
+    {
+        code: 'sd',
+        name: 'سنڌي',
+    },
+    {
+        code: 'si',
+        name: 'සිංහල',
+    },
+    {
+        code: 'sk',
+        name: 'slovenčina',
+    },
+    {
+        code: 'sl',
+        name: 'slovenščina',
+    },
+    {
+        code: 'so',
+        name: 'Soomaali',
+    },
+    {
+        code: 'es',
+        name: 'español',
+    },
+    {
+        code: 'sw',
+        name: 'Kiswahili',
+    },
+    {
+        code: 'sv',
+        name: 'svenska',
+    },
+    {
+        code: 'ty',
+        name: 'Tahitian',
+    },
+    {
+        code: 'ta',
+        name: 'தமிழ்',
+    },
+    {
+        code: 'tt',
+        name: 'татар',
+    },
+    {
+        code: 'te',
+        name: 'తెలుగు',
+    },
+    {
+        code: 'th',
+        name: 'ไทย',
+    },
+    {
+        code: 'bo',
+        name: 'Tibetan',
+    },
+    {
+        code: 'ti',
+        name: 'ትግርኛ',
+    },
+    {
+        code: 'to',
+        name: 'Tongan',
+    },
+    {
+        code: 'tr',
+        name: 'Türkçe',
+    },
+    {
+        code: 'tk',
+        name: 'türkmen dili',
+    },
+    {
+        code: 'uk',
+        name: 'українська',
+    },
+    {
+        code: 'hsb',
+        name: 'Upper Sorbian',
+    },
+    {
+        code: 'ur',
+        name: 'اردو',
+    },
+    {
+        code: 'ug',
+        name: 'ئۇيغۇرچە',
+    },
+    {
+        code: 'uz',
+        name: 'o‘zbek',
+    },
+    {
+        code: 'vi',
+        name: 'Tiếng Việt',
+    },
+    {
+        code: 'cy',
+        name: 'Cymraeg',
+    },
+    {
+        code: 'xh',
+        name: 'isiXhosa',
+    },
+    {
+        code: 'yo',
+        name: 'Èdè Yorùbá',
+    },
+    {
+        code: 'yua',
+        name: 'Yucatec Maya',
+    },
+    {
+        code: 'zu',
+        name: 'isiZulu',
+    },
+]
+
+export const languages = _.uniqWith([...languagesGoogle, ...languagesAzure], (pre, cur) => {
+    return pre.name == cur.name
+})
 
 export const defaultLanguage: ILanguage = { code: 'en', name: 'English' }
 

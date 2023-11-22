@@ -1,13 +1,12 @@
 'use client'
 
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment } from 'react'
 import { DashboardName } from '@enums'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLanguage } from '@fortawesome/free-solid-svg-icons'
-import { classNames } from '@utils'
-import { languages } from '@constants'
+import { classNames, getLanguagesByDashboard } from '@utils'
 import { usePathname, useRouter } from 'next/navigation'
 import { TDashboard } from '@types'
 
@@ -21,27 +20,25 @@ type LanguageOption = {
     label: string
 }
 
-const options = languages.map((language) => {
-    const option: LanguageOption = {
-        value: language.code,
-        label: language.name,
-    }
-
-    return option
-})
-
 export const LanguageSelect = ({ dashboard, lang }: ILanguageSelectProps) => {
-    const [selectedOption, setSelectedOption] = useState<LanguageOption | undefined>(undefined)
     const router = useRouter()
     const pathname = usePathname()
 
-    // Set selected option
-    useEffect(() => {
-        const tmpOption = options.find((option) => option.value === lang)
-        if (tmpOption) {
-            setSelectedOption(tmpOption)
+    // Languages
+    const languages = getLanguagesByDashboard(dashboard)
+
+    // Options
+    const options = languages.map((language) => {
+        const option: LanguageOption = {
+            value: language.code,
+            label: language.name,
         }
-    }, [lang])
+
+        return option
+    })
+
+    // Selected option
+    const selectedOption = options.find((option) => option.value === lang)
 
     // Set listbox button classes
     let listboxButtonClasses: string
