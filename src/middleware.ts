@@ -13,19 +13,10 @@ export function middleware(request: NextRequest) {
     const SUBDOMAIN = process.env.SUBDOMAIN
     const ONLY_PMNCH = process.env.ONLY_PMNCH.toLowerCase() === 'true'
 
-    let possibleSubdomains: string[]
     let possibleLanguages: ILanguage[]
     if (ONLY_PMNCH) {
-        // Only PMNCH
-        possibleSubdomains = [SUBDOMAIN]
-
-        // Languages for PMNCH
         possibleLanguages = languagesAzure
     } else {
-        // Remove PMNCH and keep other dashboard names as possible subdomains
-        possibleSubdomains = dashboards.filter((dashboard) => dashboard !== DashboardName.WHAT_YOUNG_PEOPLE_WANT)
-
-        // Languages for all other dashboards
         possibleLanguages = languagesGoogle
     }
 
@@ -65,7 +56,7 @@ export function middleware(request: NextRequest) {
     // Path routing (skip if PMNCH)
     // On SUBDOMAIN equals the extracted subdomain and the path requested is a dashboard name
     if (SUBDOMAIN === extractedSubdomain && !ONLY_PMNCH) {
-        if (possibleSubdomains.some((dashboard) => pathname.endsWith(`/${dashboard}`))) {
+        if (dashboards.some((dashboard) => pathname.endsWith(`/${dashboard}`))) {
             // Prevent security issues
             if (pathname.startsWith(`/dashboards_use_path`)) {
                 return new Response('404', { status: 404 })
