@@ -9,9 +9,7 @@ const nextConfig = {
         domains: [],
     },
 
-    distDir: '.next',
-
-    output: 'export', // Do not modify
+    output: 'standalone',
 }
 
 module.exports = nextConfig
