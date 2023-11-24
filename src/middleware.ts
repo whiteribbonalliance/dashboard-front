@@ -65,7 +65,7 @@ export function middleware(request: NextRequest) {
     // Path routing (skip if PMNCH)
     // On SUBDOMAIN equals the extracted subdomain and the path requested is a dashboard name
     if (SUBDOMAIN === extractedSubdomain && !ONLY_PMNCH) {
-        if (possibleSubdomains.some((dashboard) => pathname.endsWith(dashboard))) {
+        if (possibleSubdomains.some((dashboard) => pathname.endsWith(`/${dashboard}`))) {
             // Prevent security issues
             if (pathname.startsWith(`/dashboards_use_path`)) {
                 return new Response('404', { status: 404 })
