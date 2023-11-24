@@ -8,7 +8,7 @@ import { ILanguage } from '@interfaces'
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
     const hostname = request.headers.get('host') as string
-    const prodDomains = process.env.PROD_DOMAINS.split(' ')
+    const prodDomains = process.env.PROD_DOMAINS_ALLOWED.split(' ')
     const devDomain = process.env.DEV_DOMAIN || '.localhost'
     const subdomain = process.env.SUBDOMAIN
     const onlyPmnch = process.env.ONLY_PMNCH.toLowerCase() === 'true'

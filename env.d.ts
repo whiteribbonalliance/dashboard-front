@@ -1,6 +1,6 @@
 namespace NodeJS {
     interface ProcessEnv {
-        PROD_DOMAINS: string
+        PROD_DOMAINS_ALLOWED: string
         SUBDOMAIN: string
         DEV_DOMAIN: string
         ONLY_PMNCH: string

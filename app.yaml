@@ -12,7 +12,7 @@ handlers:
     script: auto
 
 env_variables:
-  PROD_DOMAINS: ".whiteribbonalliance.org .freelancedatascientist.net"
+  PROD_DOMAINS_ALLOWED: ".whiteribbonalliance.org .freelancedatascientist.net"
   SUBDOMAIN: "explore"
   ONLY_PMNCH: False
 
