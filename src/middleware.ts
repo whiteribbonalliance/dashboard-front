@@ -13,8 +13,8 @@ export function middleware(request: NextRequest) {
     const subdomain = process.env.SUBDOMAIN
     const onlyPmnch = process.env.ONLY_PMNCH.toLowerCase() === 'true'
 
-    let possibleSubdomains: string[] = []
-    let possibleLanguages: ILanguage[] = []
+    let possibleSubdomains: string[]
+    let possibleLanguages: ILanguage[]
     if (onlyPmnch) {
         // Only PMNCH
         possibleSubdomains = [subdomain]
