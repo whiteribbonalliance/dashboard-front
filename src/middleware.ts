@@ -73,7 +73,7 @@ export function middleware(request: NextRequest) {
 
             const nextUrl = request.nextUrl
 
-            // Rewrite to new link for PMNCH
+            // Redirect to new link for PMNCH
             if (nextUrl.pathname.endsWith(`/${DashboardName.WHAT_YOUNG_PEOPLE_WANT}`)) {
                 return NextResponse.redirect('https://wypw.1point8b.org/en')
             }
