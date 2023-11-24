@@ -8,10 +8,6 @@ const nextConfig = {
         unoptimized: true,
         domains: [],
     },
-
-    distDir: '.next',
-
-    output: 'export', // Do not modify
 }
 
 module.exports = nextConfig
