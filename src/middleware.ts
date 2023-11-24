@@ -8,21 +8,21 @@ import { ILanguage } from '@interfaces'
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
     const hostname = request.headers.get('host') as string
-    const prodDomains = process.env.PROD_DOMAINS_ALLOWED.split(' ')
-    const devDomain = process.env.DEV_DOMAIN || '.localhost'
-    const subdomain = process.env.SUBDOMAIN
-    const onlyPmnch = process.env.ONLY_PMNCH.toLowerCase() === 'true'
+    const PROD_DOMAINS_ALLOWED = process.env.PROD_DOMAINS_ALLOWED.split(' ')
+    const DEV_DOMAIN = process.env.DEV_DOMAIN || '.localhost'
+    const SUBDOMAIN = process.env.SUBDOMAIN
+    const ONLY_PMNCH = process.env.ONLY_PMNCH.toLowerCase() === 'true'
 
     let possibleSubdomains: string[]
     let possibleLanguages: ILanguage[]
-    if (onlyPmnch) {
+    if (ONLY_PMNCH) {
         // Only PMNCH
-        possibleSubdomains = [subdomain]
+        possibleSubdomains = [SUBDOMAIN]
 
         // Languages for PMNCH
         possibleLanguages = languagesAzure
     } else {
-        // Remove PMNCH
+        // Remove PMNCH and keep other dashboard names as possible subdomains
         possibleSubdomains = dashboards.filter((dashboard) => dashboard !== DashboardName.WHAT_YOUNG_PEOPLE_WANT)
 
         // Languages for all other dashboards
@@ -46,7 +46,7 @@ export function middleware(request: NextRequest) {
     let extractedSubdomain: string | undefined
     if (process.env.NODE_ENV === 'production') {
         // Find prod domain
-        const prodDomain = prodDomains.find((prodDomain) => {
+        const prodDomain = PROD_DOMAINS_ALLOWED.find((prodDomain) => {
             if (hostname.endsWith(prodDomain)) {
                 return prodDomain
             }
@@ -59,12 +59,12 @@ export function middleware(request: NextRequest) {
 
         extractedSubdomain = hostname?.replace(prodDomain, '')
     } else {
-        extractedSubdomain = hostname?.replace(`${devDomain}:3000`, '')
+        extractedSubdomain = hostname?.replace(`${DEV_DOMAIN}:3000`, '')
     }
 
-    // Path routing
-    // If subdomain equals the extracted subdomain and a path is requested that is a dashboard name
-    if (subdomain === extractedSubdomain && !onlyPmnch) {
+    // Path routing (skip if PMNCH)
+    // On SUBDOMAIN equals the extracted subdomain and the path requested is a dashboard name
+    if (SUBDOMAIN === extractedSubdomain && !ONLY_PMNCH) {
         if (possibleSubdomains.some((dashboard) => pathname.endsWith(dashboard))) {
             // Prevent security issues
             if (pathname.startsWith(`/dashboards_use_path`)) {
@@ -98,7 +98,7 @@ export function middleware(request: NextRequest) {
 
         // Set dashboard name
         let dashboardName: string
-        if (onlyPmnch) {
+        if (ONLY_PMNCH) {
             // Dashboard name for pmnch
             dashboardName = DashboardName.WHAT_YOUNG_PEOPLE_WANT
         } else {
