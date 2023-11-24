@@ -41,9 +41,9 @@ export function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL(`/${defaultLanguage.code}/${pathname}`, request.url))
     }
 
-    // Get the custom domain/subdomain value by removing the root URL
+    // Extract the subdomain by removing the root URL
     // e.g. from 'whatwomenwant.whiteribbonalliance.org' remove '.whiteribbonalliance.org' to get 'whatwomenwant'
-    let currentHost: string | undefined
+    let extractedSubdomain: string | undefined
     if (process.env.NODE_ENV === 'production') {
         // Find prod domain
         const prodDomain = prodDomains.find((prodDomain) => {
@@ -57,14 +57,14 @@ export function middleware(request: NextRequest) {
             return new Response('404', { status: 404 })
         }
 
-        currentHost = hostname?.replace(prodDomain, '')
+        extractedSubdomain = hostname?.replace(prodDomain, '')
     } else {
-        currentHost = hostname?.replace(`${devDomain}:3000`, '')
+        extractedSubdomain = hostname?.replace(`${devDomain}:3000`, '')
     }
 
     // Path routing
-    // If subdomain equals the main subdomain and a path is requested that is a dashboard name
-    if (currentHost === subdomain && !onlyPmnch) {
+    // If subdomain equals the extracted subdomain and a path is requested that is a dashboard name
+    if (subdomain === extractedSubdomain && !onlyPmnch) {
         if (possibleSubdomains.some((dashboard) => pathname.endsWith(dashboard))) {
             // Prevent security issues
             if (pathname.startsWith(`/dashboards_use_path`)) {
@@ -90,9 +90,19 @@ export function middleware(request: NextRequest) {
             return new Response('404', { status: 404 })
         }
 
+        // Set dashboard name
+        let dashboardName: string
+        if (onlyPmnch) {
+            // Dashboard name for pmnch
+            dashboardName = DashboardName.WHAT_YOUNG_PEOPLE_WANT
+        } else {
+            // For other dashboards, the dashboard name is equal to the subdomain
+            dashboardName = extractedSubdomain
+        }
+
         // e.g. '/dashboards_use_subdomain/whatwomenwant/en'
         const nextUrl = request.nextUrl
-        nextUrl.pathname = `/dashboards_use_subdomain/${currentHost}${nextUrl.pathname}`
+        nextUrl.pathname = `/dashboards_use_subdomain/${dashboardName}${nextUrl.pathname}`
 
         // Rewrite to the current hostname under the app/dashboards_use_subdomain folder
         return NextResponse.rewrite(nextUrl)
