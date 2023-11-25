@@ -10,9 +10,10 @@ export function middleware(request: NextRequest) {
     const hostname = request.headers.get('host') as string
     const PROD_DOMAINS_ALLOWED = process.env.PROD_DOMAINS_ALLOWED.split(' ')
     const DEV_DOMAIN = process.env.DEV_DOMAIN || '.localhost'
-    const SUBDOMAIN = process.env.SUBDOMAIN
+    const MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS = process.env.MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS
     const ONLY_PMNCH = process.env.ONLY_PMNCH.toLowerCase() === 'true'
 
+    // Get languages
     let possibleLanguages: ILanguage[]
     if (ONLY_PMNCH) {
         possibleLanguages = languagesAzure
@@ -53,15 +54,17 @@ export function middleware(request: NextRequest) {
         extractedSubdomain = hostname?.replace(`${DEV_DOMAIN}:3000`, '')
     }
 
-    // Path routing (skip if PMNCH)
-    // On SUBDOMAIN equals the extracted subdomain and the path requested is a dashboard name
-    if (SUBDOMAIN === extractedSubdomain && !ONLY_PMNCH) {
+    // Path routing e.g. explore.whiteribbonalliance.org/en/healthwellbeing
+    // If MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS equals the extracted subdomain
+    if (MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS === extractedSubdomain && !ONLY_PMNCH) {
+        // Check if path requested is a known dashboard name
         if (dashboards.some((dashboard) => pathname.endsWith(`/${dashboard}`))) {
             // Prevent security issues
             if (pathname.startsWith(`/dashboards_use_path`)) {
                 return new Response('404', { status: 404 })
             }
 
+            // Get NextURL
             const nextUrl = request.nextUrl
 
             // Redirect to new link for PMNCH
@@ -79,7 +82,7 @@ export function middleware(request: NextRequest) {
         }
     }
 
-    // Subdomain routing
+    // Subdomain routing e.g. whatwomenwant.whiteribbonalliance.org/en
     else {
         // Prevent security issues – users should not be able to canonically access
         // the app/dashboards_use_subdomain folder and its respective contents
@@ -87,7 +90,7 @@ export function middleware(request: NextRequest) {
             return new Response('404', { status: 404 })
         }
 
-        // Set dashboard name
+        // Set dashboard name from the current subdomain
         let dashboardName: string
         if (ONLY_PMNCH) {
             // Dashboard name for pmnch
@@ -97,8 +100,10 @@ export function middleware(request: NextRequest) {
             dashboardName = extractedSubdomain
         }
 
-        // e.g. '/dashboards_use_subdomain/whatwomenwant/en'
+        // Get NextURL
         const nextUrl = request.nextUrl
+
+        // e.g. '/dashboards_use_subdomain/whatwomenwant/en'
         nextUrl.pathname = `/dashboards_use_subdomain/${dashboardName}${nextUrl.pathname}`
 
         // Rewrite to the current hostname under the app/dashboards_use_subdomain folder

@@ -12,17 +12,19 @@ The file at `app/dashboards_use_subdomain/[dashboard]/[lang]/page.tsx` will gene
 
 Configure .env.local.
 
-- `PROD_DOMAINS_ALLOWED=` The domains allowed in production.
-- `SUBDOMAIN=` The subdomain used in production.
-- `DEV_DOMAIN=` The subdomain used in development.
-- `ONLY_PMNCH=` Whether to only display `pmnch` or not. Accepts `True` or `False`.
-- `NEXT_PUBLIC_WRA_DASHBOARD_API_URL=` The url to What Women Want Dashboard API.
+- `PROD_DOMAINS_ALLOWED=` The domains allowed in production e.g. `.whiteribbonalliance.org`.
+- `DEV_DOMAIN=` The domain used in development e.g. `.whiteribbonalliance.local`.
+- `MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS=` The subdomain used for displaying dashboards using paths e.g. `explore`
+  from `explore.whiteribbonalliance.org/healthwellbeing`.
+- `ONLY_PMNCH=` `PMNCH` exclusive, Accepts `True` or `False`.
+- `NEXT_PUBLIC_DASHBOARD_API_URL=` The url to the API.
 - `NEXT_PUBLIC_GOOGLE_ANALYTICS=` Google Analytics ID.
 
 On the local machine, map `127.0.0.1` to the following domain names:
 
 ```text
 127.0.0.1   explore.whiteribbonalliance.local
+127.0.0.1   whatyoungpeoplewant.whiteribbonalliance.local
 ```
 
 Then

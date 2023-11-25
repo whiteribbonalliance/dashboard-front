@@ -2,7 +2,7 @@ import { ICampaign, ICampaignRequest, IConfiguration, IFilterOptions } from '@in
 import { TOption } from '@types'
 import { downloadCsvBlob, getCsvFileNameFromHeaders } from '@utils'
 
-const apiUrl = process.env.NEXT_PUBLIC_WRA_DASHBOARD_API_URL
+const apiUrl = process.env.NEXT_PUBLIC_DASHBOARD_API_URL
 const headers = { 'Content-Type': 'application/json' }
 
 /**
