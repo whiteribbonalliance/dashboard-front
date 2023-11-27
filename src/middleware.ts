@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import { dashboards, defaultLanguage, languagesAzure, languagesGoogle } from '@constants'
+import { dashboards, defaultLanguage, languagesAzure, languagesGoogle, pmnchLink } from '@constants'
 import { DashboardName } from '@enums'
 import { ILanguage } from '@interfaces'
 
@@ -69,7 +69,7 @@ export function middleware(request: NextRequest) {
 
             // Redirect to new link for PMNCH
             if (nextUrl.pathname.endsWith(`/${DashboardName.WHAT_YOUNG_PEOPLE_WANT}`)) {
-                return NextResponse.redirect('https://wypw.1point8b.org/en')
+                return NextResponse.redirect(pmnchLink)
             }
 
             // e.g. '/dashboards_use_path/en/whatwomenwant'
@@ -96,6 +96,11 @@ export function middleware(request: NextRequest) {
             // Dashboard name for pmnch
             dashboardName = DashboardName.WHAT_YOUNG_PEOPLE_WANT
         } else {
+            // Redirect to new link for PMNCH
+            if (extractedSubdomain === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
+                return NextResponse.redirect(pmnchLink)
+            }
+
             // For other dashboards, the dashboard name is equal to the subdomain
             dashboardName = extractedSubdomain
         }

@@ -1,5 +1,6 @@
 import { IConfiguration } from '@interfaces'
 import { DashboardName } from '@enums'
+import { pmnchLink } from '@constants'
 
 const title = 'What Young People Want'
 
@@ -15,6 +16,6 @@ export const configuration: IConfiguration = {
     link: {
         id: DashboardName.WHAT_YOUNG_PEOPLE_WANT,
         title: title,
-        link: 'https://whatyoungpeoplewant.whiteribbonalliance.org',
+        link: pmnchLink,
     },
 }

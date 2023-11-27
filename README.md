@@ -16,7 +16,7 @@ Configure .env.local.
 - `DEV_DOMAIN=` The domain used in development e.g. `.whiteribbonalliance.local`.
 - `MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS=` The subdomain used for displaying dashboards using paths e.g. `explore`
   from `explore.whiteribbonalliance.org/healthwellbeing`.
-- `ONLY_PMNCH=` `PMNCH` exclusive, Accepts `True` or `False`.
+- `ONLY_PMNCH=` `PMNCH` exclusive. Accepts `True` or `False`.
 - `NEXT_PUBLIC_DASHBOARD_API_URL=` The url to the API.
 - `NEXT_PUBLIC_GOOGLE_ANALYTICS=` Google Analytics ID.
 
