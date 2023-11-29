@@ -51,6 +51,7 @@ const config: Config = {
         fontFamily: {
             'open-sans': ['Open Sans', 'var(--font-helvetica)', 'Arial', 'sans-serif'],
             'noto-sans-regular': ['var(--font-noto-sans-regular)', 'var(--font-helvetica)', 'Arial', 'sans-serif'],
+            'noto-sans-bold': ['var(--font-noto-sans-bold)', 'var(--font-helvetica)', 'Arial', 'sans-serif'],
             '1point8': ['var(--font-1-point-8)', 'sans-serif'],
             'proxima-nova': ['var(--font-proxima-nova)', 'var(--font-helvetica)', 'sans-serif'],
             'helvetica': ['var(--font-helvetica)', 'sans-serif'],

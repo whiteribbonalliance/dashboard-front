@@ -6,7 +6,6 @@ import { dir } from 'i18next'
 import { config as fontAwesomeConfig } from '@fortawesome/fontawesome-svg-core'
 import { TDashboard } from '@types'
 import { GoogleAnalytics } from '@components/GoogleAnalytics'
-import { Metadata } from 'next'
 import { DashboardName } from '@enums'
 
 fontAwesomeConfig.autoAddCss = false
@@ -20,6 +19,12 @@ const notoSansRegular = localFont({
     src: '../../../fonts/NotoSans/NotoSans-Regular.ttf',
     display: 'swap',
     variable: '--font-noto-sans-regular',
+})
+
+const notoSansBold = localFont({
+    src: '../../../fonts/NotoSans/NotoSans-Bold.ttf',
+    display: 'swap',
+    variable: '--font-noto-sans-bold',
 })
 
 const _1point8 = localFont({
@@ -63,7 +68,7 @@ const DashboardLayout = async ({ children, params }: IDashboardLayoutProps) => {
         <html
             lang={lang}
             dir={dir(lang)}
-            className={`${notoSansRegular.variable} ${_1point8.variable} ${helvetica.variable} ${proximaNova.variable}`}
+            className={`${notoSansRegular.variable} ${notoSansBold.variable} ${_1point8.variable} ${helvetica.variable} ${proximaNova.variable}`}
         >
             <head>{favicon}</head>
             <body>
