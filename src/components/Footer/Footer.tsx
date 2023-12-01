@@ -58,7 +58,9 @@ export const Footer = () => {
                 <p>
                     {applyToThousandsSepOnText(t('responses-from-original'), lang)}{' '}
                     <Link
-                        href={'https://www.whiteribbonallianceindia.org/whats-latest/hamara-swasthya-hamari-awaz'}
+                        href={
+                            'http://www.c3india.org/uploads/news/Findings_from_National_campaign_Hamara_Swasthya_Hamari_Awaz_(English).pdf'
+                        }
                         className={classNames('underline', footerLinkClasses)}
                     >
                         Hamara Swasthya Hamari Awaz
