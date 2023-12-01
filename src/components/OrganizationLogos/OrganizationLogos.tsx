@@ -254,7 +254,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
     const SweatLogo = () => {
         return (
             <div>
-                <Link href="https://www.sweat.org.za" target="_blank">
+                <Link href="https://www.instagram.com/sweat.org.za" target="_blank">
                     <Image
                         className="max-h-[6rem] w-full max-w-[17rem] object-contain xl:max-h-[5rem]"
                         src="/logos/sweat_logo.jpg"
