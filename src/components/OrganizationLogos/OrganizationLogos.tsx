@@ -59,7 +59,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
     const CorhaLogo = () => {
         return (
             <div>
-                <Link href="https://www.corhaethiopia.org.et" target="_blank">
+                <Link href="https://corhaethiopia.org/" target="_blank">
                     <Image
                         className="max-h-[5rem] w-full max-w-[17rem] object-contain xl:max-h-[6rem]"
                         src="/logos/corha_logo.png"
@@ -176,21 +176,21 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             </div>
         )
     }
-    const MadevLogo = () => {
-        return (
-            <div>
-                <Link href="https://madevegypt.org/ar" target="_blank">
-                    <Image
-                        className="max-h-[8rem] w-full max-w-[17rem] object-contain xl:max-h-[7rem]"
-                        src="/logos/madev_logo.png"
-                        alt="media arts for development logo"
-                        width={1117}
-                        height={200}
-                    />
-                </Link>
-            </div>
-        )
-    }
+    // const MadevLogo = () => {
+    //     return (
+    //         <div>
+    //             <Link href="https://madevegypt.org/ar" target="_blank">
+    //                 <Image
+    //                     className="max-h-[8rem] w-full max-w-[17rem] object-contain xl:max-h-[7rem]"
+    //                     src="/logos/madev_logo.png"
+    //                     alt="media arts for development logo"
+    //                     width={1117}
+    //                     height={200}
+    //                 />
+    //             </Link>
+    //         </div>
+    //     )
+    // }
     const MusaLogo = () => {
         return (
             <div>
