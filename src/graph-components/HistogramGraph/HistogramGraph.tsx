@@ -25,7 +25,7 @@ import {
 import { LegacyDashboardName } from '@enums'
 import { classNames, getDashboardConfig, niceNum, toThousandsSep } from '@utils'
 import { IHistogramData } from '@interfaces'
-import { getCampaignHistogramOptions, getCampaignsMergedHistogramOptions } from '@services/wra-dashboard-api'
+import { getCampaignHistogramOptions, getCampaignsMergedHistogramOptions } from 'services/dashboard-api'
 import { useTranslation } from '@app/i18n/client'
 import { useQuery } from 'react-query'
 import { useFilterFormsStore } from '@stores/filter-forms'

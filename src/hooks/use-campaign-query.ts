@@ -27,7 +27,7 @@ SOFTWARE.
 
 import { useQuery } from 'react-query'
 import { ICampaign } from '@interfaces'
-import { getCampaign, getCampaignsMerged } from '@services/wra-dashboard-api'
+import { getCampaign, getCampaignsMerged } from 'services/dashboard-api'
 import { getCampaignRequest, getDashboardConfig } from '@utils'
 import { LegacyDashboardName } from '@enums'
 import { useContext } from 'react'

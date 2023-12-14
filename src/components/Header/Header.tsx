@@ -16,6 +16,9 @@ import { useTranslation } from '@app/i18n/client'
 import Image from 'next/image'
 import { Title } from '@components/Title'
 import { ParamsContext } from '@contexts/params'
+import { useQuery } from 'react-query'
+import { ISettings } from '@interfaces'
+import { getSettings } from '@services/dashboard-api'
 
 interface IHamburgerMenuProps {
     open: boolean
@@ -28,6 +31,13 @@ export const Header = () => {
     const [showMobileFiltersPanel, setShowMobileFiltersPanel] = useState<boolean>(false)
     const config = getDashboardConfig(dashboard)
     const { t } = useTranslation(lang)
+
+    // Settings query
+    const settingsGeoQuery = useQuery<ISettings>({
+        queryKey: ['settings'],
+        queryFn: () => getSettings(),
+        refetchOnWindowFocus: false,
+    })
 
     const showVideoLink = config.showVideoLink
 
@@ -98,7 +108,10 @@ export const Header = () => {
 
                             {/* Menu items */}
                             <nav className="hidden gap-x-3 xl:flex xl:items-center">
-                                <LanguageSelect dashboard={dashboard} lang={lang} />
+                                {settingsGeoQuery.data?.translations_enabled && (
+                                    <LanguageSelect dashboard={dashboard} lang={lang} />
+                                )}
+
                                 {menuItems.map((item) => {
                                     if (item.url) {
                                         return (
@@ -135,9 +148,11 @@ export const Header = () => {
                                         mobileDropdownClasses
                                     )}
                                 >
-                                    <div className="mt-3">
-                                        <LanguageSelect dashboard={dashboard} lang={lang} />
-                                    </div>
+                                    {settingsGeoQuery.data?.translations_enabled && (
+                                        <div className="mt-3">
+                                            <LanguageSelect dashboard={dashboard} lang={lang} />
+                                        </div>
+                                    )}
                                     {menuItems.map((item) => {
                                         if (item.url) {
                                             return (

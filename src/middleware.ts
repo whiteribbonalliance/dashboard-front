@@ -28,9 +28,9 @@ import { NextResponse } from 'next/server'
 import { dashboards, defaultLanguage, languagesAzure, languagesGoogle, pmnchLink } from '@constants'
 import { LegacyDashboardName } from '@enums'
 import { ILanguage } from '@interfaces'
+import { getSettings } from '@services/dashboard-api'
 
-// This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
     const hostname = request.headers.get('host') as string
     const PROD_DOMAINS_ALLOWED = process.env.PROD_DOMAINS_ALLOWED.split(' ')
@@ -38,7 +38,7 @@ export function middleware(request: NextRequest) {
     const MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS = process.env.MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS
     const ONLY_PMNCH = process.env.ONLY_PMNCH.toLowerCase() === 'true'
 
-    // Get languages
+    // Possible languages to use in the dashboard
     let possibleLanguages: ILanguage[]
     if (ONLY_PMNCH) {
         possibleLanguages = languagesAzure
@@ -46,7 +46,38 @@ export function middleware(request: NextRequest) {
         possibleLanguages = languagesGoogle
     }
 
-    // Check if there is any supported language in the pathname or not
+    // All languages
+    const allLanguagesExceptEn = [...possibleLanguages].filter((language) => language.code !== 'en')
+
+    // Check if translations is enabled
+    let translationsEnabled = true
+    try {
+        const settings = await getSettings()
+        if (!settings.translations_enabled) {
+            possibleLanguages = [{ code: 'en', name: 'English' }]
+            translationsEnabled = false
+        }
+    } catch (err) {}
+
+    // Redirect if there is a language that is not supported
+    if (!translationsEnabled) {
+        // Check if pathname contains a language that is not supported
+        // e.g. when translations is disabled in the back-end, only 'en' is allowed
+        const pathnameUnsupportedLanguage = allLanguagesExceptEn.find((language) => {
+            if (pathname.startsWith(`/${language.code}/`) || pathname === `/${language.code}`) {
+                return language
+            }
+        })
+
+        if (pathnameUnsupportedLanguage) {
+            // e.g. incoming request is /nl/products
+            // The new URL is now /en/products
+            const newPathname = pathname.replace(`/${pathnameUnsupportedLanguage.code}`, '')
+            return NextResponse.redirect(new URL(`/en/${newPathname}`, request.url))
+        }
+    }
+
+    // Check if pathname is missing language
     const pathnameIsMissingLanguage = possibleLanguages.every(
         (language) => !pathname.startsWith(`/${language.code}/`) && pathname !== `/${language.code}`
     )

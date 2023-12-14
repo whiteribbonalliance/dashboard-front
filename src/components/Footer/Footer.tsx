@@ -8,7 +8,7 @@ import { useTranslation } from '@app/i18n/client'
 import { dashboardsConfigs } from '@configurations'
 import { OrganizationLogos } from 'components/OrganizationLogos'
 import { ParamsContext } from '@contexts/params'
-import { downloadCampaignPublicData } from '@services/wra-dashboard-api'
+import { downloadCampaignPublicData } from 'services/dashboard-api'
 
 export const Footer = () => {
     const { params } = useContext(ParamsContext)

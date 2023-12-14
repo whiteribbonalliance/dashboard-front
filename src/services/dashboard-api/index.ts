@@ -23,7 +23,7 @@ SOFTWARE.
 
 */
 
-import { ICampaign, ICampaignRequest, IConfiguration, IFilterOptions } from '@interfaces'
+import { ICampaign, ICampaignRequest, IConfiguration, IFilterOptions, ISettings } from '@interfaces'
 import { TOption } from '@types'
 import { downloadCsvBlob, getCsvFileNameFromHeaders } from '@utils'
 
@@ -43,7 +43,7 @@ export async function getCampaignFilterOptions(config: IConfiguration, lang: str
     })
 
     if (!response.ok) {
-        throw new Error('Failed to fetch campaign filter options')
+        throw new Error('Failed to fetch campaign filter options.')
     }
 
     const data: IFilterOptions = await response.json()
@@ -63,7 +63,7 @@ export async function getCampaignsMergedFilterOptions(lang: string) {
     })
 
     if (!response.ok) {
-        throw new Error('Failed to fetch campaigns merged filter options')
+        throw new Error('Failed to fetch campaigns merged filter options.')
     }
 
     const data: IFilterOptions = await response.json()
@@ -100,7 +100,7 @@ export async function getCampaign(
     )
 
     if (!response.ok) {
-        throw new Error('Failed to fetch campaign')
+        throw new Error('Failed to fetch campaign.')
     }
 
     const data: ICampaign = await response.json()
@@ -128,7 +128,7 @@ export async function getCampaignsMerged(
     })
 
     if (!response.ok) {
-        throw new Error('Failed to fetch campaigns merged')
+        throw new Error('Failed to fetch campaigns merged.')
     }
 
     const data: ICampaign = await response.json()
@@ -149,7 +149,7 @@ export async function getCampaignHistogramOptions(config: IConfiguration, lang: 
     })
 
     if (!response.ok) {
-        throw new Error('Failed to fetch campaign histogram options')
+        throw new Error('Failed to fetch campaign histogram options.')
     }
 
     const data: TOption<string>[] = await response.json()
@@ -169,7 +169,7 @@ export async function getCampaignsMergedHistogramOptions(lang: string) {
     })
 
     if (!response.ok) {
-        throw new Error('Failed to fetch campaigns merged histogram options')
+        throw new Error('Failed to fetch campaigns merged histogram options.')
     }
 
     const data: TOption<string>[] = await response.json()
@@ -199,7 +199,7 @@ export async function downloadCampaignPublicData(
     )
 
     if (!response.ok) {
-        throw new Error('Failed to fetch campaign public data')
+        throw new Error('Failed to fetch campaign public data.')
     }
 
     // Get file name from headers
@@ -210,4 +210,23 @@ export async function downloadCampaignPublicData(
 
     // Download
     downloadCsvBlob(blob, filename)
+}
+
+/**
+ * Get settings
+ *
+ */
+export async function getSettings() {
+    const response = await fetch(`${apiUrl}/settings`, {
+        method: 'GET',
+        headers: headers,
+    })
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch settings.')
+    }
+
+    const data: ISettings = await response.json()
+
+    return data
 }
