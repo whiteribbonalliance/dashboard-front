@@ -2,7 +2,7 @@
 
 import { Box } from '@components/Box'
 import { GraphTitle } from '@components/GraphTitle'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { getDashboardConfig } from '@utils'
 import { Loading } from 'components/Loading'
@@ -24,13 +24,13 @@ export const ResponsesBreakdownGraphs = () => {
     // Set breakdown responses topic text
     let breakdownResponsesTopicText: string
     switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
+        case LegacyDashboardName.WHAT_WOMEN_WANT:
             breakdownResponsesTopicText = t(`${config.campaignCode}-breakdown-responses-topic`)
             break
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             breakdownResponsesTopicText = t(`${config.campaignCode}-breakdown-responses-topic`)
             break
-        case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
+        case LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
             breakdownResponsesTopicText = t(`${config.campaignCode}-breakdown-responses-topic`)
             break
         default:
@@ -40,7 +40,7 @@ export const ResponsesBreakdownGraphs = () => {
     // Set click view topic responses text
     let clickViewTopicResponsesText: string
     switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
+        case LegacyDashboardName.WHAT_WOMEN_WANT:
             clickViewTopicResponsesText = t(`${config.campaignCode}-click-view-topic-responses`)
             break
         default:
@@ -52,12 +52,12 @@ export const ResponsesBreakdownGraphs = () => {
     let canDisplayParentCategories: boolean
     let canDisplaySubCategories: boolean
     switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
+        case LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN:
             canDisplayParentOrSubCategories = true
             canDisplayParentCategories = false
             canDisplaySubCategories = false
             break
-        case DashboardName.HEALTHWELLBEING:
+        case LegacyDashboardName.HEALTHWELLBEING:
             canDisplayParentOrSubCategories = false
             canDisplayParentCategories = true
             canDisplaySubCategories = true

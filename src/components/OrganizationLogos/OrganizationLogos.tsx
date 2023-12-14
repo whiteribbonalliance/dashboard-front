@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import { TDashboard } from '@types'
 import Link from 'next/link'
 
@@ -361,14 +361,14 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
 
     // Set logos
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             return (
                 <div className="flex items-center gap-x-5 xl:gap-x-3">
                     <_1point8Logo />
                     <PmnchLogo />
                 </div>
             )
-        case DashboardName.MIDWIVES_VOICES:
+        case LegacyDashboardName.MIDWIVES_VOICES:
             return (
                 <div className="flex items-center gap-x-5 xl:gap-x-3">
                     <WhatWomenWantLogo />
@@ -376,7 +376,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
                     <WhiteRibbonAllianceLogo />
                 </div>
             )
-        case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
+        case LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN:
             return (
                 <div className="flex items-center gap-x-5 xl:gap-x-3">
                     <WhatWomenWantLogo />
@@ -384,7 +384,7 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
                     <WhiteRibbonAllianceLogo />
                 </div>
             )
-        case DashboardName.HEALTHWELLBEING:
+        case LegacyDashboardName.HEALTHWELLBEING:
             return (
                 <div className="flex w-full flex-col gap-y-5">
                     <div className="grid w-full max-w-[125rem] grid-cols-3 items-center justify-items-center gap-x-3 gap-y-5 xl:grid-cols-5 xl:gap-x-1">

@@ -5,7 +5,7 @@ import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { OrganizationLogos } from 'components/OrganizationLogos'
 import { Disclosure, Transition } from '@headlessui/react'
 import Link from 'next/link'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import React, { useContext, useState } from 'react'
 import { Button } from '@components/Button/Button'
 import { FiltersPanel } from '@components/FiltersPanel'
@@ -38,14 +38,14 @@ export const Header = () => {
     ]
 
     // For PMNCH, remove about us
-    if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
+    if (dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT) {
         menuItems = menuItems.filter((item) => item.id !== 'about-us')
     }
 
     // Set mobile dropdown classes
     let mobileDropdownClasses: string
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             mobileDropdownClasses = 'bg-pmnchColors-primary'
             break
         default:
@@ -55,7 +55,7 @@ export const Header = () => {
     // Set menu button item classes
     let menuButtonItemClasses: string
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             menuButtonItemClasses = 'hover:text-pmnchColors-font'
             break
         default:
@@ -84,7 +84,7 @@ export const Header = () => {
                                 </div>
 
                                 {/* Logo */}
-                                {dashboard !== DashboardName.HEALTHWELLBEING && (
+                                {dashboard !== LegacyDashboardName.HEALTHWELLBEING && (
                                     <div className="mx-3 flex items-center xl:mx-0">
                                         <OrganizationLogos dashboard={dashboard} />
                                     </div>
@@ -117,7 +117,7 @@ export const Header = () => {
                                         )
                                     }
                                 })}
-                                {dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT && <PmnchLogo />}
+                                {dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT && <PmnchLogo />}
                             </nav>
 
                             {/* Button to display mobile dropdown */}
@@ -170,7 +170,7 @@ export const Header = () => {
                                             )
                                         }
                                     })}
-                                    {dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT && <PmnchLogo />}
+                                    {dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT && <PmnchLogo />}
                                 </ul>
                             </Disclosure.Panel>
                         </Transition>

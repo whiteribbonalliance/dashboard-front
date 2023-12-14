@@ -1,4 +1,4 @@
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import { classNames } from '@utils'
 import { TDashboard } from '@types'
 
@@ -10,7 +10,7 @@ interface IGraphTitleProps {
 export const GraphTitle = ({ dashboard, text }: IGraphTitleProps) => {
     let titleClasses: string
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             titleClasses = 'font-noto-sans-bold text-pmnchColors-primary text-4xl'
             break
         default:

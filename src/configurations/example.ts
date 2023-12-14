@@ -24,23 +24,25 @@ SOFTWARE.
 */
 
 import { IConfiguration } from '@interfaces'
-import { seoMainTitle } from '@constants'
-import { DashboardName } from '@enums'
+import { removeAllSpaces } from '@utils'
 
-const title = "Women's Economic Empowerment"
+const title = 'Example'
+
+// Without spaces as this name will be used as a path to access the dashboard
+const dashboardName = removeAllSpaces('example')
 
 export const configuration: IConfiguration = {
-    id: DashboardName.WOMENS_ECONOMIC_EMPOWERMENT,
+    campaignCode: 'example', // The campaign code as specified in the back-end
+    dashboardName: dashboardName,
     title: title,
-    campaignCode: 'wee',
-    seoTitle: `${title} | ${seoMainTitle}`,
-    seoMetaDescription: '',
-    respondentsNounSingular: 'woman',
-    respondentsNounPlural: 'women',
-    showVideoLink: 'https://www.youtube.com/watch?v=nBzide5J3Hk',
+    seoTitle: `${title} | White Ribbon Alliance`,
+    seoMetaDescription: 'Example description.',
+    respondentsNounSingular: 'respondent',
+    respondentsNounPlural: 'respondents',
+    showVideoLink: '',
     link: {
-        id: DashboardName.WOMENS_ECONOMIC_EMPOWERMENT,
+        id: dashboardName,
         title: title,
-        link: 'https://explore.whiteribbonalliance.org/womenseconomicempowerment',
+        link: `/en/${dashboardName}`, // Link to this dashboard
     },
 }

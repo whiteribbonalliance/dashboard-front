@@ -88,11 +88,16 @@ export interface ILivingSettingBreakdown {
     count_2: number
 }
 
+interface Question {
+    code: string
+    question: string
+}
+
 export interface ICampaign {
     campaign_code: string
-    q_code: string
-    all_q_codes: string[]
-    included_response_years: string[]
+    current_question: Question
+    all_questions: Question[]
+    current_response_years: string[]
     all_response_years: string[]
     responses_sample: IResponsesSample
     responses_breakdown: IResponsesBreakdown

@@ -11,7 +11,7 @@ import {
     allCampaignsActiveDashboardSchema,
     TAllCampaignsActiveDashboard,
 } from '@schemas/all-campaigns-active-dashboard'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import { ParamsContext } from '@contexts/params'
 import { getDefaultFilterValues } from '@schemas/filter'
 import { useFilterFormsStore } from '@stores/filter-forms'
@@ -31,7 +31,7 @@ export const SelectActiveDashboard = ({ options }: ISelectActiveDashboardProps) 
 
     // Form
     const form = useForm<TAllCampaignsActiveDashboard>({
-        defaultValues: { active_dashboard: DashboardName.ALL_CAMPAIGNS },
+        defaultValues: { active_dashboard: LegacyDashboardName.ALL_CAMPAIGNS },
         resolver: zodResolver(allCampaignsActiveDashboardSchema),
     })
 
@@ -62,7 +62,7 @@ export const SelectActiveDashboard = ({ options }: ISelectActiveDashboardProps) 
     // Set default value for active_dashboard
     useEffect(() => {
         if (form) {
-            form.setValue('active_dashboard', DashboardName.ALL_CAMPAIGNS)
+            form.setValue('active_dashboard', LegacyDashboardName.ALL_CAMPAIGNS)
         }
     }, [form])
 

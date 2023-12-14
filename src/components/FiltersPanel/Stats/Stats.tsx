@@ -6,7 +6,7 @@ import { useTranslation } from '@app/i18n/client'
 import { toThousandsSep } from '@utils'
 import { Tooltip } from '@components/Tooltip'
 import React, { useContext } from 'react'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import { ParamsContext } from '@contexts/params'
 
 export const Stats = () => {
@@ -20,19 +20,19 @@ export const Stats = () => {
     let filter1AverageAge = 'N/A'
     let filter2AverageAge = 'N/A'
     switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
+        case LegacyDashboardName.WHAT_WOMEN_WANT:
             if (data) {
                 filter1AverageAge = data.filter_1_average_age_bucket
                 filter2AverageAge = data.filter_2_average_age_bucket
             }
             break
-        case DashboardName.MIDWIVES_VOICES:
+        case LegacyDashboardName.MIDWIVES_VOICES:
             if (data) {
                 filter1AverageAge = data.filter_1_average_age_bucket
                 filter2AverageAge = data.filter_2_average_age_bucket
             }
             break
-        case DashboardName.ALL_CAMPAIGNS:
+        case LegacyDashboardName.ALL_CAMPAIGNS:
             if (data) {
                 filter1AverageAge = data.filter_1_average_age_bucket
                 filter2AverageAge = data.filter_2_average_age_bucket

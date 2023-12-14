@@ -25,7 +25,7 @@ SOFTWARE.
 
 import { z } from 'zod'
 import { TDashboard } from '@types'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 
 export const filterSchema = z.object({
     countries: z.array(z.string()),
@@ -48,7 +48,7 @@ export type TFilter = z.infer<typeof filterSchema>
 // Default filter values
 export function getDefaultFilterValues(dashboard: TDashboard) {
     switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
+        case LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN:
             return {
                 countries: ['PK'],
                 regions: [],
@@ -64,7 +64,7 @@ export function getDefaultFilterValues(dashboard: TDashboard) {
                 keyword_filter: '',
                 keyword_exclude: '',
             } as TFilter
-        case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
+        case LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
             return {
                 countries: ['MX'],
                 regions: [],

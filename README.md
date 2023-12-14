@@ -6,25 +6,27 @@ as a parameter of route `dashboards_use_subdomain` or `dashboards_use_path`.
 
 The file at `app/dashboards_use_subdomain/[dashboard]/[lang]/page.tsx` will generate each dashboard page.
 
-## Development
-
-### Install
-
-Configure .env.local.
+## Environment variables
 
 - `PROD_DOMAINS_ALLOWED=` The domains allowed in production e.g. `.whiteribbonalliance.org`.
 - `DEV_DOMAIN=` The domain used in development e.g. `.whiteribbonalliance.local`.
-- `MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS=` The subdomain used for displaying dashboards using paths e.g. `explore`
-  from `explore.whiteribbonalliance.org/healthwellbeing`.
+- `MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS=` The subdomain used for displaying dashboards using paths e.g.
+  using `explore` will allow accessing the dashboard `healthwellbeing`
+  at `explore.whiteribbonalliance.org/healthwellbeing`.
 - `ONLY_PMNCH=` `PMNCH` exclusive. Accepts `True` or `False`.
 - `NEXT_PUBLIC_DASHBOARD_API_URL=` The url to the API.
 - `NEXT_PUBLIC_GOOGLE_ANALYTICS=` Google Analytics ID.
 
-On the local machine, map `127.0.0.1` to the following domain names:
+## Development
+
+Configure `.env.local.` with the environment variables.
+
+### Install
+
+On the local machine, map `127.0.0.1` to the following domain name:
 
 ```text
 127.0.0.1   explore.whiteribbonalliance.local
-127.0.0.1   whatyoungpeoplewant.whiteribbonalliance.local
 ```
 
 Then
@@ -39,7 +41,8 @@ npm install
 npm run dev
 ```
 
-On the local machine visit `http://explore.whiteribbonalliance.local:3000/en/whatwomenwant`.
+On the local machine visit `http://explore.whiteribbonalliance.local:3000/en/healthwellbeing` to access the
+dashboard `healthwellbeing`.
 
 ### Lint project
 
@@ -53,11 +56,31 @@ npm run lint
 npm run format
 ```
 
+## Hot to add a new dashboard
+
+Make sure the campaign associated with this dashboard was also created in the back-end.
+
+1. At `src/configurations` create a new configuration file (use `example.ts` for an example) for the new dashboard.
+2. At `src/configurations/index.ts` import the new configuration, for
+   example `import { configuration as exampleConfig } from './example'`.
+3. At `src/configurations/index.ts` include the imported configuration in `dashboardsConfigs`, for
+   example `export const dashboardsConfigs = [exampleConfig]`.
+4. Add new translations e.g. the title and subtext (check the back-end README).
+5. If translation is allowed in the back-end, the `title` and `subtext` should be added
+   to `front_translations/to_translate.json` e.g. to translate the `title` for campaign with code `example` include the
+   key `"example-title": "Example title"` or for the `subtext` include `"example-subtext": "Example subtext"`. Then
+   run `python translate_front.py`. Once translations have been applied, a new folder called `languages` should have
+   been created inside `front_translations`. Copy the `languages` folder to this project at `src/app/i18n`.
+
+## Translations
+
+Check `README.md` inside the back-end project for more details about translations.
+
 ## Deployment to Google App Engine
 
 This repo has continuous deployment/continuous integration set up.
 
-There is a GitHub action defined in `.github/workflows/deploy_google_app_engine.yaml` which deploys to Google App Engine
+There is a GitHub action defined in `.github/workflows/default-google-app-engine.yml` which deploys to Google App Engine
 when you push or merge to `main`, except `README.md`. The app will deploy
 to https://dashboard-frontend-dot-deft-stratum-290216.uc.r.appspot.com plus any other domains that are pointing there.
 
@@ -71,34 +94,6 @@ an administrator on the GitHub repo to modify these credentials).
 There is also a manual Google App Engine deployment file set up in `app.yaml`. You can deploy manually from the command
 line using `gcloud app deploy app.yaml`. You need to install Google Cloud CLI (Command Line Interface) and be
 authenticated on the WRA Google Cloud Platform service account for this to work.
-
-## Docker
-
-Build container:
-
-```bash
-docker build -t wra-dashboards .
-```
-
-Run container:
-
-```bash
-docker run -p 3000:3000 wra-dashboards
-```
-
-## Translations
-
-Check `README.md` inside the back-end project for translations.
-
-## Hot to add a new campaign
-
-1. At `src/enums/dashboard-name.ts` add the new dashboard name, this is the name of the dashboard that will be used as
-   the path or subdomain.
-2. At `src/configurations` create a new configuration file for the new dashboard and export it
-   from `src/configurations/index.ts`.
-3. At `src/utils/index.ts` map the dashboard to its config at the function `getDashboardConfig`.
-4. Add new translations e.g. the title and subtext (check the back-end README).
-5. Modify switch statements in components to reflect changes if necessary.
 
 ## PMNCH - Azure deployment
 
@@ -148,3 +143,17 @@ for `PMNCH`.
 In each repository there's two workflows (To deploy to `Google` or `Azure`), make sure to only enable the correct
 workflow in
 the repository on GitHub: `https://docs.github.com/en/actions/using-workflows/disabling-and-enabling-a-workflow`.
+
+## Docker
+
+Build container:
+
+```bash
+docker build -t wra-dashboards .
+```
+
+Run container:
+
+```bash
+docker run -p 3000:3000 wra-dashboards
+```

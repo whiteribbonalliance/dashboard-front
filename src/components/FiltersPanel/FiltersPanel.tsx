@@ -2,7 +2,7 @@
 
 import { Disclosure, Tab, Transition } from '@headlessui/react'
 import { classNames, getDashboardConfig } from '@utils'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import React, { Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react'
 import { Box } from '@components/Box'
 import Image from 'next/image'
@@ -33,6 +33,7 @@ import { Button } from '@components/Button'
 import _ from 'lodash'
 import { ParamsContext } from '@contexts/params'
 import { produce } from 'immer'
+import { useCampaignQuery } from '@hooks/use-campaign-query'
 
 interface IApplyFiltersButtonProps {
     form1: UseFormReturn<TFilter>
@@ -62,6 +63,7 @@ interface ITab {
 export const FiltersPanel = () => {
     const { params } = useContext(ParamsContext)
     const { dashboard, lang } = params
+    const { data } = useCampaignQuery()
 
     const setForm1 = useFilterFormsStore((state) => state.setForm1)
     const setForm2 = useFilterFormsStore((state) => state.setForm2)
@@ -95,8 +97,8 @@ export const FiltersPanel = () => {
     // Set display countries filter tooltip
     let displayCountriesFilterTooltip = true
     if (
-        dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN ||
-        dashboard === DashboardName.ECONOMIC_EMPOWERMENT_MEXICO
+        dashboard === LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN ||
+        dashboard === LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO
     ) {
         displayCountriesFilterTooltip = false
     }
@@ -127,7 +129,7 @@ export const FiltersPanel = () => {
     // Set selected tab classes
     let selectedTabClasses: string
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             selectedTabClasses = 'border-t-pmnchColors-septenary'
             break
         default:
@@ -142,7 +144,7 @@ export const FiltersPanel = () => {
     useQuery<IFilterOptions>({
         queryKey: [`${dashboard}-${lang}-filter-options`],
         queryFn: () => {
-            if (dashboard === DashboardName.ALL_CAMPAIGNS) {
+            if (dashboard === LegacyDashboardName.ALL_CAMPAIGNS) {
                 return getCampaignsMergedFilterOptions(lang)
             } else {
                 return getCampaignFilterOptions(config, lang)
@@ -287,7 +289,7 @@ export const FiltersPanel = () => {
             watchProvincesForm: string[],
             setRegionOptionsFilter: Dispatch<SetStateAction<TOption<string>[]>>
         ) => {
-            if (dashboard !== DashboardName.WHAT_WOMEN_WANT_PAKISTAN) return
+            if (dashboard !== LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN) return
             if (watchCountriesForm.length < 1) return
 
             const selectedCountry = watchCountriesForm[0]
@@ -364,7 +366,7 @@ export const FiltersPanel = () => {
     // Set select response topics text
     let selectResponseTopicsText: string
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             selectResponseTopicsText = t('select-response-domains')
             break
         default:
@@ -376,7 +378,7 @@ export const FiltersPanel = () => {
     const allCampaignsActiveDashboardOptions: TOption<string>[] = []
     if (showSelectActiveDashboard) {
         for (let i = 0; i < dashboardsConfigs.length; i++) {
-            const value = dashboardsConfigs[i].id
+            const value = dashboardsConfigs[i].dashboardName
             const label = dashboardsConfigs[i].title
             allCampaignsActiveDashboardOptions.push({ value, label })
         }
@@ -384,42 +386,42 @@ export const FiltersPanel = () => {
 
     // Set show select living settings
     let setShowSelectLivingSettings = false
-    if (dashboard === DashboardName.HEALTHWELLBEING) {
+    if (dashboard === LegacyDashboardName.HEALTHWELLBEING) {
         setShowSelectLivingSettings = true
     }
 
     // Set show select genders
     let showSelectGenders = false
-    if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT || dashboard === DashboardName.HEALTHWELLBEING) {
+    if (dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT || dashboard === LegacyDashboardName.HEALTHWELLBEING) {
         showSelectGenders = true
     }
 
     // Set show select genders and professions
     let showSelectGendersAndProfessionsFilters = false
-    if (dashboard === DashboardName.MIDWIVES_VOICES) {
+    if (dashboard === LegacyDashboardName.MIDWIVES_VOICES) {
         showSelectGendersAndProfessionsFilters = true
     }
 
     // Set show age buckets filter
     let showSelectAgeBuckets = false
     if (
-        dashboard === DashboardName.WHAT_WOMEN_WANT ||
-        dashboard === DashboardName.MIDWIVES_VOICES ||
-        dashboard === DashboardName.HEALTHWELLBEING ||
-        dashboard === DashboardName.ALL_CAMPAIGNS
+        dashboard === LegacyDashboardName.WHAT_WOMEN_WANT ||
+        dashboard === LegacyDashboardName.MIDWIVES_VOICES ||
+        dashboard === LegacyDashboardName.HEALTHWELLBEING ||
+        dashboard === LegacyDashboardName.ALL_CAMPAIGNS
     ) {
         showSelectAgeBuckets = true
     }
 
     // Set show only responses from categories
     let showOnlyResponsesFromCategories = true
-    if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
+    if (dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT) {
         showOnlyResponsesFromCategories = false
     }
 
     // Set show district and provinces for wwwpakistan
     let showDistrictsAndProvincesWwwPakistan = false
-    if (dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN) {
+    if (dashboard === LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN) {
         showDistrictsAndProvincesWwwPakistan = true
     }
 
@@ -499,15 +501,15 @@ export const FiltersPanel = () => {
                 </div>
             )}
 
-            {/* Switch between questions asked for giz */}
-            {dashboard === DashboardName.ECONOMIC_EMPOWERMENT_MEXICO && (
+            {/* Questions */}
+            {data && data.all_questions.length > 1 && (
                 <div className="mb-5">
                     <SelectQuestionAsked hideWhileLoading={false} />
                 </div>
             )}
 
-            {/* Show select response year for wwwpakistan */}
-            {dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN && (
+            {/* Response years */}
+            {data && data.all_response_years.length > 1 && (
                 <div className="mb-5">
                     <SelectResponseYear />
                 </div>
@@ -685,7 +687,7 @@ export const FiltersPanel = () => {
 
                                                             {/* Filter ages */}
                                                             {(!showSelectAgeBuckets ||
-                                                                dashboard === DashboardName.HEALTHWELLBEING) && (
+                                                                dashboard === LegacyDashboardName.HEALTHWELLBEING) && (
                                                                 <div>
                                                                     <div
                                                                         className="mb-1 w-fit"
@@ -979,8 +981,8 @@ const SelectCountries = ({ id, dashboard, options, control }: ISelectProps) => {
     // Set disabled
     let disabled = false
     if (
-        dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN ||
-        dashboard === DashboardName.ECONOMIC_EMPOWERMENT_MEXICO
+        dashboard === LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN ||
+        dashboard === LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO
     ) {
         disabled = true
     }
@@ -1081,8 +1083,8 @@ const ApplyFiltersButton = ({ form1, form2 }: IApplyFiltersButtonProps) => {
     // Set filters have changed
     useEffect(() => {
         if (
-            (dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN ||
-                dashboard === DashboardName.ECONOMIC_EMPOWERMENT_MEXICO) &&
+            (dashboard === LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN ||
+                dashboard === LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO) &&
             !canCheckIfFiltersHaveChanged
         ) {
             return
@@ -1107,12 +1109,12 @@ const ApplyFiltersButton = ({ form1, form2 }: IApplyFiltersButtonProps) => {
     useEffect(() => {
         if (form1 && form2) {
             switch (dashboard) {
-                case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
+                case LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN:
                     form1.setValue('countries', ['PK'])
                     form2.setValue('countries', ['PK'])
                     setCanCheckIfFiltersHaveChanged(true)
                     break
-                case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
+                case LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
                     form1.setValue('countries', ['MX'])
                     form2.setValue('countries', ['MX'])
                     setCanCheckIfFiltersHaveChanged(true)

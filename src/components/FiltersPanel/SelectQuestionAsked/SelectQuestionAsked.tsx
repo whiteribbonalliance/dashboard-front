@@ -28,9 +28,9 @@ export const SelectQuestionAsked = ({ hideWhileLoading = false }: ISelectQuestio
     useEffect(() => {
         if (data) {
             const tmpOptions: TOption<string>[] = []
-            for (let i = 0; i < data.all_q_codes.length; i++) {
-                const value = data.all_q_codes[i]
-                const label = t(`${dashboard}-${data.all_q_codes[i]}`)
+            for (let i = 0; i < data.all_questions.length; i++) {
+                const value = data.all_questions[i].code
+                const label = data.all_questions[i].question
                 tmpOptions.push({ value, label })
             }
             setOptions(tmpOptions)

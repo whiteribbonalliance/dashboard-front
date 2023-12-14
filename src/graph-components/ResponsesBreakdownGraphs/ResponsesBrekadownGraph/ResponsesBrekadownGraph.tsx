@@ -1,6 +1,6 @@
 'use client'
 
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import {
     Bar,
     BarChart,
@@ -58,7 +58,7 @@ export const ResponsesBreakdownGraph = ({
     let bar1Fill: string
     let bar2Fill: string
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             bar1Fill = 'var(--pmnchSecondary)'
             bar2Fill = 'var(--pmnchTertiary)'
             break
@@ -69,11 +69,11 @@ export const ResponsesBreakdownGraph = ({
 
     // Set height
     let height: number
-    if (dashboard === DashboardName.HEALTHWELLBEING && type !== 'parent') {
+    if (dashboard === LegacyDashboardName.HEALTHWELLBEING && type !== 'parent') {
         height = 950
     } else {
         switch (dashboard) {
-            case DashboardName.ALL_CAMPAIGNS:
+            case LegacyDashboardName.ALL_CAMPAIGNS:
                 height = 1950
                 break
             default:
@@ -85,7 +85,7 @@ export const ResponsesBreakdownGraph = ({
     let bar1Classes: string
     let bar2Classes: string
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             bar1Classes = 'fill-pmnchColors-secondary hover:fill-pmnchColors-secondaryFaint'
             bar2Classes = 'fill-pmnchColors-tertiary hover:fill-pmnchColors-tertiaryFaint'
             break
@@ -141,7 +141,7 @@ export const ResponsesBreakdownGraph = ({
     // Set title
     let title: string
     switch (dashboard) {
-        case DashboardName.HEALTHWELLBEING:
+        case LegacyDashboardName.HEALTHWELLBEING:
             if (type === 'parent') {
                 title = t('categories')
             } else {

@@ -2,7 +2,7 @@
 
 import { useTranslation } from '@app/i18n/client'
 import { getDashboardConfig } from '@utils'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import { useContext } from 'react'
 import { ParamsContext } from '@contexts/params'
 
@@ -20,7 +20,7 @@ export const Title = ({ noHeading = false }: ITitleProps) => {
     // Set title
     let title: string
     switch (dashboard) {
-        case DashboardName.ALL_CAMPAIGNS:
+        case LegacyDashboardName.ALL_CAMPAIGNS:
             title = t('allcampaigns-title')
             break
         default:

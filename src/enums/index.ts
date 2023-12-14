@@ -23,4 +23,4 @@ SOFTWARE.
 
 */
 
-export { DashboardName } from './dashboard-name'
+export { LegacyDashboardName } from './legacy-dashboard-name'

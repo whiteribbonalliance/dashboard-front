@@ -9,7 +9,7 @@ import { GraphsWrapper } from 'components/GraphsWrapper'
 import { Footer } from '@components/Footer'
 import React, { useEffect, useState } from 'react'
 import { TDashboard } from '@types'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import { useShowSelectActiveDashboardStore } from '@stores/show-select-active-dashboard'
 import { IParams } from '@interfaces'
 import { ParamsContext } from '@contexts/params'
@@ -35,7 +35,7 @@ export const Dashboard = ({ dashboard, lang }: IDashboardProps) => {
 
     // Set show select active dashboard
     useEffect(() => {
-        if (dashboard === DashboardName.ALL_CAMPAIGNS) {
+        if (dashboard === LegacyDashboardName.ALL_CAMPAIGNS) {
             setShowSelectActiveDashboard(true)
         } else {
             setShowSelectActiveDashboard(false)
@@ -45,7 +45,7 @@ export const Dashboard = ({ dashboard, lang }: IDashboardProps) => {
     // Set gap-y between boxes
     let boxesGapY: string
     switch (params.dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             boxesGapY = 'gap-y-[80px]'
             break
         default:
@@ -55,7 +55,7 @@ export const Dashboard = ({ dashboard, lang }: IDashboardProps) => {
     // Set layout classes
     let layoutClasses: string
     switch (params.dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             layoutClasses =
                 'font-noto-sans-regular text-base text-pmnchColors-font selection:bg-pmnchColors-primary selection:text-white'
             break

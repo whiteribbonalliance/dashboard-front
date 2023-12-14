@@ -4,7 +4,7 @@ import { ParentSize } from '@visx/responsive'
 import { Text } from '@visx/text'
 import React, { useMemo } from 'react'
 import { scaleLog } from '@visx/scale'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import { Wordcloud } from '@visx/wordcloud'
 import { useTooltip, useTooltipInPortal } from '@visx/tooltip'
 import { IWordcloudWord } from '@interfaces'
@@ -45,7 +45,7 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
         // Set wordcloud colors
         let wordcloudColors: string[]
         switch (dashboard) {
-            case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+            case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
                 wordcloudColors = [
                     'var(--pmnchPrimary)',
                     'var(--pmnchSecondary)',

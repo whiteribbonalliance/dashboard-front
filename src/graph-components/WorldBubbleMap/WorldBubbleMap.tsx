@@ -6,7 +6,7 @@ import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { GraphError } from '@components/GraphError'
 import { Loading } from 'components/Loading'
 import * as d3 from 'd3'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { IWorldBubbleMapsCoordinate } from '@interfaces'
 import { classNames, getDashboardConfig, toThousandsSep } from '@utils'
@@ -90,10 +90,10 @@ export const WorldBubbleMap = () => {
     // Set respondents located text
     let respondentsLocatedText: string
     switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
+        case LegacyDashboardName.WHAT_WOMEN_WANT:
             respondentsLocatedText = t(`${config.campaignCode}-where-located`)
             break
-        case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
+        case LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
             respondentsLocatedText = t(`${config.campaignCode}-where-located`)
             break
         default:
@@ -104,7 +104,7 @@ export const WorldBubbleMap = () => {
     let bubbleColor1: string
     let bubbleColor2: string
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             bubbleColor1 = 'var(--pmnchSecondary)'
             bubbleColor2 = 'var(--pmnchTertiary)'
             break
@@ -225,8 +225,8 @@ const D3Map = ({
             // Set view box
             let viewBox = `0 -125 ${svgWidth} ${svgHeight}`
             if (
-                dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN ||
-                dashboard === DashboardName.ECONOMIC_EMPOWERMENT_MEXICO
+                dashboard === LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN ||
+                dashboard === LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO
             ) {
                 viewBox = `0 0 ${svgWidth} ${svgHeight}`
             }
@@ -250,11 +250,11 @@ const D3Map = ({
             const projection = d3.geoMercator().translate([svgWidth / 2, svgHeight / 2])
 
             // Zoom on map
-            if (dashboard === DashboardName.ECONOMIC_EMPOWERMENT_MEXICO) {
+            if (dashboard === LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO) {
                 projection
                     .center([-99.1, 19.25]) // GPS of location of Mexico City to zoom on
                     .scale(38000) // Zoom
-            } else if (dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN) {
+            } else if (dashboard === LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN) {
                 projection
                     .center([70, 30.5]) // GPS of location of Pakistan to zoom on
                     .scale(2000) // Zoom
@@ -264,10 +264,10 @@ const D3Map = ({
 
             // For 'wwwpakistan', only show the respective country on the map (GeoJSON)
             switch (dashboard) {
-                case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
+                case LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN:
                     geoJsonFeatures.features = geoJsonFeatures.features.filter((d) => d.properties?.name === 'Pakistan')
                     break
-                case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
+                case LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
                     // Uses TopoJSON
                     // dataGeo.features = dataGeo.features.filter((d) => d.properties.name === 'Mexico')
                     break
@@ -323,7 +323,7 @@ const D3Map = ({
             // Draw the map
             const fillColor = '#b7b7b7'
             switch (dashboard) {
-                case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
+                case LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
                     // Use topoJSON for Mexico
                     svgEl
                         .append('path')
@@ -386,12 +386,12 @@ const D3Map = ({
                 const currentRegionsValues = form.getValues('regions')
                 const currentCountriesValues = form.getValues('countries')
                 switch (dashboard) {
-                    case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
+                    case LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN:
                         if (!currentRegionsValues.includes(d.location_code)) {
                             form.setValue('regions', [...currentRegionsValues, d.location_code])
                         }
                         break
-                    case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
+                    case LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
                         if (!currentRegionsValues.includes(d.location_code)) {
                             form.setValue('regions', [...currentRegionsValues, d.location_code])
                         }

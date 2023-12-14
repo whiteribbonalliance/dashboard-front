@@ -1,8 +1,33 @@
+/*
+MIT License
+
+Copyright (c) 2023 White Ribbon Alliance. Maintainers: Thomas Wood, https://fastdatascience.com, Zairon Jacobs, https://zaironjacobs.com.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+
 'use client'
 
 import { Box } from '@components/Box'
 import { GraphTitle } from '@components/GraphTitle'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import {
     ColumnDef,
     createColumnHelper,
@@ -19,7 +44,6 @@ import { classNames, getDashboardConfig } from '@utils'
 import { Loading } from 'components/Loading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
-import { TDashboard } from '@types'
 import { Tooltip } from '@components/Tooltip'
 import { IResponsesSample } from '@interfaces'
 import { ParamsContext } from '@contexts/params'
@@ -88,13 +112,13 @@ export const ResponsesSampleTable = () => {
     // Set question asked
     let questionAsked: string
     switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
+        case LegacyDashboardName.WHAT_WOMEN_WANT:
             questionAsked = t(`${config.campaignCode}-question-asked`)
             break
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             questionAsked = t(`${config.campaignCode}-question-asked`)
             break
-        case DashboardName.MIDWIVES_VOICES:
+        case LegacyDashboardName.MIDWIVES_VOICES:
             questionAsked = t(`${config.campaignCode}-question-asked`)
             break
         default:
@@ -104,7 +128,7 @@ export const ResponsesSampleTable = () => {
     // Set th classes
     let thClasses: string
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             thClasses = 'font-bold'
             break
         default:
@@ -134,7 +158,7 @@ export const ResponsesSampleTable = () => {
             // Set the colors list
             let colors: string[]
             switch (dashboard) {
-                case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+                case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
                     colors = [
                         'bg-pmnchColors-primaryFaint',
                         'bg-pmnchColors-secondaryFaint',
@@ -164,8 +188,8 @@ export const ResponsesSampleTable = () => {
     // Get the description's color class
     const getDescriptionColorClass = useCallback(
         (row: Row<any>) => {
-            // Find the cell with column_id raw_response
-            const cell = row.getAllCells().find((obj) => obj.column.id === 'raw_response')
+            // Find the cell with column_id response
+            const cell = row.getAllCells().find((obj) => obj.column.id === 'response')
 
             // Get color class
             if (cell) {
@@ -226,7 +250,7 @@ export const ResponsesSampleTable = () => {
                                                 key={header.id}
                                                 className={classNames(
                                                     'border-r-grayLight border-r px-1 text-left',
-                                                    header.id === 'raw_response' ? 'w-[100%]' : 'w-[35%]',
+                                                    header.id === 'response' ? 'w-[100%]' : 'w-[35%]',
                                                     thClasses
                                                 )}
                                             >
@@ -246,9 +270,7 @@ export const ResponsesSampleTable = () => {
                                                 key={cell.id}
                                                 className={classNames(
                                                     'border-r-grayLight break-words border-r px-1',
-                                                    cell.column.id === 'raw_response'
-                                                        ? getDescriptionColorClass(row)
-                                                        : ''
+                                                    cell.column.id === 'response' ? getDescriptionColorClass(row) : ''
                                                 )}
                                             >
                                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}

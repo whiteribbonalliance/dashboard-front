@@ -26,9 +26,9 @@ SOFTWARE.
 import { IDashboardLink } from './dashboard-link'
 
 export interface IConfiguration {
-    id: string
-    title: string
     campaignCode: string
+    dashboardName: string
+    title: string
     seoTitle: string
     seoMetaDescription: string
     respondentsNounSingular: string

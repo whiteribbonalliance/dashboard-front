@@ -23,9 +23,8 @@ SOFTWARE.
 
 */
 
-import { TDashboard, TQuestionCode } from '@types'
+import { TDashboard } from '@types'
 import { TFilter } from '@schemas/filter'
-import { Dispatch, SetStateAction } from 'react'
 
 export interface IParams {
     dashboard: TDashboard
@@ -34,6 +33,6 @@ export interface IParams {
         filter1?: TFilter
         filter2?: TFilter
     }
-    questionAskedCode: TQuestionCode
+    questionAskedCode: string
     responseYear: string
 }

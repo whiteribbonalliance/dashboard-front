@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import React, { useContext, useState } from 'react'
 import { applyToThousandsSepOnText, classNames, getCampaignRequest, getDashboardConfig } from '@utils'
 import { useTranslation } from '@app/i18n/client'
@@ -24,16 +24,13 @@ export const Footer = () => {
     }
 
     // Footer links
-    // TODO: Temporarily hide womenseconomicempowerment
     const dashboardLinks = dashboardsConfigs.map((configuration) => configuration.link)
-    const footerLinks = dashboardLinks
-        .filter((dashboardLink) => dashboardLink.id !== dashboard)
-        .filter((d) => d.id !== 'womenseconomicempowerment')
+    const footerLinks = dashboardLinks.filter((dashboardLink) => dashboardLink.id !== dashboard)
 
     // Set footer link classes
     let footerLinkClasses: string
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             footerLinkClasses = 'text-pmnchColors-secondary'
             break
         default:
@@ -43,7 +40,7 @@ export const Footer = () => {
     // Set informed consent text
     let informedConsentText: string
     switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
+        case LegacyDashboardName.WHAT_WOMEN_WANT:
             informedConsentText = t('women-informed-consent')
             break
         default:
@@ -53,7 +50,7 @@ export const Footer = () => {
     // Set footer note
     let footerNote: React.JSX.Element | undefined
     switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
+        case LegacyDashboardName.WHAT_WOMEN_WANT:
             footerNote = (
                 <p>
                     {applyToThousandsSepOnText(t('responses-from-original'), lang)}{' '}
@@ -103,14 +100,14 @@ export const Footer = () => {
     return (
         <footer className="mx-7 my-7 flex flex-col gap-y-5 text-lg">
             {/* Logo */}
-            {dashboard === DashboardName.HEALTHWELLBEING && (
+            {dashboard === LegacyDashboardName.HEALTHWELLBEING && (
                 <div className="mx-3 flex items-center justify-center xl:mx-0">
                     <OrganizationLogos dashboard={dashboard} />
                 </div>
             )}
 
             {/* Learn more about categories */}
-            {dashboard === DashboardName.HEALTHWELLBEING && (
+            {dashboard === LegacyDashboardName.HEALTHWELLBEING && (
                 <div className="max-w-7xl">
                     <p>
                         <span>{removeLastCharIfDot(t('healthwellbeing-learn-more-about-categories'))}</span>
@@ -129,14 +126,14 @@ export const Footer = () => {
             )}
 
             {/* Results analyzed */}
-            {dashboard === DashboardName.HEALTHWELLBEING && (
+            {dashboard === LegacyDashboardName.HEALTHWELLBEING && (
                 <div className="max-w-5xl">
                     <p>{t('healthwellbeing-results-analyzed')}</p>
                 </div>
             )}
 
             {/* Our AI is constantly being improved */}
-            {dashboard === DashboardName.HEALTHWELLBEING && (
+            {dashboard === LegacyDashboardName.HEALTHWELLBEING && (
                 <div className="max-w-5xl">
                     <p>
                         <span>{removeLastCharIfDot(t('healthwellbeing-ai-constantly-improved'))}</span>
@@ -153,14 +150,14 @@ export const Footer = () => {
 
             <div>
                 {/* Data displayed survey */}
-                {dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT && (
+                {dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT && (
                     <div className="max-w-5xl">
                         <p>{t('pmn01a-data-displayed-survey')}</p>
                     </div>
                 )}
 
                 {/* Informed consent */}
-                {dashboard !== DashboardName.WHAT_YOUNG_PEOPLE_WANT && (
+                {dashboard !== LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT && (
                     <div>
                         <p>* {informedConsentText}</p>
                     </div>
@@ -170,7 +167,7 @@ export const Footer = () => {
                 {footerNote && <div>{footerNote}</div>}
 
                 {/* Protect anonymity */}
-                {dashboard !== DashboardName.WHAT_YOUNG_PEOPLE_WANT && (
+                {dashboard !== LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT && (
                     <div>
                         <p>{t('to-protect-anonymity')}</p>
                     </div>
@@ -178,7 +175,7 @@ export const Footer = () => {
             </div>
 
             {/* Export dataset */}
-            {dashboard === DashboardName.HEALTHWELLBEING && (
+            {dashboard === LegacyDashboardName.HEALTHWELLBEING && (
                 <div>
                     <span className="cursor-pointer font-bold" onClick={onExportDatasetClick}>
                         {exportDatasetText}

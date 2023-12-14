@@ -24,23 +24,23 @@ SOFTWARE.
 */
 
 import { IConfiguration } from '@interfaces'
-import { seoMainTitle } from '@constants'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 
 const title = 'Women’s Health and Well Being'
+const dashboardName = LegacyDashboardName.HEALTHWELLBEING
 
 export const configuration: IConfiguration = {
-    id: DashboardName.HEALTHWELLBEING,
-    title: title,
+    dashboardName: dashboardName,
     campaignCode: 'healthwellbeing',
-    seoTitle: `${title} | ${seoMainTitle}`,
+    title: title,
+    seoTitle: `${title} | White Ribbon Alliance`,
     seoMetaDescription: 'We asked women around the world, what they want to improve their health and wellbeing.',
     respondentsNounSingular: 'woman',
     respondentsNounPlural: 'women',
     showVideoLink: 'https://www.youtube.com/watch?v=nBzide5J3Hk',
     link: {
-        id: DashboardName.HEALTHWELLBEING,
+        id: dashboardName,
         title: title,
-        link: 'https://explore.whiteribbonalliance.org/healthwellbeing',
+        link: `/en/${dashboardName}`,
     },
 }

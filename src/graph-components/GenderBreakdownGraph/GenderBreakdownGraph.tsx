@@ -10,7 +10,7 @@ import { Cell, Legend, Pie, PieChart, PieLabelRenderProps, ResponsiveContainer, 
 import { classNames, toThousandsSep } from '@utils'
 import { useTranslation } from '@app/i18n/client'
 import _ from 'lodash'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import { UseFormReturn } from 'react-hook-form'
 import { TFilter } from '@schemas/filter'
 import { useFilterFormsStore } from '@stores/filter-forms'
@@ -61,7 +61,7 @@ export const GenderBreakdownGraph = () => {
     // Set colors
     let colors: string[]
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             colors = whatYoungPeopleWantColors
             break
         default:

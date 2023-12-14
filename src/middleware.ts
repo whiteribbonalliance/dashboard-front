@@ -26,7 +26,7 @@ SOFTWARE.
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { dashboards, defaultLanguage, languagesAzure, languagesGoogle, pmnchLink } from '@constants'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import { ILanguage } from '@interfaces'
 
 // This function can be marked `async` if using `await` inside
@@ -93,8 +93,10 @@ export function middleware(request: NextRequest) {
             const nextUrl = request.nextUrl
 
             // Redirect to new link for PMNCH
-            if (nextUrl.pathname.endsWith(`/${DashboardName.WHAT_YOUNG_PEOPLE_WANT}`)) {
-                return NextResponse.redirect(pmnchLink)
+            if (process.env.NODE_ENV === 'production') {
+                if (nextUrl.pathname.endsWith(`/${LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT}`)) {
+                    return NextResponse.redirect(pmnchLink)
+                }
             }
 
             // e.g. '/dashboards_use_path/en/whatwomenwant'
@@ -119,11 +121,13 @@ export function middleware(request: NextRequest) {
         let dashboardName: string
         if (ONLY_PMNCH) {
             // Dashboard name for pmnch
-            dashboardName = DashboardName.WHAT_YOUNG_PEOPLE_WANT
+            dashboardName = LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
         } else {
             // Redirect to new link for PMNCH
-            if (extractedSubdomain === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
-                return NextResponse.redirect(pmnchLink)
+            if (process.env.NODE_ENV === 'production') {
+                if (extractedSubdomain === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT) {
+                    return NextResponse.redirect(pmnchLink)
+                }
             }
 
             // For other dashboards, the dashboard name is equal to the subdomain

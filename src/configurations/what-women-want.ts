@@ -24,24 +24,24 @@ SOFTWARE.
 */
 
 import { IConfiguration } from '@interfaces'
-import { seoMainTitle } from '@constants'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 
 const title = 'What Women Want'
+const dashboardName = LegacyDashboardName.WHAT_WOMEN_WANT
 
 export const configuration: IConfiguration = {
-    id: DashboardName.WHAT_WOMEN_WANT,
-    title: title,
     campaignCode: 'wra03a',
-    seoTitle: `${title} | ${seoMainTitle}`,
+    dashboardName: dashboardName,
+    title: title,
+    seoTitle: `${title} | White Ribbon Alliance`,
     seoMetaDescription:
         'We asked over a million women what they want. Explore our survey responses with our interactive dashboard!',
     respondentsNounSingular: 'woman',
     respondentsNounPlural: 'women',
     showVideoLink: 'https://www.youtube.com/watch?v=nBzide5J3Hk',
     link: {
-        id: DashboardName.WHAT_WOMEN_WANT,
+        id: dashboardName,
         title: title,
-        link: 'https://whatwomenwant.whiteribbonalliance.org',
+        link: `/en/${dashboardName}`,
     },
 }

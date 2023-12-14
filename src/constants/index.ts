@@ -23,16 +23,11 @@ SOFTWARE.
 
 */
 
-import { DashboardName } from '@enums'
 import { ILanguage } from '@interfaces'
 import _ from 'lodash'
+import { dashboardsConfigs } from '@configurations'
 
-// TODO: Temporarily hide womenseconomicempowerment
-export const dashboards = Object.entries(DashboardName)
-    .map(([key, value]) => value)
-    .filter((d) => d !== 'womenseconomicempowerment')
-
-export const seoMainTitle = 'White Ribbon Alliance'
+export const dashboards = [...dashboardsConfigs.map((config) => config.dashboardName)]
 
 export const languagesGoogle: ILanguage[] = [
     { code: 'af', name: 'Afrikaans' },
@@ -711,7 +706,5 @@ export const languages = _.uniqWith([...languagesGoogle, ...languagesAzure], (pr
 })
 
 export const defaultLanguage: ILanguage = { code: 'en', name: 'English' }
-
-export const questionsCodes = ['q1', 'q2'] as const
 
 export const pmnchLink = 'https://wypw.1point8b.org'

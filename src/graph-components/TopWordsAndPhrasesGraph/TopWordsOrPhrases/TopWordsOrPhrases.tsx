@@ -11,7 +11,7 @@ import {
     XAxis,
     YAxis,
 } from 'recharts'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import { classNames, toThousandsSep } from '@utils'
 import { MutableRefObject, useRef } from 'react'
 import { ITopWord } from '@interfaces'
@@ -52,7 +52,7 @@ export const TopWordsOrPhrases = ({
     let bar1Fill: string
     let bar2Fill: string
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             bar1Fill = 'var(--pmnchSecondary)'
             bar2Fill = 'var(--pmnchTertiary)'
             break
@@ -65,7 +65,7 @@ export const TopWordsOrPhrases = ({
     let bar1Classes: string
     let bar2Classes: string
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             bar1Classes = 'fill-pmnchColors-secondary hover:fill-pmnchColors-secondaryFaint'
             bar2Classes = 'fill-pmnchColors-tertiary hover:fill-pmnchColors-tertiaryFaint'
             break

@@ -6,7 +6,7 @@ import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { Tab } from '@headlessui/react'
 import { classNames } from '@utils'
 import React, { useContext, useEffect, useState } from 'react'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import { TopWordsWordcloud } from 'graph-components/TopWordsAndPhrasesGraph/TopWordsWordcloud'
 import { TopWordsOrPhrases } from 'graph-components/TopWordsAndPhrasesGraph/TopWordsOrPhrases'
 import { Loading } from 'components/Loading'
@@ -28,7 +28,7 @@ export const TopWordsAndPhrasesGraph = () => {
     // Set selected tab classes
     let selectedTabClasses: string
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             selectedTabClasses = 'border-t-pmnchColors-septenary'
             break
         default:

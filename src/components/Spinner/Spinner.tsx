@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { classNames } from '@utils'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import { TDashboard } from '@types'
 
 interface ISpinnerProps {
@@ -12,7 +12,7 @@ export const Spinner = ({ dashboard }: ISpinnerProps) => {
     // Set spinner icon classes
     let spinnerIconClasses: string
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             spinnerIconClasses = 'text-pmnchColors-primary'
             break
         default:

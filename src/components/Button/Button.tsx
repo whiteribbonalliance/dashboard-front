@@ -1,4 +1,4 @@
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import { classNames } from '@utils'
 import { TDashboard } from '@types'
 
@@ -14,7 +14,7 @@ export const Button = ({ text, size = 'text-base', disabled = false, dashboard }
     let buttonClasses: string
     const disabledButtonCommonStyles = 'text-gray border-gray cursor-default'
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             buttonClasses = classNames(
                 disabled
                     ? disabledButtonCommonStyles

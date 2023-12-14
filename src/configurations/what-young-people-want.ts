@@ -24,23 +24,23 @@ SOFTWARE.
 */
 
 import { IConfiguration } from '@interfaces'
-import { DashboardName } from '@enums'
-import { pmnchLink } from '@constants'
+import { LegacyDashboardName } from '@enums'
 
 const title = 'What Young People Want'
+const dashboardName = LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
 
 export const configuration: IConfiguration = {
-    id: DashboardName.WHAT_YOUNG_PEOPLE_WANT,
-    title: title,
     campaignCode: 'pmn01a',
+    dashboardName: dashboardName,
+    title: title,
     seoTitle: 'Results Dashboard | PMNCH',
     seoMetaDescription: 'What Young People Want Interactive Dashboard',
     respondentsNounSingular: 'respondent',
     respondentsNounPlural: 'respondents',
     showVideoLink: 'https://youtu.be/E6_ERqyI8nA',
     link: {
-        id: DashboardName.WHAT_YOUNG_PEOPLE_WANT,
+        id: dashboardName,
         title: title,
-        link: pmnchLink,
+        link: `/en/${dashboardName}`,
     },
 }

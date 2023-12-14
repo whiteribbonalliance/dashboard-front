@@ -22,7 +22,7 @@ import {
     XAxis,
     YAxis,
 } from 'recharts'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import { classNames, getDashboardConfig, niceNum, toThousandsSep } from '@utils'
 import { IHistogramData } from '@interfaces'
 import { getCampaignHistogramOptions, getCampaignsMergedHistogramOptions } from '@services/wra-dashboard-api'
@@ -60,7 +60,7 @@ export const HistogramGraph = () => {
     useQuery<TOption<string>[]>({
         queryKey: [`${dashboard}-${lang}-histogram-options`],
         queryFn: () => {
-            if (dashboard === DashboardName.ALL_CAMPAIGNS) {
+            if (dashboard === LegacyDashboardName.ALL_CAMPAIGNS) {
                 return getCampaignsMergedHistogramOptions(lang)
             } else {
                 return getCampaignHistogramOptions(config, lang)
@@ -83,7 +83,7 @@ export const HistogramGraph = () => {
     // Set default value for show_breakdown_by
     useEffect(() => {
         if (form && histogramOptions.length > 0) {
-            if (dashboard === DashboardName.HEALTHWELLBEING) {
+            if (dashboard === LegacyDashboardName.HEALTHWELLBEING) {
                 form.setValue('show_breakdown_by', 'breakdown-age-bucket')
             } else {
                 form.setValue('show_breakdown_by', histogramOptions[0].value)
@@ -97,7 +97,7 @@ export const HistogramGraph = () => {
 
         switch (showBreakdownByField) {
             case 'breakdown-age':
-                if (dashboard === DashboardName.HEALTHWELLBEING) {
+                if (dashboard === LegacyDashboardName.HEALTHWELLBEING) {
                     return 1900
                 } else {
                     return 650
@@ -115,7 +115,7 @@ export const HistogramGraph = () => {
     let bar1Fill: string
     let bar2Fill: string
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             bar1Fill = 'var(--pmnchSecondary)'
             bar2Fill = 'var(--pmnchTertiary)'
             break
@@ -128,7 +128,7 @@ export const HistogramGraph = () => {
     let bar1Classes: string
     let bar2Classes: string
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             bar1Classes = 'fill-pmnchColors-secondary hover:fill-pmnchColors-secondaryFaint'
             bar2Classes = 'fill-pmnchColors-tertiary hover:fill-pmnchColors-tertiaryFaint'
             break
@@ -147,7 +147,7 @@ export const HistogramGraph = () => {
                     setParagraph(t('number-ages-respondents'))
                     break
                 case 'breakdown-age-bucket':
-                    if (dashboard === DashboardName.ALL_CAMPAIGNS) {
+                    if (dashboard === LegacyDashboardName.ALL_CAMPAIGNS) {
                         histogramData = data.histogram.age_buckets_default
                         setParagraph(t('number-ages-respondents'))
                     } else {
@@ -185,10 +185,10 @@ export const HistogramGraph = () => {
         // Set allow age bucket bar click
         let allowAgeBucketBarClick = false
         if (
-            dashboard === DashboardName.WHAT_WOMEN_WANT ||
-            dashboard === DashboardName.MIDWIVES_VOICES ||
-            dashboard === DashboardName.ALL_CAMPAIGNS ||
-            dashboard == DashboardName.HEALTHWELLBEING
+            dashboard === LegacyDashboardName.WHAT_WOMEN_WANT ||
+            dashboard === LegacyDashboardName.MIDWIVES_VOICES ||
+            dashboard === LegacyDashboardName.ALL_CAMPAIGNS ||
+            dashboard == LegacyDashboardName.HEALTHWELLBEING
         ) {
             allowAgeBucketBarClick = true
         }

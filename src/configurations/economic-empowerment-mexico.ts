@@ -24,24 +24,24 @@ SOFTWARE.
 */
 
 import { IConfiguration } from '@interfaces'
-import { seoMainTitle } from '@constants'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 
 const title = 'Economic Empowerment in Mexico'
+const dashboardName = LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO
 
 export const configuration: IConfiguration = {
-    id: DashboardName.ECONOMIC_EMPOWERMENT_MEXICO,
-    title: title,
     campaignCode: 'giz',
-    seoTitle: `${title} | ${seoMainTitle}`,
+    dashboardName: dashboardName,
+    title: title,
+    seoTitle: `${title} | White Ribbon Alliance`,
     seoMetaDescription:
         'We asked 10603 women in Mexico the question, "¿Qué es lo que más deseas o necesitas para encontrar empleo o un mejor empleo? Por favor, comparte sólo la petición más importante para ti." (What do you most want or need to find a job or a better job? Please share only the request that is most important to you.)',
     respondentsNounSingular: 'woman',
     respondentsNounPlural: 'women',
     showVideoLink: 'https://www.youtube.com/watch?v=nBzide5J3Hk',
     link: {
-        id: DashboardName.ECONOMIC_EMPOWERMENT_MEXICO,
+        id: dashboardName,
         title: title,
-        link: 'https://explore.whiteribbonalliance.org/giz',
+        link: `/en/${dashboardName}`,
     },
 }

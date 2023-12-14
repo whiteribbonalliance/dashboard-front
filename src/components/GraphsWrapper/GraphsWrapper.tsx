@@ -1,6 +1,6 @@
 'use client'
 
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import { ResponsesBreakdownGraphs } from 'graph-components/ResponsesBreakdownGraphs'
 import { WorldBubbleMap } from '@graph-components/WorldBubbleMap'
 import { HistogramGraph } from 'graph-components/HistogramGraph'
@@ -16,7 +16,7 @@ export const GraphsWrapper = () => {
     const { dashboard } = params
 
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             return (
                 <>
                     <ResponsesBreakdownGraphs />
@@ -27,7 +27,7 @@ export const GraphsWrapper = () => {
                     <ResponsesSampleTable />
                 </>
             )
-        case DashboardName.HEALTHWELLBEING:
+        case LegacyDashboardName.HEALTHWELLBEING:
             return (
                 <>
                     <ResponsesBreakdownGraphs />
@@ -39,7 +39,7 @@ export const GraphsWrapper = () => {
                     <HistogramGraph />
                 </>
             )
-        case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
+        case LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN:
             return (
                 <>
                     <ResponsesBreakdownGraphs />

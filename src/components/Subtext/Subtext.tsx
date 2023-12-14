@@ -2,16 +2,13 @@
 
 import { useTranslation } from '@app/i18n/client'
 import { applyToThousandsSepOnText, classNames, getDashboardConfig } from '@utils'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 import Link from 'next/link'
 import React, { useContext, useEffect, useState } from 'react'
-import { IParams } from '@interfaces'
 import { ParamsContext } from '@contexts/params'
 
 const HtmlToReact = require('html-to-react')
 const HtmlToReactParser = require('html-to-react').Parser
-
-interface ISubtextProps {}
 
 export const Subtext = () => {
     const { params } = useContext(ParamsContext)
@@ -23,7 +20,7 @@ export const Subtext = () => {
     // Set link classes
     let linkClasses: string
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             linkClasses = 'text-pmnchColors-secondary'
             break
         default:
@@ -33,10 +30,12 @@ export const Subtext = () => {
     // Set subtext element
     useEffect(() => {
         switch (dashboard) {
-            case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
+            case LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
                 setSubtextElement(
                     <>
-                        <p className="mb-3">{applyToThousandsSepOnText(t('giz-asked-questions'), lang)}:</p>
+                        <p className="mb-3">
+                            {applyToThousandsSepOnText(t(`${config.campaignCode}-asked-questions`), lang)}:
+                        </p>
                         <p className="mb-3">
                             “¿Qué es lo que más deseas o necesitas para encontrar empleo o un mejor empleo? Por favor,
                             comparte sólo la petición más importante para ti.“ ({t(`${dashboard}-q1`)})
@@ -48,7 +47,7 @@ export const Subtext = () => {
                     </>
                 )
                 break
-            case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+            case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
                 let subtext = applyToThousandsSepOnText(t(`${config.campaignCode}-subtext`), lang)
 
                 // Set the link inside an anchor tag
@@ -85,10 +84,7 @@ export const Subtext = () => {
                     new HtmlToReactParser().parseWithInstructions(subtext, () => true, processingInstructions)
                 )
                 break
-            case DashboardName.WOMENS_ECONOMIC_EMPOWERMENT:
-                setSubtextElement(<></>)
-                break
-            case DashboardName.ALL_CAMPAIGNS:
+            case LegacyDashboardName.ALL_CAMPAIGNS:
                 setSubtextElement(<></>)
                 break
             default:

@@ -6,7 +6,7 @@ import { dir } from 'i18next'
 import { config as fontAwesomeConfig } from '@fortawesome/fontawesome-svg-core'
 import { TDashboard } from '@types'
 import { GoogleAnalytics } from '@components/GoogleAnalytics'
-import { DashboardName } from '@enums'
+import { LegacyDashboardName } from '@enums'
 
 fontAwesomeConfig.autoAddCss = false
 
@@ -57,7 +57,7 @@ const DashboardLayout = async ({ children, params }: IDashboardLayoutProps) => {
     // Set favicon
     let favicon
     switch (dashboard) {
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
+        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             favicon = <link rel="icon" href="/favicons/pmnch_favicon_2.png" sizes="any" />
             break
         default:

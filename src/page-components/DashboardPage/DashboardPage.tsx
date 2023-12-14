@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import React from 'react'
 import { TDashboard as TDashboard } from '@types'
 import { Dashboard } from '@page-components/DashboardPage/Dashboard'
+import { getDashboardConfig } from '@utils'
 
 interface IDashboardProps {
     params: { lang: string; dashboard: TDashboard }
@@ -17,5 +18,6 @@ export const DashboardPage = ({ params }: IDashboardProps) => {
     }
 
     // Any data that needs to be fetched server side can be done here and passed to the Dashboard component
+
     return <Dashboard dashboard={dashboard} lang={lang} />
 }

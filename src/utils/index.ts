@@ -23,22 +23,13 @@ SOFTWARE.
 
 */
 
-import { DashboardName } from '@enums'
-import {
-    allCampaignsConfig,
-    economicEmpowermentMexicoConfig,
-    healthwellbeingConfig,
-    midwivesVoicesConfig,
-    whatWomenWantConfig,
-    whatWomenWantPakistanConfig,
-    whatYoungPeopleWantConfig,
-    womensEconomicEmpowermentConfig,
-} from '@configurations'
+import { LegacyDashboardName } from '@enums'
+import { dashboardsConfigs } from '@configurations'
 import { TDashboard } from '@types'
 import { v4 as uuidv4 } from 'uuid'
 import { getDefaultFilterValues, TFilter } from '@schemas/filter'
 import _ from 'lodash'
-import { ICampaignRequest } from '@interfaces'
+import { ICampaignRequest, IConfiguration } from '@interfaces'
 import { languagesAzure, languagesGoogle } from '@constants'
 
 /**
@@ -56,24 +47,7 @@ export function classNames(...classes: string[]) {
  * @param dashboard The dashboard
  */
 export function getDashboardConfig(dashboard: TDashboard) {
-    switch (dashboard) {
-        case DashboardName.WHAT_WOMEN_WANT:
-            return whatWomenWantConfig
-        case DashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            return whatYoungPeopleWantConfig
-        case DashboardName.MIDWIVES_VOICES:
-            return midwivesVoicesConfig
-        case DashboardName.HEALTHWELLBEING:
-            return healthwellbeingConfig
-        case DashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
-            return economicEmpowermentMexicoConfig
-        case DashboardName.WHAT_WOMEN_WANT_PAKISTAN:
-            return whatWomenWantPakistanConfig
-        case DashboardName.WOMENS_ECONOMIC_EMPOWERMENT:
-            return womensEconomicEmpowermentConfig
-        case DashboardName.ALL_CAMPAIGNS:
-            return allCampaignsConfig
-    }
+    return dashboardsConfigs.find((config) => config.dashboardName == dashboard) as IConfiguration
 }
 
 /***
@@ -207,7 +181,7 @@ export function getCampaignRequest(
     const filtersClone = _.cloneDeep(filters)
 
     // Only filter by province if there is no district selected at wwwpakistan
-    if (dashboard === DashboardName.WHAT_WOMEN_WANT_PAKISTAN) {
+    if (dashboard === LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN) {
         if (filtersClone.filter1 && filtersClone.filter1.regions.length > 0) {
             filtersClone.filter1.provinces = []
         }
@@ -232,9 +206,18 @@ export function getCampaignRequest(
  * @param dashboard The dashboard
  */
 export function getLanguagesByDashboard(dashboard: TDashboard) {
-    if (dashboard === DashboardName.WHAT_YOUNG_PEOPLE_WANT) {
+    if (dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT) {
         return languagesAzure
     } else {
         return languagesGoogle
     }
+}
+
+/**
+ * Remove all spaces
+ *
+ * @param text The text
+ */
+export function removeAllSpaces(text: string) {
+    return text.replaceAll(' ', '')
 }
