@@ -24,8 +24,6 @@ SOFTWARE.
 */
 
 // App
-export type { IConfiguration } from './configuration'
-export type { IDashboardLink } from './dashboard-link'
 export { type ILanguage } from './language'
 export type { ICountry } from './country'
 export type { IParams } from './params'
@@ -49,3 +47,4 @@ export type { IHistogramData } from './dashboard-api/histogram-data'
 export type { IResponsesBreakdownData } from './dashboard-api/campaign'
 export type { IGenderBreakdown } from './dashboard-api/campaign'
 export type { ISettings } from './dashboard-api/settings'
+export type { ICampaignConfiguration } from './dashboard-api/campaign-configuration'

@@ -17,10 +17,9 @@ import { MutableRefObject, useRef } from 'react'
 import { ITopWord } from '@interfaces'
 import { useTranslation } from '@app/i18n/client'
 import { useFilterFormsStore } from '@stores/filter-forms'
-import { TDashboard } from '@types'
 
 interface ITopWordsOrPhrasesProps {
-    dashboard: TDashboard
+    dashboard: string
     lang: string
     words: ITopWord[]
     filter1Description: string

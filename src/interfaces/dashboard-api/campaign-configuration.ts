@@ -23,25 +23,15 @@ SOFTWARE.
 
 */
 
-import { IConfiguration } from '@interfaces'
-import { LegacyDashboardName } from '@enums'
-
-const title = 'What Midwives Want'
-const dashboardName = LegacyDashboardName.MIDWIVES_VOICES
-
-export const configuration: IConfiguration = {
-    campaignCode: 'midwife',
-    dashboardName: dashboardName,
-    title: title,
-    seoTitle: `${title} | White Ribbon Alliance`,
-    seoMetaDescription:
-        'What Women Want: What Midwives Want, led by White Ribbon Alliance (WRA) in collaboration with the International Confederation of Midwives (ICM), is a key companion to the What Women Want (WWW) campaign, which asked 1.2 million women and girls their top demand for quality reproductive and maternal healthcare.',
-    respondentsNounSingular: 'respondent',
-    respondentsNounPlural: 'respondents',
-    showVideoLink: 'https://www.youtube.com/watch?v=nBzide5J3Hk',
-    link: {
-        id: dashboardName,
-        title: title,
-        link: `/en/${dashboardName}`,
-    },
+export interface ICampaignConfiguration {
+    campaign_code: string
+    dashboard_path: string
+    dashboard_name: string
+    seo_title: string
+    seo_meta_description: string
+    respondent_noun_singular: string
+    respondent_noun_plural: string
+    video_link: string
+    about_us_link: string
+    questions: {}
 }

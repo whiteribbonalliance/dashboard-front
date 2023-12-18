@@ -1,9 +1,8 @@
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import React from 'react'
-import { TDashboard } from '@types'
 
 interface ITooltip {
-    dashboard: TDashboard
+    dashboard: string
     id: string
     title: string
     paragraphs: string[]

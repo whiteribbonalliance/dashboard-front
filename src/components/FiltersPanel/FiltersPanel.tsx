@@ -1,13 +1,13 @@
 'use client'
 
 import { Disclosure, Tab, Transition } from '@headlessui/react'
-import { classNames, getDashboardConfig } from '@utils'
+import { classNames } from '@utils'
 import { LegacyDashboardName } from '@enums'
 import React, { Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react'
 import { Box } from '@components/Box'
 import Image from 'next/image'
 import { getCampaignFilterOptions, getCampaignsMergedFilterOptions } from 'services/dashboard-api'
-import { TDashboard, TOption } from '@types'
+import { TOption } from '@types'
 import { ICountry, ICountryRegionOption, ICountryRegionProvinceOption, IFilterOptions } from '@interfaces'
 import { Control, Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { SelectMultiValues } from '@components/SelectMultiValues'
@@ -25,7 +25,6 @@ import { Input } from '@components/Input'
 import { SelectQuestionAsked } from 'components/FiltersPanel/SelectQuestionAsked'
 import { Loading } from 'components/Loading'
 import { SelectActiveDashboard } from 'components/FiltersPanel/SelectActiveDashboard'
-import { dashboardsConfigs } from '@configurations'
 import { useShowSelectActiveDashboardStore } from '@stores/show-select-active-dashboard'
 import { SelectResponseYear } from '@components/FiltersPanel/SelectResponseYear'
 import { useCountriesStore } from '@stores/countries'
@@ -34,6 +33,7 @@ import _ from 'lodash'
 import { ParamsContext } from '@contexts/params'
 import { produce } from 'immer'
 import { useCampaignQuery } from '@hooks/use-campaign-query'
+import { ConfigurationContext } from '@contexts/configuration'
 
 interface IApplyFiltersButtonProps {
     form1: UseFormReturn<TFilter>
@@ -45,7 +45,7 @@ interface IFieldProps {
 }
 
 interface ISelectProps extends IFieldProps {
-    dashboard: TDashboard
+    dashboard: string
     options: (TOption<string> | TOption<boolean>)[]
     control: Control<TFilter>
 }
@@ -62,6 +62,7 @@ interface ITab {
 
 export const FiltersPanel = () => {
     const { params } = useContext(ParamsContext)
+    const { currentCampaignConfiguration, allCampaignsConfigurations } = useContext(ConfigurationContext)
     const { dashboard, lang } = params
     const { data } = useCampaignQuery()
 
@@ -69,7 +70,6 @@ export const FiltersPanel = () => {
     const setForm2 = useFilterFormsStore((state) => state.setForm2)
     const setCountries = useCountriesStore((state) => state.setCountries)
     const { t } = useTranslation(lang)
-    const config = getDashboardConfig(dashboard)
     const [tabs, setTabs] = useState<ITab[]>([])
 
     // Select options
@@ -147,7 +147,7 @@ export const FiltersPanel = () => {
             if (dashboard === LegacyDashboardName.ALL_CAMPAIGNS) {
                 return getCampaignsMergedFilterOptions(lang)
             } else {
-                return getCampaignFilterOptions(config, lang)
+                return getCampaignFilterOptions(currentCampaignConfiguration, lang)
             }
         },
         refetchOnWindowFocus: false,
@@ -377,9 +377,9 @@ export const FiltersPanel = () => {
     const showSelectActiveDashboard = useShowSelectActiveDashboardStore((state) => state.showSelectActiveDashboard)
     const allCampaignsActiveDashboardOptions: TOption<string>[] = []
     if (showSelectActiveDashboard) {
-        for (let i = 0; i < dashboardsConfigs.length; i++) {
-            const value = dashboardsConfigs[i].dashboardName
-            const label = dashboardsConfigs[i].title
+        for (let i = 0; i < allCampaignsConfigurations.length; i++) {
+            const value = allCampaignsConfigurations[i].dashboard_path
+            const label = allCampaignsConfigurations[i].dashboard_name
             allCampaignsActiveDashboardOptions.push({ value, label })
         }
     }

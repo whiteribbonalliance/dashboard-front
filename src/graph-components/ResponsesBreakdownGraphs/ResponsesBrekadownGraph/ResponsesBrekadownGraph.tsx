@@ -15,7 +15,6 @@ import {
 import { classNames, niceNum, toThousandsSep } from '@utils'
 import { useTranslation } from '@app/i18n/client'
 import { useFilterFormsStore } from '@stores/filter-forms'
-import { TDashboard } from '@types'
 import React, { MutableRefObject, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { IResponsesBreakdownData } from '@interfaces'
 import { UseFormReturn } from 'react-hook-form'
@@ -31,7 +30,7 @@ interface IResponsesBreakdownGraphProps {
 }
 
 interface ICustomTooltip extends TooltipProps<number, string> {
-    dashboard: TDashboard
+    dashboard: string
     hoveredBarDataKey: MutableRefObject<string>
     showTooltip: boolean
     lang: string

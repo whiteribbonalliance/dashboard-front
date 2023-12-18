@@ -3,17 +3,17 @@
 import Link from 'next/link'
 import { LegacyDashboardName } from '@enums'
 import React, { useContext, useState } from 'react'
-import { applyToThousandsSepOnText, classNames, getCampaignRequest, getDashboardConfig } from '@utils'
+import { applyToThousandsSepOnText, classNames, getCampaignRequest } from '@utils'
 import { useTranslation } from '@app/i18n/client'
-import { dashboardsConfigs } from '@configurations'
 import { OrganizationLogos } from 'components/OrganizationLogos'
 import { ParamsContext } from '@contexts/params'
 import { downloadCampaignPublicData } from 'services/dashboard-api'
+import { ConfigurationContext } from '@contexts/configuration'
 
 export const Footer = () => {
     const { params } = useContext(ParamsContext)
     const { dashboard, lang, filters, responseYear } = params
-
+    const { currentCampaignConfiguration, allCampaignsConfigurations } = useContext(ConfigurationContext)
     const [exportingDataset, setExportingDataset] = useState<boolean>(false)
     const { t } = useTranslation(lang)
 
@@ -23,9 +23,10 @@ export const Footer = () => {
         exportDatasetText = exportDatasetText.slice(0, -1)
     }
 
-    // Footer links
-    const dashboardLinks = dashboardsConfigs.map((configuration) => configuration.link)
-    const footerLinks = dashboardLinks.filter((dashboardLink) => dashboardLink.id !== dashboard)
+    // Other dashboard configurations
+    const otherDashboardsConfigurations = allCampaignsConfigurations.filter(
+        (configuration) => configuration.dashboard_path !== dashboard
+    )
 
     // Set footer link classes
     let footerLinkClasses: string
@@ -85,11 +86,10 @@ export const Footer = () => {
     async function onExportDatasetClick() {
         if (!exportingDataset) {
             setExportingDataset(true)
-            const config = getDashboardConfig(dashboard)
             const campaignRequest = getCampaignRequest(dashboard, filters)
 
             try {
-                await downloadCampaignPublicData(config, campaignRequest, responseYear)
+                await downloadCampaignPublicData(currentCampaignConfiguration, campaignRequest, responseYear)
                 setExportingDataset(false)
             } catch (error) {
                 setExportingDataset(false)
@@ -185,21 +185,21 @@ export const Footer = () => {
             )}
 
             {/* Other dashboards */}
-            {footerLinks.length > 0 && (
+            {otherDashboardsConfigurations.length > 0 && (
                 <div>
                     <p>
                         {t('other-dashboards')}:{' '}
-                        {footerLinks.map((footerLink, index) => {
+                        {otherDashboardsConfigurations.map((configuration, index) => {
                             return (
-                                <span key={footerLink.id}>
+                                <span key={configuration.dashboard_path}>
                                     <Link
-                                        key={footerLink.id}
-                                        href={footerLink.link}
+                                        href={`/${configuration.dashboard_path}`}
+                                        target="_blank"
                                         className={classNames('underline', footerLinkClasses)}
                                     >
-                                        {footerLink.title}
+                                        {configuration.dashboard_name}
                                     </Link>
-                                    {index + 1 < footerLinks.length && <> • </>}
+                                    {index + 1 < otherDashboardsConfigurations.length && <> • </>}
                                 </span>
                             )
                         })}
@@ -213,12 +213,17 @@ export const Footer = () => {
                     {t('dashboard-by')}{' '}
                     <Link
                         href={'https://freelancedatascientist.net/'}
+                        target="_blank"
                         className={classNames('underline', footerLinkClasses)}
                     >
                         Thomas Wood
                     </Link>{' '}
                     {t('at')}{' '}
-                    <Link href={'https://fastdatascience.com/'} className={classNames('underline', footerLinkClasses)}>
+                    <Link
+                        href={'https://fastdatascience.com/'}
+                        target="_blank"
+                        className={classNames('underline', footerLinkClasses)}
+                    >
                         Fast Data Science
                     </Link>
                 </p>

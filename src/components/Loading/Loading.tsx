@@ -1,9 +1,8 @@
 import { Spinner } from '@components/Spinner'
 import React from 'react'
-import { TDashboard } from '@types'
 
 interface ILoadingProps {
-    dashboard: TDashboard
+    dashboard: string
 }
 
 export const Loading = ({ dashboard }: ILoadingProps) => {

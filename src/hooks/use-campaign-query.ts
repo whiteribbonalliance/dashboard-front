@@ -28,15 +28,16 @@ SOFTWARE.
 import { useQuery } from 'react-query'
 import { ICampaign } from '@interfaces'
 import { getCampaign, getCampaignsMerged } from 'services/dashboard-api'
-import { getCampaignRequest, getDashboardConfig } from '@utils'
+import { getCampaignRequest } from '@utils'
 import { LegacyDashboardName } from '@enums'
 import { useContext } from 'react'
 import { ParamsContext } from '@contexts/params'
+import { ConfigurationContext } from '@contexts/configuration'
 
 export const useCampaignQuery = () => {
     const { params } = useContext(ParamsContext)
     const { dashboard, filters, lang, questionAskedCode, responseYear } = params
-
+    const { currentCampaignConfiguration } = useContext(ConfigurationContext)
     const campaignRequest = getCampaignRequest(dashboard, filters)
 
     return useQuery<ICampaign>({
@@ -47,8 +48,14 @@ export const useCampaignQuery = () => {
                 return getCampaignsMerged(campaignRequest, lang, signal)
             } else {
                 // Use get getCampaign function to fetch dashboard
-                const config = getDashboardConfig(dashboard)
-                return getCampaign(config, campaignRequest, lang, questionAskedCode, responseYear, signal)
+                return getCampaign(
+                    currentCampaignConfiguration,
+                    campaignRequest,
+                    lang,
+                    questionAskedCode,
+                    responseYear,
+                    signal
+                )
             }
         },
         refetchOnWindowFocus: false,

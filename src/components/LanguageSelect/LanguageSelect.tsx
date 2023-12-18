@@ -8,10 +8,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLanguage } from '@fortawesome/free-solid-svg-icons'
 import { classNames, getLanguagesByDashboard } from '@utils'
 import { usePathname, useRouter } from 'next/navigation'
-import { TDashboard } from '@types'
 
 interface ILanguageSelectProps {
-    dashboard: TDashboard
+    dashboard: string
     lang: string
 }
 

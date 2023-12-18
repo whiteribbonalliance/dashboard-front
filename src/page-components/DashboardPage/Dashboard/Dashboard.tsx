@@ -8,20 +8,28 @@ import { classNames } from '@utils'
 import { GraphsWrapper } from 'components/GraphsWrapper'
 import { Footer } from '@components/Footer'
 import React, { useEffect, useState } from 'react'
-import { TDashboard } from '@types'
 import { LegacyDashboardName } from '@enums'
 import { useShowSelectActiveDashboardStore } from '@stores/show-select-active-dashboard'
-import { IParams } from '@interfaces'
+import { ICampaignConfiguration, IParams } from '@interfaces'
 import { ParamsContext } from '@contexts/params'
 import { getDefaultFilterValues } from '@schemas/filter'
+import { ConfigurationContext } from '@contexts/configuration'
 
 interface IDashboardProps {
-    dashboard: TDashboard
+    dashboard: string
     lang: string
+    currentCampaignConfiguration: ICampaignConfiguration
+    allCampaignsConfigurations: ICampaignConfiguration[]
 }
 
-export const Dashboard = ({ dashboard, lang }: IDashboardProps) => {
+export const Dashboard = ({
+    dashboard,
+    lang,
+    currentCampaignConfiguration,
+    allCampaignsConfigurations,
+}: IDashboardProps) => {
     const defaultFilterValues = getDefaultFilterValues(dashboard)
+
     const [params, setParams] = useState<IParams>({
         dashboard: dashboard,
         lang: lang,
@@ -29,6 +37,7 @@ export const Dashboard = ({ dashboard, lang }: IDashboardProps) => {
         questionAskedCode: 'q1',
         responseYear: '',
     })
+
     const setShowSelectActiveDashboard = useShowSelectActiveDashboardStore(
         (state) => state.setShowSelectActiveDashboard
     )
@@ -66,39 +75,41 @@ export const Dashboard = ({ dashboard, lang }: IDashboardProps) => {
 
     return (
         <div className={classNames(layoutClasses)}>
-            <ParamsContext.Provider value={{ params, setParams }}>
-                {/* Header */}
-                <Header />
+            <ConfigurationContext.Provider value={{ currentCampaignConfiguration, allCampaignsConfigurations }}>
+                <ParamsContext.Provider value={{ params, setParams }}>
+                    {/* Header */}
+                    <Header />
 
-                {/* Main */}
-                <main className="mx-7 my-7">
-                    {/* Title */}
-                    <div className="mb-3 flex justify-center xl:hidden">
-                        <Title />
-                    </div>
+                    {/* Main */}
+                    <main className="mx-7 my-7">
+                        {/* Title */}
+                        <div className="mb-3 flex justify-center xl:hidden">
+                            <Title />
+                        </div>
 
-                    {/* Subtext */}
-                    <div className="mb-10 flex justify-center">
-                        <Subtext />
-                    </div>
+                        {/* Subtext */}
+                        <div className="mb-10 flex justify-center">
+                            <Subtext />
+                        </div>
 
-                    {/* Content */}
-                    <div className="grid grid-cols-1 items-start gap-x-[10%] xl:grid-cols-3">
-                        {/* Filters panel */}
-                        <section className="hidden xl:sticky xl:top-5 xl:col-span-1 xl:block">
-                            <FiltersPanel />
-                        </section>
+                        {/* Content */}
+                        <div className="grid grid-cols-1 items-start gap-x-[10%] xl:grid-cols-3">
+                            {/* Filters panel */}
+                            <section className="hidden xl:sticky xl:top-5 xl:col-span-1 xl:block">
+                                <FiltersPanel />
+                            </section>
 
-                        {/* Graphs */}
-                        <section className={classNames('col-span-2 grid grid-cols-1', boxesGapY)}>
-                            <GraphsWrapper />
-                        </section>
-                    </div>
-                </main>
+                            {/* Graphs */}
+                            <section className={classNames('col-span-2 grid grid-cols-1', boxesGapY)}>
+                                <GraphsWrapper />
+                            </section>
+                        </div>
+                    </main>
 
-                {/* Footer */}
-                <Footer />
-            </ParamsContext.Provider>
+                    {/* Footer */}
+                    <Footer />
+                </ParamsContext.Provider>
+            </ConfigurationContext.Provider>
         </div>
     )
 }

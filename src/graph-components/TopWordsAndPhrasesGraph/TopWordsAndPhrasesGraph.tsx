@@ -12,7 +12,6 @@ import { TopWordsOrPhrases } from 'graph-components/TopWordsAndPhrasesGraph/TopW
 import { Loading } from 'components/Loading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
-import { TDashboard } from '@types'
 import { Tooltip } from '@components/Tooltip'
 import { ITopWordsAndPhrases } from '@interfaces'
 import { ParamsContext } from '@contexts/params'

@@ -1,29 +1,35 @@
 import { DashboardPage } from 'page-components/DashboardPage'
-import { dashboards } from '@constants'
-import { TDashboard as TDashboard } from '@types'
-import { getDashboardConfig } from '@utils'
+import { getAllCampaignsConfigurations } from '@services/dashboard-api'
 
 export default DashboardPage
 
 interface IGenerateMetadataProps {
-    params: { dashboard: TDashboard }
+    params: { dashboard: string }
 }
 
 // The dashboards will be created using the params returned by this function
 export async function generateStaticParams() {
+    // Get configurations
+    const campaignsConfigurations = await getAllCampaignsConfigurations()
+
     // Generate static params for dashboards
-    return dashboards.map((dashboard) => {
-        return { dashboard: dashboard }
-    })
+    return campaignsConfigurations.map((config) => ({
+        dashboard: config.dashboard_path,
+    }))
 }
 
 // Set page title and description
 export async function generateMetadata({ params }: IGenerateMetadataProps) {
     const { dashboard } = params
-    const config = getDashboardConfig(dashboard)
+
+    // Get configurations
+    const campaignsConfigurations = await getAllCampaignsConfigurations()
+
+    // Get configurations
+    const campaignConfiguration = campaignsConfigurations.find((config) => config.dashboard_path === dashboard)
 
     return {
-        title: config.seoTitle,
-        description: config.seoMetaDescription,
+        title: campaignConfiguration?.seo_title || '',
+        description: campaignConfiguration?.seo_meta_description || '',
     }
 }

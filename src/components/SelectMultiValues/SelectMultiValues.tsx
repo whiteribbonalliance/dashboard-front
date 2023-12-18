@@ -1,7 +1,6 @@
 import Select from 'react-select'
 import React from 'react'
 import { TOption } from '@types'
-import placeholder from 'lodash/fp/placeholder'
 
 interface ISelectMultiValuesProps {
     id: string

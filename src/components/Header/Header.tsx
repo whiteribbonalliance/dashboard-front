@@ -11,7 +11,7 @@ import { Button } from '@components/Button/Button'
 import { FiltersPanel } from '@components/FiltersPanel'
 import { LanguageSelect } from '@components/LanguageSelect'
 import { Chevron } from '@components/Chevron'
-import { classNames, getDashboardConfig } from '@utils'
+import { classNames } from '@utils'
 import { useTranslation } from '@app/i18n/client'
 import Image from 'next/image'
 import { Title } from '@components/Title'
@@ -19,9 +19,16 @@ import { ParamsContext } from '@contexts/params'
 import { useQuery } from 'react-query'
 import { ISettings } from '@interfaces'
 import { getSettings } from '@services/dashboard-api'
+import { ConfigurationContext } from '@contexts/configuration'
 
 interface IHamburgerMenuProps {
     open: boolean
+}
+
+interface IMenu {
+    id: string
+    title: string
+    url: string
 }
 
 export const Header = () => {
@@ -29,7 +36,7 @@ export const Header = () => {
     const { dashboard, lang } = params
 
     const [showMobileFiltersPanel, setShowMobileFiltersPanel] = useState<boolean>(false)
-    const config = getDashboardConfig(dashboard)
+    const { currentCampaignConfiguration } = useContext(ConfigurationContext)
     const { t } = useTranslation(lang)
 
     // Settings query
@@ -39,17 +46,17 @@ export const Header = () => {
         refetchOnWindowFocus: false,
     })
 
-    const showVideoLink = config.showVideoLink
-
     // Create menu items
-    let menuItems = [
-        { id: 'about-us', title: t('about-us'), url: 'https://whiteribbonalliance.org/movements/womens-health' },
-        { id: 'show-video', title: t('show-video'), url: showVideoLink },
-    ]
-
-    // For PMNCH, remove about us
-    if (dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT) {
-        menuItems = menuItems.filter((item) => item.id !== 'about-us')
+    let menuItems: IMenu[] = []
+    if (currentCampaignConfiguration.about_us_link) {
+        menuItems.push({
+            id: 'about-us',
+            title: t('about-us'),
+            url: currentCampaignConfiguration.about_us_link,
+        })
+    }
+    if (currentCampaignConfiguration.video_link) {
+        menuItems.push({ id: 'show-video', title: t('show-video'), url: currentCampaignConfiguration.video_link })
     }
 
     // Set mobile dropdown classes

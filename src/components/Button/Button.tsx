@@ -1,12 +1,11 @@
 import { LegacyDashboardName } from '@enums'
 import { classNames } from '@utils'
-import { TDashboard } from '@types'
 
 interface IButtonProps {
     text: string
     size?: 'text-sm' | 'text-base' | 'text-lg' | 'text-xl'
     disabled?: boolean
-    dashboard?: TDashboard
+    dashboard?: string
 }
 
 export const Button = ({ text, size = 'text-base', disabled = false, dashboard }: IButtonProps) => {

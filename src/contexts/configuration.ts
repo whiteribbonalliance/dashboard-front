@@ -23,24 +23,12 @@ SOFTWARE.
 
 */
 
-import { IConfiguration } from '@interfaces'
-import { LegacyDashboardName } from '@enums'
+import { createContext } from 'react'
+import { ICampaignConfiguration } from '@interfaces'
 
-const title = 'What Young People Want'
-const dashboardName = LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
-
-export const configuration: IConfiguration = {
-    campaignCode: 'pmn01a',
-    dashboardName: dashboardName,
-    title: title,
-    seoTitle: 'Results Dashboard | PMNCH',
-    seoMetaDescription: 'What Young People Want Interactive Dashboard',
-    respondentsNounSingular: 'respondent',
-    respondentsNounPlural: 'respondents',
-    showVideoLink: 'https://youtu.be/E6_ERqyI8nA',
-    link: {
-        id: dashboardName,
-        title: title,
-        link: `/en/${dashboardName}`,
-    },
+interface IConfigurationContext {
+    currentCampaignConfiguration: ICampaignConfiguration
+    allCampaignsConfigurations: ICampaignConfiguration[]
 }
+
+export const ConfigurationContext = createContext<IConfigurationContext>(undefined as any)

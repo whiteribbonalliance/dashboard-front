@@ -4,7 +4,6 @@ import { QueryClientProvider } from '@providers/QueryClientProvider'
 import localFont from 'next/font/local'
 import { dir } from 'i18next'
 import { config as fontAwesomeConfig } from '@fortawesome/fontawesome-svg-core'
-import { TDashboard } from '@types'
 import { GoogleAnalytics } from '@components/GoogleAnalytics'
 import { LegacyDashboardName } from '@enums'
 
@@ -12,7 +11,7 @@ fontAwesomeConfig.autoAddCss = false
 
 interface IDashboardLayoutProps {
     children: ReactNode
-    params: { dashboard: TDashboard; lang: string }
+    params: { dashboard: string; lang: string }
 }
 
 const notoSansRegular = localFont({

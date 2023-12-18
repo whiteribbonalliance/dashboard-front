@@ -1,6 +1,6 @@
-# WRA Global Directory Dashboard
+# Dashboard
 
-This project contains multiple dashboards for WRA. Each dashboard is made accessible by navigating to a specific
+This project contains multiple dashboards. Each dashboard is made accessible by navigating to a specific
 subdomain. `middleware.ts` is responsible for parsing the subdomain that is calling the app and rewrite the hostname
 as a parameter of route `dashboards_use_subdomain` or `dashboards_use_path`.
 
@@ -13,7 +13,6 @@ The file at `app/dashboards_use_subdomain/[dashboard]/[lang]/page.tsx` will gene
 - `MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS=` The subdomain used for displaying dashboards using paths e.g.
   using `explore` will allow accessing the dashboard `healthwellbeing`
   at `explore.whiteribbonalliance.org/healthwellbeing`.
-- `ONLY_PMNCH=` `PMNCH` exclusive. Accepts `True` or `False`.
 - `NEXT_PUBLIC_DASHBOARD_API_URL=` The url to the API.
 - `NEXT_PUBLIC_GOOGLE_ANALYTICS=` Google Analytics ID.
 
@@ -56,23 +55,13 @@ npm run lint
 npm run format
 ```
 
-## Hot to add a new dashboard
-
-Make sure the campaign associated with this dashboard was also created in the back-end.
-
-1. At `src/configurations` create a new configuration file (use `example.ts` for an example) for the new dashboard.
-2. At `src/configurations/index.ts` import the new configuration, for
-   example `import { configuration as exampleConfig } from './example'`.
-3. At `src/configurations/index.ts` include the imported configuration in `dashboardsConfigs`, for
-   example `export const dashboardsConfigs = [exampleConfig]`.
-4. Add new translations e.g. the title and subtext (check the back-end README).
-5. If translation is allowed in the back-end, the `title` and `subtext` should be added
-   to `front_translations/to_translate.json` e.g. to translate the `title` for campaign with code `example` include the
-   key `"example-title": "Example title"` or for the `subtext` include `"example-subtext": "Example subtext"`. Then
-   run `python translate_front.py`. Once translations have been applied, a new folder called `languages` should have
-   been created inside `front_translations`. Copy the `languages` folder to this project at `src/app/i18n`.
-
 ## Translations
+
+If translations is allowed in the back-end, the `title` and `subtext` should be added
+to `front_translations/to_translate.json` e.g. to translate the `title` for campaign with code `example` include the
+key `"example-title": "Example title"` or for the `subtext` include `"example-subtext": "Example subtext"`. Then
+run `python translate_front.py`. Once translations have been applied, a new folder called `languages` should have
+been created inside `front_translations`. Copy the `languages` folder to this project at `src/app/i18n`.
 
 Check `README.md` inside the back-end project for more details about translations.
 
@@ -96,6 +85,10 @@ line using `gcloud app deploy app.yaml`. You need to install Google Cloud CLI (C
 authenticated on the WRA Google Cloud Platform service account for this to work.
 
 ## PMNCH - Azure deployment
+
+## Environment variables
+
+- `ONLY_PMNCH=` True.
 
 Because of organization policies, the dashboard at `https://whatyoungpeoplewant.whiteribbonalliance.org` should be
 deployed on `Azure` and make use of its services instead of `Google`. To solve this issue, two new repositories are

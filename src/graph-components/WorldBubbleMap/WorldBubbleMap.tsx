@@ -9,13 +9,12 @@ import * as d3 from 'd3'
 import { LegacyDashboardName } from '@enums'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { IWorldBubbleMapsCoordinate } from '@interfaces'
-import { classNames, getDashboardConfig, toThousandsSep } from '@utils'
+import { classNames, toThousandsSep } from '@utils'
 import { useQuery } from 'react-query'
 import { useTranslation } from '@app/i18n/client'
 import { useFilterFormsStore } from '@stores/filter-forms'
 import { UseFormReturn } from 'react-hook-form'
 import { TFilter } from '@schemas/filter'
-import { TDashboard } from '@types'
 import { Tooltip } from '@components/Tooltip'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle } from '@fortawesome/free-solid-svg-icons'
@@ -24,6 +23,7 @@ import { Topology } from 'topojson-specification'
 import { FeatureCollection } from 'geojson'
 import _ from 'lodash'
 import { ParamsContext } from '@contexts/params'
+import { ConfigurationContext } from '@contexts/configuration'
 
 interface IWorldBubbleMapsCoordinateWithExtra extends IWorldBubbleMapsCoordinate {
     coordinatesSequence: 'coordinates_1' | 'coordinates_2'
@@ -31,7 +31,7 @@ interface IWorldBubbleMapsCoordinateWithExtra extends IWorldBubbleMapsCoordinate
 }
 
 interface ID3MapProps {
-    dashboard: TDashboard
+    dashboard: string
     form1: UseFormReturn<TFilter>
     form2: UseFormReturn<TFilter>
     respondents: string
@@ -51,7 +51,7 @@ const svgHeight = 600
 export const WorldBubbleMap = () => {
     const { params } = useContext(ParamsContext)
     const { dashboard, lang } = params
-
+    const { currentCampaignConfiguration } = useContext(ConfigurationContext)
     const { data, isError, isLoading, isRefetching } = useCampaignQuery()
 
     const [showBubbles1, setShowBubbles1] = useState<boolean>(true)
@@ -62,10 +62,8 @@ export const WorldBubbleMap = () => {
     const form1 = useFilterFormsStore((state) => state.form1)
     const form2 = useFilterFormsStore((state) => state.form2)
 
-    const config = getDashboardConfig(dashboard)
-
     // Set respondents
-    const respondents = t(config.respondentsNounPlural)
+    const respondents = t(currentCampaignConfiguration.respondent_noun_plural)
 
     // Data geo world query
     const dataGeoQuery = useQuery<FeatureCollection | undefined>({
@@ -91,10 +89,10 @@ export const WorldBubbleMap = () => {
     let respondentsLocatedText: string
     switch (dashboard) {
         case LegacyDashboardName.WHAT_WOMEN_WANT:
-            respondentsLocatedText = t(`${config.campaignCode}-where-located`)
+            respondentsLocatedText = t(`${currentCampaignConfiguration.campaign_code}-where-located`)
             break
         case LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
-            respondentsLocatedText = t(`${config.campaignCode}-where-located`)
+            respondentsLocatedText = t(`${currentCampaignConfiguration.campaign_code}-where-located`)
             break
         default:
             respondentsLocatedText = t('where-located')

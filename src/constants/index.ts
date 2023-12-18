@@ -25,10 +25,8 @@ SOFTWARE.
 
 import { ILanguage } from '@interfaces'
 import _ from 'lodash'
-import { dashboardsConfigs } from '@configurations'
 
-export const dashboards = [...dashboardsConfigs.map((config) => config.dashboardName)]
-
+// Google languages
 export const languagesGoogle: ILanguage[] = [
     { code: 'af', name: 'Afrikaans' },
     { code: 'ak', name: 'Akan' },
@@ -166,6 +164,7 @@ export const languagesGoogle: ILanguage[] = [
     { code: 'zu', name: 'isiZulu' },
 ]
 
+// Azure languages
 export const languagesAzure: ILanguage[] = [
     {
         code: 'af',
@@ -701,10 +700,9 @@ export const languagesAzure: ILanguage[] = [
     },
 ]
 
+// Languages that occur in both Google and Azure
 export const languages = _.uniqWith([...languagesGoogle, ...languagesAzure], (pre, cur) => {
     return pre.name == cur.name
 })
 
 export const defaultLanguage: ILanguage = { code: 'en', name: 'English' }
-
-export const pmnchLink = 'https://wypw.1point8b.org'

@@ -19,7 +19,6 @@ import { classNames, niceNum, toThousandsSep } from '@utils'
 import { Loading } from 'components/Loading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
-import { TDashboard } from '@types'
 import React, { MutableRefObject, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { ILivingSettingBreakdown } from '@interfaces'
 import { useFilterFormsStore } from '@stores/filter-forms'
@@ -28,7 +27,7 @@ import { TFilter } from '@schemas/filter'
 import { ParamsContext } from '@contexts/params'
 
 interface ICustomTooltip extends TooltipProps<number, string> {
-    dashboard: TDashboard
+    dashboard: string
     hoveredBarDataKey: MutableRefObject<string>
     showTooltip: boolean
     lang: string

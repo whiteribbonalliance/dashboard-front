@@ -10,10 +10,9 @@ import { useTooltip, useTooltipInPortal } from '@visx/tooltip'
 import { IWordcloudWord } from '@interfaces'
 import { toThousandsSep } from '@utils'
 import { useFilterFormsStore } from '@stores/filter-forms'
-import { TDashboard } from '@types'
 
 interface IWordcloudProps {
-    dashboard: TDashboard
+    dashboard: string
     lang: string
     wordcloudWords: IWordcloudWord[]
 }

@@ -4,7 +4,6 @@ import { Box } from '@components/Box'
 import { GraphTitle } from '@components/GraphTitle'
 import { LegacyDashboardName } from '@enums'
 import { useCampaignQuery } from '@hooks/use-campaign-query'
-import { getDashboardConfig } from '@utils'
 import { Loading } from 'components/Loading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
@@ -12,6 +11,7 @@ import React, { useContext } from 'react'
 import { Tooltip } from '@components/Tooltip'
 import { ResponsesBreakdownGraph } from '@graph-components/ResponsesBreakdownGraphs/ResponsesBrekadownGraph'
 import { ParamsContext } from '@contexts/params'
+import { ConfigurationContext } from '@contexts/configuration'
 
 export const ResponsesBreakdownGraphs = () => {
     const { params } = useContext(ParamsContext)
@@ -19,19 +19,19 @@ export const ResponsesBreakdownGraphs = () => {
 
     const { data, isError, isLoading, isRefetching } = useCampaignQuery()
     const { t } = useTranslation(lang)
-    const config = getDashboardConfig(dashboard)
+    const { currentCampaignConfiguration } = useContext(ConfigurationContext)
 
     // Set breakdown responses topic text
     let breakdownResponsesTopicText: string
     switch (dashboard) {
         case LegacyDashboardName.WHAT_WOMEN_WANT:
-            breakdownResponsesTopicText = t(`${config.campaignCode}-breakdown-responses-topic`)
+            breakdownResponsesTopicText = t(`${currentCampaignConfiguration.campaign_code}-breakdown-responses-topic`)
             break
         case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            breakdownResponsesTopicText = t(`${config.campaignCode}-breakdown-responses-topic`)
+            breakdownResponsesTopicText = t(`${currentCampaignConfiguration.campaign_code}-breakdown-responses-topic`)
             break
         case LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
-            breakdownResponsesTopicText = t(`${config.campaignCode}-breakdown-responses-topic`)
+            breakdownResponsesTopicText = t(`${currentCampaignConfiguration.campaign_code}-breakdown-responses-topic`)
             break
         default:
             breakdownResponsesTopicText = t('breakdown-responses-topic')
@@ -41,7 +41,7 @@ export const ResponsesBreakdownGraphs = () => {
     let clickViewTopicResponsesText: string
     switch (dashboard) {
         case LegacyDashboardName.WHAT_WOMEN_WANT:
-            clickViewTopicResponsesText = t(`${config.campaignCode}-click-view-topic-responses`)
+            clickViewTopicResponsesText = t(`${currentCampaignConfiguration.campaign_code}-click-view-topic-responses`)
             break
         default:
             clickViewTopicResponsesText = t('click-view-topic-responses')

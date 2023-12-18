@@ -6,7 +6,7 @@ import { GraphError } from '@components/GraphError'
 import { Loading } from 'components/Loading'
 import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { SelectSingleValue } from '@components/SelectSingleValue'
-import { TDashboard, TOption } from '@types'
+import { TOption } from '@types'
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import React, { MutableRefObject, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod'
@@ -23,7 +23,7 @@ import {
     YAxis,
 } from 'recharts'
 import { LegacyDashboardName } from '@enums'
-import { classNames, getDashboardConfig, niceNum, toThousandsSep } from '@utils'
+import { classNames, niceNum, toThousandsSep } from '@utils'
 import { IHistogramData } from '@interfaces'
 import { getCampaignHistogramOptions, getCampaignsMergedHistogramOptions } from 'services/dashboard-api'
 import { useTranslation } from '@app/i18n/client'
@@ -32,9 +32,10 @@ import { useFilterFormsStore } from '@stores/filter-forms'
 import { TFilter } from '@schemas/filter'
 import { useCountriesStore } from '@stores/countries'
 import { ParamsContext } from '@contexts/params'
+import { ConfigurationContext } from '@contexts/configuration'
 
 interface ICustomTooltip extends TooltipProps<number, string> {
-    dashboard: TDashboard
+    dashboard: string
     hoveredBarDataKey: MutableRefObject<string>
     showTooltip: boolean
     lang: string
@@ -54,7 +55,7 @@ export const HistogramGraph = () => {
     const form1 = useFilterFormsStore((state) => state.form1)
     const form2 = useFilterFormsStore((state) => state.form2)
     const countries = useCountriesStore((state) => state.countries)
-    const config = getDashboardConfig(dashboard)
+    const { currentCampaignConfiguration } = useContext(ConfigurationContext)
 
     // Fetch options
     useQuery<TOption<string>[]>({
@@ -63,7 +64,7 @@ export const HistogramGraph = () => {
             if (dashboard === LegacyDashboardName.ALL_CAMPAIGNS) {
                 return getCampaignsMergedHistogramOptions(lang)
             } else {
-                return getCampaignHistogramOptions(config, lang)
+                return getCampaignHistogramOptions(currentCampaignConfiguration, lang)
             }
         },
         refetchOnWindowFocus: false,

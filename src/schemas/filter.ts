@@ -24,7 +24,6 @@ SOFTWARE.
 */
 
 import { z } from 'zod'
-import { TDashboard } from '@types'
 import { LegacyDashboardName } from '@enums'
 
 export const filterSchema = z.object({
@@ -46,7 +45,7 @@ export const filterSchema = z.object({
 export type TFilter = z.infer<typeof filterSchema>
 
 // Default filter values
-export function getDefaultFilterValues(dashboard: TDashboard) {
+export function getDefaultFilterValues(dashboard: string) {
     switch (dashboard) {
         case LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN:
             return {

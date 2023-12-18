@@ -23,11 +23,10 @@ SOFTWARE.
 
 */
 
-import { TDashboard } from '@types'
 import { TFilter } from '@schemas/filter'
 
 export interface IParams {
-    dashboard: TDashboard
+    dashboard: string
     lang: string
     filters: {
         filter1?: TFilter

@@ -1,10 +1,9 @@
 import Image from 'next/image'
 import { LegacyDashboardName } from '@enums'
-import { TDashboard } from '@types'
 import Link from 'next/link'
 
 interface IOrganizationLogosProps {
-    dashboard: TDashboard
+    dashboard: string
 }
 
 export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {

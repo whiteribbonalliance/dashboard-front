@@ -2,10 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { classNames } from '@utils'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { LegacyDashboardName } from '@enums'
-import { TDashboard } from '@types'
 
 interface ISpinnerProps {
-    dashboard: TDashboard
+    dashboard: string
 }
 
 export const Spinner = ({ dashboard }: ISpinnerProps) => {

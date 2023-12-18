@@ -24,12 +24,10 @@ SOFTWARE.
 */
 
 import { LegacyDashboardName } from '@enums'
-import { dashboardsConfigs } from '@configurations'
-import { TDashboard } from '@types'
 import { v4 as uuidv4 } from 'uuid'
 import { getDefaultFilterValues, TFilter } from '@schemas/filter'
 import _ from 'lodash'
-import { ICampaignRequest, IConfiguration } from '@interfaces'
+import { ICampaignRequest } from '@interfaces'
 import { languagesAzure, languagesGoogle } from '@constants'
 
 /**
@@ -39,15 +37,6 @@ import { languagesAzure, languagesGoogle } from '@constants'
  */
 export function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
-}
-
-/**
- * Get the dashboard config
- *
- * @param dashboard The dashboard
- */
-export function getDashboardConfig(dashboard: TDashboard) {
-    return dashboardsConfigs.find((config) => config.dashboardName == dashboard) as IConfiguration
 }
 
 /***
@@ -172,7 +161,7 @@ export function downloadCsvBlob(blob: Blob, filename: string) {
  * @param filters The filters
  */
 export function getCampaignRequest(
-    dashboard: TDashboard,
+    dashboard: string,
     filters: {
         filter1?: TFilter
         filter2?: TFilter
@@ -205,19 +194,10 @@ export function getCampaignRequest(
  *
  * @param dashboard The dashboard
  */
-export function getLanguagesByDashboard(dashboard: TDashboard) {
+export function getLanguagesByDashboard(dashboard: string) {
     if (dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT) {
         return languagesAzure
     } else {
         return languagesGoogle
     }
-}
-
-/**
- * Remove all spaces
- *
- * @param text The text
- */
-export function removeAllSpaces(text: string) {
-    return text.replaceAll(' ', '')
 }

@@ -1,11 +1,12 @@
 'use client'
 
 import { useTranslation } from '@app/i18n/client'
-import { applyToThousandsSepOnText, classNames, getDashboardConfig } from '@utils'
+import { applyToThousandsSepOnText, classNames } from '@utils'
 import { LegacyDashboardName } from '@enums'
 import Link from 'next/link'
 import React, { useContext, useEffect, useState } from 'react'
 import { ParamsContext } from '@contexts/params'
+import { ConfigurationContext } from '@contexts/configuration'
 
 const HtmlToReact = require('html-to-react')
 const HtmlToReactParser = require('html-to-react').Parser
@@ -14,7 +15,7 @@ export const Subtext = () => {
     const { params } = useContext(ParamsContext)
     const { dashboard, lang } = params
     const { t } = useTranslation(lang)
-    const config = getDashboardConfig(dashboard)
+    const { currentCampaignConfiguration } = useContext(ConfigurationContext)
     const [subtextElement, setSubtextElement] = useState<React.JSX.Element>()
 
     // Set link classes
@@ -34,7 +35,11 @@ export const Subtext = () => {
                 setSubtextElement(
                     <>
                         <p className="mb-3">
-                            {applyToThousandsSepOnText(t(`${config.campaignCode}-asked-questions`), lang)}:
+                            {applyToThousandsSepOnText(
+                                t(`${currentCampaignConfiguration.campaign_code}-asked-questions`),
+                                lang
+                            )}
+                            :
                         </p>
                         <p className="mb-3">
                             “¿Qué es lo que más deseas o necesitas para encontrar empleo o un mejor empleo? Por favor,
@@ -48,7 +53,10 @@ export const Subtext = () => {
                 )
                 break
             case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
-                let subtext = applyToThousandsSepOnText(t(`${config.campaignCode}-subtext`), lang)
+                let subtext = applyToThousandsSepOnText(
+                    t(`${currentCampaignConfiguration.campaign_code}-subtext`),
+                    lang
+                )
 
                 // Set the link inside an anchor tag
                 subtext = subtext.replace(
@@ -88,9 +96,11 @@ export const Subtext = () => {
                 setSubtextElement(<></>)
                 break
             default:
-                setSubtextElement(<p>{applyToThousandsSepOnText(t(`${config.campaignCode}-subtext`), lang)}</p>)
+                setSubtextElement(
+                    <p>{applyToThousandsSepOnText(t(`${currentCampaignConfiguration.campaign_code}-subtext`), lang)}</p>
+                )
         }
-    }, [dashboard, lang, t, config, linkClasses])
+    }, [dashboard, lang, t, currentCampaignConfiguration.campaign_code, linkClasses])
 
     return <div className="max-w-6xl text-center text-lg">{subtextElement && subtextElement}</div>
 }

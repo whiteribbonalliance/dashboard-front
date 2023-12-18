@@ -23,7 +23,7 @@ SOFTWARE.
 
 */
 
-import { ICampaign, ICampaignRequest, IConfiguration, IFilterOptions, ISettings } from '@interfaces'
+import { ICampaign, ICampaignConfiguration, ICampaignRequest, IFilterOptions, ISettings } from '@interfaces'
 import { TOption } from '@types'
 import { downloadCsvBlob, getCsvFileNameFromHeaders } from '@utils'
 
@@ -36,8 +36,8 @@ const headers = { 'Content-Type': 'application/json' }
  * @param config The campaign configuration
  * @param lang The language
  */
-export async function getCampaignFilterOptions(config: IConfiguration, lang: string) {
-    const response = await fetch(`${apiUrl}/campaigns/${config.campaignCode}/filter-options?lang=${lang}`, {
+export async function getCampaignFilterOptions(config: ICampaignConfiguration, lang: string) {
+    const response = await fetch(`${apiUrl}/campaigns/${config.campaign_code}/filter-options?lang=${lang}`, {
         method: 'GET',
         headers: headers,
     })
@@ -82,7 +82,7 @@ export async function getCampaignsMergedFilterOptions(lang: string) {
  * @param signal Signal
  */
 export async function getCampaign(
-    config: IConfiguration,
+    config: ICampaignConfiguration,
     campaignRequest: ICampaignRequest,
     lang: string,
     qCode: string,
@@ -90,7 +90,7 @@ export async function getCampaign(
     signal: AbortSignal | null | undefined
 ) {
     const response = await fetch(
-        `${apiUrl}/campaigns/${config.campaignCode}?q_code=${qCode}&response_year=${response_year}&lang=${lang}`,
+        `${apiUrl}/campaigns/${config.campaign_code}?q_code=${qCode}&response_year=${response_year}&lang=${lang}`,
         {
             signal: signal,
             method: 'POST',
@@ -142,8 +142,8 @@ export async function getCampaignsMerged(
  * @param config The campaign configuration
  * @param lang The language
  */
-export async function getCampaignHistogramOptions(config: IConfiguration, lang: string) {
-    const response = await fetch(`${apiUrl}/campaigns/${config.campaignCode}/histogram-options?lang=${lang}`, {
+export async function getCampaignHistogramOptions(config: ICampaignConfiguration, lang: string) {
+    const response = await fetch(`${apiUrl}/campaigns/${config.campaign_code}/histogram-options?lang=${lang}`, {
         method: 'GET',
         headers: headers,
     })
@@ -185,12 +185,12 @@ export async function getCampaignsMergedHistogramOptions(lang: string) {
  * @param response_year The response year
  */
 export async function downloadCampaignPublicData(
-    config: IConfiguration,
+    config: ICampaignConfiguration,
     campaignRequest: ICampaignRequest,
     response_year: string
 ) {
     const response = await fetch(
-        `${apiUrl}/campaigns/${config.campaignCode}/data/public?response_year=${response_year}`,
+        `${apiUrl}/campaigns/${config.campaign_code}/data/public?response_year=${response_year}`,
         {
             method: 'POST',
             headers: headers,
@@ -210,6 +210,42 @@ export async function downloadCampaignPublicData(
 
     // Download
     downloadCsvBlob(blob, filename)
+}
+
+/**
+ * Get campaign configuration
+ */
+export async function getCampaignConfiguration(campaignCode: string) {
+    const response = await fetch(`${apiUrl}/campaigns/configurations/${campaignCode}`, {
+        method: 'GET',
+        headers: headers,
+    })
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch campaign configuration.')
+    }
+
+    const data: ICampaignConfiguration = await response.json()
+
+    return data
+}
+
+/**
+ * Get all campaigns configurations
+ */
+export async function getAllCampaignsConfigurations() {
+    const response = await fetch(`${apiUrl}/campaigns/configurations`, {
+        method: 'GET',
+        headers: headers,
+    })
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch campaigns configurations.')
+    }
+
+    const data: ICampaignConfiguration[] = await response.json()
+
+    return data
 }
 
 /**

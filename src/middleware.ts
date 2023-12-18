@@ -25,10 +25,10 @@ SOFTWARE.
 
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import { dashboards, defaultLanguage, languagesAzure, languagesGoogle, pmnchLink } from '@constants'
+import { defaultLanguage, languagesAzure, languagesGoogle } from '@constants'
 import { LegacyDashboardName } from '@enums'
 import { ILanguage } from '@interfaces'
-import { getSettings } from '@services/dashboard-api'
+import { getAllCampaignsConfigurations, getSettings } from '@services/dashboard-api'
 
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
@@ -37,6 +37,13 @@ export async function middleware(request: NextRequest) {
     const DEV_DOMAIN = process.env.DEV_DOMAIN || '.localhost'
     const MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS = process.env.MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS
     const ONLY_PMNCH = process.env.ONLY_PMNCH.toLowerCase() === 'true'
+    const pmnchLink = 'https://wypw.1point8b.org'
+
+    // Get configurations
+    const campaignsConfigurations = await getAllCampaignsConfigurations()
+
+    // Dashboard paths
+    const dashboardPaths = campaignsConfigurations.map((config) => config.dashboard_path)
 
     // Possible languages to use in the dashboard
     let possibleLanguages: ILanguage[]
@@ -114,7 +121,7 @@ export async function middleware(request: NextRequest) {
     // If MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS equals the extracted subdomain
     if (MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS === extractedSubdomain && !ONLY_PMNCH) {
         // Check if path requested is a known dashboard name
-        if (dashboards.some((dashboard) => pathname.endsWith(`/${dashboard}`))) {
+        if (dashboardPaths.some((dashboard) => pathname.endsWith(`/${dashboard}`))) {
             // Prevent security issues
             if (pathname.startsWith(`/dashboards_use_path`)) {
                 return new Response('404', { status: 404 })
