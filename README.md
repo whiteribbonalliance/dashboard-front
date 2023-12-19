@@ -71,8 +71,11 @@ Check `README.md` inside the back-end project for more details about translation
 
 ### Favicon
 
-To add a favicon to a dashboard, first create a new folder inside `public/dashboards/[DASHBOARD_PATH_NAME]` with the
-name the dashboard path, then add the favicon `favicon.ico`.
+To add a favicon to a dashboard, add `favicon.ico` to `public/dashboards/[DASHBOARD_PATH_NAME]`.
+
+### Logo
+
+To add a top left logo to a dashboard, add `logo.png` to `public/dashboards/[DASHBOARD_PATH_NAME]`.
 
 ## Deployment to Google App Engine
 

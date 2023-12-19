@@ -7,7 +7,6 @@ interface IOrganizationLogosProps {
 }
 
 export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
-    // General logos
     const WhiteRibbonAllianceLogo = () => {
         return (
             <div>
@@ -24,7 +23,6 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
         )
     }
 
-    // These logos are used at healthwellbeing
     const CHCLogo = () => {
         return (
             <div>
@@ -175,21 +173,6 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             </div>
         )
     }
-    // const MadevLogo = () => {
-    //     return (
-    //         <div>
-    //             <Link href="https://madevegypt.org/ar" target="_blank">
-    //                 <Image
-    //                     className="max-h-[8rem] w-full max-w-[17rem] object-contain xl:max-h-[7rem]"
-    //                     src="/logos/madev_logo.png"
-    //                     alt="media arts for development logo"
-    //                     width={1117}
-    //                     height={200}
-    //                 />
-    //             </Link>
-    //         </div>
-    //     )
-    // }
     const MusaLogo = () => {
         return (
             <div>
@@ -280,8 +263,6 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             </div>
         )
     }
-
-    // These logos are used at whatwomenwant
     const WhatWomenWantLogo = () => {
         return (
             <div>
@@ -297,8 +278,6 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             </div>
         )
     }
-
-    // These logos are used at midwivesvoices
     const PushWithWomenLogo = () => {
         return (
             <div>
@@ -312,8 +291,6 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             </div>
         )
     }
-
-    // These logos are used at whatyoungpeoplewant
     const _1point8Logo = () => {
         return (
             <div>
@@ -340,8 +317,6 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
             </div>
         )
     }
-
-    // These logos are used at healthwellbeing and wwwpakistan
     const FsmLogo = () => {
         return (
             <div>
@@ -402,7 +377,6 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
                         <FsmLogo />
                         <GiwynLogo />
                         <HelpAgeIndiaLogo />
-                        {/*<MadevLogo />*/}
                         <MusaLogo />
                         <NigeriaHealthWatchLogo />
                         <RedCrossSerbiaLogo />
@@ -412,11 +386,40 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
                     </div>
                 </div>
             )
-        default:
+        case LegacyDashboardName.WHAT_WOMEN_WANT:
             return (
                 <div className="flex items-center gap-x-5 xl:gap-x-3">
                     <WhiteRibbonAllianceLogo />
                     <WhatWomenWantLogo />
+                </div>
+            )
+        case LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
+            return (
+                <div className="flex items-center gap-x-5 xl:gap-x-3">
+                    <WhiteRibbonAllianceLogo />
+                    <WhatWomenWantLogo />
+                </div>
+            )
+        default:
+            const CustomLogo = () => {
+                return (
+                    <div>
+                        <Link href={`/en/${dashboard}`}>
+                            <Image
+                                className="max-h-[3rem] w-full max-w-[17rem] object-contain xl:max-h-[4rem]"
+                                src={`/dashboards/${dashboard}/logo.png`}
+                                alt="logo"
+                                width={1117}
+                                height={200}
+                            />
+                        </Link>
+                    </div>
+                )
+            }
+
+            return (
+                <div className="flex items-center gap-x-5 xl:gap-x-3">
+                    <CustomLogo />
                 </div>
             )
     }
