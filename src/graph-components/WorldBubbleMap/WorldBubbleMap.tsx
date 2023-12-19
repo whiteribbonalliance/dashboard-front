@@ -115,6 +115,15 @@ export const WorldBubbleMap = () => {
     const displayWorldBubbleMaps =
         !!data && !isLoading && !isRefetching && !!dataGeoQuery.data && !!dataTopoJsonMX.data && !!form1 && !!form2
 
+    // Nothing to show
+    if (
+        data &&
+        data.world_bubble_maps_coordinates.coordinates_1.length < 1 &&
+        data.world_bubble_maps_coordinates.coordinates_2.length < 1
+    ) {
+        return null
+    }
+
     return (
         <div>
             {/* Tooltip: where are the respondents located */}

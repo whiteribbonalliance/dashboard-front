@@ -44,14 +44,13 @@ interface ICustomTooltip extends TooltipProps<number, string> {
 export const HistogramGraph = () => {
     const { params } = useContext(ParamsContext)
     const { dashboard, lang } = params
-
     const { data, isError, isLoading, isRefetching } = useCampaignQuery()
+    const [histogramOptions, setHistogramOptions] = useState<TOption<string>[]>([])
     const { t } = useTranslation(lang)
     const [currentHistogramData, setCurrentHistogramData] = useState<IHistogramData[]>([])
     const hoveredBarDataKey = useRef<string>(undefined as any)
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
     const [paragraph, setParagraph] = useState<string>('')
-    const [histogramOptions, setHistogramOptions] = useState<TOption<string>[]>([])
     const form1 = useFilterFormsStore((state) => state.form1)
     const form2 = useFilterFormsStore((state) => state.form2)
     const countries = useCountriesStore((state) => state.countries)
@@ -302,6 +301,11 @@ export const HistogramGraph = () => {
     }
 
     const displayGraph = !!data && !isLoading && !isRefetching && !!currentHistogramData && !!showBreakdownByField
+
+    // Nothing to show
+    if (data && histogramOptions.length < 1) {
+        return null
+    }
 
     return (
         <Box>

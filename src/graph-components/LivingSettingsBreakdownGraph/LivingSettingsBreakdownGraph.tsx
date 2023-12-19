@@ -162,6 +162,11 @@ export const LivingSettingsBreakdownGraph = () => {
 
     const displayGraph = !!data && !isLoading && !isFetching && !!livingSettingsBreakdown
 
+    // Nothing to show
+    if (data && data.living_settings_breakdown.length < 1) {
+        return null
+    }
+
     return (
         <div>
             <Box>

@@ -65,7 +65,6 @@ const columnHelper = createColumnHelper<any>()
 export const ResponsesSampleTable = () => {
     const { params } = useContext(ParamsContext)
     const { dashboard, lang } = params
-
     const [tableData, setTableData] = useState<ITableData>({ data: [], columns: [] })
     const { data, isError, isLoading, isRefetching } = useCampaignQuery()
     const [responsesSample, setResponsesSample] = useState<IResponsesSample>(undefined as any)
@@ -211,6 +210,11 @@ export const ResponsesSampleTable = () => {
     )
 
     const displayTable = !!data && !isLoading && !isRefetching
+
+    // Nothing to show
+    if (data && tableData.data.length < 1) {
+        return null
+    }
 
     return (
         <div>

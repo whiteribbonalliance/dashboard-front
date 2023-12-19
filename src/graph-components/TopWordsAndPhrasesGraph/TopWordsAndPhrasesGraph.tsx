@@ -5,7 +5,7 @@ import { GraphTitle } from '@components/GraphTitle'
 import { useCampaignQuery } from '@hooks/use-campaign-query'
 import { Tab } from '@headlessui/react'
 import { classNames } from '@utils'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { LegacyDashboardName } from '@enums'
 import { TopWordsWordcloud } from 'graph-components/TopWordsAndPhrasesGraph/TopWordsWordcloud'
 import { TopWordsOrPhrases } from 'graph-components/TopWordsAndPhrasesGraph/TopWordsOrPhrases'
@@ -13,7 +13,6 @@ import { Loading } from 'components/Loading'
 import { GraphError } from 'components/GraphError'
 import { useTranslation } from '@app/i18n/client'
 import { Tooltip } from '@components/Tooltip'
-import { ITopWordsAndPhrases } from '@interfaces'
 import { ParamsContext } from '@contexts/params'
 
 export const TopWordsAndPhrasesGraph = () => {
@@ -21,7 +20,6 @@ export const TopWordsAndPhrasesGraph = () => {
     const { dashboard, lang } = params
 
     const { data, isError, isLoading, isRefetching } = useCampaignQuery()
-    const [topWordsAndPhrases, setTopWordsAndPhrases] = useState<ITopWordsAndPhrases>(undefined as any)
     const { t } = useTranslation(lang)
 
     // Set selected tab classes
@@ -35,76 +33,84 @@ export const TopWordsAndPhrasesGraph = () => {
     }
 
     // Tabs
-    const tabs = [
-        {
+    const tabs = []
+    if (data && data.top_words_and_phrases.wordcloud_words.length > 0) {
+        tabs.push({
             id: 'word-cloud',
             title: t('word-cloud'),
-            content: topWordsAndPhrases ? (
+            content: (
                 <TopWordsWordcloud
                     dashboard={dashboard}
-                    wordcloudWords={topWordsAndPhrases.wordcloud_words}
+                    wordcloudWords={data.top_words_and_phrases.wordcloud_words}
                     lang={lang}
                 />
-            ) : null,
-        },
-        {
+            ),
+        })
+    }
+    if (data && data.top_words_and_phrases.top_words.length > 0) {
+        tabs.push({
             id: 'top-words',
             title: t('top-words'),
-            content:
-                data && topWordsAndPhrases ? (
-                    <TopWordsOrPhrases
-                        dashboard={dashboard}
-                        lang={lang}
-                        words={topWordsAndPhrases.top_words}
-                        filter1Description={data.filter_1_description}
-                        filter2Description={data.filter_2_description}
-                        filtersAreIdentical={data.filters_are_identical}
-                        yAxisWidth={250}
-                    />
-                ) : null,
-        },
-        {
+            content: (
+                <TopWordsOrPhrases
+                    dashboard={dashboard}
+                    lang={lang}
+                    words={data.top_words_and_phrases.top_words}
+                    filter1Description={data.filter_1_description}
+                    filter2Description={data.filter_2_description}
+                    filtersAreIdentical={data.filters_are_identical}
+                    yAxisWidth={250}
+                />
+            ),
+        })
+    }
+    if (data && data.top_words_and_phrases.two_word_phrases.length > 0) {
+        tabs.push({
             id: 'two-word-phrases',
             title: t('two-word-phrases'),
-            content:
-                data && topWordsAndPhrases ? (
-                    <TopWordsOrPhrases
-                        dashboard={dashboard}
-                        lang={lang}
-                        words={topWordsAndPhrases.two_word_phrases}
-                        filter1Description={data.filter_1_description}
-                        filter2Description={data.filter_2_description}
-                        filtersAreIdentical={data.filters_are_identical}
-                        yAxisWidth={250}
-                    />
-                ) : null,
-        },
-        {
+            content: (
+                <TopWordsOrPhrases
+                    dashboard={dashboard}
+                    lang={lang}
+                    words={data.top_words_and_phrases.two_word_phrases}
+                    filter1Description={data.filter_1_description}
+                    filter2Description={data.filter_2_description}
+                    filtersAreIdentical={data.filters_are_identical}
+                    yAxisWidth={250}
+                />
+            ),
+        })
+    }
+    if (data && data.top_words_and_phrases.three_word_phrases.length > 0) {
+        tabs.push({
             id: 'three-word-phrases',
             title: t('three-word-phrases'),
-            content:
-                data && topWordsAndPhrases ? (
-                    <TopWordsOrPhrases
-                        dashboard={dashboard}
-                        lang={lang}
-                        words={topWordsAndPhrases.three_word_phrases}
-                        filter1Description={data.filter_1_description}
-                        filter2Description={data.filter_2_description}
-                        filtersAreIdentical={data.filters_are_identical}
-                        yAxisWidth={275}
-                    />
-                ) : null,
-        },
-    ]
-
-    // Set top words and phrases
-    useEffect(() => {
-        if (data) {
-            setTopWordsAndPhrases(data.top_words_and_phrases)
-        }
-    }, [data])
+            content: (
+                <TopWordsOrPhrases
+                    dashboard={dashboard}
+                    lang={lang}
+                    words={data.top_words_and_phrases.three_word_phrases}
+                    filter1Description={data.filter_1_description}
+                    filter2Description={data.filter_2_description}
+                    filtersAreIdentical={data.filters_are_identical}
+                    yAxisWidth={275}
+                />
+            ),
+        })
+    }
 
     const displayGraph = !!data && !isLoading && !isRefetching
+
+    // Nothing to show
+    if (
+        data &&
+        data.top_words_and_phrases.wordcloud_words.length < 1 &&
+        data.top_words_and_phrases.top_words.length < 1 &&
+        data.top_words_and_phrases.two_word_phrases.length < 1 &&
+        data.top_words_and_phrases.three_word_phrases.length < 1
+    ) {
+        return null
+    }
 
     return (
         <div>
