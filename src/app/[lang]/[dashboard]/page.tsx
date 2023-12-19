@@ -8,12 +8,13 @@ export default DashboardPage
 export const dynamic = 'error'
 
 interface IParams {
-    params: { lang: string; dashboard: string }
+    lang: string
+    dashboard: string
 }
 
 // The dashboards will be created using the params returned by this function
 export async function generateStaticParams() {
-    // Purge cache to re-fetch it during build
+    // Purge cache to always re-fetch it during build
     revalidatePath('/[lang]/[dashboard]', 'page')
 
     // Check if translations is enabled in the back-end
@@ -45,7 +46,7 @@ export async function generateStaticParams() {
     const dashboards = campaignsConfigurations.map((config) => config.dashboard_path)
 
     // Generate static params
-    const params = []
+    const params: IParams[] = []
     for (const lang of languages) {
         for (const dashboard of dashboards) {
             params.push({ lang, dashboard })
@@ -56,7 +57,7 @@ export async function generateStaticParams() {
 }
 
 // Set page title and description
-export async function generateMetadata({ params }: IParams) {
+export async function generateMetadata({ params }: { params: IParams }) {
     const { dashboard } = params
 
     // Get configurations
@@ -68,5 +69,8 @@ export async function generateMetadata({ params }: IParams) {
     return {
         title: campaignConfiguration?.seo_title || '',
         description: campaignConfiguration?.seo_meta_description || '',
+        icons: {
+            icon: `/dashboards/${dashboard}/favicon.ico`,
+        },
     }
 }

@@ -89,7 +89,11 @@ export const Footer = () => {
             const campaignRequest = getCampaignRequest(dashboard, filters)
 
             try {
-                await downloadCampaignPublicData(currentCampaignConfiguration.campaign_code, campaignRequest, responseYear)
+                await downloadCampaignPublicData(
+                    currentCampaignConfiguration.campaign_code,
+                    campaignRequest,
+                    responseYear
+                )
                 setExportingDataset(false)
             } catch (error) {
                 setExportingDataset(false)

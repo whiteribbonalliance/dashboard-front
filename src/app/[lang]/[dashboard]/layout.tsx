@@ -5,7 +5,6 @@ import localFont from 'next/font/local'
 import { dir } from 'i18next'
 import { config as fontAwesomeConfig } from '@fortawesome/fontawesome-svg-core'
 import { GoogleAnalytics } from '@components/GoogleAnalytics'
-import { LegacyDashboardName } from '@enums'
 
 fontAwesomeConfig.autoAddCss = false
 
@@ -51,17 +50,7 @@ const proximaNova = localFont({
 })
 
 const DashboardLayout = async ({ children, params }: IDashboardLayoutProps) => {
-    const { dashboard, lang } = params
-
-    // Set favicon
-    let favicon
-    switch (dashboard) {
-        case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            favicon = <link rel="icon" href="/favicons/pmnch_favicon_2.png" sizes="any" />
-            break
-        default:
-            favicon = <link rel="icon" href="/favicons/www_favicon.png" sizes="any" />
-    }
+    const { lang } = params
 
     return (
         <html
@@ -69,7 +58,6 @@ const DashboardLayout = async ({ children, params }: IDashboardLayoutProps) => {
             dir={dir(lang)}
             className={`${notoSansRegular.variable} ${notoSansBold.variable} ${_1point8.variable} ${helvetica.variable} ${proximaNova.variable}`}
         >
-            <head>{favicon}</head>
             <body>
                 {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ? (
                     <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />

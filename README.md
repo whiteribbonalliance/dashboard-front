@@ -67,6 +67,13 @@ been created inside `front_translations`. Copy the `languages` folder to this pr
 
 Check `README.md` inside the back-end project for more details about translations.
 
+## Other
+
+### Favicon
+
+To add a favicon to a dashboard, first create a new folder inside `public/dashboards/[DASHBOARD_PATH_NAME]` with the
+name the dashboard path, then add the favicon `favicon.ico`.
+
 ## Deployment to Google App Engine
 
 This repo has continuous deployment/continuous integration set up.
