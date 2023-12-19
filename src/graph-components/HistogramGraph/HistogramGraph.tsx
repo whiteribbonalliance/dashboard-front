@@ -303,7 +303,16 @@ export const HistogramGraph = () => {
     const displayGraph = !!data && !isLoading && !isRefetching && !!currentHistogramData && !!showBreakdownByField
 
     // Nothing to show
-    if (data && histogramOptions.length < 1) {
+    if (
+        data &&
+        !data.histogram?.age_buckets?.length &&
+        !data.histogram?.ages?.length &&
+        !data.histogram?.genders?.length &&
+        !data.histogram?.professions?.length &&
+        !data.histogram?.canonical_countries?.length &&
+        !data.histogram?.age_buckets_default?.length &&
+        !data.histogram?.regions?.length
+    ) {
         return null
     }
 

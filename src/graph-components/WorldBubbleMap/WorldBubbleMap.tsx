@@ -118,8 +118,8 @@ export const WorldBubbleMap = () => {
     // Nothing to show
     if (
         data &&
-        data.world_bubble_maps_coordinates.coordinates_1.length < 1 &&
-        data.world_bubble_maps_coordinates.coordinates_2.length < 1
+        !data?.world_bubble_maps_coordinates?.coordinates_1.length &&
+        !data?.world_bubble_maps_coordinates?.coordinates_2.length
     ) {
         return null
     }

@@ -400,6 +400,13 @@ export const OrganizationLogos = ({ dashboard }: IOrganizationLogosProps) => {
                     <WhatWomenWantLogo />
                 </div>
             )
+        case LegacyDashboardName.ALL_CAMPAIGNS:
+            return (
+                <div className="flex items-center gap-x-5 xl:gap-x-3">
+                    <WhiteRibbonAllianceLogo />
+                    <WhatWomenWantLogo />
+                </div>
+            )
         default:
             const CustomLogo = () => {
                 return (

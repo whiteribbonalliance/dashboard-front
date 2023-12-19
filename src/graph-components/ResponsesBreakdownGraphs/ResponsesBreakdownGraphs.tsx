@@ -73,9 +73,9 @@ export const ResponsesBreakdownGraphs = () => {
     // Nothing to show
     if (
         data &&
-        data.responses_breakdown.parent_categories.length < 1 &&
-        data.responses_breakdown.sub_categories.length < 1 &&
-        data.responses_breakdown.parent_or_sub_categories.length < 1
+        !data?.responses_breakdown?.parent_categories?.length &&
+        !data?.responses_breakdown?.sub_categories?.length &&
+        !data?.responses_breakdown?.parent_or_sub_categories?.length
     ) {
         return null
     }

@@ -125,7 +125,7 @@ export const GenderBreakdownGraph = () => {
     const displayGraph = !!data && !isLoading && !isRefetching
 
     // Nothing to show
-    if (data && data.genders_breakdown.length < 1) {
+    if (data && data?.genders_breakdown?.length) {
         return null
     }
 

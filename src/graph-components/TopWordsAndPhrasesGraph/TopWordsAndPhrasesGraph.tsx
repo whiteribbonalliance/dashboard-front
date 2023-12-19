@@ -104,10 +104,10 @@ export const TopWordsAndPhrasesGraph = () => {
     // Nothing to show
     if (
         data &&
-        data.top_words_and_phrases.wordcloud_words.length < 1 &&
-        data.top_words_and_phrases.top_words.length < 1 &&
-        data.top_words_and_phrases.two_word_phrases.length < 1 &&
-        data.top_words_and_phrases.three_word_phrases.length < 1
+        !data?.top_words_and_phrases?.wordcloud_words?.length &&
+        !data?.top_words_and_phrases?.top_words?.length &&
+        !data?.top_words_and_phrases?.two_word_phrases?.length &&
+        !data?.top_words_and_phrases?.three_word_phrases?.length
     ) {
         return null
     }
