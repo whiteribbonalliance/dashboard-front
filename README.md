@@ -66,9 +66,9 @@ translate the `title` for campaign with code `example`include the key `"example-
 been applied, a new folder called `languages` should have been created inside `front_translations`. Copy the
 `languages` folder to this project at `src/app/i18n`.
 
-The above should be done even if translations is disabled, this is because with translations disabled, the default
-language is English and the output of the translations function will contain only the language English which is
-used in the front.
+*Note: The above should be done even if translations is disabled, this is because with translations disabled, the
+default language is English and the output of the translations function will contain only the language English which is
+used in the front.*
 
 Check `README.md` in the back-end project for more details about translations.
 
