@@ -1,14 +1,6 @@
 # Dashboard
 
-This project contains multiple dashboards. Each dashboard is made accessible by navigating to a specific
-subdomain or path. `middleware.ts` is responsible for parsing the subdomain or path that is calling the app and rewrite
-the hostname as a parameter of route `dashboards_use_subdomain` or `dashboards_use_path`.
-
-The file at `app/dashboards_use_subdomain/[dashboard]/[lang]/page.tsx` will generate the dashboards to be accessible
-from the path.
-
-The file at `app/dashboards_use_path/[lang]/[dashboard]/page.tsx` will generate the dashboards to be accessible from the
-subdomain.
+This project can display dashboards for campaigns defined in the back-end.
 
 ## Environment variables
 
@@ -42,7 +34,7 @@ npm install
 npm run dev
 ```
 
-On the local machine visit `http://explore.dashboards.local:3000/en/healthwellbeing` to access the
+On the local machine visit for example `http://explore.my-dashboards.local:3000/en/healthwellbeing` to access the
 dashboard `healthwellbeing`.
 
 ### Lint project
@@ -61,16 +53,13 @@ npm run format
 
 The title and subtext are retrieved as part of translated texts based on the current language. Translations are
 generated in the back-end, `title` and `subtext` should be added to `front_translations/to_translate.json` e.g. to
-translate the `title` for campaign with code `example`include the key `"example-title": "Example title"` or for the
-`subtext` include `"example-subtext": "Example subtext"`. Then run `python translate_front.py`. Once translations have
-been applied, a new folder called `languages` should have been created inside `front_translations`. Copy the
-`languages` folder to this project at `src/app/i18n`.
+translate the `title` for campaign with code `example` include the key `"example-title": "Example title"` or for the
+`subtext` include `"example-subtext": "Example subtext"`. Read the `Translations` section in the back-end `README.md`
+for more information.
 
 *Note: The above should be done even if translations is disabled, this is because with translations disabled, the
 default language is English and the output of the translations function will contain only the language English which is
 used in the front.*
-
-Check `README.md` in the back-end project for more details about translations.
 
 ## Other
 
@@ -103,7 +92,7 @@ authenticated on the WRA Google Cloud Platform service account for this to work.
 
 ## PMNCH - Azure deployment
 
-## Environment variables
+#### Environment variables
 
 - `ONLY_PMNCH=` True.
 
@@ -159,11 +148,11 @@ the repository on GitHub: `https://docs.github.com/en/actions/using-workflows/di
 Build container:
 
 ```bash
-docker build -t wra-dashboards .
+docker build -t dashboards .
 ```
 
 Run container:
 
 ```bash
-docker run -p 3000:3000 wra-dashboards
+docker run -p 3000:3000 dashboards
 ```
