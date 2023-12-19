@@ -32,5 +32,4 @@ export interface ICampaignConfiguration {
     respondent_noun_plural: string
     video_link: string
     about_us_link: string
-    questions: {}
 }
