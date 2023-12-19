@@ -1,34 +1,36 @@
 # Dashboard
 
 This project contains multiple dashboards. Each dashboard is made accessible by navigating to a specific
-subdomain. `middleware.ts` is responsible for parsing the subdomain that is calling the app and rewrite the hostname
-as a parameter of route `dashboards_use_subdomain` or `dashboards_use_path`.
+subdomain or path. `middleware.ts` is responsible for parsing the subdomain or path that is calling the app and rewrite
+the hostname as a parameter of route `dashboards_use_subdomain` or `dashboards_use_path`.
 
-The file at `app/dashboards_use_subdomain/[dashboard]/[lang]/page.tsx` will generate each dashboard page.
+The file at `app/dashboards_use_subdomain/[dashboard]/[lang]/page.tsx` will generate the dashboards to be accessible
+from the path.
+
+The file at `app/dashboards_use_path/[lang]/[dashboard]/page.tsx` will generate the dashboards to be accessible from the
+subdomain.
 
 ## Environment variables
 
-- `PROD_DOMAINS_ALLOWED=` The domains allowed in production e.g. `.whiteribbonalliance.org`.
-- `DEV_DOMAIN=` The domain used in development e.g. `.whiteribbonalliance.local`.
+- `PROD_DOMAINS_ALLOWED=` The domains allowed in production e.g. `.my-dashboards.org`.
+- `DEV_DOMAIN=` The domain used in development e.g. `.my-dashboards.local`.
 - `MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS=` The subdomain used for displaying dashboards using paths e.g.
   using `explore` will allow accessing the dashboard `healthwellbeing`
-  at `explore.whiteribbonalliance.org/healthwellbeing`.
+  at `explore.my-dashboards.org/healthwellbeing`.
 - `NEXT_PUBLIC_DASHBOARD_API_URL=` The url to the API.
 - `NEXT_PUBLIC_GOOGLE_ANALYTICS=` Google Analytics ID.
 
-## Development
+## Install
 
 Configure `.env.local.` with the environment variables.
-
-### Install
 
 On the local machine, map `127.0.0.1` to the following domain name:
 
 ```text
-127.0.0.1   explore.whiteribbonalliance.local
+127.0.0.1   explore.my-dashboards.local
 ```
 
-Then
+Then:
 
 ```bash
 npm install
@@ -40,7 +42,7 @@ npm install
 npm run dev
 ```
 
-On the local machine visit `http://explore.whiteribbonalliance.local:3000/en/healthwellbeing` to access the
+On the local machine visit `http://explore.dashboards.local:3000/en/healthwellbeing` to access the
 dashboard `healthwellbeing`.
 
 ### Lint project
@@ -57,7 +59,7 @@ npm run format
 
 ## Translations
 
-If translations is allowed in the back-end, the `title` and `subtext` should be added
+If translations is enabled in the back-end, the `title` and `subtext` should be added
 to `front_translations/to_translate.json` e.g. to translate the `title` for campaign with code `example` include the
 key `"example-title": "Example title"` or for the `subtext` include `"example-subtext": "Example subtext"`. Then
 run `python translate_front.py`. Once translations have been applied, a new folder called `languages` should have

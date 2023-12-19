@@ -15,27 +15,27 @@ interface IDashboardLayoutProps {
 }
 
 const notoSansRegular = localFont({
-    src: '../../../fonts/NotoSans/NotoSans-Regular.ttf',
+    src: '../../fonts/NotoSans/NotoSans-Regular.ttf',
     display: 'swap',
     variable: '--font-noto-sans-regular',
 })
 
 const notoSansBold = localFont({
-    src: '../../../fonts/NotoSans/NotoSans-Bold.ttf',
+    src: '../../fonts/NotoSans/NotoSans-Bold.ttf',
     display: 'swap',
     variable: '--font-noto-sans-bold',
 })
 
 const _1point8 = localFont({
-    src: '../../../fonts/1point8/1point8.ttf',
+    src: '../../fonts/1point8/1point8.ttf',
     display: 'swap',
     variable: '--font-1-point-8',
 })
 
 const helvetica = localFont({
     src: [
-        { path: '../../../fonts/Helvetica/Helvetica.ttf', weight: '400', style: 'normal' },
-        { path: '../../../fonts/Helvetica/Helvetica-Bold.ttf', weight: '700', style: 'bold' },
+        { path: '../../fonts/Helvetica/Helvetica.ttf', weight: '400', style: 'normal' },
+        { path: '../../fonts/Helvetica/Helvetica-Bold.ttf', weight: '700', style: 'bold' },
     ],
     display: 'swap',
     variable: '--font-helvetica',
@@ -43,8 +43,8 @@ const helvetica = localFont({
 
 const proximaNova = localFont({
     src: [
-        { path: '../../../fonts/Proxima Nova/Proxima Nova Regular.otf', weight: '400', style: 'normal' },
-        { path: '../../../fonts/Proxima Nova/Proxima Nova Bold.otf', weight: '700', style: 'bold' },
+        { path: '../../fonts/Proxima Nova/Proxima Nova Regular.otf', weight: '400', style: 'normal' },
+        { path: '../../fonts/Proxima Nova/Proxima Nova Bold.otf', weight: '700', style: 'bold' },
     ],
     display: 'swap',
     variable: '--font-proxima-nova',

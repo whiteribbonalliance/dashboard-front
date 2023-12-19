@@ -64,7 +64,7 @@ export const HistogramGraph = () => {
             if (dashboard === LegacyDashboardName.ALL_CAMPAIGNS) {
                 return getCampaignsMergedHistogramOptions(lang)
             } else {
-                return getCampaignHistogramOptions(currentCampaignConfiguration, lang)
+                return getCampaignHistogramOptions(currentCampaignConfiguration.campaign_code, lang)
             }
         },
         refetchOnWindowFocus: false,

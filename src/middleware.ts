@@ -28,7 +28,7 @@ import { NextResponse } from 'next/server'
 import { defaultLanguage, languagesAzure, languagesGoogle } from '@constants'
 import { LegacyDashboardName } from '@enums'
 import { ILanguage } from '@interfaces'
-import { getAllCampaignsConfigurations, getSettings } from '@services/dashboard-api'
+import { getSettings } from '@services/dashboard-api'
 
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
@@ -39,35 +39,31 @@ export async function middleware(request: NextRequest) {
     const ONLY_PMNCH = process.env.ONLY_PMNCH.toLowerCase() === 'true'
     const pmnchLink = 'https://wypw.1point8b.org'
 
-    // Get configurations
-    const campaignsConfigurations = await getAllCampaignsConfigurations()
-
-    // Dashboard paths
-    const dashboardPaths = campaignsConfigurations.map((config) => config.dashboard_path)
-
-    // Possible languages to use in the dashboard
-    let possibleLanguages: ILanguage[]
+    // Languages to use in the dashboard
+    let allLanguages: ILanguage[]
     if (ONLY_PMNCH) {
-        possibleLanguages = languagesAzure
+        allLanguages = languagesAzure
     } else {
-        possibleLanguages = languagesGoogle
+        allLanguages = languagesGoogle
     }
 
-    // All languages
-    const allLanguagesExceptEn = [...possibleLanguages].filter((language) => language.code !== 'en')
+    // All languages except en
+    const allLanguagesExceptEn = [...allLanguages].filter((language) => language.code !== 'en')
 
-    // Check if translations is enabled
-    let translationsEnabled = true
+    // Check if translations is enabled in the back-end
+    let translationsEnabled: boolean
     try {
         const settings = await getSettings()
-        if (!settings.translations_enabled) {
-            possibleLanguages = [{ code: 'en', name: 'English' }]
-            translationsEnabled = false
-        }
-    } catch (err) {}
+        translationsEnabled = settings.translations_enabled
+    } catch (err) {
+        translationsEnabled = false
+    }
 
     // Redirect if there is a language that is not supported
     if (!translationsEnabled) {
+        // If translations is not enabled, only allow English
+        allLanguages = [{ code: 'en', name: 'English' }]
+
         // Check if pathname contains a language that is not supported
         // e.g. when translations is disabled in the back-end, only 'en' is allowed
         const pathnameUnsupportedLanguage = allLanguagesExceptEn.find((language) => {
@@ -85,7 +81,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // Check if pathname is missing language
-    const pathnameIsMissingLanguage = possibleLanguages.every(
+    const pathnameIsMissingLanguage = allLanguages.every(
         (language) => !pathname.startsWith(`/${language.code}/`) && pathname !== `/${language.code}`
     )
 
@@ -97,7 +93,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // Extract the subdomain by removing the root URL
-    // e.g. from 'whatwomenwant.whiteribbonalliance.org' remove '.whiteribbonalliance.org' to get 'whatwomenwant'
+    // e.g. from 'whatwomenwant.my-dashboards.org' remove '.my-dashboards.org' to get 'whatwomenwant'
     let extractedSubdomain: string | undefined
     if (process.env.NODE_ENV === 'production') {
         // Find prod domain
@@ -109,7 +105,7 @@ export async function middleware(request: NextRequest) {
 
         // If prod domain was not found, return 404
         if (!prodDomain) {
-            return new Response('404', { status: 404 })
+            return new Response('404 - Not Found', { status: 404 })
         }
 
         extractedSubdomain = hostname?.replace(prodDomain, '')
@@ -117,46 +113,32 @@ export async function middleware(request: NextRequest) {
         extractedSubdomain = hostname?.replace(`${DEV_DOMAIN}:3000`, '')
     }
 
-    // Path routing e.g. explore.whiteribbonalliance.org/en/healthwellbeing
+    // Path routing e.g. explore.my-dashboards.org/en/healthwellbeing
     // If MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS equals the extracted subdomain
     if (MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS === extractedSubdomain && !ONLY_PMNCH) {
-        // Check if path requested is a known dashboard name
-        if (dashboardPaths.some((dashboard) => pathname.endsWith(`/${dashboard}`))) {
-            // Prevent security issues
-            if (pathname.startsWith(`/dashboards_use_path`)) {
-                return new Response('404', { status: 404 })
+        // Get NextURL
+        const nextUrl = request.nextUrl
+
+        // Redirect to new link for PMNCH
+        if (process.env.NODE_ENV === 'production') {
+            if (nextUrl.pathname.endsWith(`/${LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT}`)) {
+                return NextResponse.redirect(pmnchLink)
             }
-
-            // Get NextURL
-            const nextUrl = request.nextUrl
-
-            // Redirect to new link for PMNCH
-            if (process.env.NODE_ENV === 'production') {
-                if (nextUrl.pathname.endsWith(`/${LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT}`)) {
-                    return NextResponse.redirect(pmnchLink)
-                }
-            }
-
-            // e.g. '/dashboards_use_path/en/whatwomenwant'
-            nextUrl.pathname = `/dashboards_use_path${nextUrl.pathname}`
-
-            // Rewrite to the current hostname under the app/dashboards_use_path folder
-            return NextResponse.rewrite(nextUrl)
-        } else {
-            return new Response('404', { status: 404 })
         }
+
+        // e.g. /en/whatwomenwant
+        nextUrl.pathname = `${nextUrl.pathname}`
+
+        // Rewrite to the current hostname
+        return NextResponse.rewrite(nextUrl)
     }
 
-    // Subdomain routing e.g. whatwomenwant.whiteribbonalliance.org/en
+    // Subdomain routing e.g. whatwomenwant.my-dashboards.org/en
     else {
-        // Prevent security issues – users should not be able to canonically access
-        // the app/dashboards_use_subdomain folder and its respective contents
-        if (pathname.startsWith(`/dashboards_use_subdomain`)) {
-            return new Response('404', { status: 404 })
-        }
-
         // Set dashboard name from the current subdomain
         let dashboardName: string
+
+        // PMNCH
         if (ONLY_PMNCH) {
             // Dashboard name for pmnch
             dashboardName = LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
@@ -175,10 +157,10 @@ export async function middleware(request: NextRequest) {
         // Get NextURL
         const nextUrl = request.nextUrl
 
-        // e.g. '/dashboards_use_subdomain/whatwomenwant/en'
-        nextUrl.pathname = `/dashboards_use_subdomain/${dashboardName}${nextUrl.pathname}`
+        // e.g. '/whatwomenwant/en'
+        nextUrl.pathname = `${nextUrl.pathname}/${dashboardName}`
 
-        // Rewrite to the current hostname under the app/dashboards_use_subdomain folder
+        // Rewrite to the current hostname
         return NextResponse.rewrite(nextUrl)
     }
 }

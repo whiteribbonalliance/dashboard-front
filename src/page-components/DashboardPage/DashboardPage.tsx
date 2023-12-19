@@ -12,6 +12,9 @@ export const DashboardPage = async ({ params }: IDashboardProps) => {
     // Get configurations
     const campaignsConfigurations = await getAllCampaignsConfigurations()
 
+    // Get configuration
+    const campaignConfiguration = campaignsConfigurations.find((config) => config.dashboard_path === dashboard)
+
     // Dashboard paths
     const dashboardPaths = campaignsConfigurations.map((config) => config.dashboard_path)
 
@@ -21,12 +24,9 @@ export const DashboardPage = async ({ params }: IDashboardProps) => {
     }
 
     // Fire notFound() if there is no campaign configuration
-    const campaignConfiguration = campaignsConfigurations.find((config) => config.dashboard_path === dashboard)
     if (!campaignConfiguration) {
         notFound()
     }
-
-    // Any data that needs to be fetched server side can be done here and passed to the Dashboard component
 
     return (
         <Dashboard

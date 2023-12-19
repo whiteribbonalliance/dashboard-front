@@ -49,7 +49,7 @@ export const useCampaignQuery = () => {
             } else {
                 // Use get getCampaign function to fetch dashboard
                 return getCampaign(
-                    currentCampaignConfiguration,
+                    currentCampaignConfiguration.campaign_code,
                     campaignRequest,
                     lang,
                     questionAskedCode,

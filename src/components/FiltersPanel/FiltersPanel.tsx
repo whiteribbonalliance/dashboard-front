@@ -147,7 +147,7 @@ export const FiltersPanel = () => {
             if (dashboard === LegacyDashboardName.ALL_CAMPAIGNS) {
                 return getCampaignsMergedFilterOptions(lang)
             } else {
-                return getCampaignFilterOptions(currentCampaignConfiguration, lang)
+                return getCampaignFilterOptions(currentCampaignConfiguration.campaign_code, lang)
             }
         },
         refetchOnWindowFocus: false,

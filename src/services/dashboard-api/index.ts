@@ -33,11 +33,11 @@ const headers = { 'Content-Type': 'application/json' }
 /**
  * Get campaign filter options
  *
- * @param config The campaign configuration
+ * @param campaignCode The campaign code
  * @param lang The language
  */
-export async function getCampaignFilterOptions(config: ICampaignConfiguration, lang: string) {
-    const response = await fetch(`${apiUrl}/campaigns/${config.campaign_code}/filter-options?lang=${lang}`, {
+export async function getCampaignFilterOptions(campaignCode: string, lang: string) {
+    const response = await fetch(`${apiUrl}/campaigns/${campaignCode}/filter-options?lang=${lang}`, {
         method: 'GET',
         headers: headers,
     })
@@ -74,7 +74,7 @@ export async function getCampaignsMergedFilterOptions(lang: string) {
 /**
  * Get campaign
  *
- * @param config The campaign configuration
+ * @param campaignCode The campaign code
  * @param campaignRequest The campaign request
  * @param lang The language
  * @param qCode The question code
@@ -82,7 +82,7 @@ export async function getCampaignsMergedFilterOptions(lang: string) {
  * @param signal Signal
  */
 export async function getCampaign(
-    config: ICampaignConfiguration,
+    campaignCode: string,
     campaignRequest: ICampaignRequest,
     lang: string,
     qCode: string,
@@ -90,7 +90,7 @@ export async function getCampaign(
     signal: AbortSignal | null | undefined
 ) {
     const response = await fetch(
-        `${apiUrl}/campaigns/${config.campaign_code}?q_code=${qCode}&response_year=${response_year}&lang=${lang}`,
+        `${apiUrl}/campaigns/${campaignCode}?q_code=${qCode}&response_year=${response_year}&lang=${lang}`,
         {
             signal: signal,
             method: 'POST',
@@ -139,11 +139,11 @@ export async function getCampaignsMerged(
 /**
  * Get campaign histogram options
  *
- * @param config The campaign configuration
+ * @param campaignCode The campaign code
  * @param lang The language
  */
-export async function getCampaignHistogramOptions(config: ICampaignConfiguration, lang: string) {
-    const response = await fetch(`${apiUrl}/campaigns/${config.campaign_code}/histogram-options?lang=${lang}`, {
+export async function getCampaignHistogramOptions(campaignCode: string, lang: string) {
+    const response = await fetch(`${apiUrl}/campaigns/${campaignCode}/histogram-options?lang=${lang}`, {
         method: 'GET',
         headers: headers,
     })
@@ -180,23 +180,20 @@ export async function getCampaignsMergedHistogramOptions(lang: string) {
 /**
  * Download campaign public data
  *
- * @param config The campaign configuration
+ * @param campaignCode The campaign code
  * @param campaignRequest The campaign request
  * @param response_year The response year
  */
 export async function downloadCampaignPublicData(
-    config: ICampaignConfiguration,
+    campaignCode: string,
     campaignRequest: ICampaignRequest,
     response_year: string
 ) {
-    const response = await fetch(
-        `${apiUrl}/campaigns/${config.campaign_code}/data/public?response_year=${response_year}`,
-        {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(campaignRequest),
-        }
-    )
+    const response = await fetch(`${apiUrl}/campaigns/${campaignCode}/data/public?response_year=${response_year}`, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(campaignRequest),
+    })
 
     if (!response.ok) {
         throw new Error('Failed to fetch campaign public data.')
