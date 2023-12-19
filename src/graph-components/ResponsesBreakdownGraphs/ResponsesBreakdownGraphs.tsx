@@ -55,14 +55,9 @@ export const ResponsesBreakdownGraphs = () => {
             canDisplayParentCategories = false
             canDisplaySubCategories = false
             break
-        case LegacyDashboardName.HEALTHWELLBEING:
-            canDisplayParentOrSubCategories = false
-            canDisplayParentCategories = true
-            canDisplaySubCategories = true
-            break
         default:
             canDisplayParentOrSubCategories = false
-            canDisplayParentCategories = false
+            canDisplayParentCategories = true
             canDisplaySubCategories = true
     }
 
@@ -76,6 +71,12 @@ export const ResponsesBreakdownGraphs = () => {
         !data?.responses_breakdown?.parent_or_sub_categories?.length
     ) {
         return null
+    }
+
+    // Set show title
+    let showTitle = false
+    if (data?.responses_breakdown?.parent_categories?.length && data?.responses_breakdown?.sub_categories?.length) {
+        showTitle = true
     }
 
     return (
@@ -107,34 +108,41 @@ export const ResponsesBreakdownGraphs = () => {
                 {displayGraphs && (
                     <div>
                         {/* Parent or sub-categories */}
-                        {canDisplayParentOrSubCategories && (
-                            <ResponsesBreakdownGraph
-                                data={data.responses_breakdown.parent_or_sub_categories}
-                                filtersAreIdentical={data.filters_are_identical}
-                                filter1Description={data.filter_1_description}
-                                filter2Description={data.filter_2_description}
-                                type="parent_or_sub"
-                            />
-                        )}
+                        {canDisplayParentOrSubCategories &&
+                            data &&
+                            data.responses_breakdown.parent_or_sub_categories.length > 0 && (
+                                <ResponsesBreakdownGraph
+                                    data={data.responses_breakdown.parent_or_sub_categories}
+                                    filtersAreIdentical={data.filters_are_identical}
+                                    filter1Description={data.filter_1_description}
+                                    filter2Description={data.filter_2_description}
+                                    title=""
+                                    type="parent_or_sub"
+                                />
+                            )}
 
                         {/* Parent categories */}
-                        {canDisplayParentCategories && (
-                            <ResponsesBreakdownGraph
-                                data={data.responses_breakdown.parent_categories}
-                                filtersAreIdentical={data.filters_are_identical}
-                                filter1Description={data.filter_1_description}
-                                filter2Description={data.filter_2_description}
-                                type="parent"
-                            />
-                        )}
+                        {canDisplayParentCategories &&
+                            data &&
+                            data.responses_breakdown.parent_categories.length > 0 && (
+                                <ResponsesBreakdownGraph
+                                    data={data.responses_breakdown.parent_categories}
+                                    filtersAreIdentical={data.filters_are_identical}
+                                    filter1Description={data.filter_1_description}
+                                    filter2Description={data.filter_2_description}
+                                    title={showTitle ? t('categories') : ''}
+                                    type="parent"
+                                />
+                            )}
 
                         {/* Sub-categories */}
-                        {canDisplaySubCategories && (
+                        {canDisplaySubCategories && data && data.responses_breakdown.sub_categories.length > 0 && (
                             <ResponsesBreakdownGraph
                                 data={data.responses_breakdown.sub_categories}
                                 filtersAreIdentical={data.filters_are_identical}
                                 filter1Description={data.filter_1_description}
                                 filter2Description={data.filter_2_description}
+                                title={showTitle ? t('subcategories') : ''}
                                 type="sub"
                             />
                         )}

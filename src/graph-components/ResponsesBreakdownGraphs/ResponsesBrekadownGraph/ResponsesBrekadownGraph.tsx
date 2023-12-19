@@ -24,6 +24,7 @@ import { ParamsContext } from '@contexts/params'
 interface IResponsesBreakdownGraphProps {
     data: IResponsesBreakdownData[]
     type: 'parent' | 'sub' | 'parent_or_sub'
+    title: string
     filtersAreIdentical: boolean
     filter1Description: string
     filter2Description: string
@@ -39,6 +40,7 @@ interface ICustomTooltip extends TooltipProps<number, string> {
 export const ResponsesBreakdownGraph = ({
     data,
     type,
+    title,
     filtersAreIdentical,
     filter1Description,
     filter2Description,
@@ -137,20 +139,6 @@ export const ResponsesBreakdownGraph = ({
         setResponsesBreakdown(tmpModifiedResponsesBreakdown)
     }, [data])
 
-    // Set title
-    let title: string
-    switch (dashboard) {
-        case LegacyDashboardName.HEALTHWELLBEING:
-            if (type === 'parent') {
-                title = t('categories')
-            } else {
-                title = t('subcategories')
-            }
-            break
-        default:
-            title = ''
-    }
-
     // Set form value
     function setFormValue(payload: any, form: UseFormReturn<TFilter>) {
         const data = payload?.payload as IResponsesBreakdownData
@@ -195,7 +183,7 @@ export const ResponsesBreakdownGraph = ({
             {/* Graph */}
             <div className="mb-3 flex flex-col">
                 {/* Title */}
-                {title && <div className="mt-3 text-lg font-bold">{title}</div>}
+                <div className="mt-3 text-lg font-bold">{title}</div>
 
                 {/* Bar chart */}
                 <div className="mb-3 mt-3 w-full">
