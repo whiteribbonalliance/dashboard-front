@@ -56,6 +56,8 @@ export const GraphsWrapper = () => {
                     <ResponsesSampleTable />
                     <WorldBubbleMap />
                     <ResponsesBreakdownGraphs />
+                    <GenderBreakdownGraph />
+                    <LivingSettingsBreakdownGraph />
                     <HistogramGraph />
                 </>
             )

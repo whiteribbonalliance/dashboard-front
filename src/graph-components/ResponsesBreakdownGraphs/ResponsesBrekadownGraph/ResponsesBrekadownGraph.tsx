@@ -76,7 +76,7 @@ export const ResponsesBreakdownGraph = ({
                 height = 1950
                 break
             default:
-                height = 525
+                height = 625
         }
     }
 
