@@ -26,7 +26,6 @@ SOFTWARE.
 export interface ICampaignConfiguration {
     campaign_code: string
     dashboard_path: string
-    dashboard_name: string
     seo_title: string
     seo_meta_description: string
     respondent_noun_singular: string

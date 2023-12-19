@@ -379,7 +379,7 @@ export const FiltersPanel = () => {
     if (showSelectActiveDashboard) {
         for (let i = 0; i < allCampaignsConfigurations.length; i++) {
             const value = allCampaignsConfigurations[i].dashboard_path
-            const label = allCampaignsConfigurations[i].dashboard_name
+            const label = `${allCampaignsConfigurations[i].campaign_code}-title`
             allCampaignsActiveDashboardOptions.push({ value, label })
         }
     }

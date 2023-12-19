@@ -201,7 +201,7 @@ export const Footer = () => {
                                         target="_blank"
                                         className={classNames('underline', footerLinkClasses)}
                                     >
-                                        {configuration.dashboard_name}
+                                        {`${configuration.campaign_code}-title`}
                                     </Link>
                                     {index + 1 < otherDashboardsConfigurations.length && <> • </>}
                                 </span>
