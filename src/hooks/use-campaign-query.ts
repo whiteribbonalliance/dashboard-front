@@ -32,12 +32,10 @@ import { getCampaignRequest } from '@utils'
 import { LegacyDashboardName } from '@enums'
 import { useContext } from 'react'
 import { ParamsContext } from '@contexts/params'
-import { ConfigurationContext } from '@contexts/configuration'
 
 export const useCampaignQuery = () => {
     const { params } = useContext(ParamsContext)
-    const { dashboard, filters, lang, questionAskedCode, responseYear } = params
-    const { currentCampaignConfiguration } = useContext(ConfigurationContext)
+    const { dashboard, config, filters, lang, questionAskedCode, responseYear } = params
     const campaignRequest = getCampaignRequest(dashboard, filters)
 
     return useQuery<ICampaign>({
@@ -48,14 +46,7 @@ export const useCampaignQuery = () => {
                 return getCampaignsMerged(campaignRequest, lang, signal)
             } else {
                 // Use get getCampaign function to fetch dashboard
-                return getCampaign(
-                    currentCampaignConfiguration.campaign_code,
-                    campaignRequest,
-                    lang,
-                    questionAskedCode,
-                    responseYear,
-                    signal
-                )
+                return getCampaign(config.campaign_code, campaignRequest, lang, questionAskedCode, responseYear, signal)
             }
         },
         refetchOnWindowFocus: false,

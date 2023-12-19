@@ -8,12 +8,12 @@ import { useTranslation } from '@app/i18n/client'
 import { OrganizationLogos } from 'components/OrganizationLogos'
 import { ParamsContext } from '@contexts/params'
 import { downloadCampaignPublicData } from 'services/dashboard-api'
-import { ConfigurationContext } from '@contexts/configuration'
+import { ConfigurationsContext } from '@contexts/configurations'
 
 export const Footer = () => {
     const { params } = useContext(ParamsContext)
-    const { dashboard, lang, filters, responseYear } = params
-    const { currentCampaignConfiguration, allCampaignsConfigurations } = useContext(ConfigurationContext)
+    const { dashboard, lang, filters, responseYear, config } = params
+    const { allCampaignsConfigurations } = useContext(ConfigurationsContext)
     const [exportingDataset, setExportingDataset] = useState<boolean>(false)
     const { t } = useTranslation(lang)
 
@@ -89,11 +89,7 @@ export const Footer = () => {
             const campaignRequest = getCampaignRequest(dashboard, filters)
 
             try {
-                await downloadCampaignPublicData(
-                    currentCampaignConfiguration.campaign_code,
-                    campaignRequest,
-                    responseYear
-                )
+                await downloadCampaignPublicData(config.campaign_code, campaignRequest, responseYear)
                 setExportingDataset(false)
             } catch (error) {
                 setExportingDataset(false)

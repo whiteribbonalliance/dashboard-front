@@ -32,7 +32,6 @@ import { useFilterFormsStore } from '@stores/filter-forms'
 import { TFilter } from '@schemas/filter'
 import { useCountriesStore } from '@stores/countries'
 import { ParamsContext } from '@contexts/params'
-import { ConfigurationContext } from '@contexts/configuration'
 
 interface ICustomTooltip extends TooltipProps<number, string> {
     dashboard: string
@@ -43,7 +42,7 @@ interface ICustomTooltip extends TooltipProps<number, string> {
 
 export const HistogramGraph = () => {
     const { params } = useContext(ParamsContext)
-    const { dashboard, lang } = params
+    const { dashboard, lang, config } = params
     const { data, isError, isLoading, isRefetching } = useCampaignQuery()
     const [histogramOptions, setHistogramOptions] = useState<TOption<string>[]>([])
     const { t } = useTranslation(lang)
@@ -54,7 +53,6 @@ export const HistogramGraph = () => {
     const form1 = useFilterFormsStore((state) => state.form1)
     const form2 = useFilterFormsStore((state) => state.form2)
     const countries = useCountriesStore((state) => state.countries)
-    const { currentCampaignConfiguration } = useContext(ConfigurationContext)
 
     // Fetch options
     useQuery<TOption<string>[]>({
@@ -63,7 +61,7 @@ export const HistogramGraph = () => {
             if (dashboard === LegacyDashboardName.ALL_CAMPAIGNS) {
                 return getCampaignsMergedHistogramOptions(lang)
             } else {
-                return getCampaignHistogramOptions(currentCampaignConfiguration.campaign_code, lang)
+                return getCampaignHistogramOptions(config.campaign_code, lang)
             }
         },
         refetchOnWindowFocus: false,

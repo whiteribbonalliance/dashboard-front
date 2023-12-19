@@ -24,9 +24,11 @@ SOFTWARE.
 */
 
 import { TFilter } from '@schemas/filter'
+import { ICampaignConfiguration } from './dashboard-api/campaign-configuration'
 
 export interface IParams {
     dashboard: string
+    config: ICampaignConfiguration
     lang: string
     filters: {
         filter1?: TFilter

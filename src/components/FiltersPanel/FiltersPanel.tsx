@@ -33,7 +33,7 @@ import _ from 'lodash'
 import { ParamsContext } from '@contexts/params'
 import { produce } from 'immer'
 import { useCampaignQuery } from '@hooks/use-campaign-query'
-import { ConfigurationContext } from '@contexts/configuration'
+import { ConfigurationsContext } from '@contexts/configurations'
 
 interface IApplyFiltersButtonProps {
     form1: UseFormReturn<TFilter>
@@ -62,8 +62,8 @@ interface ITab {
 
 export const FiltersPanel = () => {
     const { params } = useContext(ParamsContext)
-    const { currentCampaignConfiguration, allCampaignsConfigurations } = useContext(ConfigurationContext)
-    const { dashboard, lang } = params
+    const { allCampaignsConfigurations } = useContext(ConfigurationsContext)
+    const { dashboard, lang, config } = params
     const { data } = useCampaignQuery()
 
     const setForm1 = useFilterFormsStore((state) => state.setForm1)
@@ -147,7 +147,7 @@ export const FiltersPanel = () => {
             if (dashboard === LegacyDashboardName.ALL_CAMPAIGNS) {
                 return getCampaignsMergedFilterOptions(lang)
             } else {
-                return getCampaignFilterOptions(currentCampaignConfiguration.campaign_code, lang)
+                return getCampaignFilterOptions(config.campaign_code, lang)
             }
         },
         refetchOnWindowFocus: false,

@@ -4,7 +4,6 @@ import { useTranslation } from '@app/i18n/client'
 import { LegacyDashboardName } from '@enums'
 import { useContext } from 'react'
 import { ParamsContext } from '@contexts/params'
-import { ConfigurationContext } from '@contexts/configuration'
 
 interface ITitleProps {
     noHeading?: boolean
@@ -12,10 +11,9 @@ interface ITitleProps {
 
 export const Title = ({ noHeading = false }: ITitleProps) => {
     const { params } = useContext(ParamsContext)
-    const { dashboard, lang } = params
+    const { dashboard, lang, config } = params
 
     const { t } = useTranslation(lang)
-    const { currentCampaignConfiguration } = useContext(ConfigurationContext)
 
     // Set title
     let title: string
@@ -24,7 +22,7 @@ export const Title = ({ noHeading = false }: ITitleProps) => {
             title = t('allcampaigns-title')
             break
         default:
-            title = t(`${currentCampaignConfiguration.campaign_code}-title`)
+            title = t(`${config.campaign_code}-title`)
     }
 
     // When using the title at multiple places, use noHeading to prevent multiple h1 tags

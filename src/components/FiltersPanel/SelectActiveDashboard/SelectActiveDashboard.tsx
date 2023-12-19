@@ -16,6 +16,7 @@ import { ParamsContext } from '@contexts/params'
 import { getDefaultFilterValues } from '@schemas/filter'
 import { useFilterFormsStore } from '@stores/filter-forms'
 import { produce } from 'immer'
+import { ConfigurationsContext } from '@contexts/configurations'
 
 interface ISelectActiveDashboardProps {
     options: TOption<string>[]
@@ -23,6 +24,7 @@ interface ISelectActiveDashboardProps {
 
 export const SelectActiveDashboard = ({ options }: ISelectActiveDashboardProps) => {
     const { params, setParams } = useContext(ParamsContext)
+    const { allCampaignsConfigurations } = useContext(ConfigurationsContext)
     const { lang } = params
 
     const { t } = useTranslation(lang)
@@ -41,23 +43,27 @@ export const SelectActiveDashboard = ({ options }: ISelectActiveDashboardProps) 
     // Set active dashboard
     useEffect(() => {
         if (activeDashboardField) {
-            const defaultFilterValues = getDefaultFilterValues(activeDashboardField)
-            setParams((prev) => {
-                return produce(prev, (draft) => {
-                    draft.dashboard = activeDashboardField
-                    draft.filters = { filter1: defaultFilterValues, filter2: defaultFilterValues }
-                    draft.questionAskedCode = 'q1'
-                    draft.responseYear = ''
+            const newCampaignConfig = allCampaignsConfigurations.find((c) => c.dashboard_path === activeDashboardField)
+            if (newCampaignConfig) {
+                const defaultFilterValues = getDefaultFilterValues(activeDashboardField)
+                setParams((prev) => {
+                    return produce(prev, (draft) => {
+                        draft.dashboard = activeDashboardField
+                        draft.config = newCampaignConfig
+                        draft.filters = { filter1: defaultFilterValues, filter2: defaultFilterValues }
+                        draft.questionAskedCode = 'q1'
+                        draft.responseYear = ''
+                    })
                 })
-            })
 
-            // Clear forms
-            if (filterForm1 && filterForm2) {
-                filterForm1.reset(defaultFilterValues)
-                filterForm2.reset(defaultFilterValues)
+                // Clear forms
+                if (filterForm1 && filterForm2) {
+                    filterForm1.reset(defaultFilterValues)
+                    filterForm2.reset(defaultFilterValues)
+                }
             }
         }
-    }, [activeDashboardField, setParams, filterForm1, filterForm2])
+    }, [activeDashboardField, allCampaignsConfigurations, setParams, filterForm1, filterForm2])
 
     // Set default value for active_dashboard
     useEffect(() => {

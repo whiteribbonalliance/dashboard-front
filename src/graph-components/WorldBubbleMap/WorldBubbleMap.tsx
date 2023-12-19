@@ -23,7 +23,6 @@ import { Topology } from 'topojson-specification'
 import { FeatureCollection } from 'geojson'
 import _ from 'lodash'
 import { ParamsContext } from '@contexts/params'
-import { ConfigurationContext } from '@contexts/configuration'
 
 interface IWorldBubbleMapsCoordinateWithExtra extends IWorldBubbleMapsCoordinate {
     coordinatesSequence: 'coordinates_1' | 'coordinates_2'
@@ -50,8 +49,7 @@ const svgHeight = 600
 
 export const WorldBubbleMap = () => {
     const { params } = useContext(ParamsContext)
-    const { dashboard, lang } = params
-    const { currentCampaignConfiguration } = useContext(ConfigurationContext)
+    const { dashboard, lang, config } = params
     const { data, isError, isLoading, isRefetching } = useCampaignQuery()
 
     const [showBubbles1, setShowBubbles1] = useState<boolean>(true)
@@ -63,7 +61,7 @@ export const WorldBubbleMap = () => {
     const form2 = useFilterFormsStore((state) => state.form2)
 
     // Set respondents
-    const respondents = t(currentCampaignConfiguration.respondent_noun_plural)
+    const respondents = t(config.respondent_noun_plural)
 
     // Data geo world query
     const dataGeoQuery = useQuery<FeatureCollection | undefined>({
@@ -89,10 +87,10 @@ export const WorldBubbleMap = () => {
     let respondentsLocatedText: string
     switch (dashboard) {
         case LegacyDashboardName.WHAT_WOMEN_WANT:
-            respondentsLocatedText = t(`${currentCampaignConfiguration.campaign_code}-where-located`)
+            respondentsLocatedText = t(`${config.campaign_code}-where-located`)
             break
         case LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
-            respondentsLocatedText = t(`${currentCampaignConfiguration.campaign_code}-where-located`)
+            respondentsLocatedText = t(`${config.campaign_code}-where-located`)
             break
         default:
             respondentsLocatedText = t('where-located')

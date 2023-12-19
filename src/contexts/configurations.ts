@@ -26,9 +26,8 @@ SOFTWARE.
 import { createContext } from 'react'
 import { ICampaignConfiguration } from '@interfaces'
 
-interface IConfigurationContext {
-    currentCampaignConfiguration: ICampaignConfiguration
+interface IConfigurationsContext {
     allCampaignsConfigurations: ICampaignConfiguration[]
 }
 
-export const ConfigurationContext = createContext<IConfigurationContext>(undefined as any)
+export const ConfigurationsContext = createContext<IConfigurationsContext>(undefined as any)

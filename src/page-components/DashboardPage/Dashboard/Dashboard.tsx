@@ -13,7 +13,7 @@ import { useShowSelectActiveDashboardStore } from '@stores/show-select-active-da
 import { ICampaignConfiguration, IParams } from '@interfaces'
 import { ParamsContext } from '@contexts/params'
 import { getDefaultFilterValues } from '@schemas/filter'
-import { ConfigurationContext } from '@contexts/configuration'
+import { ConfigurationsContext } from '@contexts/configurations'
 
 interface IDashboardProps {
     dashboard: string
@@ -32,6 +32,7 @@ export const Dashboard = ({
 
     const [params, setParams] = useState<IParams>({
         dashboard: dashboard,
+        config: currentCampaignConfiguration,
         lang: lang,
         filters: { filter1: defaultFilterValues, filter2: defaultFilterValues },
         questionAskedCode: 'q1',
@@ -75,7 +76,7 @@ export const Dashboard = ({
 
     return (
         <div className={classNames(layoutClasses)}>
-            <ConfigurationContext.Provider value={{ currentCampaignConfiguration, allCampaignsConfigurations }}>
+            <ConfigurationsContext.Provider value={{ allCampaignsConfigurations }}>
                 <ParamsContext.Provider value={{ params, setParams }}>
                     {/* Header */}
                     <Header />
@@ -109,7 +110,7 @@ export const Dashboard = ({
                     {/* Footer */}
                     <Footer />
                 </ParamsContext.Provider>
-            </ConfigurationContext.Provider>
+            </ConfigurationsContext.Provider>
         </div>
     )
 }

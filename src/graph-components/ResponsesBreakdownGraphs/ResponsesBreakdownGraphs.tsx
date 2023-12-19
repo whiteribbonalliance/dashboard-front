@@ -11,27 +11,25 @@ import React, { useContext } from 'react'
 import { Tooltip } from '@components/Tooltip'
 import { ResponsesBreakdownGraph } from '@graph-components/ResponsesBreakdownGraphs/ResponsesBrekadownGraph'
 import { ParamsContext } from '@contexts/params'
-import { ConfigurationContext } from '@contexts/configuration'
 
 export const ResponsesBreakdownGraphs = () => {
     const { params } = useContext(ParamsContext)
-    const { dashboard, lang } = params
+    const { dashboard, lang, config } = params
 
     const { data, isError, isLoading, isRefetching } = useCampaignQuery()
     const { t } = useTranslation(lang)
-    const { currentCampaignConfiguration } = useContext(ConfigurationContext)
 
     // Set breakdown responses topic text
     let breakdownResponsesTopicText: string
     switch (dashboard) {
         case LegacyDashboardName.WHAT_WOMEN_WANT:
-            breakdownResponsesTopicText = t(`${currentCampaignConfiguration.campaign_code}-breakdown-responses-topic`)
+            breakdownResponsesTopicText = t(`${config.campaign_code}-breakdown-responses-topic`)
             break
         case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            breakdownResponsesTopicText = t(`${currentCampaignConfiguration.campaign_code}-breakdown-responses-topic`)
+            breakdownResponsesTopicText = t(`${config.campaign_code}-breakdown-responses-topic`)
             break
         case LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
-            breakdownResponsesTopicText = t(`${currentCampaignConfiguration.campaign_code}-breakdown-responses-topic`)
+            breakdownResponsesTopicText = t(`${config.campaign_code}-breakdown-responses-topic`)
             break
         default:
             breakdownResponsesTopicText = t('breakdown-responses-topic')
@@ -41,7 +39,7 @@ export const ResponsesBreakdownGraphs = () => {
     let clickViewTopicResponsesText: string
     switch (dashboard) {
         case LegacyDashboardName.WHAT_WOMEN_WANT:
-            clickViewTopicResponsesText = t(`${currentCampaignConfiguration.campaign_code}-click-view-topic-responses`)
+            clickViewTopicResponsesText = t(`${config.campaign_code}-click-view-topic-responses`)
             break
         default:
             clickViewTopicResponsesText = t('click-view-topic-responses')

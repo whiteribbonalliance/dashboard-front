@@ -47,7 +47,6 @@ import { useTranslation } from '@app/i18n/client'
 import { Tooltip } from '@components/Tooltip'
 import { IResponsesSample } from '@interfaces'
 import { ParamsContext } from '@contexts/params'
-import { ConfigurationContext } from '@contexts/configuration'
 
 interface IDescriptionCountAndColor {
     description: string
@@ -64,12 +63,11 @@ const columnHelper = createColumnHelper<any>()
 
 export const ResponsesSampleTable = () => {
     const { params } = useContext(ParamsContext)
-    const { dashboard, lang } = params
+    const { dashboard, lang, config } = params
     const [tableData, setTableData] = useState<ITableData>({ data: [], columns: [] })
     const { data, isError, isLoading, isRefetching } = useCampaignQuery()
     const [responsesSample, setResponsesSample] = useState<IResponsesSample>(undefined as any)
     const { t } = useTranslation(lang)
-    const { currentCampaignConfiguration } = useContext(ConfigurationContext)
 
     // An array with objects containing the description, count, and the color assigned to it
     const [descriptionsCountAndColor, setDescriptionsCountAndColor] = useState<IDescriptionCountAndColor[]>([])
@@ -113,13 +111,13 @@ export const ResponsesSampleTable = () => {
     let questionAsked: string
     switch (dashboard) {
         case LegacyDashboardName.WHAT_WOMEN_WANT:
-            questionAsked = t(`${currentCampaignConfiguration.campaign_code}-question-asked`)
+            questionAsked = t(`${config.campaign_code}-question-asked`)
             break
         case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            questionAsked = t(`${currentCampaignConfiguration.campaign_code}-question-asked`)
+            questionAsked = t(`${config.campaign_code}-question-asked`)
             break
         case LegacyDashboardName.MIDWIVES_VOICES:
-            questionAsked = t(`${currentCampaignConfiguration.campaign_code}-question-asked`)
+            questionAsked = t(`${config.campaign_code}-question-asked`)
             break
         default:
             questionAsked = ''
