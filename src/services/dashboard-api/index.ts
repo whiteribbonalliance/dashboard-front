@@ -213,7 +213,7 @@ export async function downloadCampaignPublicData(
  * Get campaign configuration
  */
 // export async function getCampaignConfiguration(campaignCode: string) {
-//     const response = await fetch(`${apiUrl}/campaigns/configurations/${campaignCode}`, {
+//     const response = await fetch(`${apiUrl}/configurations/${campaignCode}`, {
 //         method: 'GET',
 //         headers: headers,
 //     })
@@ -231,7 +231,7 @@ export async function downloadCampaignPublicData(
  * Get all campaigns configurations
  */
 export async function getAllCampaignsConfigurations() {
-    const response = await fetch(`${apiUrl}/campaigns/configurations`, {
+    const response = await fetch(`${apiUrl}/configurations`, {
         method: 'GET',
         headers: headers,
     })

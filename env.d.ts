@@ -5,5 +5,6 @@ namespace NodeJS {
         DEV_DOMAIN: string
         NEXT_PUBLIC_DASHBOARD_API_URL: string
         NEXT_PUBLIC_GOOGLE_ANALYTICS: string
+        PMNCH: boolean
     }
 }

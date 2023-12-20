@@ -26,15 +26,18 @@ Then:
 
 ```bash
 npm install
+npm run build
 ```
+
+*Note: A new build is required if the configurations in the back-end have been altered.*
 
 ### Run
 
 ```bash
-npm run dev
+npm run start
 ```
 
-On the local machine visit for example `http://explore.my-dashboards.local:3000/en/healthwellbeing` to access the
+On the machine visit for example `http://explore.my-dashboards.local:3000/en/healthwellbeing` to access the
 dashboard `healthwellbeing`.
 
 ### Lint project
@@ -152,3 +155,13 @@ Run container:
 ```bash
 docker run -p 3000:3000 dashboards
 ```
+
+## Legacy campaigns
+
+For deployment of legacy campaigns.
+
+Legacy campaigns are campaigns that were used to run this dashboard originally.
+
+If only deploying the dashboard at `whatyoungpeoplewant`, additional environment variables:
+
+- `PMNCH=` True.

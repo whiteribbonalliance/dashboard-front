@@ -36,23 +36,25 @@ export async function middleware(request: NextRequest) {
     const PROD_DOMAINS_ALLOWED = process.env.PROD_DOMAINS_ALLOWED.split(' ')
     const DEV_DOMAIN = process.env.DEV_DOMAIN || '.localhost'
     const MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS = process.env.MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS
+
+    const PMNCH = process.env.PMNCH || false
     const pmnchLink = 'https://wypw.1point8b.org'
 
     // Get API settings
     let translationsEnabled: boolean
-    let onlyPmnch: boolean
+    let cloudService: string
     try {
         const settings = await getSettings()
         translationsEnabled = settings.translations_enabled
-        onlyPmnch = settings.only_pmnch
+        cloudService = settings.cloud_service
     } catch (err) {
         translationsEnabled = false
-        onlyPmnch = false
+        cloudService = 'google'
     }
 
     // Languages to use in the dashboard
     let allLanguages: ILanguage[]
-    if (onlyPmnch) {
+    if (cloudService === 'azure') {
         allLanguages = languagesAzure
     } else {
         allLanguages = languagesGoogle
@@ -117,7 +119,7 @@ export async function middleware(request: NextRequest) {
 
     // Path routing e.g. explore.my-dashboards.org/en/healthwellbeing
     // If MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS equals the extracted subdomain
-    if (MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS === extractedSubdomain && !onlyPmnch) {
+    if (MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS === extractedSubdomain && !PMNCH) {
         // Get NextURL
         const nextUrl = request.nextUrl
 
@@ -141,7 +143,7 @@ export async function middleware(request: NextRequest) {
         let dashboardName: string
 
         // PMNCH
-        if (onlyPmnch) {
+        if (PMNCH) {
             // Dashboard name for pmnch
             dashboardName = LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
         } else {

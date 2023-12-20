@@ -19,14 +19,14 @@ export async function generateStaticParams() {
 
     // Get API settings
     let translationsEnabled: boolean
-    let onlyPmnch: boolean
+    let cloudService: string
     try {
         const settings = await getSettings()
         translationsEnabled = settings.translations_enabled
-        onlyPmnch = settings.only_pmnch
+        cloudService = settings.cloud_service
     } catch (err) {
         translationsEnabled = false
-        onlyPmnch = false
+        cloudService = 'google'
     }
 
     // Languages
@@ -34,7 +34,7 @@ export async function generateStaticParams() {
     if (!translationsEnabled) {
         languages = ['en']
     } else {
-        if (onlyPmnch) {
+        if (cloudService) {
             languages = languagesAzure.map((l) => l.code)
         } else {
             languages = languagesGoogle.map((l) => l.code)
