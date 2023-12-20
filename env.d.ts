@@ -3,7 +3,6 @@ namespace NodeJS {
         PROD_DOMAINS_ALLOWED: string
         MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS: string
         DEV_DOMAIN: string
-        ONLY_PMNCH: string
         NEXT_PUBLIC_DASHBOARD_API_URL: string
         NEXT_PUBLIC_GOOGLE_ANALYTICS: string
     }

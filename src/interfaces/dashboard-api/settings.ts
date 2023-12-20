@@ -25,4 +25,5 @@ SOFTWARE.
 
 export interface ISettings {
     translations_enabled: boolean
+    only_pmnch: boolean
 }

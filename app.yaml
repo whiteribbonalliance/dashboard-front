@@ -14,7 +14,6 @@ handlers:
 env_variables:
   PROD_DOMAINS_ALLOWED: ".whiteribbonalliance.org .freelancedatascientist.net"
   MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS: "explore"
-  ONLY_PMNCH: False
 
 # Environment variables that need to be exposed to the client (with NEXT_PUBLIC_) should be added at build time
 build_env_variables:

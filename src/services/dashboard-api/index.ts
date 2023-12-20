@@ -212,20 +212,20 @@ export async function downloadCampaignPublicData(
 /**
  * Get campaign configuration
  */
-export async function getCampaignConfiguration(campaignCode: string) {
-    const response = await fetch(`${apiUrl}/campaigns/configurations/${campaignCode}`, {
-        method: 'GET',
-        headers: headers,
-    })
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch campaign configuration.')
-    }
-
-    const data: ICampaignConfiguration = await response.json()
-
-    return data
-}
+// export async function getCampaignConfiguration(campaignCode: string) {
+//     const response = await fetch(`${apiUrl}/campaigns/configurations/${campaignCode}`, {
+//         method: 'GET',
+//         headers: headers,
+//     })
+//
+//     if (!response.ok) {
+//         throw new Error('Failed to fetch campaign configuration.')
+//     }
+//
+//     const data: ICampaignConfiguration = await response.json()
+//
+//     return data
+// }
 
 /**
  * Get all campaigns configurations
@@ -247,7 +247,6 @@ export async function getAllCampaignsConfigurations() {
 
 /**
  * Get settings
- *
  */
 export async function getSettings() {
     const response = await fetch(`${apiUrl}/settings`, {

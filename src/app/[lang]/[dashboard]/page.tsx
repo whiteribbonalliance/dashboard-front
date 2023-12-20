@@ -17,22 +17,24 @@ export async function generateStaticParams() {
     // Purge cache to always re-fetch it during build
     revalidatePath('/[lang]/[dashboard]', 'page')
 
-    // Check if translations is enabled in the back-end
-    let translationsEnabled = true
+    // Get API settings
+    let translationsEnabled: boolean
+    let onlyPmnch: boolean
     try {
         const settings = await getSettings()
-        if (!settings.translations_enabled) {
-            translationsEnabled = false
-        }
-    } catch (err) {}
+        translationsEnabled = settings.translations_enabled
+        onlyPmnch = settings.only_pmnch
+    } catch (err) {
+        translationsEnabled = false
+        onlyPmnch = false
+    }
 
     // Languages
     let languages: string[]
     if (!translationsEnabled) {
         languages = ['en']
     } else {
-        const ONLY_PMNCH = process.env.ONLY_PMNCH.toLowerCase() === 'true'
-        if (ONLY_PMNCH) {
+        if (onlyPmnch) {
             languages = languagesAzure.map((l) => l.code)
         } else {
             languages = languagesGoogle.map((l) => l.code)

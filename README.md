@@ -92,10 +92,6 @@ authenticated on the WRA Google Cloud Platform service account for this to work.
 
 ## PMNCH - Azure deployment
 
-#### Environment variables
-
-- `ONLY_PMNCH=` True.
-
 Because of organization policies, the dashboard at `https://whatyoungpeoplewant.whiteribbonalliance.org` should be
 deployed on `Azure` and make use of its services instead of `Google`. To solve this issue, two new repositories are
 created, these repositories should always stay in sync with the original repositories.

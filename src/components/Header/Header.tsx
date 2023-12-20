@@ -38,7 +38,7 @@ export const Header = () => {
     const { t } = useTranslation(lang)
 
     // Settings query
-    const settingsGeoQuery = useQuery<ISettings>({
+    const settingsQuery = useQuery<ISettings>({
         queryKey: ['settings'],
         queryFn: () => getSettings(),
         refetchOnWindowFocus: false,
@@ -113,7 +113,7 @@ export const Header = () => {
 
                             {/* Menu items */}
                             <nav className="hidden gap-x-3 xl:flex xl:items-center">
-                                {settingsGeoQuery.data?.translations_enabled && (
+                                {settingsQuery.data?.translations_enabled && (
                                     <LanguageSelect dashboard={dashboard} lang={lang} />
                                 )}
 
@@ -153,7 +153,7 @@ export const Header = () => {
                                         mobileDropdownClasses
                                     )}
                                 >
-                                    {settingsGeoQuery.data?.translations_enabled && (
+                                    {settingsQuery.data?.translations_enabled && (
                                         <div className="mt-3">
                                             <LanguageSelect dashboard={dashboard} lang={lang} />
                                         </div>
