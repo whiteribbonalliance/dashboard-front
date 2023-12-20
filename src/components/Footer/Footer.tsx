@@ -7,10 +7,9 @@ import { applyToThousandsSepOnText, classNames, getCampaignRequest } from '@util
 import { useTranslation } from '@app/i18n/client'
 import { OrganizationLogos } from 'components/OrganizationLogos'
 import { ParamsContext } from '@contexts/params'
-import { downloadCampaignPublicData, getSettings } from 'services/dashboard-api'
+import { downloadCampaignPublicData } from 'services/dashboard-api'
 import { ConfigurationsContext } from '@contexts/configurations'
-import { useQuery } from 'react-query'
-import { ISettings } from '@interfaces'
+import { SettingsContext } from '@contexts/settings'
 
 export const Footer = () => {
     const { params } = useContext(ParamsContext)
@@ -18,13 +17,7 @@ export const Footer = () => {
     const { allCampaignsConfigurations } = useContext(ConfigurationsContext)
     const [exportingDataset, setExportingDataset] = useState<boolean>(false)
     const { t } = useTranslation(lang)
-
-    // Settings query
-    const settingsQuery = useQuery<ISettings>({
-        queryKey: ['settings'],
-        queryFn: () => getSettings(),
-        refetchOnWindowFocus: false,
-    })
+    const { settings } = useContext(SettingsContext)
 
     // Set export dataset text
     let exportDatasetText = t('export-dataset')
@@ -217,38 +210,37 @@ export const Footer = () => {
             )}
 
             {/* Dashboard by */}
-
             <div>
                 <p>
-                    {settingsQuery.data?.owner_name && (
+                    {settings.owner_name && (
                         <span>
                             {t('dashboard-by')}{' '}
-                            {settingsQuery.data.owner_link ? (
+                            {settings.owner_link ? (
                                 <Link
-                                    href={settingsQuery.data.owner_link}
+                                    href={settings.owner_link}
                                     target="_blank"
                                     className={classNames('underline', footerLinkClasses)}
                                 >
-                                    {settingsQuery.data.owner_name}
+                                    {settings.owner_name}
                                 </Link>
                             ) : (
-                                <span>{settingsQuery.data.owner_name}</span>
+                                <span>{settings.owner_name}</span>
                             )}
                         </span>
                     )}
-                    {settingsQuery.data?.owner_name && settingsQuery.data?.company_name && <span> {t('at')} </span>}
-                    {settingsQuery.data?.company_name && (
+                    {settings.owner_name && settings.company_name && <span> {t('at')} </span>}
+                    {settings.company_name && (
                         <span>
-                            {settingsQuery.data.company_link ? (
+                            {settings.company_link ? (
                                 <Link
-                                    href={settingsQuery.data.company_link}
+                                    href={settings.company_link}
                                     target="_blank"
                                     className={classNames('underline', footerLinkClasses)}
                                 >
-                                    {settingsQuery.data.company_name}
+                                    {settings.company_name}
                                 </Link>
                             ) : (
-                                <span>{settingsQuery.data.company_name}</span>
+                                <span>{settings.company_name}</span>
                             )}
                         </span>
                     )}

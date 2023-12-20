@@ -16,9 +16,7 @@ import { useTranslation } from '@app/i18n/client'
 import Image from 'next/image'
 import { Title } from '@components/Title'
 import { ParamsContext } from '@contexts/params'
-import { useQuery } from 'react-query'
-import { ISettings } from '@interfaces'
-import { getSettings } from '@services/dashboard-api'
+import { SettingsContext } from '@contexts/settings'
 
 interface IHamburgerMenuProps {
     open: boolean
@@ -33,16 +31,9 @@ interface IMenu {
 export const Header = () => {
     const { params } = useContext(ParamsContext)
     const { dashboard, lang, config } = params
-
     const [showMobileFiltersPanel, setShowMobileFiltersPanel] = useState<boolean>(false)
     const { t } = useTranslation(lang)
-
-    // Settings query
-    const settingsQuery = useQuery<ISettings>({
-        queryKey: ['settings'],
-        queryFn: () => getSettings(),
-        refetchOnWindowFocus: false,
-    })
+    const { settings } = useContext(SettingsContext)
 
     // Create menu items
     let menuItems: IMenu[] = []
@@ -113,9 +104,7 @@ export const Header = () => {
 
                             {/* Menu items */}
                             <nav className="hidden gap-x-3 xl:flex xl:items-center">
-                                {settingsQuery.data?.translations_enabled && (
-                                    <LanguageSelect dashboard={dashboard} lang={lang} />
-                                )}
+                                {settings.translations_enabled && <LanguageSelect dashboard={dashboard} lang={lang} />}
 
                                 {menuItems.map((item) => {
                                     if (item.url) {
@@ -153,7 +142,7 @@ export const Header = () => {
                                         mobileDropdownClasses
                                     )}
                                 >
-                                    {settingsQuery.data?.translations_enabled && (
+                                    {settings.translations_enabled && (
                                         <div className="mt-3">
                                             <LanguageSelect dashboard={dashboard} lang={lang} />
                                         </div>

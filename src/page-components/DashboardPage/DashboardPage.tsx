@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { getAllCampaignsConfigurations } from '@services/dashboard-api'
+import { getAllCampaignsConfigurations, getSettings } from '@services/dashboard-api'
 import { Dashboard } from '@page-components/DashboardPage/Dashboard'
 
 interface IDashboardProps {
@@ -28,12 +28,15 @@ export const DashboardPage = async ({ params }: IDashboardProps) => {
         notFound()
     }
 
+    const settings = await getSettings()
+
     return (
         <Dashboard
             dashboard={dashboard}
             lang={lang}
             currentCampaignConfiguration={campaignConfiguration}
             allCampaignsConfigurations={campaignsConfigurations}
+            settings={settings}
         />
     )
 }

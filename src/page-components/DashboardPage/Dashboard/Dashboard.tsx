@@ -10,16 +10,18 @@ import { Footer } from '@components/Footer'
 import React, { useEffect, useState } from 'react'
 import { LegacyDashboardName } from '@enums'
 import { useShowSelectActiveDashboardStore } from '@stores/show-select-active-dashboard'
-import { ICampaignConfiguration, IParams } from '@interfaces'
+import { ICampaignConfiguration, IParams, ISettings } from '@interfaces'
 import { ParamsContext } from '@contexts/params'
 import { getDefaultFilterValues } from '@schemas/filter'
 import { ConfigurationsContext } from '@contexts/configurations'
+import { SettingsContext } from '@contexts/settings'
 
 interface IDashboardProps {
     dashboard: string
     lang: string
     currentCampaignConfiguration: ICampaignConfiguration
     allCampaignsConfigurations: ICampaignConfiguration[]
+    settings: ISettings
 }
 
 export const Dashboard = ({
@@ -27,6 +29,7 @@ export const Dashboard = ({
     lang,
     currentCampaignConfiguration,
     allCampaignsConfigurations,
+    settings,
 }: IDashboardProps) => {
     const defaultFilterValues = getDefaultFilterValues(dashboard)
 
@@ -76,41 +79,43 @@ export const Dashboard = ({
 
     return (
         <div className={classNames(layoutClasses)}>
-            <ConfigurationsContext.Provider value={{ allCampaignsConfigurations }}>
-                <ParamsContext.Provider value={{ params, setParams }}>
-                    {/* Header */}
-                    <Header />
+            <SettingsContext.Provider value={{ settings }}>
+                <ConfigurationsContext.Provider value={{ allCampaignsConfigurations }}>
+                    <ParamsContext.Provider value={{ params, setParams }}>
+                        {/* Header */}
+                        <Header />
 
-                    {/* Main */}
-                    <main className="mx-7 my-7">
-                        {/* Title */}
-                        <div className="mb-3 flex justify-center xl:hidden">
-                            <Title />
-                        </div>
+                        {/* Main */}
+                        <main className="mx-7 my-7">
+                            {/* Title */}
+                            <div className="mb-3 flex justify-center xl:hidden">
+                                <Title />
+                            </div>
 
-                        {/* Subtext */}
-                        <div className="mb-10 flex justify-center">
-                            <Subtext />
-                        </div>
+                            {/* Subtext */}
+                            <div className="mb-10 flex justify-center">
+                                <Subtext />
+                            </div>
 
-                        {/* Content */}
-                        <div className="grid grid-cols-1 items-start gap-x-[10%] xl:grid-cols-3">
-                            {/* Filters panel */}
-                            <section className="hidden xl:sticky xl:top-5 xl:col-span-1 xl:block">
-                                <FiltersPanel />
-                            </section>
+                            {/* Content */}
+                            <div className="grid grid-cols-1 items-start gap-x-[10%] xl:grid-cols-3">
+                                {/* Filters panel */}
+                                <section className="hidden xl:sticky xl:top-5 xl:col-span-1 xl:block">
+                                    <FiltersPanel />
+                                </section>
 
-                            {/* Graphs */}
-                            <section className={classNames('col-span-2 grid grid-cols-1', boxesGapY)}>
-                                <GraphsWrapper />
-                            </section>
-                        </div>
-                    </main>
+                                {/* Graphs */}
+                                <section className={classNames('col-span-2 grid grid-cols-1', boxesGapY)}>
+                                    <GraphsWrapper />
+                                </section>
+                            </div>
+                        </main>
 
-                    {/* Footer */}
-                    <Footer />
-                </ParamsContext.Provider>
-            </ConfigurationsContext.Provider>
+                        {/* Footer */}
+                        <Footer />
+                    </ParamsContext.Provider>
+                </ConfigurationsContext.Provider>
+            </SettingsContext.Provider>
         </div>
     )
 }
