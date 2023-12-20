@@ -37,7 +37,7 @@ export async function middleware(request: NextRequest) {
     const DEV_DOMAIN = process.env.DEV_DOMAIN || '.localhost'
     const MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS = process.env.MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS
 
-    const PMNCH = process.env.PMNCH || false
+    const PMNCH = process.env.PMNCH.toLowerCase() === 'true'
     const pmnchLink = 'https://wypw.1point8b.org'
 
     // Get API settings
