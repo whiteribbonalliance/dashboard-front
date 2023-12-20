@@ -7,8 +7,10 @@ import { applyToThousandsSepOnText, classNames, getCampaignRequest } from '@util
 import { useTranslation } from '@app/i18n/client'
 import { OrganizationLogos } from 'components/OrganizationLogos'
 import { ParamsContext } from '@contexts/params'
-import { downloadCampaignPublicData } from 'services/dashboard-api'
+import { downloadCampaignPublicData, getSettings } from 'services/dashboard-api'
 import { ConfigurationsContext } from '@contexts/configurations'
+import { useQuery } from 'react-query'
+import { ISettings } from '@interfaces'
 
 export const Footer = () => {
     const { params } = useContext(ParamsContext)
@@ -16,6 +18,13 @@ export const Footer = () => {
     const { allCampaignsConfigurations } = useContext(ConfigurationsContext)
     const [exportingDataset, setExportingDataset] = useState<boolean>(false)
     const { t } = useTranslation(lang)
+
+    // Settings query
+    const settingsQuery = useQuery<ISettings>({
+        queryKey: ['settings'],
+        queryFn: () => getSettings(),
+        refetchOnWindowFocus: false,
+    })
 
     // Set export dataset text
     let exportDatasetText = t('export-dataset')
@@ -208,24 +217,41 @@ export const Footer = () => {
             )}
 
             {/* Dashboard by */}
+
             <div>
                 <p>
-                    {t('dashboard-by')}{' '}
-                    <Link
-                        href={'https://freelancedatascientist.net/'}
-                        target="_blank"
-                        className={classNames('underline', footerLinkClasses)}
-                    >
-                        Thomas Wood
-                    </Link>{' '}
-                    {t('at')}{' '}
-                    <Link
-                        href={'https://fastdatascience.com/'}
-                        target="_blank"
-                        className={classNames('underline', footerLinkClasses)}
-                    >
-                        Fast Data Science
-                    </Link>
+                    {settingsQuery.data?.owner_name && (
+                        <span>
+                            {t('dashboard-by')}{' '}
+                            {settingsQuery.data.owner_link ? (
+                                <Link
+                                    href={settingsQuery.data.owner_link}
+                                    target="_blank"
+                                    className={classNames('underline', footerLinkClasses)}
+                                >
+                                    {settingsQuery.data.owner_name}
+                                </Link>
+                            ) : (
+                                <span>{settingsQuery.data.owner_name}</span>
+                            )}
+                        </span>
+                    )}
+                    {settingsQuery.data?.owner_name && settingsQuery.data?.company_name && <span> {t('at')} </span>}
+                    {settingsQuery.data?.company_name && (
+                        <span>
+                            {settingsQuery.data.company_link ? (
+                                <Link
+                                    href={settingsQuery.data.company_link}
+                                    target="_blank"
+                                    className={classNames('underline', footerLinkClasses)}
+                                >
+                                    {settingsQuery.data.company_name}
+                                </Link>
+                            ) : (
+                                <span>{settingsQuery.data.company_name}</span>
+                            )}
+                        </span>
+                    )}
                 </p>
             </div>
         </footer>

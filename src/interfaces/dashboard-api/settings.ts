@@ -26,4 +26,8 @@ SOFTWARE.
 export interface ISettings {
     translations_enabled: boolean
     cloud_service: 'google' | 'azure'
+    owner_name: string
+    owner_link: string
+    company_name: string
+    company_link: string
 }
