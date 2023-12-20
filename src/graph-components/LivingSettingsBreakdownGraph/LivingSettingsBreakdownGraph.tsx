@@ -37,7 +37,7 @@ export const LivingSettingsBreakdownGraph = () => {
     const { params } = useContext(ParamsContext)
     const { dashboard, lang } = params
 
-    const { data, isError, isLoading, isFetching } = useCampaignQuery()
+    const { data, isError, isLoading, isRefetching } = useCampaignQuery()
     const form1 = useFilterFormsStore((state) => state.form1)
     const form2 = useFilterFormsStore((state) => state.form2)
     const [livingSettingsBreakdown, setLivingSettingsBreakdown] = useState<ILivingSettingBreakdown[]>([])
@@ -160,7 +160,7 @@ export const LivingSettingsBreakdownGraph = () => {
         hoveredBarDataKey.current = dataKey
     }
 
-    const displayGraph = !!data && !isLoading && !isFetching && !!livingSettingsBreakdown
+    const displayGraph = !!data && !isLoading && !isRefetching && !!livingSettingsBreakdown
 
     // Nothing to show
     if (data && !data?.living_settings_breakdown?.length) {

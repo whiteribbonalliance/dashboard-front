@@ -4,22 +4,23 @@ This project can display dashboards for campaigns defined in the back-end.
 
 ## Environment variables
 
-- `PROD_DOMAINS_ALLOWED=` The domains allowed in production e.g. `.my-dashboards.org`.
-- `DEV_DOMAIN=` The domain used in development e.g. `.my-dashboards.local`.
-- `MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS=` The subdomain used for displaying dashboards using paths e.g.
-  using `explore` will allow accessing the dashboard `healthwellbeing`
-  at `explore.my-dashboards.org/healthwellbeing`.
-- `NEXT_PUBLIC_DASHBOARD_API_URL=` The url to the API.
-- `NEXT_PUBLIC_GOOGLE_ANALYTICS=` Google Analytics ID.
+- `PROD_DOMAINS_ALLOWED=` Required - The domains allowed in production e.g. `.my-dashboards.org`.
+- `DEV_DOMAIN=` Optional - The domain used in development e.g. `.my-dashboards.local`.
+- `MAIN_SUBDOMAIN=` Optional - The subdomain used for displaying dashboards e.g. using `explore` will allow
+  accessing the dashboard `healthwellbeing` at `explore.my-dashboards.org/healthwellbeing`. If no subdomain is provided
+  then the dashboard can be accessed at `my-dashboards.org/healthwellbeing`.
+- `NEXT_PUBLIC_DASHBOARD_API_URL=` Required - The url to the API.
+- `NEXT_PUBLIC_GOOGLE_ANALYTICS=` Optional - Google Analytics ID.
 
 ## Install
 
 Configure `.env.local.` with the environment variables.
 
-On the local machine, map `127.0.0.1` to the following domain name:
+For development, on the local machine map `127.0.0.1` to the following domain names:
 
 ```text
 127.0.0.1   explore.my-dashboards.local
+127.0.0.1   my-dashboards.local
 ```
 
 Then:
@@ -29,7 +30,7 @@ npm install
 npm run build
 ```
 
-*Note: A new build is required if the configurations in the back-end have been altered.*
+*As a rule of thumb, generate a new build in the front-end if any changes have been applied in the back-end.*
 
 ### Run
 
@@ -37,8 +38,7 @@ npm run build
 npm run start
 ```
 
-On the machine visit for example `http://explore.my-dashboards.local:3000/en/healthwellbeing` to access the
-dashboard `healthwellbeing`.
+Visit for example `http://my-dashboards.local:3000/en/healthwellbeing` to access the dashboard `healthwellbeing`.
 
 ### Lint project
 
@@ -54,9 +54,9 @@ npm run format
 
 ## Translations
 
-The title and subtext are retrieved as part of translated texts based on the current language. Translations are
-generated in the back-end, `title` and `subtext` should be added to `front_translations/to_translate.json` e.g. to
-translate the `title` for campaign with code `example` include the key `"example-title": "Example title"` or for the
+The title and subtext are retrieved as part of translated texts based on the current language. Translations can be
+generated in the back-end script, `title` and `subtext` should be added to `front_translations/to_translate.json` e.g.
+to translate the `title` for campaign with code `example` include the key `"example-title": "Example title"` or for the
 `subtext` include `"example-subtext": "Example subtext"`. Read the `Translations` section in the back-end `README.md`
 for more information.
 

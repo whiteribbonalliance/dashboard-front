@@ -35,7 +35,7 @@ export async function middleware(request: NextRequest) {
     const hostname = request.headers.get('host') as string
     const PROD_DOMAINS_ALLOWED = process.env.PROD_DOMAINS_ALLOWED.split(' ')
     const DEV_DOMAIN = process.env.DEV_DOMAIN || '.localhost'
-    const MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS = process.env.MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS
+    const MAIN_SUBDOMAIN = process.env.MAIN_SUBDOMAIN
 
     const PMNCH = process.env.PMNCH.toLowerCase() === 'true'
     const pmnchLink = 'https://wypw.1point8b.org'
@@ -117,21 +117,27 @@ export async function middleware(request: NextRequest) {
         extractedSubdomain = hostname?.replace(`${DEV_DOMAIN}:3000`, '')
     }
 
-    // Path routing e.g. explore.my-dashboards.org/en/healthwellbeing
-    // If MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS equals the extracted subdomain
-    if (MAIN_SUBDOMAIN_FOR_DASHBOARDS_PATH_ACCESS === extractedSubdomain && !PMNCH) {
+    // Get NextURL
+    const nextUrl = request.nextUrl
+
+    // Redirect to new link for PMNCH
+    if (process.env.NODE_ENV === 'production') {
+        if (nextUrl.pathname.endsWith(`/${LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT}`)) {
+            return NextResponse.redirect(pmnchLink)
+        }
+    }
+
+    // Default routing
+    if (!MAIN_SUBDOMAIN) {
+        // Rewrite to the current hostname
+        return NextResponse.rewrite(nextUrl)
+    }
+
+    // Subdomain routing with path e.g. explore.my-dashboards.org/en/healthwellbeing
+    // If MAIN_SUBDOMAIN equals the extracted subdomain
+    if (MAIN_SUBDOMAIN === extractedSubdomain && !PMNCH) {
         // Get NextURL
         const nextUrl = request.nextUrl
-
-        // Redirect to new link for PMNCH
-        if (process.env.NODE_ENV === 'production') {
-            if (nextUrl.pathname.endsWith(`/${LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT}`)) {
-                return NextResponse.redirect(pmnchLink)
-            }
-        }
-
-        // e.g. /en/whatwomenwant
-        nextUrl.pathname = `${nextUrl.pathname}`
 
         // Rewrite to the current hostname
         return NextResponse.rewrite(nextUrl)
@@ -157,9 +163,6 @@ export async function middleware(request: NextRequest) {
             // For other dashboards, the dashboard name is equal to the subdomain
             dashboardName = extractedSubdomain
         }
-
-        // Get NextURL
-        const nextUrl = request.nextUrl
 
         // e.g. '/whatwomenwant/en'
         nextUrl.pathname = `${nextUrl.pathname}/${dashboardName}`
