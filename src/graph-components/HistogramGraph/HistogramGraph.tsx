@@ -75,7 +75,11 @@ export const HistogramGraph = () => {
     useEffect(() => {
         if (histogramOptionsQuery.data && data) {
             let options = histogramOptionsQuery.data
-            if (data.histogram.age_buckets.length <= 1) {
+            if (dashboard === LegacyDashboardName.ALL_CAMPAIGNS) {
+                if (data.histogram.age_buckets_default.length <= 1) {
+                    options = options.filter((option) => option.value !== 'breakdown-age-bucket')
+                }
+            } else if (data.histogram.age_buckets.length <= 1) {
                 options = options.filter((option) => option.value !== 'breakdown-age-bucket')
             }
             if (data.histogram.ages.length <= 1) {
@@ -305,11 +309,11 @@ export const HistogramGraph = () => {
     if (
         data &&
         !data.histogram?.age_buckets?.length &&
+        !data.histogram?.age_buckets_default?.length &&
         !data.histogram?.ages?.length &&
         !data.histogram?.genders?.length &&
         !data.histogram?.professions?.length &&
         !data.histogram?.canonical_countries?.length &&
-        !data.histogram?.age_buckets_default?.length &&
         !data.histogram?.regions?.length
     ) {
         return null
