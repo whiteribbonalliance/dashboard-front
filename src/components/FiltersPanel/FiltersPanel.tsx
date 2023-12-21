@@ -409,9 +409,7 @@ export const FiltersPanel = () => {
 
     // Set show age buckets (age ranges) filter
     let showSelectAgeBuckets = false
-    if (dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT) {
-        showSelectAgeBuckets = false
-    } else if (ageBucketOptions.length > 1) {
+    if (ageBucketOptions.length > 1) {
         showSelectAgeBuckets = true
     }
 
