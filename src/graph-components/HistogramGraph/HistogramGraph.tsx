@@ -97,7 +97,7 @@ export const HistogramGraph = () => {
 
             setHistogramOptions(options)
         }
-    }, [histogramOptionsQuery.data, data])
+    }, [histogramOptionsQuery.data, data, dashboard])
 
     // Form
     const form = useForm<THistogram>({
@@ -119,6 +119,9 @@ export const HistogramGraph = () => {
         if (!showBreakdownByField) return 0
         switch (showBreakdownByField) {
             case 'breakdown-age':
+                if (dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT) {
+                    return 550
+                }
                 return 1900
             case 'breakdown-age-bucket':
                 return 550
@@ -127,7 +130,7 @@ export const HistogramGraph = () => {
             default:
                 return 1100
         }
-    }, [showBreakdownByField])
+    }, [dashboard, showBreakdownByField])
 
     // Set bars fill
     let bar1Fill: string
