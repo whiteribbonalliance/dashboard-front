@@ -48,9 +48,9 @@ export const Dashboard = ({
         (state) => state.setShowSelectActiveDashboard
     )
 
-    // Data loading query
-    const dataLoadingQuery = useQuery<IDataLoading>({
-        queryKey: ['data-loading'],
+    // Data loading status query
+    const dataLoadingStatusQuery = useQuery<IDataLoading>({
+        queryKey: ['data-loading-status'],
         queryFn: () => {
             return getDataLoadingStatus()
         },
@@ -90,7 +90,7 @@ export const Dashboard = ({
                 'font-open-sans text-base text-defaultColors-font selection:bg-defaultColors-tertiary selection:text-white'
     }
 
-    if (!dataLoadingQuery.data) {
+    if (!dataLoadingStatusQuery.data) {
         return null
     }
 
@@ -100,7 +100,7 @@ export const Dashboard = ({
                 <ConfigurationsContext.Provider value={{ allCampaignsConfigurations }}>
                     <ParamsContext.Provider value={{ params, setParams }}>
                         {/* Header */}
-                        <Header hideFiltersPanel={!dataLoadingQuery.data.initial_loading_complete} />
+                        <Header hideFiltersPanel={!dataLoadingStatusQuery.data.initial_loading_complete} />
 
                         {/* Main */}
                         <main className="mx-7 my-7">
@@ -115,12 +115,12 @@ export const Dashboard = ({
                             </div>
 
                             {/* Starting up */}
-                            {!dataLoadingQuery.data.initial_loading_complete && (
+                            {!dataLoadingStatusQuery.data.initial_loading_complete && (
                                 <div className="my-10 text-lg font-bold">Waiting for application startup...</div>
                             )}
 
                             {/* Content */}
-                            {dataLoadingQuery.data.initial_loading_complete && (
+                            {dataLoadingStatusQuery.data.initial_loading_complete && (
                                 <div className="grid grid-cols-1 items-start gap-x-[10%] xl:grid-cols-3">
                                     {/* Filters panel */}
                                     <section className="hidden xl:sticky xl:top-5 xl:col-span-1 xl:block">
