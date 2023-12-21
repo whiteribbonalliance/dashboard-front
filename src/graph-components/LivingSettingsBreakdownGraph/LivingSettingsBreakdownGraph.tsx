@@ -163,7 +163,7 @@ export const LivingSettingsBreakdownGraph = () => {
     const displayGraph = !!data && !isLoading && !isRefetching && !!livingSettingsBreakdown
 
     // Nothing to show
-    if (data && !data?.living_settings_breakdown?.length) {
+    if (data && data?.living_settings_breakdown?.length <= 1) {
         return null
     }
 

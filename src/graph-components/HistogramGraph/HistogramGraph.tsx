@@ -55,7 +55,7 @@ export const HistogramGraph = () => {
     const countries = useCountriesStore((state) => state.countries)
 
     // Fetch options
-    useQuery<TOption<string>[]>({
+    const histogramOptionsQuery = useQuery<TOption<string>[]>({
         queryKey: [`${dashboard}-${lang}-histogram-options`],
         queryFn: () => {
             if (dashboard === LegacyDashboardName.ALL_CAMPAIGNS) {
@@ -66,9 +66,34 @@ export const HistogramGraph = () => {
         },
         refetchOnWindowFocus: false,
         retry: 3,
-        onSuccess: (options) => setHistogramOptions(options),
+        onSuccess: () => {},
         onError: () => {},
+        enabled: !!data,
     })
+
+    // Only show options for histograms that contain data
+    useEffect(() => {
+        if (histogramOptionsQuery.data && data) {
+            let options = histogramOptionsQuery.data
+            if (data.histogram.age_buckets.length <= 1) {
+                options = options.filter((option) => option.value !== 'breakdown-age-bucket')
+            }
+            if (data.histogram.ages.length <= 1) {
+                options = options.filter((option) => option.value !== 'breakdown-age')
+            }
+            if (data.histogram.genders.length <= 1) {
+                options = options.filter((option) => option.value !== 'breakdown-gender')
+            }
+            if (data.histogram.professions.length <= 1) {
+                options = options.filter((option) => option.value !== 'breakdown-profession')
+            }
+            if (data.histogram.canonical_countries.length <= 1) {
+                options = options.filter((option) => option.value !== 'breakdown-country')
+            }
+
+            setHistogramOptions(options)
+        }
+    }, [histogramOptionsQuery.data, data])
 
     // Form
     const form = useForm<THistogram>({
@@ -81,25 +106,16 @@ export const HistogramGraph = () => {
     // Set default value for show_breakdown_by
     useEffect(() => {
         if (form && histogramOptions.length > 0) {
-            if (dashboard === LegacyDashboardName.HEALTHWELLBEING) {
-                form.setValue('show_breakdown_by', 'breakdown-age-bucket')
-            } else {
-                form.setValue('show_breakdown_by', histogramOptions[0].value)
-            }
+            form.setValue('show_breakdown_by', histogramOptions[0].value)
         }
     }, [dashboard, form, histogramOptions])
 
     // Container height
     const containerHeight = useMemo(() => {
         if (!showBreakdownByField) return 0
-
         switch (showBreakdownByField) {
             case 'breakdown-age':
-                if (dashboard === LegacyDashboardName.HEALTHWELLBEING) {
-                    return 1900
-                } else {
-                    return 650
-                }
+                return 1900
             case 'breakdown-age-bucket':
                 return 550
             case 'breakdown-gender':
@@ -107,7 +123,7 @@ export const HistogramGraph = () => {
             default:
                 return 1100
         }
-    }, [dashboard, showBreakdownByField])
+    }, [showBreakdownByField])
 
     // Set bars fill
     let bar1Fill: string
@@ -180,17 +196,6 @@ export const HistogramGraph = () => {
 
     // Set form value
     function setFormValue(form: UseFormReturn<TFilter>, payload: any) {
-        // Set allow age bucket bar click
-        let allowAgeBucketBarClick = false
-        if (
-            dashboard === LegacyDashboardName.WHAT_WOMEN_WANT ||
-            dashboard === LegacyDashboardName.MIDWIVES_VOICES ||
-            dashboard === LegacyDashboardName.ALL_CAMPAIGNS ||
-            dashboard == LegacyDashboardName.HEALTHWELLBEING
-        ) {
-            allowAgeBucketBarClick = true
-        }
-
         const data = payload?.payload as IHistogramData
         if (data?.value) {
             let currentFormValues: string[] = []
@@ -202,13 +207,9 @@ export const HistogramGraph = () => {
                     }
                     break
                 case 'breakdown-age-bucket':
-                    // Only allow clicking on age bucket bar for these dashboards
-                    // These are the only dashboards currently with the option for filtering age buckets
-                    if (allowAgeBucketBarClick) {
-                        currentFormValues = form.getValues('age_buckets')
-                        if (!currentFormValues.includes(data.value)) {
-                            form.setValue('age_buckets', [...currentFormValues, data.value])
-                        }
+                    currentFormValues = form.getValues('age_buckets')
+                    if (!currentFormValues.includes(data.value)) {
+                        form.setValue('age_buckets', [...currentFormValues, data.value])
                     }
                     break
                 case 'breakdown-gender':

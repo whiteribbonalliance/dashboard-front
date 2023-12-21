@@ -65,7 +65,6 @@ export const FiltersPanel = () => {
     const { allCampaignsConfigurations } = useContext(ConfigurationsContext)
     const { dashboard, lang, config } = params
     const { data } = useCampaignQuery()
-
     const setForm1 = useFilterFormsStore((state) => state.setForm1)
     const setForm2 = useFilterFormsStore((state) => state.setForm2)
     const setCountries = useCountriesStore((state) => state.setCountries)
@@ -386,30 +385,33 @@ export const FiltersPanel = () => {
 
     // Set show select living settings
     let setShowSelectLivingSettings = false
-    if (dashboard === LegacyDashboardName.HEALTHWELLBEING) {
+    if (livingSettingOptions.length > 1) {
         setShowSelectLivingSettings = true
     }
 
     // Set show select genders
     let showSelectGenders = false
-    if (dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT || dashboard === LegacyDashboardName.HEALTHWELLBEING) {
+    if (genderOptions.length > 1) {
         showSelectGenders = true
     }
 
-    // Set show select genders and professions
-    let showSelectGendersAndProfessionsFilters = false
-    if (dashboard === LegacyDashboardName.MIDWIVES_VOICES) {
-        showSelectGendersAndProfessionsFilters = true
+    // Set show select professions
+    let showSelectProfessions = false
+    if (professionOptions.length > 1) {
+        showSelectProfessions = true
     }
 
-    // Set show age buckets filter
+    // Set show ages filter
+    let showSelectAges = false
+    if (ageOptions.length > 1) {
+        showSelectAges = true
+    }
+
+    // Set show age buckets (age ranges) filter
     let showSelectAgeBuckets = false
-    if (
-        dashboard === LegacyDashboardName.WHAT_WOMEN_WANT ||
-        dashboard === LegacyDashboardName.MIDWIVES_VOICES ||
-        dashboard === LegacyDashboardName.HEALTHWELLBEING ||
-        dashboard === LegacyDashboardName.ALL_CAMPAIGNS
-    ) {
+    if (dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT) {
+        showSelectAgeBuckets = false
+    } else if (ageBucketOptions.length > 1) {
         showSelectAgeBuckets = true
     }
 
@@ -419,10 +421,10 @@ export const FiltersPanel = () => {
         showOnlyResponsesFromCategories = false
     }
 
-    // Set show district and provinces for wwwpakistan
-    let showDistrictsAndProvincesWwwPakistan = false
+    // Set show district and provinces
+    let showDistrictsAndProvinces = false
     if (dashboard === LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN) {
-        showDistrictsAndProvincesWwwPakistan = true
+        showDistrictsAndProvinces = true
     }
 
     return (
@@ -567,7 +569,7 @@ export const FiltersPanel = () => {
                                             </div>
 
                                             {/* Select regions */}
-                                            {!showDistrictsAndProvincesWwwPakistan && (
+                                            {!showDistrictsAndProvinces && (
                                                 <div>
                                                     <div className="mb-1">{t('select-regions')}</div>
                                                     <SelectRegions
@@ -582,7 +584,7 @@ export const FiltersPanel = () => {
                                             )}
 
                                             {/* Select district and select provinces for wwwpakistan */}
-                                            {showDistrictsAndProvincesWwwPakistan && (
+                                            {showDistrictsAndProvinces && (
                                                 <>
                                                     <div>
                                                         <div className="mb-1">{t('select-provinces')}</div>
@@ -686,8 +688,7 @@ export const FiltersPanel = () => {
                                                             )}
 
                                                             {/* Filter ages */}
-                                                            {(!showSelectAgeBuckets ||
-                                                                dashboard === LegacyDashboardName.HEALTHWELLBEING) && (
+                                                            {showSelectAges && (
                                                                 <div>
                                                                     <div
                                                                         className="mb-1 w-fit"
@@ -745,22 +746,11 @@ export const FiltersPanel = () => {
                                                                 </div>
                                                             )}
 
-                                                            {/* Filter genders and professions */}
-                                                            {showSelectGendersAndProfessionsFilters && (
+                                                            {/* Filter professions */}
+                                                            {showSelectProfessions && (
                                                                 <>
-                                                                    <div className="flex gap-x-3">
-                                                                        <div className="flex basis-1/2 flex-col justify-between">
-                                                                            <div className="mb-1">
-                                                                                {t('filter-by-gender')}
-                                                                            </div>
-                                                                            <SelectGenders
-                                                                                id={`select-genders-${id}`}
-                                                                                dashboard={dashboard}
-                                                                                options={genderOptions}
-                                                                                control={form.control}
-                                                                            />
-                                                                        </div>
-                                                                        <div className="flex basis-1/2 flex-col justify-between">
+                                                                    <div className="flex">
+                                                                        <div className="flex w-full flex-col">
                                                                             <div className="mb-1">
                                                                                 {t('select-profession')}
                                                                             </div>
