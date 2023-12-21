@@ -30,8 +30,6 @@ npm install
 npm run build
 ```
 
-*As a rule of thumb, generate a new build in the front-end if any changes have been applied in the back-end.*
-
 ### Run
 
 ```bash
