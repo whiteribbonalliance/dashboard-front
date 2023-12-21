@@ -127,13 +127,13 @@ export async function middleware(request: NextRequest) {
         }
     }
 
-    // Default routing
+    // Default routing e.g. my-dashboards.org/en/{DASHBOARD_NAME}
     if (!MAIN_SUBDOMAIN) {
         // Rewrite to the current hostname
         return NextResponse.rewrite(nextUrl)
     }
 
-    // Subdomain routing with path e.g. explore.my-dashboards.org/en/healthwellbeing
+    // Subdomain routing with path e.g. explore.my-dashboards.org/en/{DASHBOARD_NAME}
     // If MAIN_SUBDOMAIN equals the extracted subdomain
     if (MAIN_SUBDOMAIN === extractedSubdomain && !PMNCH) {
         // Get NextURL
@@ -143,7 +143,7 @@ export async function middleware(request: NextRequest) {
         return NextResponse.rewrite(nextUrl)
     }
 
-    // Subdomain routing e.g. whatwomenwant.my-dashboards.org/en
+    // Subdomain routing e.g. {DASHBOARD_NAME}.my-dashboards.org/en
     else {
         // Set dashboard name from the current subdomain
         let dashboardName: string

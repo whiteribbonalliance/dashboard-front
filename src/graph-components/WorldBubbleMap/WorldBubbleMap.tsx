@@ -47,6 +47,8 @@ interface ID3MapProps {
 const svgWidth = 900
 const svgHeight = 600
 
+const apiUrl = process.env.NEXT_PUBLIC_DASHBOARD_API_URL
+
 export const WorldBubbleMap = () => {
     const { params } = useContext(ParamsContext)
     const { dashboard, lang, config } = params
@@ -66,20 +68,14 @@ export const WorldBubbleMap = () => {
     // Data geo world query
     const dataGeoQuery = useQuery<FeatureCollection | undefined>({
         queryKey: [`geo-world`],
-        queryFn: () =>
-            d3.json<FeatureCollection>(
-                'https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson'
-            ),
+        queryFn: () => d3.json<FeatureCollection>(`${apiUrl}/geo-json-world`),
         refetchOnWindowFocus: false,
     })
 
     // Data topo JSON Mexico
     const dataTopoJsonMX = useQuery<Topology | undefined>({
         queryKey: [`topo-json-mx`],
-        queryFn: () =>
-            d3.json<Topology>(
-                'https://gist.githubusercontent.com/diegovalle/5129746/raw/c1c35e439b1d5e688bca20b79f0e53a1fc12bf9e/mx_tj.json'
-            ),
+        queryFn: () => d3.json<Topology>(`${apiUrl}/topo-json/MX`),
         refetchOnWindowFocus: false,
     })
 

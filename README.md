@@ -68,11 +68,11 @@ used in the front.*
 
 ### Favicon
 
-To add a favicon to a dashboard, add `favicon.ico` to `public/dashboards/[DASHBOARD_PATH_NAME]`.
+To add a favicon to a dashboard, add `favicon.ico` to `public/dashboards/{DASHBOARD_PATH_NAME}`.
 
 ### Logo
 
-To add a top left logo to a dashboard, add `logo.png` to `public/dashboards/[DASHBOARD_PATH_NAME]`.
+To add a top left logo to a dashboard, add `logo.png` to `public/dashboards/{DASHBOARD_PATH_NAME}`.
 
 ## Deployment to Google App Engine
 
