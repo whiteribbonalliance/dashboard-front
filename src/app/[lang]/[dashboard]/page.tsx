@@ -5,58 +5,59 @@ import { languagesAzure, languagesGoogle } from '@constants'
 
 export default DashboardPage
 
-export const dynamic = 'error'
+// Set to 'error' if building static pages
+export const dynamic = 'force-dynamic'
 
 interface IParams {
     lang: string
     dashboard: string
 }
 
-// The dashboards will be created using the params returned by this function
-export async function generateStaticParams() {
-    // Purge cache to always re-fetch it during build
-    revalidatePath('/[lang]/[dashboard]', 'page')
-
-    // Get API settings
-    let translationsEnabled: boolean
-    let cloudService: string
-    try {
-        const settings = await getSettings()
-        translationsEnabled = settings.translations_enabled
-        cloudService = settings.cloud_service
-    } catch (err) {
-        translationsEnabled = false
-        cloudService = 'google'
-    }
-
-    // Languages
-    let languages: string[]
-    if (!translationsEnabled) {
-        languages = ['en']
-    } else {
-        if (cloudService) {
-            languages = languagesAzure.map((l) => l.code)
-        } else {
-            languages = languagesGoogle.map((l) => l.code)
-        }
-    }
-
-    // Get campaigns configurations
-    const campaignsConfigurations = await getAllCampaignsConfigurations()
-
-    // Get all dashboard paths
-    const dashboards = campaignsConfigurations.map((config) => config.dashboard_path)
-
-    // Generate static params
-    const params: IParams[] = []
-    for (const lang of languages) {
-        for (const dashboard of dashboards) {
-            params.push({ lang, dashboard })
-        }
-    }
-
-    return params
-}
+// Uncommenting this function will allow building static pages
+// export async function generateStaticParams() {
+//     // Purge cache to always re-fetch it during build
+//     revalidatePath('/[lang]/[dashboard]', 'page')
+//
+//     // Get API settings
+//     let translationsEnabled: boolean
+//     let cloudService: string
+//     try {
+//         const settings = await getSettings()
+//         translationsEnabled = settings.translations_enabled
+//         cloudService = settings.cloud_service
+//     } catch (err) {
+//         translationsEnabled = false
+//         cloudService = 'google'
+//     }
+//
+//     // Languages
+//     let languages: string[]
+//     if (!translationsEnabled) {
+//         languages = ['en']
+//     } else {
+//         if (cloudService) {
+//             languages = languagesAzure.map((l) => l.code)
+//         } else {
+//             languages = languagesGoogle.map((l) => l.code)
+//         }
+//     }
+//
+//     // Get campaigns configurations
+//     const campaignsConfigurations = await getAllCampaignsConfigurations()
+//
+//     // Get all dashboard paths
+//     const dashboards = campaignsConfigurations.map((config) => config.dashboard_path)
+//
+//     // Generate static params
+//     const params: IParams[] = []
+//     for (const lang of languages) {
+//         for (const dashboard of dashboards) {
+//             params.push({ lang, dashboard })
+//         }
+//     }
+//
+//     return params
+// }
 
 // Set page title and description
 export async function generateMetadata({ params }: { params: IParams }) {
