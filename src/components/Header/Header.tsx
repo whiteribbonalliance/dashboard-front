@@ -28,7 +28,11 @@ interface IMenu {
     url: string
 }
 
-export const Header = () => {
+interface IHeaderProps {
+    hideFiltersPanel?: boolean
+}
+
+export const Header = ({ hideFiltersPanel = false }: IHeaderProps) => {
     const { params } = useContext(ParamsContext)
     const { dashboard, lang, config } = params
     const [showMobileFiltersPanel, setShowMobileFiltersPanel] = useState<boolean>(false)
@@ -194,7 +198,7 @@ export const Header = () => {
                     showMobileFiltersPanel ? 'flex flex-col' : 'hidden'
                 )}
             >
-                <FiltersPanel />
+                {!hideFiltersPanel && <FiltersPanel />}
             </div>
         </>
     )

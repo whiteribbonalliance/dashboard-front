@@ -23,7 +23,14 @@ SOFTWARE.
 
 */
 
-import { ICampaign, ICampaignConfiguration, ICampaignRequest, IFilterOptions, ISettings } from '@interfaces'
+import {
+    ICampaign,
+    ICampaignConfiguration,
+    ICampaignRequest,
+    IDataLoading,
+    IFilterOptions,
+    ISettings,
+} from '@interfaces'
 import { TOption } from '@types'
 import { downloadCsvBlob, getCsvFileNameFromHeaders } from '@utils'
 
@@ -259,6 +266,24 @@ export async function getSettings() {
     }
 
     const data: ISettings = await response.json()
+
+    return data
+}
+
+/**
+ * Get data loading status
+ */
+export async function getDataLoadingStatus() {
+    const response = await fetch(`${apiUrl}/data/loading-status`, {
+        method: 'GET',
+        headers: headers,
+    })
+
+    if (!response.ok) {
+        throw new Error('Failed to check data loading status.')
+    }
+
+    const data: IDataLoading = await response.json()
 
     return data
 }

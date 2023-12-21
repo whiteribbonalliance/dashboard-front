@@ -10,11 +10,13 @@ import { Footer } from '@components/Footer'
 import React, { useEffect, useState } from 'react'
 import { LegacyDashboardName } from '@enums'
 import { useShowSelectActiveDashboardStore } from '@stores/show-select-active-dashboard'
-import { ICampaignConfiguration, IParams, ISettings } from '@interfaces'
+import { ICampaignConfiguration, IDataLoading, IParams, ISettings } from '@interfaces'
 import { ParamsContext } from '@contexts/params'
 import { getDefaultFilterValues } from '@schemas/filter'
 import { ConfigurationsContext } from '@contexts/configurations'
 import { SettingsContext } from '@contexts/settings'
+import { useQuery } from 'react-query'
+import { getDataLoadingStatus } from '@services/dashboard-api'
 
 interface IDashboardProps {
     dashboard: string
@@ -45,6 +47,17 @@ export const Dashboard = ({
     const setShowSelectActiveDashboard = useShowSelectActiveDashboardStore(
         (state) => state.setShowSelectActiveDashboard
     )
+
+    // Data loading query
+    const dataLoadingQuery = useQuery<IDataLoading>({
+        queryKey: ['data-loading'],
+        queryFn: () => {
+            return getDataLoadingStatus()
+        },
+        refetchInterval: 5000,
+        refetchOnWindowFocus: true,
+        refetchOnReconnect: true,
+    })
 
     // Set show select active dashboard
     useEffect(() => {
@@ -77,13 +90,17 @@ export const Dashboard = ({
                 'font-open-sans text-base text-defaultColors-font selection:bg-defaultColors-tertiary selection:text-white'
     }
 
+    if (!dataLoadingQuery.data) {
+        return null
+    }
+
     return (
-        <div className={classNames(layoutClasses)}>
+        <div className={classNames(layoutClasses, 'flex h-screen flex-col')}>
             <SettingsContext.Provider value={{ settings }}>
                 <ConfigurationsContext.Provider value={{ allCampaignsConfigurations }}>
                     <ParamsContext.Provider value={{ params, setParams }}>
                         {/* Header */}
-                        <Header />
+                        <Header hideFiltersPanel={!dataLoadingQuery.data.initial_loading_complete} />
 
                         {/* Main */}
                         <main className="mx-7 my-7">
@@ -97,18 +114,25 @@ export const Dashboard = ({
                                 <Subtext />
                             </div>
 
-                            {/* Content */}
-                            <div className="grid grid-cols-1 items-start gap-x-[10%] xl:grid-cols-3">
-                                {/* Filters panel */}
-                                <section className="hidden xl:sticky xl:top-5 xl:col-span-1 xl:block">
-                                    <FiltersPanel />
-                                </section>
+                            {/* Starting up */}
+                            {!dataLoadingQuery.data.initial_loading_complete && (
+                                <div className="my-10 text-lg font-bold">Waiting for application startup...</div>
+                            )}
 
-                                {/* Graphs */}
-                                <section className={classNames('col-span-2 grid grid-cols-1', boxesGapY)}>
-                                    <GraphsWrapper />
-                                </section>
-                            </div>
+                            {/* Content */}
+                            {dataLoadingQuery.data.initial_loading_complete && (
+                                <div className="grid grid-cols-1 items-start gap-x-[10%] xl:grid-cols-3">
+                                    {/* Filters panel */}
+                                    <section className="hidden xl:sticky xl:top-5 xl:col-span-1 xl:block">
+                                        <FiltersPanel />
+                                    </section>
+
+                                    {/* Graphs */}
+                                    <section className={classNames('col-span-2 grid grid-cols-1', boxesGapY)}>
+                                        <GraphsWrapper />
+                                    </section>
+                                </div>
+                            )}
                         </main>
 
                         {/* Footer */}

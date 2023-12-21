@@ -100,7 +100,7 @@ export const Footer = () => {
     }
 
     return (
-        <footer className="mx-7 my-7 flex flex-col gap-y-5 text-lg">
+        <footer className="mx-7 my-7 mt-auto flex flex-col gap-y-5 text-lg">
             {/* Logo */}
             {dashboard === LegacyDashboardName.HEALTHWELLBEING && (
                 <div className="mx-3 flex items-center justify-center xl:mx-0">
