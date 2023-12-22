@@ -49,6 +49,7 @@ export const Dashboard = ({
     )
 
     // Data loading status query
+    const [disableLoadingStatusQuery, setDisableLoadingStatusQuery] = useState<boolean>(false)
     const dataLoadingStatusQuery = useQuery<IDataLoading>({
         queryKey: ['data-loading-status'],
         queryFn: () => {
@@ -57,6 +58,12 @@ export const Dashboard = ({
         refetchInterval: 5000,
         refetchOnWindowFocus: true,
         refetchOnReconnect: true,
+        enabled: !disableLoadingStatusQuery,
+        onSuccess: (data) => {
+            if (data.initial_loading_complete) {
+                setDisableLoadingStatusQuery(true)
+            }
+        },
     })
 
     // Set show select active dashboard
@@ -95,12 +102,12 @@ export const Dashboard = ({
     }
 
     return (
-        <div className={classNames(layoutClasses, 'flex h-screen flex-col')}>
+        <div className={classNames(layoutClasses)}>
             <SettingsContext.Provider value={{ settings }}>
                 <ConfigurationsContext.Provider value={{ allCampaignsConfigurations }}>
                     <ParamsContext.Provider value={{ params, setParams }}>
                         {/* Header */}
-                        <Header hideFiltersPanel={!dataLoadingStatusQuery.data.initial_loading_complete} />
+                        <Header />
 
                         {/* Main */}
                         <main className="mx-7 my-7">

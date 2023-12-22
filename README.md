@@ -4,11 +4,12 @@ This project can display dashboards for campaigns defined in the back-end.
 
 ## Environment variables
 
-- `PROD_DOMAINS_ALLOWED=` Required - The domains allowed in production e.g. `.my-dashboards.org`.
-- `DEV_DOMAIN=` Optional - The domain used in development e.g. `.my-dashboards.local`.
-- `MAIN_SUBDOMAIN=` Optional - The subdomain used for displaying dashboards e.g. using `explore` will allow
-  accessing the dashboard `healthwellbeing` at `explore.my-dashboards.org/healthwellbeing`. If no subdomain is provided
-  then the dashboard can be accessed at `my-dashboards.org/healthwellbeing`.
+- `PROD_DOMAINS_ALLOWED=` Required - The domains allowed in production e.g. `.my-example-dashboards.org`.
+- `DEV_DOMAIN=` Optional - The domain used in development e.g. `.my-example-dashboards.local`.
+- `MAIN_SUBDOMAIN=` Optional - Subdomain used for displaying dashboards e.g. using `explore` as subdomain will allow
+  accessing the dashboard `healthwellbeing` at `explore.my-example-dashboards.org/healthwellbeing`
+  if `explore.my-example-dashboards.org` points to this site. If no subdomain is provided
+  then the dashboard can be accessed at `my-example-dashboards.org/healthwellbeing`.
 - `NEXT_PUBLIC_DASHBOARD_API_URL=` Required - The url to the API.
 - `NEXT_PUBLIC_GOOGLE_ANALYTICS=` Optional - Google Analytics ID.
 
@@ -19,8 +20,8 @@ Configure `.env.local.` with the environment variables.
 For development, on the local machine map `127.0.0.1` to the following domain names:
 
 ```text
-127.0.0.1   explore.my-dashboards.local
-127.0.0.1   my-dashboards.local
+127.0.0.1   explore.my-example-dashboards.local
+127.0.0.1   my-example-dashboards.local
 ```
 
 Then:
@@ -36,7 +37,8 @@ npm run build
 npm run start
 ```
 
-Visit for example `http://my-dashboards.local:3000/en/healthwellbeing` to access the dashboard `healthwellbeing`.
+Visit for example `http://my-example-dashboards.local:3000/en/healthwellbeing` to access the
+dashboard `healthwellbeing`.
 
 ### Lint project
 

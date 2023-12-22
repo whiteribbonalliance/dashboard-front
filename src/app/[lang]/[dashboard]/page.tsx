@@ -2,6 +2,7 @@ import { getAllCampaignsConfigurations, getSettings } from '@services/dashboard-
 import { revalidatePath } from 'next/cache'
 import { DashboardPage } from '@page-components/DashboardPage'
 import { languagesAzure, languagesGoogle } from '@constants'
+import { ICampaignConfiguration } from '@interfaces'
 
 export default DashboardPage
 
@@ -64,7 +65,12 @@ export async function generateMetadata({ params }: { params: IParams }) {
     const { dashboard } = params
 
     // Get configurations
-    const campaignsConfigurations = await getAllCampaignsConfigurations()
+    let campaignsConfigurations: ICampaignConfiguration[]
+    try {
+        campaignsConfigurations = await getAllCampaignsConfigurations()
+    } catch (error) {
+        campaignsConfigurations = []
+    }
 
     // Get configuration
     const campaignConfiguration = campaignsConfigurations.find((config) => config.dashboard_path === dashboard)
