@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { getAllCampaignsConfigurations, getSettings } from '@services/dashboard-api'
+import { getCampaignsConfigurations, getSettings } from '@services/dashboard-api'
 import { Dashboard } from '@page-components/DashboardPage/Dashboard'
 import { ICampaignConfiguration } from '@interfaces'
 
@@ -13,7 +13,7 @@ export const DashboardPage = async ({ params }: IDashboardProps) => {
     // Get configurations
     let campaignsConfigurations: ICampaignConfiguration[]
     try {
-        campaignsConfigurations = await getAllCampaignsConfigurations()
+        campaignsConfigurations = await getCampaignsConfigurations(lang)
     } catch (error) {
         campaignsConfigurations = []
     }

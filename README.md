@@ -16,6 +16,10 @@ There's currently six dashboards deployed with this project, you can visit them 
 - `NEXT_PUBLIC_DASHBOARD_API_URL=` Required - The url to the API.
 - `NEXT_PUBLIC_GOOGLE_ANALYTICS=` Optional - Google Analytics ID.
 
+## System requirements
+
+- Node.js 18 or above.
+
 ## Install
 
 Configure `.env.local.` with the environment variables.
@@ -49,15 +53,7 @@ npm run format
 
 ## Translations
 
-The title and subtext are retrieved as part of translated texts based on the current language. Translations can be
-generated in the back-end script, `title` and `subtext` should be added to `front_translations/to_translate.json` e.g.
-to translate the `title` for campaign with code `example` include the key `"example-title": "Example title"` or for the
-`subtext` include `"example-subtext": "Example subtext"`. Read the `Translations` section in the back-end `README.md`
-for more information.
-
-*Note: The above should be done even if translations is disabled, this is because with translations disabled, the
-default language is English and the output of the translations function will contain only the language English which is
-used in the front.*
+Read the `Translations` section in the back-end `README.md` for more information.
 
 ## Other
 
@@ -175,3 +171,7 @@ For the dashboard at `whatyoungpeoplewant`, also include the environment variabl
 
 - `PMNCH=` True.
 - `MAIN_SUBDOMAIN=` Set to `wypw`.
+
+## License
+
+MIT License.

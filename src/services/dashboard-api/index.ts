@@ -217,28 +217,12 @@ export async function downloadCampaignPublicData(
 }
 
 /**
- * Get campaign configuration
+ * Get campaigns configurations
+ *
+ * @param lang The language
  */
-// export async function getCampaignConfiguration(campaignCode: string) {
-//     const response = await fetch(`${apiUrl}/configurations/${campaignCode}`, {
-//         method: 'GET',
-//         headers: headers,
-//     })
-//
-//     if (!response.ok) {
-//         throw new Error('Failed to fetch campaign configuration.')
-//     }
-//
-//     const data: ICampaignConfiguration = await response.json()
-//
-//     return data
-// }
-
-/**
- * Get all campaigns configurations
- */
-export async function getAllCampaignsConfigurations() {
-    const response = await fetch(`${apiUrl}/configurations`, {
+export async function getCampaignsConfigurations(lang: string) {
+    const response = await fetch(`${apiUrl}/configurations?lang=${lang}`, {
         method: 'GET',
         headers: headers,
     })

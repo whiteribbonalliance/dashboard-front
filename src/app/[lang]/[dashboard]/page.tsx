@@ -1,4 +1,4 @@
-import { getAllCampaignsConfigurations, getSettings } from '@services/dashboard-api'
+import { getCampaignsConfigurations, getSettings } from '@services/dashboard-api'
 import { revalidatePath } from 'next/cache'
 import { DashboardPage } from '@page-components/DashboardPage'
 import { languagesAzure, languagesGoogle } from '@constants'
@@ -62,12 +62,12 @@ interface IParams {
 
 // Set page title and description
 export async function generateMetadata({ params }: { params: IParams }) {
-    const { dashboard } = params
+    const { lang, dashboard } = params
 
     // Get configurations
     let campaignsConfigurations: ICampaignConfiguration[]
     try {
-        campaignsConfigurations = await getAllCampaignsConfigurations()
+        campaignsConfigurations = await getCampaignsConfigurations(lang)
     } catch (error) {
         campaignsConfigurations = []
     }
@@ -76,8 +76,8 @@ export async function generateMetadata({ params }: { params: IParams }) {
     const campaignConfiguration = campaignsConfigurations.find((config) => config.dashboard_path === dashboard)
 
     return {
-        title: campaignConfiguration?.seo_title || '',
-        description: campaignConfiguration?.seo_meta_description || '',
+        title: campaignConfiguration?.site_title || '',
+        description: campaignConfiguration?.site_description || '',
         icons: {
             icon: `/dashboards/${dashboard}/favicon.ico`,
         },

@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { LegacyDashboardName } from '@enums'
 import React, { useContext, useState } from 'react'
-import { applyToThousandsSepOnText, classNames, getCampaignRequest } from '@utils'
+import { classNames, getCampaignRequest } from '@utils'
 import { useTranslation } from '@app/i18n/client'
 import { OrganizationLogos } from 'components/OrganizationLogos'
 import { ParamsContext } from '@contexts/params'
@@ -56,7 +56,7 @@ export const Footer = () => {
         case LegacyDashboardName.WHAT_WOMEN_WANT:
             footerNote = (
                 <p>
-                    {applyToThousandsSepOnText(t('responses-from-original'), lang)}{' '}
+                    {t('responses-from-original')}{' '}
                     <Link
                         href={
                             'http://www.c3india.org/uploads/news/Findings_from_National_campaign_Hamara_Swasthya_Hamari_Awaz_(English).pdf'

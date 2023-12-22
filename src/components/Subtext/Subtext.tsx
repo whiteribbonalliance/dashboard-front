@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslation } from '@app/i18n/client'
-import { applyToThousandsSepOnText, classNames } from '@utils'
+import { classNames } from '@utils'
 import { LegacyDashboardName } from '@enums'
 import Link from 'next/link'
 import React, { useContext, useEffect, useState } from 'react'
@@ -12,7 +12,7 @@ const HtmlToReactParser = require('html-to-react').Parser
 
 export const Subtext = () => {
     const { params } = useContext(ParamsContext)
-    const { dashboard, lang } = params
+    const { dashboard, lang, config } = params
     const { t } = useTranslation(lang)
     const [subtextElement, setSubtextElement] = useState<React.JSX.Element>()
 
@@ -32,9 +32,7 @@ export const Subtext = () => {
             case LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
                 setSubtextElement(
                     <>
-                        <p className="mb-3">
-                            {applyToThousandsSepOnText(t(`${params.config.campaign_code}-asked-questions`), lang)}:
-                        </p>
+                        <p className="mb-3">{t(`${params.config.campaign_code}-asked-questions`)}:</p>
                         <p className="mb-3">
                             “¿Qué es lo que más deseas o necesitas para encontrar empleo o un mejor empleo? Por favor,
                             comparte sólo la petición más importante para ti.“ ({t(`${dashboard}-q1`)})
@@ -47,7 +45,7 @@ export const Subtext = () => {
                 )
                 break
             case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
-                let subtext = applyToThousandsSepOnText(t(`${params.config.campaign_code}-subtext`), lang)
+                let subtext = config.campaign_subtext
 
                 // Set the link inside an anchor tag
                 subtext = subtext.replace(
@@ -83,13 +81,18 @@ export const Subtext = () => {
                     new HtmlToReactParser().parseWithInstructions(subtext, () => true, processingInstructions)
                 )
                 break
-            case LegacyDashboardName.ALL_CAMPAIGNS:
-                setSubtextElement(<></>)
-                break
             default:
-                setSubtextElement(<p>{applyToThousandsSepOnText(t(`${params.config.campaign_code}-subtext`), lang)}</p>)
+                setSubtextElement(
+                    <>
+                        {config.campaign_subtext.split('\n').map((e, i) => (
+                            <span className="mb-1" key={i}>
+                                {e}
+                            </span>
+                        ))}
+                    </>
+                )
         }
-    }, [dashboard, lang, t, params.config.campaign_code, linkClasses])
+    }, [config, dashboard, lang, t, params.config.campaign_code, linkClasses])
 
-    return <div className="max-w-6xl text-center text-lg">{subtextElement && subtextElement}</div>
+    return <h2 className="flex max-w-6xl flex-col text-center text-lg">{subtextElement && subtextElement}</h2>
 }

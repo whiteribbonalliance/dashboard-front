@@ -98,31 +98,6 @@ export function toThousandsSep(num: number, lang: string) {
 }
 
 /**
- * Find numbers in a text and apply thousands separator
- *
- * @param text The text
- * @param lang The language
- */
-export function applyToThousandsSepOnText(text: string, lang: string) {
-    const pattern = /-?\d*\.?,?\d+/g
-    let textCopy = text.slice()
-    const matches = textCopy.match(pattern)
-    if (matches) {
-        for (const match of matches) {
-            if (match.length < 4) continue
-            if (match.includes(',') || match.includes('.')) continue
-            try {
-                textCopy = textCopy.replace(match, toThousandsSep(Number(match), lang))
-            } catch (error) {}
-        }
-
-        return textCopy
-    }
-
-    return text
-}
-
-/**
  * Get CSV file name from headers.
  * If the filename is not present in headers, a random filename will be generated.
  *
