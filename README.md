@@ -2,6 +2,15 @@
 
 This project can display dashboards for campaigns defined in the back-end.
 
+There's currently six dashboards deployed with this project, you can visit them at:
+
+- https://explore.whiteribbonalliance.org/en/whatwomenwant
+- https://explore.whiteribbonalliance.org/en/midwivesvoices
+- http://explore.whiteribbonalliance.org/en/wwwpakistan
+- http://explore.whiteribbonalliance.org/en/healthwellbeing
+- http://explore.whiteribbonalliance.org/en/giz
+- https://wypw.1point8b.org
+
 ## Environment variables
 
 - `NEXT_PUBLIC_DASHBOARD_API_URL=` Required - The url to the API.
