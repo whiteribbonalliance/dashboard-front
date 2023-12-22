@@ -33,11 +33,12 @@ import { getSettings } from '@services/dashboard-api'
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
     const hostname = request.headers.get('host') as string
-    const PROD_DOMAINS_ALLOWED = process.env.PROD_DOMAINS_ALLOWED.split(' ')
+    const PROD_DOMAINS_ALLOWED = process.env.PROD_DOMAINS_ALLOWED ? process.env.PROD_DOMAINS_ALLOWED.split(' ') : []
     const DEV_DOMAIN = process.env.DEV_DOMAIN || '.localhost'
-    const MAIN_SUBDOMAIN = process.env.MAIN_SUBDOMAIN
+    const MAIN_SUBDOMAIN = process.env.MAIN_SUBDOMAIN || ''
 
-    const PMNCH = process.env.PMNCH.toLowerCase() === 'true'
+    const LEGACY_CAMPAIGNS = process.env.LEGACY_CAMPAIGNS?.toLowerCase() === 'true'
+    const PMNCH = process.env.PMNCH?.toLowerCase() === 'true'
     const pmnchLink = 'https://wypw.1point8b.org'
 
     // Get API settings
@@ -96,6 +97,15 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL(`/${defaultLanguage.code}/${pathname}`, request.url))
     }
 
+    // Get NextURL
+    const nextUrl = request.nextUrl
+
+    // Default routing e.g. my-dashboards.org/en/{DASHBOARD_NAME}
+    if (!LEGACY_CAMPAIGNS) {
+        // Rewrite to the current hostname
+        return NextResponse.rewrite(nextUrl)
+    }
+
     // Extract the subdomain by removing the root URL
     // e.g. from 'whatwomenwant.my-dashboards.org' remove '.my-dashboards.org' to get 'whatwomenwant'
     let extractedSubdomain: string | undefined
@@ -117,20 +127,11 @@ export async function middleware(request: NextRequest) {
         extractedSubdomain = hostname?.replace(`${DEV_DOMAIN}:3000`, '')
     }
 
-    // Get NextURL
-    const nextUrl = request.nextUrl
-
     // Redirect to new link for PMNCH
     if (process.env.NODE_ENV === 'production') {
         if (nextUrl.pathname.endsWith(`/${LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT}`)) {
             return NextResponse.redirect(pmnchLink)
         }
-    }
-
-    // Default routing e.g. my-dashboards.org/en/{DASHBOARD_NAME}
-    if (!MAIN_SUBDOMAIN) {
-        // Rewrite to the current hostname
-        return NextResponse.rewrite(nextUrl)
     }
 
     // Subdomain routing with path e.g. explore.my-dashboards.org/en/{DASHBOARD_NAME}
