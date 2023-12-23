@@ -22,7 +22,7 @@ build_env_variables:
   NEXT_PUBLIC_DASHBOARD_API_URL: https://api.whiteribbonalliance.org/api/v1
 
   # Optional
-  NEXT_PUBLIC_GOOGLE_ANALYTICS: ${{ env.NEXT_PUBLIC_GOOGLE_ANALYTICS }}
+  NEXT_PUBLIC_GOOGLE_ANALYTICS: G-PQ6PBP7QDG
   
   # These env variables can be ignored
   NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT: True
