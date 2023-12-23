@@ -1,8 +1,19 @@
-# How to deploy:
-# gcloud app deploy app.yaml
-
-service: dashboardfrontend
+service: ${{ secrets.SERVICE_NAME }}
 runtime: nodejs18
+
+env_variables:
+  # These env variables can be ignored
+  LEGACY_CAMPAIGNS_DEPLOYMENT: ${{ secrets.LEGACY_CAMPAIGNS_DEPLOYMENT }}
+  LEGACY_CAMPAIGNS_PROD_DOMAINS: ${{ secrets.LEGACY_CAMPAIGNS_PROD_DOMAINS }}
+  LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN: ${{ secrets.LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN }}
+
+# Environment variables that need to be exposed to the client (with NEXT_PUBLIC_) should be added at build time
+build_env_variables:
+  # Required
+  NEXT_PUBLIC_DASHBOARD_API_URL: ${{ secrets.NEXT_PUBLIC_DASHBOARD_API_URL }}
+
+  # Optional
+  NEXT_PUBLIC_GOOGLE_ANALYTICS: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}
 
 # Force https and redirect http to https
 handlers:
@@ -10,12 +21,3 @@ handlers:
     secure: always
     redirect_http_response_code: 301
     script: auto
-
-env_variables:
-  PROD_DOMAINS_ALLOWED: ".whiteribbonalliance.org .freelancedatascientist.net"
-  MAIN_SUBDOMAIN: "explore"
-
-# Environment variables that need to be exposed to the client (with NEXT_PUBLIC_) should be added at build time
-build_env_variables:
-  NEXT_PUBLIC_DASHBOARD_API_URL: "https://api.whiteribbonalliance.org/api/v1"
-  NEXT_PUBLIC_GOOGLE_ANALYTICS: "G-PQ6PBP7QDG"

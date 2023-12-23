@@ -33,11 +33,11 @@ import { getSettings } from '@services/dashboard-api'
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
     const hostname = request.headers.get('host') as string
-    const PROD_DOMAINS_ALLOWED = process.env.PROD_DOMAINS_ALLOWED ? process.env.PROD_DOMAINS_ALLOWED.split(' ') : []
+    const LEGACY_CAMPAIGNS_PROD_DOMAINS = process.env.LEGACY_CAMPAIGNS_PROD_DOMAINS ? process.env.LEGACY_CAMPAIGNS_PROD_DOMAINS.split(' ') : []
     const DEV_DOMAIN = process.env.DEV_DOMAIN || '.localhost'
-    const MAIN_SUBDOMAIN = process.env.MAIN_SUBDOMAIN || ''
+    const LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN = process.env.LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN || ''
 
-    const LEGACY_CAMPAIGNS = process.env.LEGACY_CAMPAIGNS?.toLowerCase() === 'true'
+    const LEGACY_CAMPAIGNS_DEPLOYMENT = process.env.LEGACY_CAMPAIGNS_DEPLOYMENT?.toLowerCase() === 'true'
     const PMNCH = process.env.PMNCH?.toLowerCase() === 'true'
     const pmnchLink = 'https://wypw.1point8b.org'
 
@@ -55,23 +55,22 @@ export async function middleware(request: NextRequest) {
 
     // Languages to use in the dashboard
     let allLanguages: ILanguage[]
-    if (cloudService === 'azure') {
-        allLanguages = languagesAzure
+    if (translationsEnabled) {
+        if (cloudService === 'azure') {
+            allLanguages = languagesAzure
+        } else {
+            allLanguages = languagesGoogle
+        }
     } else {
-        allLanguages = languagesGoogle
+        // If translations is not enabled, only allow English
+        allLanguages = [{ code: 'en', name: 'English' }]
     }
-
-    // All languages except en
-    const allLanguagesExceptEn = [...allLanguages].filter((language) => language.code !== 'en')
 
     // Redirect if there is a language that is not supported
     if (!translationsEnabled) {
-        // If translations is not enabled, only allow English
-        allLanguages = [{ code: 'en', name: 'English' }]
-
         // Check if pathname contains a language that is not supported
         // e.g. when translations is disabled in the back-end, only 'en' is allowed
-        const pathnameUnsupportedLanguage = allLanguagesExceptEn.find((language) => {
+        const pathnameUnsupportedLanguage = allLanguages.find((language) => {
             if (pathname.startsWith(`/${language.code}/`) || pathname === `/${language.code}`) {
                 return language
             }
@@ -101,17 +100,19 @@ export async function middleware(request: NextRequest) {
     const nextUrl = request.nextUrl
 
     // Default routing e.g. my-dashboards.org/en/{DASHBOARD_NAME}
-    if (!LEGACY_CAMPAIGNS) {
+    if (!LEGACY_CAMPAIGNS_DEPLOYMENT) {
         // Rewrite to the current hostname
         return NextResponse.rewrite(nextUrl)
     }
+
+    // Note: The codes below are only in use for deployment of legacy campaigns
 
     // Extract the subdomain by removing the root URL
     // e.g. from 'whatwomenwant.my-dashboards.org' remove '.my-dashboards.org' to get 'whatwomenwant'
     let extractedSubdomain: string | undefined
     if (process.env.NODE_ENV === 'production') {
         // Find prod domain
-        const prodDomain = PROD_DOMAINS_ALLOWED.find((prodDomain) => {
+        const prodDomain = LEGACY_CAMPAIGNS_PROD_DOMAINS.find((prodDomain) => {
             if (hostname.endsWith(prodDomain)) {
                 return prodDomain
             }
@@ -135,8 +136,8 @@ export async function middleware(request: NextRequest) {
     }
 
     // Subdomain routing with path e.g. explore.my-dashboards.org/en/{DASHBOARD_NAME}
-    // If MAIN_SUBDOMAIN equals the extracted subdomain
-    if (MAIN_SUBDOMAIN === extractedSubdomain && !PMNCH) {
+    // If LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN equals the extracted subdomain
+    if (LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN === extractedSubdomain && !PMNCH) {
         // Get NextURL
         const nextUrl = request.nextUrl
 

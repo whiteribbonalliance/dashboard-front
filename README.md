@@ -13,8 +13,13 @@ There's currently six dashboards deployed with this project, you can visit them 
 
 ## Environment variables
 
-- `NEXT_PUBLIC_DASHBOARD_API_URL=` Required - The url to the API.
-- `NEXT_PUBLIC_GOOGLE_ANALYTICS=` Optional - Google Analytics ID.
+### Required:
+
+- `NEXT_PUBLIC_DASHBOARD_API_URL=` The url to the API.
+
+### Optional:
+
+- `NEXT_PUBLIC_GOOGLE_ANALYTICS=` Google Analytics ID.
 
 ## System requirements
 
@@ -67,22 +72,30 @@ To add a top left logo to a dashboard, add `logo.png` to `public/dashboards/{DAS
 
 ## Deployment to Google App Engine
 
-This repo has continuous deployment/continuous integration set up.
+Fork this repository and add the required environment variables to `Repository secrets` in GitHub. Add optional
+environment variables if needed. These variables will be loaded into `app.yaml`.
 
-There is a GitHub action defined in `.github/workflows/default-google-app-engine.yml` which deploys to Google App Engine
-when you push or merge to `main`, except `README.md`. The app will deploy
-to https://dashboard-frontend-dot-deft-stratum-290216.uc.r.appspot.com plus any other domains that are pointing there.
+For deployment, it is also required to add the following environment variables to `Repository secrets`:
+
+- `SERVICE_NAME=` The service name in App Engine.
+- `GOOGLE_CREDENTIALS=` credentials.json file.
+- `SERVICE_ACCOUNT=` The Google Cloud service account.
+- `PROJECT_ID=` The Google Cloud project id.
+
+Add/Modify `resources` in `app.yaml` as needed.
+
+The GitHub action at `.github/workflows/prod-deploy-google-app-engine.yaml` will trigger a deployment to Google App
+Engine on push or merge.
 
 This script builds a Docker image and pushes to Google Container Registry and then deploys. In the future we may change
 to a direct Dockerless deployment which would use `app.yaml`. No authentication is needed because authentication is
-provided
-via the Google App Engine service account, whose credentials are stored in the GitHub secret `GOOGLE_CREDENTIALS` (to
-change this, go to the GitHub web interface and got o Settings -> Secrets and variables -> Actions. You will need to be
-an administrator on the GitHub repo to modify these credentials).
+provided via the Google App Engine service account, whose credentials are stored in the GitHub
+secret `GOOGLE_CREDENTIALS` (to change this, go to the GitHub web interface and got o Settings -> Secrets and
+variables -> Actions. You will need to be an administrator on the GitHub repo to modify these credentials).
 
 There is also a manual Google App Engine deployment file set up in `app.yaml`. You can deploy manually from the command
-line using `gcloud app deploy app.yaml`. You need to install Google Cloud CLI (Command Line Interface) and be
-authenticated on the WRA Google Cloud Platform service account for this to work.
+line using `gcloud app deploy app.yaml` (you must directly include the env variables in `app.yaml`). You need to install
+Google Cloud CLI (Command Line Interface) and be authenticated on the Google Cloud Platform service account
 
 ## PMNCH - Azure deployment
 
@@ -149,9 +162,7 @@ docker run -p 3000:3000 dashboards
 
 ## Legacy campaigns
 
-For deployment of legacy campaigns.
-
-Legacy campaigns are campaigns that were used to run this dashboard originally.
+This section can be ignored as it details some information of dashboards used with this project originally.
 
 For development, on the local machine map `127.0.0.1` to the following domain names:
 
@@ -159,18 +170,17 @@ For development, on the local machine map `127.0.0.1` to the following domain na
 127.0.0.1   explore.my-example-dashboards.local
 ```
 
-Additional environment variables for legacy dashboards:
+Additional environment variables:
 
-- `LEGACY_CAMPAIGNS=` True.
-- `DEV_DOMAIN=` Optional - The domain used in development e.g. `.whiteribbonalliance.local`.
-- `PROD_DOMAINS_ALLOWED=` The domains allowed in production e.g. `.whiteribbonalliance.org`.
-- `MAIN_SUBDOMAIN=` Subdomain used for displaying dashboards e.g. using `explore` as subdomain will allow
-  accessing the dashboard `healthwellbeing` at `explore.whiteribbonalliance.local:3000/healthwellbeing`.
+- `LEGACY_CAMPAIGNS_DEPLOYMENT=` True.
+- `LEGACY_CAMPAIGNS_PROD_DOMAINS=` The domains allowed in production e.g. `.whiteribbonalliance.org`.
+- `LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN=` Subdomain used for displaying dashboards e.g. using `explore` as subdomain will
+  allow accessing the dashboard `healthwellbeing` at `explore.whiteribbonalliance.local:3000/healthwellbeing`.
 
 For the dashboard at `whatyoungpeoplewant`, also include the environment variables:
 
 - `PMNCH=` True.
-- `MAIN_SUBDOMAIN=` Set to `wypw`.
+- `LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN=` wypw.
 
 ## License
 
