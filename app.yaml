@@ -17,7 +17,7 @@ build_env_variables:
   NEXT_PUBLIC_GOOGLE_ANALYTICS: $NEXT_PUBLIC_GOOGLE_ANALYTICS
   
   # These env variables can be ignored
-  NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT: $NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT
+  NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT: True
 
 # Force https and redirect http to https
 handlers:
