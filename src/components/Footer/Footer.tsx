@@ -10,7 +10,6 @@ import { ParamsContext } from '@contexts/params'
 import { downloadCampaignPublicData } from 'services/dashboard-api'
 import { ConfigurationsContext } from '@contexts/configurations'
 import { SettingsContext } from '@contexts/settings'
-import { string } from 'zod'
 
 export const Footer = () => {
     const { params } = useContext(ParamsContext)

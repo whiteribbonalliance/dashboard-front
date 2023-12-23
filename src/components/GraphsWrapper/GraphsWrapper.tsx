@@ -49,6 +49,17 @@ export const GraphsWrapper = () => {
                     <HistogramGraph />
                 </>
             )
+        case LegacyDashboardName.MIDWIVES_VOICES:
+            return (
+                <>
+                    <TopWordsAndPhrasesGraph />
+                    <ResponsesSampleTable />
+                    <WorldBubbleMap />
+                    <ResponsesBreakdownGraphs />
+                    <LivingSettingsBreakdownGraph />
+                    <HistogramGraph />
+                </>
+            )
         default:
             return (
                 <>

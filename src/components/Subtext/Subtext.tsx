@@ -78,7 +78,9 @@ export const Subtext = () => {
 
                 // Parse
                 setSubtextElement(
-                    new HtmlToReactParser().parseWithInstructions(subtext, () => true, processingInstructions)
+                    <div>
+                        {new HtmlToReactParser().parseWithInstructions(subtext, () => true, processingInstructions)}
+                    </div>
                 )
                 break
             default:
