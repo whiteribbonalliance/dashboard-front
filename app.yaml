@@ -7,14 +7,22 @@ env_variables:
   LEGACY_CAMPAIGNS_PROD_DOMAINS: ".whiteribbonalliance.org .freelancedatascientist.net"
   LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN: explore
 
-# For manual deployment, replace the variables starting with $ with your own values
+  # Required
+  NEXT_PUBLIC_DASHBOARD_API_URL: $NEXT_PUBLIC_DASHBOARD_API_URL
+
+  # Optional
+  NEXT_PUBLIC_GOOGLE_ANALYTICS: $NEXT_PUBLIC_GOOGLE_ANALYTICS
+
+  # These env variables can be ignored
+  NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT: $NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT
+
 # Environment variables that need to be exposed to the client (with NEXT_PUBLIC_) should be added at build time
 build_env_variables:
   # Required
   NEXT_PUBLIC_DASHBOARD_API_URL: https://api.whiteribbonalliance.org/api/v1
 
   # Optional
-  NEXT_PUBLIC_GOOGLE_ANALYTICS: $NEXT_PUBLIC_GOOGLE_ANALYTICS
+  NEXT_PUBLIC_GOOGLE_ANALYTICS: ${{ env.NEXT_PUBLIC_GOOGLE_ANALYTICS }}
   
   # These env variables can be ignored
   NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT: True
