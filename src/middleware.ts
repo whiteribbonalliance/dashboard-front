@@ -101,11 +101,12 @@ export async function middleware(request: NextRequest) {
         return NextResponse.rewrite(nextUrl)
     }
 
-    // Note: The codes below are only in use for deployment of legacy campaigns
+    // Note!
+    // The codes below are only in use for deployment of legacy campaigns
     const LEGACY_CAMPAIGNS_PROD_DOMAINS = process.env.LEGACY_CAMPAIGNS_PROD_DOMAINS
         ? process.env.LEGACY_CAMPAIGNS_PROD_DOMAINS.split(' ')
         : []
-    const DEV_DOMAIN = process.env.DEV_DOMAIN || '.localhost'
+    const NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEV_DOMAIN = process.env.NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEV_DOMAIN || '.localhost'
     const LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN = process.env.LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN || ''
     const PMNCH = process.env.PMNCH?.toLowerCase() === 'true'
     const pmnchLink = 'https://wypw.1point8b.org'
@@ -128,7 +129,7 @@ export async function middleware(request: NextRequest) {
 
         extractedSubdomain = hostname?.replace(prodDomain, '')
     } else {
-        extractedSubdomain = hostname?.replace(`${DEV_DOMAIN}:3000`, '')
+        extractedSubdomain = hostname?.replace(`${NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEV_DOMAIN}:3000`, '')
     }
 
     // Redirect to new link for PMNCH

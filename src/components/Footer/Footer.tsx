@@ -10,6 +10,7 @@ import { ParamsContext } from '@contexts/params'
 import { downloadCampaignPublicData } from 'services/dashboard-api'
 import { ConfigurationsContext } from '@contexts/configurations'
 import { SettingsContext } from '@contexts/settings'
+import { string } from 'zod'
 
 export const Footer = () => {
     const { params } = useContext(ParamsContext)
@@ -97,6 +98,50 @@ export const Footer = () => {
                 setExportingDataset(false)
             }
         }
+    }
+
+    // Dashboard links
+    const DashboardLinks = () => {
+        type TDashboardLinksData = {
+            path: string
+            title: string
+        }
+        const dashboardLinksData: TDashboardLinksData[] = otherDashboardsConfigurations.map((c) => {
+            return { path: c.dashboard_path, title: c.campaign_title }
+        })
+
+        // Add link to whatyoungpeoplewant as it is deployed separately and not recognized in this project
+        const NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT =
+            process.env.NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT?.toLowerCase() === 'true'
+        if (NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT) {
+            if (dashboard !== LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT) {
+                dashboardLinksData.push({ path: 'whatyoungpeoplewant', title: 'What Young People Want' })
+            }
+        }
+
+        return otherDashboardsConfigurations.length > 0 ? (
+            <div>
+                <p>
+                    {t('other-dashboards')}:{' '}
+                    {dashboardLinksData.map((d, index) => {
+                        return (
+                            <span key={d.path}>
+                                <Link
+                                    href={`/${d.path}`}
+                                    target="_blank"
+                                    className={classNames('underline', footerLinkClasses)}
+                                >
+                                    {d.title}
+                                </Link>
+                                {index + 1 < dashboardLinksData.length && <> • </>}
+                            </span>
+                        )
+                    })}
+                </p>
+            </div>
+        ) : (
+            <div></div>
+        )
     }
 
     return (
@@ -187,27 +232,7 @@ export const Footer = () => {
             )}
 
             {/* Other dashboards */}
-            {otherDashboardsConfigurations.length > 0 && (
-                <div>
-                    <p>
-                        {t('other-dashboards')}:{' '}
-                        {otherDashboardsConfigurations.map((configuration, index) => {
-                            return (
-                                <span key={configuration.dashboard_path}>
-                                    <Link
-                                        href={`/${configuration.dashboard_path}`}
-                                        target="_blank"
-                                        className={classNames('underline', footerLinkClasses)}
-                                    >
-                                        {t(`${configuration.campaign_code}-title`)}
-                                    </Link>
-                                    {index + 1 < otherDashboardsConfigurations.length && <> • </>}
-                                </span>
-                            )
-                        })}
-                    </p>
-                </div>
-            )}
+            <DashboardLinks />
 
             {/* Dashboard by */}
             <div>
