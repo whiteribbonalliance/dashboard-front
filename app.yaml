@@ -3,7 +3,6 @@ runtime: nodejs18
 
 env_variables:
   # These env variables can be ignored
-  LEGACY_CAMPAIGNS_DEPLOYMENT: ${{ secrets.LEGACY_CAMPAIGNS_DEPLOYMENT }}
   LEGACY_CAMPAIGNS_PROD_DOMAINS: ${{ secrets.LEGACY_CAMPAIGNS_PROD_DOMAINS }}
   LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN: ${{ secrets.LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN }}
 
@@ -14,6 +13,9 @@ build_env_variables:
 
   # Optional
   NEXT_PUBLIC_GOOGLE_ANALYTICS: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}
+  
+  # These env variables can be ignored
+  NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT: ${{ secrets.NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT }}
 
 # Force https and redirect http to https
 handlers:

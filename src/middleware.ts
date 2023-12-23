@@ -33,13 +33,6 @@ import { getSettings } from '@services/dashboard-api'
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
     const hostname = request.headers.get('host') as string
-    const LEGACY_CAMPAIGNS_PROD_DOMAINS = process.env.LEGACY_CAMPAIGNS_PROD_DOMAINS ? process.env.LEGACY_CAMPAIGNS_PROD_DOMAINS.split(' ') : []
-    const DEV_DOMAIN = process.env.DEV_DOMAIN || '.localhost'
-    const LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN = process.env.LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN || ''
-
-    const LEGACY_CAMPAIGNS_DEPLOYMENT = process.env.LEGACY_CAMPAIGNS_DEPLOYMENT?.toLowerCase() === 'true'
-    const PMNCH = process.env.PMNCH?.toLowerCase() === 'true'
-    const pmnchLink = 'https://wypw.1point8b.org'
 
     // Get API settings
     let translationsEnabled: boolean
@@ -99,13 +92,23 @@ export async function middleware(request: NextRequest) {
     // Get NextURL
     const nextUrl = request.nextUrl
 
+    const NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT =
+        process.env.NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT?.toLowerCase() === 'true'
+
     // Default routing e.g. my-dashboards.org/en/{DASHBOARD_NAME}
-    if (!LEGACY_CAMPAIGNS_DEPLOYMENT) {
+    if (!NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT) {
         // Rewrite to the current hostname
         return NextResponse.rewrite(nextUrl)
     }
 
     // Note: The codes below are only in use for deployment of legacy campaigns
+    const LEGACY_CAMPAIGNS_PROD_DOMAINS = process.env.LEGACY_CAMPAIGNS_PROD_DOMAINS
+        ? process.env.LEGACY_CAMPAIGNS_PROD_DOMAINS.split(' ')
+        : []
+    const DEV_DOMAIN = process.env.DEV_DOMAIN || '.localhost'
+    const LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN = process.env.LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN || ''
+    const PMNCH = process.env.PMNCH?.toLowerCase() === 'true'
+    const pmnchLink = 'https://wypw.1point8b.org'
 
     // Extract the subdomain by removing the root URL
     // e.g. from 'whatwomenwant.my-dashboards.org' remove '.my-dashboards.org' to get 'whatwomenwant'
