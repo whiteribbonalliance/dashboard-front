@@ -27,7 +27,7 @@ import {
     ICampaign,
     ICampaignConfiguration,
     ICampaignRequest,
-    IDataLoading,
+    IDataLoadingStatus,
     IFilterOptions,
     ISettings,
 } from '@interfaces'
@@ -267,7 +267,7 @@ export async function getDataLoadingStatus() {
         throw new Error('Failed to check data loading status.')
     }
 
-    const data: IDataLoading = await response.json()
+    const data: IDataLoadingStatus = await response.json()
 
     return data
 }

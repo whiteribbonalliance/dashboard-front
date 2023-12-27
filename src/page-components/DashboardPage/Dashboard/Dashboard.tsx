@@ -2,7 +2,6 @@
 
 import { Header } from '@components/Header'
 import { Title } from '@components/Title'
-import { Subtext } from '@components/Subtext'
 import { FiltersPanel } from '@components/FiltersPanel'
 import { classNames } from '@utils'
 import { GraphsWrapper } from 'components/GraphsWrapper'
@@ -10,7 +9,7 @@ import { Footer } from '@components/Footer'
 import React, { useEffect, useState } from 'react'
 import { LegacyDashboardName } from '@enums'
 import { useShowSelectActiveDashboardStore } from '@stores/show-select-active-dashboard'
-import { ICampaignConfiguration, IDataLoading, IParams, ISettings } from '@interfaces'
+import { ICampaignConfiguration, IDataLoadingStatus, IParams, ISettings } from '@interfaces'
 import { ParamsContext } from '@contexts/params'
 import { getDefaultFilterValues } from '@schemas/filter'
 import { ConfigurationsContext } from '@contexts/configurations'
@@ -24,6 +23,8 @@ interface IDashboardProps {
     currentCampaignConfiguration: ICampaignConfiguration
     allCampaignsConfigurations: ICampaignConfiguration[]
     settings: ISettings
+    dataLoadingStatus: IDataLoadingStatus
+    subtext: JSX.Element
 }
 
 export const Dashboard = ({
@@ -32,6 +33,8 @@ export const Dashboard = ({
     currentCampaignConfiguration,
     allCampaignsConfigurations,
     settings,
+    dataLoadingStatus,
+    subtext,
 }: IDashboardProps) => {
     const defaultFilterValues = getDefaultFilterValues(dashboard)
 
@@ -49,19 +52,20 @@ export const Dashboard = ({
     )
 
     // Data loading status query
-    const [disableLoadingStatusQuery, setDisableLoadingStatusQuery] = useState<boolean>(false)
-    const dataLoadingStatusQuery = useQuery<IDataLoading>({
+    const [dataLoadingStatusQueryIsDisabled, setDataLoadingStatusQueryIsDisabled] = useState<boolean>(false)
+    const dataLoadingStatusQuery = useQuery<IDataLoadingStatus>({
         queryKey: ['data-loading-status'],
+        initialData: dataLoadingStatus,
         queryFn: () => {
             return getDataLoadingStatus()
         },
         refetchInterval: 5000,
         refetchOnWindowFocus: true,
         refetchOnReconnect: true,
-        enabled: !disableLoadingStatusQuery,
+        enabled: !dataLoadingStatusQueryIsDisabled,
         onSuccess: (data) => {
             if (data.initial_loading_complete) {
-                setDisableLoadingStatusQuery(true)
+                setDataLoadingStatusQueryIsDisabled(true)
             }
         },
     })
@@ -117,9 +121,7 @@ export const Dashboard = ({
                             </div>
 
                             {/* Subtext */}
-                            <div className="mb-10 flex justify-center">
-                                <Subtext />
-                            </div>
+                            <div className="mb-10 flex justify-center">{subtext}</div>
 
                             {/* Starting up */}
                             {!dataLoadingStatusQuery.data.initial_loading_complete && (

@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation'
-import { getCampaignsConfigurations, getSettings } from '@services/dashboard-api'
+import { getCampaignsConfigurations, getDataLoadingStatus, getSettings } from '@services/dashboard-api'
 import { Dashboard } from '@page-components/DashboardPage/Dashboard'
-import { ICampaignConfiguration } from '@interfaces'
+import { ICampaignConfiguration, IDataLoadingStatus } from '@interfaces'
+import { Subtext } from '@components/Subtext'
 
 interface IDashboardProps {
     params: { lang: string; dashboard: string }
@@ -34,7 +35,30 @@ export const DashboardPage = async ({ params }: IDashboardProps) => {
         notFound()
     }
 
+    // Get data loading status
+    let dataLoadingStatus: IDataLoadingStatus
+    try {
+        dataLoadingStatus = await getDataLoadingStatus()
+    } catch (error) {
+        dataLoadingStatus = {
+            is_loading: false,
+            initial_loading_complete: true,
+        }
+    }
+
+    // Settings
     const settings = await getSettings()
+
+    // Subtext
+    const subtext = (
+        // @ts-expect-error server component
+        <Subtext
+            subtext={campaignConfiguration.campaign_subtext}
+            dashboard={dashboard}
+            lang={lang}
+            campaignCode={campaignConfiguration.campaign_code}
+        />
+    )
 
     return (
         <Dashboard
@@ -43,6 +67,8 @@ export const DashboardPage = async ({ params }: IDashboardProps) => {
             currentCampaignConfiguration={campaignConfiguration}
             allCampaignsConfigurations={campaignsConfigurations}
             settings={settings}
+            dataLoadingStatus={dataLoadingStatus}
+            subtext={subtext}
         />
     )
 }
