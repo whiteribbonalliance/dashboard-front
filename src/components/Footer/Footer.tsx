@@ -142,6 +142,15 @@ export const Footer = () => {
             dashboardLinksData = otherDashboardsConfigurations.map((c) => {
                 return { path: c.dashboard_path, url: c.dashboard_url, title: c.campaign_title }
             })
+
+            // Set url of allcampaigns dashboard if legacy campaign
+            if ((Object.values(LegacyDashboardName) as string[]).includes(dashboard)) {
+                dashboardLinksData.forEach((d) => {
+                    if (d.path === LegacyDashboardName.ALL_CAMPAIGNS) {
+                        d.url = 'https://explore.whiteribbonalliance.org/en/allcampaigns'
+                    }
+                })
+            }
         }
 
         return dashboardLinksData.length > 0 ? (
