@@ -1,6 +1,7 @@
 # Dashboard
 
-This project can display dashboards for campaigns defined in the back-end.
+Front-end for displaying dashboards for campaigns defined in the back-end. You can find the back-end repo
+at https://github.com/whiteribbonalliance/dashboard-api.
 
 There's currently six dashboards deployed with this project, you can visit them at:
 
