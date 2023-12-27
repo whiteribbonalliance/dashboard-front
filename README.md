@@ -156,6 +156,41 @@ For the dashboard at `whatyoungpeoplewant`, also include the environment variabl
 - `PMNCH=` True.
 - `LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN=` wypw.
 
+For deployment to Google App Engine, create the file `dispatch.yaml`:
+
+```yaml
+dispatch:
+  # Original What Women Want
+  - url: "*whatwomenwant.whiteribbonalliance.org/*"
+    service: dashboardfrontend
+
+  # Midwives
+  - url: "*midwivesvoices.whiteribbonalliance.org/*"
+    service: dashboardfrontend
+
+  # PMNCH
+  - url: "*whatyoungpeoplewant.whiteribbonalliance.org/*"
+    service: dashboardfrontend
+
+  # All new clients which don't have their own subdomain
+  - url: "*explore.whiteribbonalliance.org/*"
+    service: dashboardfrontend
+
+  # The admin dashboard
+  - url: "*admin.whiteribbonalliance.org/*"
+    service: admindashboard
+
+  # The API
+  - url: "*api.whiteribbonalliance.org/*"
+    service: www-dashboard-api
+```
+
+Deploy dispatch:
+
+```bash
+gcloud app deploy dispatch.yaml
+```
+
 ## License
 
 MIT License.
