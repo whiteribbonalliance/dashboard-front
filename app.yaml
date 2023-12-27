@@ -10,13 +10,13 @@ env_variables:
 # Environment variables that need to be exposed to the client (with NEXT_PUBLIC_) should be added at build time
 build_env_variables:
   # Required
-  NEXT_PUBLIC_DASHBOARD_API_URL: https://api.whiteribbonalliance.org/api/v1
+  NEXT_PUBLIC_DASHBOARD_API_URL: $NEXT_PUBLIC_DASHBOARD_API_URL
 
   # Optional
   NEXT_PUBLIC_GOOGLE_ANALYTICS: $NEXT_PUBLIC_GOOGLE_ANALYTICS
   
   # These env variables can be ignored
-  NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT: True
+  NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT: $NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT
 
 # Force https and redirect http to https
 handlers:
