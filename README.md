@@ -80,7 +80,7 @@ Inside `app.yaml` change `service` to your service name on App Engine.
 For deployment, it is also required to add the following environment variables to `Repository secrets`:
 
 - `SERVICE_NAME=` The service name in App Engine.
-- `GOOGLE_CREDENTIALS=` credentials.json file.
+- `GOOGLE_CREDENTIALS_JSON_B64=` Content of credentials.json file in `Base64` format.
 - `SERVICE_ACCOUNT=` The Google Cloud service account.
 - `PROJECT_ID=` The Google Cloud project id.
 
@@ -92,7 +92,7 @@ Engine on push or merge.
 This script builds a Docker image and pushes to Google Container Registry and then deploys. In the future we may change
 to a direct Dockerless deployment which would use `app.yaml`. No authentication is needed because authentication is
 provided via the Google App Engine service account, whose credentials are stored in the GitHub
-secret `GOOGLE_CREDENTIALS` (to change this, go to the GitHub web interface and got o Settings -> Secrets and
+secret `GOOGLE_CREDENTIALS_JSON_B64` (to change this, go to the GitHub web interface and got o Settings -> Secrets and
 variables -> Actions. You will need to be an administrator on the GitHub repo to modify these credentials).
 
 There is also a manual Google App Engine deployment file set up in `app.yaml`. You can deploy manually from the command
@@ -166,10 +166,10 @@ docker run -p 3000:3000 dashboards
 
 This section can be ignored as it details some information of dashboards used with this project originally.
 
-For development, on the local machine map `127.0.0.1` to the following domain names:
+For development, on the local machine map `127.0.0.1` to the following domain name:
 
 ```text
-127.0.0.1   explore.my-example-dashboards.local
+127.0.0.1   explore.whiteribbonalliance.local
 ```
 
 Additional environment variables:
