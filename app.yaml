@@ -6,6 +6,7 @@ env_variables:
   # These env variables can be ignored
   LEGACY_CAMPAIGNS_PROD_DOMAINS: $LEGACY_CAMPAIGNS_PROD_DOMAINS
   LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN: $LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN
+  LEGACY_CAMPAIGNS_DEPLOYMENT: $LEGACY_CAMPAIGNS_DEPLOYMENT
 
 # Environment variables that need to be exposed to the client (with NEXT_PUBLIC_) should be added at build time
 build_env_variables:
@@ -14,9 +15,6 @@ build_env_variables:
 
   # Optional
   NEXT_PUBLIC_GOOGLE_ANALYTICS: $NEXT_PUBLIC_GOOGLE_ANALYTICS
-  
-  # These env variables can be ignored
-  LEGACY_CAMPAIGNS_DEPLOYMENT: $LEGACY_CAMPAIGNS_DEPLOYMENT
 
 # Force https and redirect http to https
 handlers:
