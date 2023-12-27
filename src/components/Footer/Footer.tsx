@@ -106,9 +106,43 @@ export const Footer = () => {
             title: string
             url: string
         }
-        const dashboardLinksData: TDashboardLinksData[] = otherDashboardsConfigurations.map((c) => {
-            return { path: c.dashboard_path, url: c.dashboard_url, title: c.campaign_title }
-        })
+
+        let dashboardLinksData: TDashboardLinksData[]
+        if (dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT) {
+            // The dashboard at whatyoungpeoplewant is deployed separately from the other five dashboards
+            // So the links to the other dashboards should be added manually here
+            dashboardLinksData = [
+                {
+                    path: '',
+                    url: 'https://explore.whiteribbonalliance.org/en/whatwomenwant',
+                    title: 'What Women Want',
+                },
+                {
+                    path: '',
+                    url: 'https://explore.whiteribbonalliance.org/en/midwivesvoices',
+                    title: 'What Midwives Want',
+                },
+                {
+                    path: '',
+                    url: 'https://explore.whiteribbonalliance.org/en/wwwpakistan',
+                    title: 'What Women Want Pakistan',
+                },
+                {
+                    path: '',
+                    url: 'https://explore.whiteribbonalliance.org/en/healthwellbeing',
+                    title: "Women's Health and Well Being",
+                },
+                {
+                    path: '',
+                    url: 'https://explore.whiteribbonalliance.org/en/giz',
+                    title: 'Economic Empowerment in Mexico',
+                },
+            ]
+        } else {
+            dashboardLinksData = otherDashboardsConfigurations.map((c) => {
+                return { path: c.dashboard_path, url: c.dashboard_url, title: c.campaign_title }
+            })
+        }
 
         return dashboardLinksData.length > 0 ? (
             <div>
