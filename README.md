@@ -73,7 +73,7 @@ To add a top left logo to a dashboard, add `logo.png` to `public/dashboards/{DAS
 
 ## Deployment to Google App Engine
 
-Fork this repository and add the required environment variables to `Repository secrets` in GitHub. Add optional
+Add the required environment variables to `Repository secrets` in GitHub. Add optional
 environment variables if needed. These variables will be loaded into `app.yaml`.
 
 Inside `app.yaml` change `service` to your service name on App Engine.
@@ -101,8 +101,6 @@ line using `gcloud app deploy app.yaml` (you must directly include the env varia
 Google Cloud CLI (Command Line Interface) and be authenticated on the Google Cloud Platform service account
 
 ## Deployment to Azure Web Apps
-
-Fork this repository.
 
 Add the following environment variables to `Repository secrets` in GitHub:
 
