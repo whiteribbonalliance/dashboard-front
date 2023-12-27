@@ -104,20 +104,24 @@ export const Footer = () => {
         type TDashboardLinksData = {
             path: string
             title: string
+            url: string
         }
         const dashboardLinksData: TDashboardLinksData[] = otherDashboardsConfigurations.map((c) => {
-            return { path: c.dashboard_path, title: c.campaign_title }
+            return { path: c.dashboard_path, url: c.dashboard_url, title: c.campaign_title }
         })
 
-        return otherDashboardsConfigurations.length > 0 ? (
+        return dashboardLinksData.length > 0 ? (
             <div>
                 <p>
                     {t('other-dashboards')}:{' '}
                     {dashboardLinksData.map((d, index) => {
+                        let link
+                        if (d.url) link = d.url
+                        else link = `/en/${d.path}`
                         return (
                             <span key={d.path}>
                                 <Link
-                                    href={`/en/${d.path}`}
+                                    href={link}
                                     target="_blank"
                                     className={classNames('underline', footerLinkClasses)}
                                 >
