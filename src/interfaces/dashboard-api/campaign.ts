@@ -42,7 +42,6 @@ export interface IResponsesBreakdownData {
 export interface IResponsesBreakdown {
     parent_categories: IResponsesBreakdownData[]
     sub_categories: IResponsesBreakdownData[]
-    parent_or_sub_categories: IResponsesBreakdownData[]
 }
 
 export interface ITopWordsAndPhrases {

@@ -45,30 +45,13 @@ export const ResponsesBreakdownGraphs = () => {
             clickViewTopicResponsesText = t('click-view-topic-responses')
     }
 
-    // Set can display categories
-    let canDisplayParentOrSubCategories: boolean
-    let canDisplayParentCategories: boolean
-    let canDisplaySubCategories: boolean
-    switch (dashboard) {
-        case LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN:
-            canDisplayParentOrSubCategories = true
-            canDisplayParentCategories = false
-            canDisplaySubCategories = false
-            break
-        default:
-            canDisplayParentOrSubCategories = false
-            canDisplayParentCategories = true
-            canDisplaySubCategories = true
-    }
-
     const displayGraphs = !!data && !isLoading && !isRefetching
 
     // Nothing to show
     if (
         data &&
         !data?.responses_breakdown?.parent_categories?.length &&
-        !data?.responses_breakdown?.sub_categories?.length &&
-        !data?.responses_breakdown?.parent_or_sub_categories?.length
+        !data?.responses_breakdown?.sub_categories?.length
     ) {
         return null
     }
@@ -107,36 +90,20 @@ export const ResponsesBreakdownGraphs = () => {
                 {/* GraphsWrapper */}
                 {displayGraphs && (
                     <div>
-                        {/* Parent or sub-categories */}
-                        {canDisplayParentOrSubCategories &&
-                            data &&
-                            data.responses_breakdown.parent_or_sub_categories.length > 0 && (
-                                <ResponsesBreakdownGraph
-                                    data={data.responses_breakdown.parent_or_sub_categories}
-                                    filtersAreIdentical={data.filters_are_identical}
-                                    filter1Description={data.filter_1_description}
-                                    filter2Description={data.filter_2_description}
-                                    title=""
-                                    type="parent_or_sub"
-                                />
-                            )}
-
                         {/* Parent categories */}
-                        {canDisplayParentCategories &&
-                            data &&
-                            data.responses_breakdown.parent_categories.length > 0 && (
-                                <ResponsesBreakdownGraph
-                                    data={data.responses_breakdown.parent_categories}
-                                    filtersAreIdentical={data.filters_are_identical}
-                                    filter1Description={data.filter_1_description}
-                                    filter2Description={data.filter_2_description}
-                                    title={showTitle ? t('categories') : ''}
-                                    type="parent"
-                                />
-                            )}
+                        {data && data.responses_breakdown.parent_categories.length > 0 && (
+                            <ResponsesBreakdownGraph
+                                data={data.responses_breakdown.parent_categories}
+                                filtersAreIdentical={data.filters_are_identical}
+                                filter1Description={data.filter_1_description}
+                                filter2Description={data.filter_2_description}
+                                title={showTitle ? t('categories') : ''}
+                                type="parent"
+                            />
+                        )}
 
                         {/* Sub-categories */}
-                        {canDisplaySubCategories && data && data.responses_breakdown.sub_categories.length > 0 && (
+                        {data && data.responses_breakdown.sub_categories.length > 0 && (
                             <ResponsesBreakdownGraph
                                 data={data.responses_breakdown.sub_categories}
                                 filtersAreIdentical={data.filters_are_identical}

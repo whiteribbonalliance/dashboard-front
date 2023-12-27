@@ -75,7 +75,7 @@ To add a top left logo to a dashboard, add `logo.png` to `public/dashboards/{DAS
 Fork this repository and add the required environment variables to `Repository secrets` in GitHub. Add optional
 environment variables if needed. These variables will be loaded into `app.yaml`.
 
-Optionally inside `app.yaml` change `service` to your service name on App Engine.
+Inside `app.yaml` change `service` to your service name on App Engine.
 
 For deployment, it is also required to add the following environment variables to `Repository secrets`:
 

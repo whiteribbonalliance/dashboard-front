@@ -109,15 +109,6 @@ export const Footer = () => {
             return { path: c.dashboard_path, title: c.campaign_title }
         })
 
-        // Add link to whatyoungpeoplewant as it is deployed separately and not recognized in this project
-        const NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT =
-            process.env.NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT?.toLowerCase() === 'true'
-        if (NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT) {
-            if (dashboard !== LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT) {
-                dashboardLinksData.push({ path: 'whatyoungpeoplewant', title: 'What Young People Want' })
-            }
-        }
-
         return otherDashboardsConfigurations.length > 0 ? (
             <div>
                 <p>
