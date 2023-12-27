@@ -26,7 +26,7 @@ jobs:
           # These env variables can be ignored (only for deployment of legacy campaigns)
           LEGACY_CAMPAIGNS_PROD_DOMAINS: ${{ secrets.LEGACY_CAMPAIGNS_PROD_DOMAINS }}
           LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN: ${{ secrets.LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN }}
-          NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT: ${{ secrets.NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT }}
+          LEGACY_CAMPAIGNS_DEPLOYMENT: ${{ secrets.LEGACY_CAMPAIGNS_DEPLOYMENT }}
 
           # Required
           NEXT_PUBLIC_DASHBOARD_API_URL: ${{ secrets.NEXT_PUBLIC_DASHBOARD_API_URL }}

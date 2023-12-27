@@ -145,7 +145,7 @@ For development, on the local machine map `127.0.0.1` to the following domain na
 
 Additional environment variables:
 
-- `NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT=` True.
+- `LEGACY_CAMPAIGNS_DEPLOYMENT=` True.
 - `LEGACY_CAMPAIGNS_PROD_DOMAINS=` The domains allowed in production e.g. `.whiteribbonalliance.org`.
 - `LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN=` Subdomain used for displaying dashboards e.g. using `explore` as subdomain will
   allow accessing the dashboard `healthwellbeing` at `explore.whiteribbonalliance.local:3000/healthwellbeing`.
