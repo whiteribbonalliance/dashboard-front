@@ -37,15 +37,15 @@ export const Header = () => {
 
     // Create menu items
     let menuItems: IMenu[] = []
-    if (config.about_us_link) {
+    if (config.about_us_url) {
         menuItems.push({
             id: 'about-us',
             title: t('about-us'),
-            url: config.about_us_link,
+            url: config.about_us_url,
         })
     }
-    if (config.video_link) {
-        menuItems.push({ id: 'show-video', title: t('show-video'), url: config.video_link })
+    if (config.video_url) {
+        menuItems.push({ id: 'show-video', title: t('show-video'), url: config.video_url })
     }
 
     // Set mobile dropdown classes

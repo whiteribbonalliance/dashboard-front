@@ -117,7 +117,7 @@ export const Footer = () => {
                         return (
                             <span key={d.path}>
                                 <Link
-                                    href={`/${d.path}`}
+                                    href={`/en/${d.path}`}
                                     target="_blank"
                                     className={classNames('underline', footerLinkClasses)}
                                 >
@@ -230,9 +230,9 @@ export const Footer = () => {
                     {settings.owner_name && (
                         <span>
                             {t('dashboard-by')}{' '}
-                            {settings.owner_link ? (
+                            {settings.owner_url ? (
                                 <Link
-                                    href={settings.owner_link}
+                                    href={settings.owner_url}
                                     target="_blank"
                                     className={classNames('underline', footerLinkClasses)}
                                 >
@@ -246,9 +246,9 @@ export const Footer = () => {
                     {settings.owner_name && settings.company_name && <span> {t('at')} </span>}
                     {settings.company_name && (
                         <span>
-                            {settings.company_link ? (
+                            {settings.company_url ? (
                                 <Link
-                                    href={settings.company_link}
+                                    href={settings.company_url}
                                     target="_blank"
                                     className={classNames('underline', footerLinkClasses)}
                                 >

@@ -32,6 +32,6 @@ export interface ICampaignConfiguration {
     site_description: string
     respondent_noun_singular: string
     respondent_noun_plural: string
-    video_link: string
-    about_us_link: string
+    video_url: string
+    about_us_url: string
 }
