@@ -4,8 +4,8 @@ runtime: nodejs18
 # For manual deployment, replace the variables starting with $ with your own values
 env_variables:
   # These env variables can be ignored
-  LEGACY_CAMPAIGNS_PROD_DOMAINS: ".whiteribbonalliance.org .freelancedatascientist.net"
-  LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN: explore
+  LEGACY_CAMPAIGNS_PROD_DOMAINS: $LEGACY_CAMPAIGNS_PROD_DOMAINS
+  LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN: $LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN
 
 # Environment variables that need to be exposed to the client (with NEXT_PUBLIC_) should be added at build time
 build_env_variables:
@@ -13,7 +13,7 @@ build_env_variables:
   NEXT_PUBLIC_DASHBOARD_API_URL: https://api.whiteribbonalliance.org/api/v1
 
   # Optional
-  NEXT_PUBLIC_GOOGLE_ANALYTICS: G-PQ6PBP7QDG
+  NEXT_PUBLIC_GOOGLE_ANALYTICS: $NEXT_PUBLIC_GOOGLE_ANALYTICS
   
   # These env variables can be ignored
   NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEPLOYMENT: True
