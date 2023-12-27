@@ -110,7 +110,7 @@ Add the following environment variables to `Repository secrets` in GitHub:
 - `NEXT_PUBLIC_DASHBOARD_API_URL=` The url to the API.
 - `NEXT_PUBLIC_GOOGLE_ANALYTICS=` Optional - The Google Analytics ID.
 
-The GitHub action at `.github/workflows/prod-pmnch-deploy-azure-webapps.yaml` will trigger a deployment to Azure Web
+The GitHub action at `.github/workflows/prod-deploy-azure-webapps.yaml` will trigger a deployment to Azure Web
 App on push or merge.
 
 #### Workflows
