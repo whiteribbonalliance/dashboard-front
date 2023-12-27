@@ -113,7 +113,7 @@ Add the following environment variables to `Repository secrets` in GitHub:
 The GitHub action at `.github/workflows/prod-deploy-azure-webapps.yaml` will trigger a deployment to Azure Web
 App on push or merge.
 
-#### Workflows
+## Workflows
 
 In each repository there's two workflows (To deploy to `Google` or `Azure`), make sure to only enable the correct
 workflow in
