@@ -99,48 +99,19 @@ There is also a manual Google App Engine deployment file set up in `app.yaml`. Y
 line using `gcloud app deploy app.yaml` (you must directly include the env variables in `app.yaml`). You need to install
 Google Cloud CLI (Command Line Interface) and be authenticated on the Google Cloud Platform service account
 
-## PMNCH - Azure deployment
+## Deployment to Azure Web Apps
 
-Because of organization policies, the dashboard at `https://whatyoungpeoplewant.whiteribbonalliance.org` should be
-deployed on `Azure` and make use of its services instead of `Google`. To solve this issue, two new repositories are
-created, these repositories should always stay in sync with the original repositories.
+Fork this repository.
 
-For development locally regarding any of the campaigns, please work on the original repositories:
+Add the following environment variables to `Repository secrets` in GitHub:
 
-- Back-end: https://github.com/whiteribbonalliance/wwwdashboardapi
-- Front-end: https://github.com/whiteribbonalliance/global_directory_dashboard
+- `AZURE_WEBAPP_PUBLISH_PROFILE=` The publish profile of your web app.
+- `AZURE_WEBAPP_NAME=` The web app name.
+- `NEXT_PUBLIC_DASHBOARD_API_URL=` The url to the API.
+- `NEXT_PUBLIC_GOOGLE_ANALYTICS=` Optional - The Google Analytics ID.
 
-`PMNCH` Will use the following repositories for deployment:
-
-- Back-end: https://github.com/pmnch/pmnch-dashboard-api
-- Front-end: https://github.com/pmnch/pmnch-dashboard
-
-These `PMNCH` repositories are exact copies of the original repositories, but they will be deployed on `Azure`.
-When a change has been pushed to the original repositories, keep the `PMNCH` repositories in sync by pulling from
-the original repository and pushing into the `PMNCH` repository.
-
-#### Remotes
-
-After cloning the `PMNCH` repositories locally, change the remote urls.
-
-On the back-end repository:
-
-```bash
-git remote set-url origin https://github.com/whiteribbonalliance/wwwdashboardapi.git
-git remote set-url --push origin https://github.com/pmnch/pmnch-dashboard-api.git
-```
-
-On the front-end repository:
-
-```bash
-git remote set-url origin https://github.com/whiteribbonalliance/global_directory_dashboard.git
-git remote set-url --push origin https://github.com/pmnch/pmnch-dashboard.git
-```
-
-`git pull origin main` will pull from the original repository, and `git push origin main` will push into the repository
-for `PMNCH`.
-
-`git remote -v` to check the remotes.
+The GitHub action at `.github/workflows/prod-pmnch-deploy-azure-webapps.yaml` will trigger a deployment to Azure Web
+App on push or merge.
 
 #### Workflows
 

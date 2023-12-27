@@ -31,7 +31,6 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: pmnch-front # Set this to your application's name
   NODE_VERSION: '18.x' # Set this to the node version to use
 
 jobs:
@@ -49,8 +48,8 @@ jobs:
       - name: Create env file
         run: |
           touch .env.local
-          echo "NEXT_PUBLIC_DASHBOARD_API_URL=https://pmnch-api.azurewebsites.net/api/v1" > .env.local
-          echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=G-PQ6PBP7QDG" >> .env.local
+          echo "NEXT_PUBLIC_DASHBOARD_API_URL=${{ secrets.NEXT_PUBLIC_DASHBOARD_API_URL }}" > .env.local
+          echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}" >> .env.local
 
       - name: Install & build
         run: |
@@ -83,6 +82,6 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: '.'
