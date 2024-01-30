@@ -25,7 +25,7 @@ import {
 import { LegacyDashboardName } from '@enums'
 import { classNames, niceNum, toThousandsSep } from '@utils'
 import { IHistogramData } from '@interfaces'
-import { getCampaignHistogramOptions, getCampaignsMergedHistogramOptions } from 'services/dashboard-api'
+import { getCampaignHistogramOptions } from 'services/dashboard-api'
 import { useTranslation } from '@app/i18n/client'
 import { useQuery } from 'react-query'
 import { useFilterFormsStore } from '@stores/filter-forms'
@@ -57,13 +57,7 @@ export const HistogramGraph = () => {
     // Fetch options
     const histogramOptionsQuery = useQuery<TOption<string>[]>({
         queryKey: [`${dashboard}-${lang}-histogram-options`],
-        queryFn: () => {
-            if (dashboard === LegacyDashboardName.ALL_CAMPAIGNS) {
-                return getCampaignsMergedHistogramOptions(lang)
-            } else {
-                return getCampaignHistogramOptions(config.campaign_code, lang)
-            }
-        },
+        queryFn: () => getCampaignHistogramOptions(config.campaign_code, lang),
         refetchOnWindowFocus: false,
         retry: 3,
         onSuccess: () => {},
@@ -140,6 +134,10 @@ export const HistogramGraph = () => {
             bar1Fill = 'var(--pmnchSecondary)'
             bar2Fill = 'var(--pmnchTertiary)'
             break
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            bar1Fill = 'var(--dataExchangePrimary)'
+            bar2Fill = 'var(--dataExchangeQuaternary)'
+            break
         default:
             bar1Fill = 'var(--defaultPrimary)'
             bar2Fill = 'var(--defaultTertiary)'
@@ -152,6 +150,10 @@ export const HistogramGraph = () => {
         case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             bar1Classes = 'fill-pmnchColors-secondary hover:fill-pmnchColors-secondaryFaint'
             bar2Classes = 'fill-pmnchColors-tertiary hover:fill-pmnchColors-tertiaryFaint'
+            break
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            bar1Classes = 'fill-dataExchangeColors-primary hover:fill-dataExchangeColors-primaryFaint'
+            bar2Classes = 'fill-dataExchangeColors-quaternary hover:fill-dataExchangeColors-quaternaryFaint'
             break
         default:
             bar1Classes = 'fill-defaultColors-primary hover:fill-defaultColors-primaryFaint'

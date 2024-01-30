@@ -28,6 +28,9 @@ export const TopWordsAndPhrasesGraph = () => {
         case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             selectedTabClasses = 'border-t-pmnchColors-septenary'
             break
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            selectedTabClasses = 'border-t-dataExchangeColors-quaternary'
+            break
         default:
             selectedTabClasses = 'border-t-defaultColors-tertiary'
     }

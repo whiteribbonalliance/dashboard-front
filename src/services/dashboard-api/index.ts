@@ -59,26 +59,6 @@ export async function getCampaignFilterOptions(campaignCode: string, lang: strin
 }
 
 /**
- * Get campaigns merged filter options
- *
- * @param lang The language
- */
-export async function getCampaignsMergedFilterOptions(lang: string) {
-    const response = await fetch(`${apiUrl}/campaigns-merged/filter-options?lang=${lang}`, {
-        method: 'GET',
-        headers: headers,
-    })
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch campaigns merged filter options.')
-    }
-
-    const data: IFilterOptions = await response.json()
-
-    return data
-}
-
-/**
  * Get campaign
  *
  * @param campaignCode The campaign code
@@ -116,34 +96,6 @@ export async function getCampaign(
 }
 
 /**
- * Get campaign
- *
- * @param campaignRequest The campaign request
- * @param lang The language
- * @param signal Signal
- */
-export async function getCampaignsMerged(
-    campaignRequest: ICampaignRequest,
-    lang: string,
-    signal: AbortSignal | null | undefined
-) {
-    const response = await fetch(`${apiUrl}/campaigns-merged?lang=${lang}`, {
-        signal: signal,
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(campaignRequest),
-    })
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch campaigns merged.')
-    }
-
-    const data: ICampaign = await response.json()
-
-    return data
-}
-
-/**
  * Get campaign histogram options
  *
  * @param campaignCode The campaign code
@@ -157,26 +109,6 @@ export async function getCampaignHistogramOptions(campaignCode: string, lang: st
 
     if (!response.ok) {
         throw new Error('Failed to fetch campaign histogram options.')
-    }
-
-    const data: TOption<string>[] = await response.json()
-
-    return data
-}
-
-/**
- * Get campaigns merged histogram options
- *
- * @param lang The language
- */
-export async function getCampaignsMergedHistogramOptions(lang: string) {
-    const response = await fetch(`${apiUrl}/campaigns-merged/histogram-options?lang=${lang}`, {
-        method: 'GET',
-        headers: headers,
-    })
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch campaigns merged histogram options.')
     }
 
     const data: TOption<string>[] = await response.json()

@@ -96,6 +96,10 @@ export const Dashboard = ({
             layoutClasses =
                 'font-noto-sans-regular text-base text-pmnchColors-font selection:bg-pmnchColors-primary selection:text-white'
             break
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            layoutClasses =
+                'font-proxima-nova text-base text-dataExchangeColors-font selection:bg-dataExchangeColors-secondary selection:text-white'
+            break
         default:
             layoutClasses =
                 'font-open-sans text-base text-defaultColors-font selection:bg-defaultColors-tertiary selection:text-white'

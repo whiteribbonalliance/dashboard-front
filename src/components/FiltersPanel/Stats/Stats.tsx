@@ -38,6 +38,12 @@ export const Stats = () => {
                 filter2AverageAge = data.filter_2_average_age_bucket
             }
             break
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            if (data) {
+                filter1AverageAge = data.filter_1_average_age_bucket
+                filter2AverageAge = data.filter_2_average_age_bucket
+            }
+            break
         default:
             if (data) {
                 filter1AverageAge = data.filter_1_average_age

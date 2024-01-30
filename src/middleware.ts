@@ -92,8 +92,7 @@ export async function middleware(request: NextRequest) {
     // Get NextURL
     const nextUrl = request.nextUrl
 
-    const LEGACY_CAMPAIGNS_DEPLOYMENT =
-        process.env.LEGACY_CAMPAIGNS_DEPLOYMENT?.toLowerCase() === 'true'
+    const LEGACY_CAMPAIGNS_DEPLOYMENT = process.env.LEGACY_CAMPAIGNS_DEPLOYMENT?.toLowerCase() === 'true'
 
     // Default routing e.g. my-dashboards.org/en/{DASHBOARD_NAME}
     if (!LEGACY_CAMPAIGNS_DEPLOYMENT) {

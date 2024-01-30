@@ -86,6 +86,13 @@ export const Footer = () => {
 
     // On export dataset click
     async function onExportDatasetClick() {
+        if (
+            dashboard !== LegacyDashboardName.HEALTHWELLBEING &&
+            dashboard !== LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
+        ) {
+            return
+        }
+
         if (!exportingDataset) {
             setExportingDataset(true)
             const campaignRequest = getCampaignRequest(dashboard, filters)
@@ -142,15 +149,6 @@ export const Footer = () => {
             dashboardLinksData = otherDashboardsConfigurations.map((c) => {
                 return { path: c.dashboard_path, url: c.dashboard_url, title: c.campaign_title }
             })
-
-            // Set url of allcampaigns dashboard if legacy campaign
-            if ((Object.values(LegacyDashboardName) as string[]).includes(dashboard)) {
-                dashboardLinksData.forEach((d) => {
-                    if (d.path === LegacyDashboardName.ALL_CAMPAIGNS) {
-                        d.url = 'https://explore.whiteribbonalliance.org/en/allcampaigns'
-                    }
-                })
-            }
         }
 
         return dashboardLinksData.length > 0 ? (
@@ -181,17 +179,57 @@ export const Footer = () => {
         )
     }
 
+    // Set display footer logos
+    const displayFooterLogos =
+        dashboard === LegacyDashboardName.HEALTHWELLBEING ||
+        dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
+
+    // Set display learn more about categories
+    const displayLearnMoreAboutCategories =
+        dashboard === LegacyDashboardName.HEALTHWELLBEING ||
+        dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
+
+    // Set display results analyzed
+    const displayResultsAnalyzed =
+        dashboard === LegacyDashboardName.HEALTHWELLBEING ||
+        dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
+
+    // Set display AI constantly improved
+    const displayAiConstantlyImproved =
+        dashboard === LegacyDashboardName.HEALTHWELLBEING ||
+        dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
+
+    // Set display export dataset
+    const displayExportDataset =
+        dashboard === LegacyDashboardName.HEALTHWELLBEING ||
+        dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
+
+    // Set display explore initiatives
+    const displayExploreInitiatives = dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
+
+    // Set display data displayed survey
+    const displayDataDisplayedSurvey = dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
+
+    // Set show informed consent
+    const showInformedConsent = dashboard !== LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
+
+    // Set show protect anonymity
+    const showProtectAnonymity = dashboard !== LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
+
+    // Set show data exchange contact
+    const showDataExchangeContact = dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
+
     return (
         <footer className="mx-7 my-7 mt-auto flex flex-col gap-y-5 text-lg">
             {/* Logo */}
-            {dashboard === LegacyDashboardName.HEALTHWELLBEING && (
+            {displayFooterLogos && (
                 <div className="mx-3 flex items-center justify-center xl:mx-0">
                     <OrganizationLogos dashboard={dashboard} />
                 </div>
             )}
 
             {/* Learn more about categories */}
-            {dashboard === LegacyDashboardName.HEALTHWELLBEING && (
+            {displayLearnMoreAboutCategories && (
                 <div className="max-w-7xl">
                     <p>
                         <span>{removeLastCharIfDot(t('healthwellbeing-learn-more-about-categories'))}</span>
@@ -210,14 +248,14 @@ export const Footer = () => {
             )}
 
             {/* Results analyzed */}
-            {dashboard === LegacyDashboardName.HEALTHWELLBEING && (
+            {displayResultsAnalyzed && (
                 <div className="max-w-5xl">
                     <p>{t('healthwellbeing-results-analyzed')}</p>
                 </div>
             )}
 
             {/* Our AI is constantly being improved */}
-            {dashboard === LegacyDashboardName.HEALTHWELLBEING && (
+            {displayAiConstantlyImproved && (
                 <div className="max-w-5xl">
                     <p>
                         <span>{removeLastCharIfDot(t('healthwellbeing-ai-constantly-improved'))}</span>
@@ -234,14 +272,14 @@ export const Footer = () => {
 
             <div>
                 {/* Data displayed survey */}
-                {dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT && (
+                {displayDataDisplayedSurvey && (
                     <div className="max-w-5xl">
                         <p>{t('pmn01a-data-displayed-survey')}</p>
                     </div>
                 )}
 
                 {/* Informed consent */}
-                {dashboard !== LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT && (
+                {showInformedConsent && (
                     <div>
                         <p>* {informedConsentText}</p>
                     </div>
@@ -251,7 +289,7 @@ export const Footer = () => {
                 {footerNote && <div>{footerNote}</div>}
 
                 {/* Protect anonymity */}
-                {dashboard !== LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT && (
+                {showProtectAnonymity && (
                     <div>
                         <p>{t('to-protect-anonymity')}</p>
                     </div>
@@ -259,17 +297,49 @@ export const Footer = () => {
             </div>
 
             {/* Export dataset */}
-            {dashboard === LegacyDashboardName.HEALTHWELLBEING && (
+            {displayExportDataset && (
                 <div>
-                    <span className="cursor-pointer font-bold" onClick={onExportDatasetClick}>
+                    <p className="cursor-pointer font-bold" onClick={onExportDatasetClick}>
                         {exportDatasetText}
-                    </span>
-                    {exportingDataset && <div>{t('download-start-shortly')}</div>}
+                    </p>
+                    {exportingDataset && <p>{t('download-start-shortly')}</p>}
+                </div>
+            )}
+
+            {/* Explore initiatives */}
+            {displayExploreInitiatives && (
+                <div>
+                    <p>
+                        <span>{t('data-exchange-explore-initiatives')}</span>
+                        &nbsp;
+                        <span className="font-bold">
+                            <Link href="https://example.com" target="_blank">
+                                {t('here-capitalized')}
+                            </Link>
+                            <span>.</span>
+                        </span>
+                    </p>
                 </div>
             )}
 
             {/* Other dashboards */}
             <DashboardLinks />
+
+            {/* Data exchange contact */}
+            {showDataExchangeContact && (
+                <div>
+                    <p>
+                        <span>{t('data-exchange-contact')}</span>
+                        &nbsp;
+                        <span className="font-bold">
+                            <Link href="https://example.com" target="_blank">
+                                {t('here-capitalized')}
+                            </Link>
+                            <span>.</span>
+                        </span>
+                    </p>
+                </div>
+            )}
 
             {/* Dashboard by */}
             <div>
@@ -306,6 +376,7 @@ export const Footer = () => {
                             )}
                         </span>
                     )}
+                    .
                 </p>
             </div>
         </footer>

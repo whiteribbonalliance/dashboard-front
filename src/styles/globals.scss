@@ -7,51 +7,72 @@
 
 /* Font to be used with the wordcloud */
 @font-face {
-    font-family: 'Noto Sans Regular';
-    font-weight: normal;
-    src: url('../app/fonts/NotoSans/NotoSans-Regular.ttf') format('truetype');
+  font-family: 'Noto Sans Regular';
+  font-weight: normal;
+  src: url('../app/fonts/NotoSans/NotoSans-Regular.ttf') format('truetype');
 }
 
 :root {
-    --white: #ffffff;
-    --black: #000000;
-    --grayLighter: #f9f9f9;
-    --grayLight: #dddede;
-    --gray: #b6b6b6;
+  --white: #ffffff;
+  --black: #000000;
+  --grayLighter: #f9f9f9;
+  --grayLight: #dddede;
+  --gray: #b6b6b6;
 
-    // Default
-    --defaultPrimary: #202a44;
-    --defaultSecondary: #e22040;
-    --defaultTertiary: #7fc5a0;
-    --defaultQuaternary: #fbd872;
-    --defaultQuinary: #dddede;
-    --defaultPrimaryFaint: #ced6e7;
-    --defaultSecondaryFaint: #fcd6db;
-    --defaultTertiaryFaint: #e5f3eb;
-    --defaultQuaternaryFaint: #fef7e2;
-    --defaultQuinaryFaint: #eaeaea;
-    --defaultPrimaryLessFaint: #3a63cc;
-    --defaultSecondaryLessFaint: #ec7f8d;
-    --defaultTertiaryDark: #21c26d;
-    --defaultFont: #202a44;
+  // Default
+  --defaultPrimary: #202a44;
+  --defaultSecondary: #e22040;
+  --defaultTertiary: #7fc5a0;
+  --defaultQuaternary: #fbd872;
+  --defaultQuinary: #dddede;
 
-    // PMNCH
-    --pmnchPrimary: #026bef;
-    --pmnchSecondary: #ef6100;
-    --pmnchTertiary: #06a605;
-    --pmnchQuaternary: #fff200;
-    --pmnchQuinary: #0fc1ef;
-    --pmnchSenary: #ef39ee;
-    --pmnchSeptenary: #7e01e5;
-    --pmnchPrimaryFaint: #eaf3ff;
-    --pmnchSecondaryFaint: #ffdfc9;
-    --pmnchTertiaryFaint: #befdbd;
-    --pmnchQuaternaryFaint: #fffccc;
-    --pmnchQuinaryFaint: #cff3fc;
-    --pmnchSeptenaryFaint: #bc79f1;
-    --pmnchFont: #000000;
+  --defaultPrimaryFaint: #ced6e7;
+  --defaultSecondaryFaint: #fcd6db;
+  --defaultTertiaryFaint: #e5f3eb;
+  --defaultQuaternaryFaint: #fef7e2;
+  --defaultQuinaryFaint: #eaeaea;
+
+  --defaultPrimaryLessFaint: #3a63cc;
+  --defaultSecondaryLessFaint: #ec7f8d;
+  --defaultTertiaryDark: #21c26d;
+
+  --defaultFont: #202a44;
+
+  // PMNCH
+  --pmnchPrimary: #026bef;
+  --pmnchSecondary: #ef6100;
+  --pmnchTertiary: #06a605;
+  --pmnchQuaternary: #fff200;
+  --pmnchQuinary: #0fc1ef;
+  --pmnchSenary: #ef39ee;
+  --pmnchSeptenary: #7e01e5;
+
+  --pmnchPrimaryFaint: #eaf3ff;
+  --pmnchSecondaryFaint: #ffdfc9;
+  --pmnchTertiaryFaint: #befdbd;
+  --pmnchQuaternaryFaint: #fffccc;
+  --pmnchQuinaryFaint: #cff3fc;
+  --pmnchSeptenaryFaint: #bc79f1;
+
+  --pmnchFont: #000000;
+
+  // Data exchange
+  --dataExchangePrimary: #212F51;
+  --dataExchangeSecondary: #3A7295;
+  --dataExchangeTertiary: #D20C24;
+  --dataExchangeQuaternary: #479D74;
+  --dataExchangeQuinary: #F9C018;
+  --dataExchangeSenary: #C3C5BE;
+
+  --dataExchangePrimaryFaint: #c3d4ff;
+  --dataExchangeSecondaryFaint: #bee6ff;
+  --dataExchangeTertiaryFaint: #ffd6db;
+  --dataExchangeQuaternaryFaint: #d0ffe6;
+  --dataExchangeQuinaryFaint: #fff4d8;
+
+  --dataExchangeFont: #202a44;
 }
 
 .bubble-map-circle:hover {
-    stroke: var(--gray);
+  stroke: var(--gray);
 }

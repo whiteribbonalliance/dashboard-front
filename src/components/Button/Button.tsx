@@ -20,6 +20,13 @@ export const Button = ({ text, size = 'text-base', disabled = false, dashboard }
                     : 'text-pmnchColors-primary border-pmnchColors-primary hover:bg-pmnchColors-primary hover:text-white'
             )
             break
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            buttonClasses = classNames(
+                disabled
+                    ? disabledButtonCommonStyles
+                    : 'text-dataExchangeColors-primary border-dataExchangeColors-primary hover:bg-dataExchangeColors-primary hover:text-white'
+            )
+            break
         default:
             buttonClasses = classNames(
                 disabled

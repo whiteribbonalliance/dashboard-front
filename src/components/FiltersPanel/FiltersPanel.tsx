@@ -6,7 +6,7 @@ import { LegacyDashboardName } from '@enums'
 import React, { Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react'
 import { Box } from '@components/Box'
 import Image from 'next/image'
-import { getCampaignFilterOptions, getCampaignsMergedFilterOptions } from 'services/dashboard-api'
+import { getCampaignFilterOptions } from 'services/dashboard-api'
 import { TOption } from '@types'
 import { ICountry, ICountryRegionOption, ICountryRegionProvinceOption, IFilterOptions } from '@interfaces'
 import { Control, Controller, useForm, UseFormReturn } from 'react-hook-form'
@@ -125,14 +125,21 @@ export const FiltersPanel = () => {
         setTabs(tmpTabs)
     }, [t, form1, form2])
 
-    // Set selected tab classes
-    let selectedTabClasses: string
+    // Set tab classes
+    let tab1Classes: string
+    let tab2Classes: string
     switch (dashboard) {
         case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            selectedTabClasses = 'border-t-pmnchColors-septenary'
+            tab1Classes = 'border-t-pmnchColors-primary'
+            tab2Classes = 'border-t-pmnchColors-septenary'
+            break
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            tab1Classes = 'border-t-dataExchangeColors-primary'
+            tab2Classes = 'border-t-dataExchangeColors-quaternary'
             break
         default:
-            selectedTabClasses = 'border-t-defaultColors-tertiary'
+            tab1Classes = 'border-t-defaultColors-primary'
+            tab2Classes = 'border-t-defaultColors-tertiary'
     }
 
     // Whether the PMNCH QR code should be displayed
@@ -142,13 +149,7 @@ export const FiltersPanel = () => {
     // Fetch filter options
     useQuery<IFilterOptions>({
         queryKey: [`${dashboard}-${lang}-filter-options`],
-        queryFn: () => {
-            if (dashboard === LegacyDashboardName.ALL_CAMPAIGNS) {
-                return getCampaignsMergedFilterOptions(lang)
-            } else {
-                return getCampaignFilterOptions(config.campaign_code, lang)
-            }
-        },
+        queryFn: () => getCampaignFilterOptions(config.campaign_code, lang),
         refetchOnWindowFocus: false,
         retry: 3,
         onSuccess: (filterOptions) => {
@@ -384,45 +385,30 @@ export const FiltersPanel = () => {
     }
 
     // Set show select living settings
-    let setShowSelectLivingSettings = false
-    if (livingSettingOptions.length > 1) {
-        setShowSelectLivingSettings = true
-    }
+    let showSelectLivingSettings = livingSettingOptions.length > 1
 
     // Set show select genders
-    let showSelectGenders = false
-    if (genderOptions.length > 1) {
-        showSelectGenders = true
-    }
+    let showSelectGenders = genderOptions.length > 1
 
     // Set show select professions
-    let showSelectProfessions = false
-    if (professionOptions.length > 1) {
-        showSelectProfessions = true
-    }
+    let showSelectProfessions = professionOptions.length > 1
 
     // Set show ages filter
-    let showSelectAges = false
-    if (ageOptions.length > 1) {
-        showSelectAges = true
-    }
+    let showSelectAges = ageOptions.length > 1
 
     // Set show age buckets (age ranges) filter
-    let showSelectAgeBuckets = false
-    if (ageBucketOptions.length > 1) {
-        showSelectAgeBuckets = true
-    }
+    let showSelectAgeBuckets = ageBucketOptions.length > 1
 
     // Set show only responses from categories
-    let showOnlyResponsesFromCategories = true
-    if (dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT) {
-        showOnlyResponsesFromCategories = false
-    }
+    let showOnlyResponsesFromCategories = dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
 
     // Set show district and provinces
-    let showDistrictsAndProvinces = false
-    if (dashboard === LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN) {
-        showDistrictsAndProvinces = true
+    let showDistrictsAndProvinces = dashboard === LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN
+
+    if (dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE) {
+        showSelectAges = false
+        showSelectLivingSettings = false
+        showSelectProfessions = false
     }
 
     return (
@@ -502,18 +488,20 @@ export const FiltersPanel = () => {
             )}
 
             {/* Questions */}
-            {data && data.all_questions.length > 1 && (
+            {dashboard !== LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE && data && data.all_questions.length > 1 && (
                 <div className="mb-5">
                     <SelectQuestionAsked hideWhileLoading={false} />
                 </div>
             )}
 
             {/* Response years */}
-            {data && data.all_response_years.length > 1 && (
-                <div className="mb-5">
-                    <SelectResponseYear />
-                </div>
-            )}
+            {dashboard !== LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE &&
+                data &&
+                data.all_response_years.length > 1 && (
+                    <div className="mb-5">
+                        <SelectResponseYear />
+                    </div>
+                )}
 
             {/* Filters */}
             <div className="mb-5 w-full">
@@ -526,13 +514,15 @@ export const FiltersPanel = () => {
                                 data-tooltip-id="filters-panel-tab-list"
                                 className="mb-2 flex flex-col sm:flex-row"
                             >
-                                {tabs.map((tab) => (
+                                {tabs.map((tab, index) => (
                                     <Tab
                                         key={tab.id}
                                         className={({ selected }) =>
                                             classNames(
                                                 'bg-grayLighter w-full py-5 leading-5 shadow-sm ring-transparent ring-offset-2 focus:outline-none',
-                                                selected ? `border-t-2 bg-white ${selectedTabClasses}` : ''
+                                                selected
+                                                    ? `border-t-2 bg-white ${index === 0 ? tab1Classes : tab2Classes}`
+                                                    : ''
                                             )
                                         }
                                     >
@@ -669,7 +659,7 @@ export const FiltersPanel = () => {
                                                             )}
 
                                                             {/* Filter living settings */}
-                                                            {setShowSelectLivingSettings && (
+                                                            {showSelectLivingSettings && (
                                                                 <div className="flex">
                                                                     <div className="flex w-full flex-col">
                                                                         <div className="mb-1">

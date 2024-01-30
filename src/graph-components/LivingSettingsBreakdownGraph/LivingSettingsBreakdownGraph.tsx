@@ -66,6 +66,10 @@ export const LivingSettingsBreakdownGraph = () => {
             bar1Classes = 'fill-pmnchColors-secondary hover:fill-pmnchColors-secondaryFaint'
             bar2Classes = 'fill-pmnchColors-tertiary hover:fill-pmnchColors-tertiaryFaint'
             break
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            bar1Classes = 'fill-dataExchangeColors-primary hover:fill-dataExchangeColors-primaryFaint'
+            bar2Classes = 'fill-dataExchangeColors-quaternary hover:fill-dataExchangeColors-quaternaryFaint'
+            break
         default:
             bar1Classes = 'fill-defaultColors-primary hover:fill-defaultColors-primaryFaint'
             bar2Classes = 'fill-defaultColors-tertiary hover:fill-defaultColors-tertiaryFaint'

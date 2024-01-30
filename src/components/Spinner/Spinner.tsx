@@ -14,6 +14,9 @@ export const Spinner = ({ dashboard }: ISpinnerProps) => {
         case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             spinnerIconClasses = 'text-pmnchColors-primary'
             break
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            spinnerIconClasses = 'text-dataExchangeColors-secondary'
+            break
         default:
             spinnerIconClasses = 'text-defaultColors-tertiary'
     }

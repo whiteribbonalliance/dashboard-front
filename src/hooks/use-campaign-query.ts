@@ -27,9 +27,8 @@ SOFTWARE.
 
 import { useQuery } from 'react-query'
 import { ICampaign } from '@interfaces'
-import { getCampaign, getCampaignsMerged } from 'services/dashboard-api'
+import { getCampaign } from 'services/dashboard-api'
 import { getCampaignRequest } from '@utils'
-import { LegacyDashboardName } from '@enums'
 import { useContext } from 'react'
 import { ParamsContext } from '@contexts/params'
 
@@ -40,15 +39,8 @@ export const useCampaignQuery = () => {
 
     return useQuery<ICampaign>({
         queryKey: [params, 'campaign'],
-        queryFn: ({ signal }) => {
-            if (dashboard === LegacyDashboardName.ALL_CAMPAIGNS) {
-                // Use getCampaignsMerged function (uses a special endpoint to fetch data of all campaigns merged)
-                return getCampaignsMerged(campaignRequest, lang, signal)
-            } else {
-                // Use get getCampaign function to fetch dashboard
-                return getCampaign(config.campaign_code, campaignRequest, lang, questionAskedCode, responseYear, signal)
-            }
-        },
+        queryFn: ({ signal }) =>
+            getCampaign(config.campaign_code, campaignRequest, lang, questionAskedCode, responseYear, signal),
         refetchOnWindowFocus: false,
         retry: 3,
         cacheTime: 0,

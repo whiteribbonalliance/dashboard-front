@@ -47,6 +47,23 @@ const config: Config = {
 
                 font: 'var(--pmnchFont)',
             },
+
+            dataExchangeColors: {
+                primary: 'var(--dataExchangePrimary)',
+                secondary: 'var(--dataExchangeSecondary)',
+                tertiary: 'var(--dataExchangeTertiary)',
+                quaternary: 'var(--dataExchangeQuaternary)',
+                quinary: 'var(--dataExchangeQuinary)',
+                senary: 'var(--dataExchangeSenary)',
+
+                primaryFaint: 'var(--dataExchangePrimaryFaint)',
+                secondaryFaint: 'var(--dataExchangeSecondaryFaint)',
+                quaternaryFaint: 'var(--dataExchangeQuaternaryFaint)',
+                tertiaryFaint: 'var(--dataExchangeTertiaryFaint)',
+                quinaryFaint: 'var(--dataExchangeQuinaryFaint)',
+
+                font: 'var(--dataExchangeFont)',
+            },
         },
         fontFamily: {
             'open-sans': ['Open Sans', 'var(--font-helvetica)', 'Arial', 'sans-serif'],

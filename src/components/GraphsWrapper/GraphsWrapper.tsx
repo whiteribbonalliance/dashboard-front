@@ -60,6 +60,18 @@ export const GraphsWrapper = () => {
                     <HistogramGraph />
                 </>
             )
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            return (
+                <>
+                    <ResponsesBreakdownGraphs />
+                    <TopWordsAndPhrasesGraph />
+                    <ResponsesSampleTable />
+                    <WorldBubbleMap />
+                    <GenderBreakdownGraph />
+                    <LivingSettingsBreakdownGraph />
+                    <HistogramGraph />
+                </>
+            )
         default:
             return (
                 <>

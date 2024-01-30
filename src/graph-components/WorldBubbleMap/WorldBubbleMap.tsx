@@ -100,6 +100,10 @@ export const WorldBubbleMap = () => {
             bubbleColor1 = 'var(--pmnchSecondary)'
             bubbleColor2 = 'var(--pmnchTertiary)'
             break
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            bubbleColor1 = 'var(--dataExchangePrimary)'
+            bubbleColor2 = 'var(--dataExchangeQuaternary)'
+            break
         default:
             bubbleColor1 = 'var(--defaultPrimary)'
             bubbleColor2 = 'var(--defaultTertiary)'

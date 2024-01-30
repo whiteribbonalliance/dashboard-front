@@ -50,6 +50,22 @@ const whatYoungPeopleWantColors = _.shuffle([
     'var(--pmnchSeptenaryFaint)',
 ])
 
+// 11 unique colors
+// If there are more than 11 genders, include more colors
+const dataExchangeColors = _.shuffle([
+    'var(--dataExchangePrimary)',
+    'var(--dataExchangePrimaryFaint)',
+    'var(--dataExchangeSecondary)',
+    'var(--dataExchangeSecondaryFaint)',
+    'var(--dataExchangeQuaternary)',
+    'var(--dataExchangeQuaternaryFaint)',
+    'var(--dataExchangeTertiary)',
+    'var(--dataExchangeTertiaryFaint)',
+    'var(--dataExchangeQuinary)',
+    'var(--dataExchangeQuinaryFaint)',
+    'var(--dataExchangeSenary)',
+])
+
 export const GenderBreakdownGraph = () => {
     const { params } = useContext(ParamsContext)
     const { dashboard, lang } = params
@@ -63,6 +79,9 @@ export const GenderBreakdownGraph = () => {
     switch (dashboard) {
         case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             colors = whatYoungPeopleWantColors
+            break
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            colors = dataExchangeColors
             break
         default:
             colors = defaultColors

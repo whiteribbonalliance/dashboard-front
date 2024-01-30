@@ -165,6 +165,14 @@ export const ResponsesSampleTable = () => {
                         'bg-pmnchColors-quinaryFaint',
                     ]
                     break
+                case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+                    colors = [
+                        'bg-dataExchangeColors-primaryFaint',
+                        'bg-dataExchangeColors-tertiaryFaint',
+                        'bg-dataExchangeColors-quaternaryFaint',
+                        'bg-dataExchangeColors-quinaryFaint',
+                    ]
+                    break
                 default:
                     colors = [
                         'bg-defaultColors-primaryFaint',

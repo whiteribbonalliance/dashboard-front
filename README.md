@@ -98,7 +98,7 @@ variables -> Actions. You will need to be an administrator on the GitHub repo to
 
 There is also a manual Google App Engine deployment file set up in `app.yaml`. You can deploy manually from the command
 line using `gcloud app deploy app.yaml` (you must directly include the env variables in `app.yaml`). You need to install
-Google Cloud CLI (Command Line Interface) and be authenticated on the Google Cloud Platform service account
+Google Cloud CLI (Command Line Interface) and be authenticated on the Google Cloud Platform service account.
 
 ## Deployment to Azure Web Apps
 

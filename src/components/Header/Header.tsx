@@ -68,6 +68,14 @@ export const Header = () => {
             menuButtonItemClasses = 'hover:text-defaultColors-font'
     }
 
+    // Set show PMNCH logo
+    const showPmnchLogo = dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
+
+    // Set hide header logos
+    const hideHeaderLogos =
+        dashboard === LegacyDashboardName.HEALTHWELLBEING ||
+        dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
+
     return (
         <>
             <Disclosure
@@ -90,7 +98,7 @@ export const Header = () => {
                                 </div>
 
                                 {/* Logo */}
-                                {dashboard !== LegacyDashboardName.HEALTHWELLBEING && (
+                                {!hideHeaderLogos && (
                                     <div className="mx-3 flex items-center xl:mx-0">
                                         <OrganizationLogos dashboard={dashboard} />
                                     </div>
@@ -105,7 +113,6 @@ export const Header = () => {
                             {/* Menu items */}
                             <nav className="hidden gap-x-3 xl:flex xl:items-center">
                                 {settings.translations_enabled && <LanguageSelect dashboard={dashboard} lang={lang} />}
-
                                 {menuItems.map((item) => {
                                     if (item.url) {
                                         return (
@@ -124,7 +131,7 @@ export const Header = () => {
                                         )
                                     }
                                 })}
-                                {dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT && <PmnchLogo />}
+                                {showPmnchLogo && <PmnchLogo />}
                             </nav>
 
                             {/* Button to display mobile dropdown */}
@@ -179,7 +186,7 @@ export const Header = () => {
                                             )
                                         }
                                     })}
-                                    {dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT && <PmnchLogo />}
+                                    {showPmnchLogo && <PmnchLogo />}
                                 </ul>
                             </Disclosure.Panel>
                         </Transition>
