@@ -325,7 +325,7 @@ export const Footer = () => {
             {displayExploreInitiatives && (
                 <div>
                     <p>
-                        <span>{t('data-exchange-explore-initiatives')}</span>
+                        <span>{t('dataexchange-explore-initiatives')}</span>
                         &nbsp;
                         <span className="font-bold">
                             <Link href="https://example.com" target="_blank">
@@ -344,7 +344,7 @@ export const Footer = () => {
             {showDataExchangeContact && (
                 <div>
                     <p>
-                        <span>{t('data-exchange-contact')}</span>
+                        <span>{t('dataexchange-contact')}</span>
                         &nbsp;
                         <span className="font-bold">
                             <Link href="https://example.com" target="_blank">

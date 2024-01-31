@@ -41,6 +41,9 @@ export const ResponsesBreakdownGraphs = () => {
         case LegacyDashboardName.WHAT_WOMEN_WANT:
             clickViewTopicResponsesText = t(`${config.campaign_code}-click-view-topic-responses`)
             break
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            clickViewTopicResponsesText = t(`${config.campaign_code}-click-view-topic-responses`)
+            break
         default:
             clickViewTopicResponsesText = t('click-view-topic-responses')
     }
