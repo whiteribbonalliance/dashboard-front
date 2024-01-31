@@ -182,10 +182,11 @@ export const Footer = () => {
     // Set display footer logos
     const displayFooterLogos = dashboard === LegacyDashboardName.HEALTHWELLBEING
 
-    // Set display learn more about categories
-    const displayLearnMoreAboutCategories =
-        dashboard === LegacyDashboardName.HEALTHWELLBEING ||
-        dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
+    // Set display learn more about categories for healthwellbeing
+    const displayLearnMoreAboutCategoriesForHealthWellbeing = dashboard === LegacyDashboardName.HEALTHWELLBEING
+
+    // Set display learn more about categories for dataexchange
+    const displayLearnMoreAboutCategoriesForDataexchange = dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
 
     // Set display results analyzed
     const displayResultsAnalyzed =
@@ -226,8 +227,8 @@ export const Footer = () => {
                 </div>
             )}
 
-            {/* Learn more about categories */}
-            {displayLearnMoreAboutCategories && (
+            {/* Learn more about categories for healthwellbeing */}
+            {displayLearnMoreAboutCategoriesForHealthWellbeing && (
                 <div className="max-w-7xl">
                     <p>
                         <span>{removeLastCharIfDot(t('healthwellbeing-learn-more-about-categories'))}</span>
@@ -237,6 +238,22 @@ export const Footer = () => {
                                 href="https://docs.google.com/spreadsheets/d/1pd5bjiZpU_j082LRMJ1OFDk3FVjT7HqzqV9eYtLi48w/edit?usp=sharing"
                                 target="_blank"
                             >
+                                {t('here-capitalized')}
+                            </Link>
+                            <span>.</span>
+                        </span>
+                    </p>
+                </div>
+            )}
+
+            {/* Learn more about categories for dataexchange */}
+            {displayLearnMoreAboutCategoriesForDataexchange && (
+                <div className="max-w-7xl">
+                    <p>
+                        <span>{removeLastCharIfDot(t('dataexchange-learn-more-about-categories'))}</span>
+                        &nbsp;
+                        <span className="font-bold">
+                            <Link href="https://example.com" target="_blank">
                                 {t('here-capitalized')}
                             </Link>
                             <span>.</span>
