@@ -180,9 +180,7 @@ export const Footer = () => {
     }
 
     // Set display footer logos
-    const displayFooterLogos =
-        dashboard === LegacyDashboardName.HEALTHWELLBEING ||
-        dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
+    const displayFooterLogos = dashboard === LegacyDashboardName.HEALTHWELLBEING
 
     // Set display learn more about categories
     const displayLearnMoreAboutCategories =
