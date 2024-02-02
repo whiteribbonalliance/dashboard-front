@@ -64,6 +64,9 @@ export const Header = () => {
         case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             menuButtonItemClasses = 'hover:text-pmnchColors-font'
             break
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            menuButtonItemClasses = 'hover:text-dataExchangeColors-font'
+            break
         default:
             menuButtonItemClasses = 'hover:text-defaultColors-font'
     }

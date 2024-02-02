@@ -152,7 +152,7 @@ export const HistogramGraph = () => {
             bar2Classes = 'fill-pmnchColors-tertiary hover:fill-pmnchColors-tertiaryFaint'
             break
         case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
-            bar1Classes = 'fill-dataExchangeColors-primary hover:fill-dataExchangeColors-primaryFaint'
+            bar1Classes = 'fill-dataExchangeColors-primary hover:fill-dataExchangeColors-secondary'
             bar2Classes = 'fill-dataExchangeColors-quaternary hover:fill-dataExchangeColors-quaternaryFaint'
             break
         default:
