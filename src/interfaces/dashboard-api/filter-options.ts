@@ -41,6 +41,7 @@ export interface IFilterOptions {
     country_provinces: ICountryRegionProvinceOption[]
     response_topics: TOption<string>[]
     ages: TOption<string>[]
+    years: TOption<string>[]
     age_buckets: TOption<string>[]
     genders: TOption<string>[]
     living_settings: TOption<string>[]

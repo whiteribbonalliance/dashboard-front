@@ -77,6 +77,7 @@ export const FiltersPanel = () => {
     const [ageOptions, setAgeOptions] = useState<TOption<string>[]>([])
     const [ageBucketOptions, setAgeBucketOptions] = useState<TOption<string>[]>([])
     const [genderOptions, setGenderOptions] = useState<TOption<string>[]>([])
+    const [yearOptions, setYearOptions] = useState<TOption<string>[]>([])
     const [livingSettingOptions, setLivingSettingOptions] = useState<TOption<string>[]>([])
     const [professionOptions, setProfessionOptions] = useState<TOption<string>[]>([])
     const [onlyResponsesFromCategoriesOptions, setOnlyResponsesFromCategoriesOptions] = useState<TOption<boolean>[]>([])
@@ -181,6 +182,9 @@ export const FiltersPanel = () => {
 
             // Gender options
             setGenderOptions(filterOptions.genders)
+
+            // Year options
+            setYearOptions(filterOptions.years)
 
             // Living setting options
             setLivingSettingOptions(filterOptions.living_settings)
@@ -393,18 +397,22 @@ export const FiltersPanel = () => {
     // Set show select professions
     let showSelectProfessions = professionOptions.length > 1
 
-    // Set show ages filter
+    // Set show select ages
     let showSelectAges = ageOptions.length > 1
 
-    // Set show age buckets (age ranges) filter
+    // Set show select age buckets (age ranges)
     let showSelectAgeBuckets = ageBucketOptions.length > 1
 
-    // Set show only responses from categories
-    let showOnlyResponsesFromCategories = dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
+    // Set show select years
+    let showSelectYears = dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
 
-    // Set show district and provinces
-    let showDistrictsAndProvinces = dashboard === LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN
+    // Set show select only responses from categories
+    let showSelectOnlyResponsesFromCategories = dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
 
+    // Set show select district and provinces
+    let showSelectDistrictsAndProvinces = dashboard === LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN
+
+    // Hide these from the WORLD_WE_WANT_DATA_EXCHANGE dashboard
     if (dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE) {
         showSelectAges = false
         showSelectLivingSettings = false
@@ -557,7 +565,7 @@ export const FiltersPanel = () => {
                                             </div>
 
                                             {/* Select regions */}
-                                            {!showDistrictsAndProvinces && (
+                                            {!showSelectDistrictsAndProvinces && (
                                                 <div>
                                                     <div className="mb-1">{t('select-regions')}</div>
                                                     <SelectRegions
@@ -572,7 +580,7 @@ export const FiltersPanel = () => {
                                             )}
 
                                             {/* Select district and select provinces for wwwpakistan */}
-                                            {showDistrictsAndProvinces && (
+                                            {showSelectDistrictsAndProvinces && (
                                                 <>
                                                     <div>
                                                         <div className="mb-1">{t('select-provinces')}</div>
@@ -643,8 +651,8 @@ export const FiltersPanel = () => {
                                                         >
                                                             {}
 
-                                                            {/* Show only responses from categories */}
-                                                            {showOnlyResponsesFromCategories && (
+                                                            {/* Only responses from categories */}
+                                                            {showSelectOnlyResponsesFromCategories && (
                                                                 <div>
                                                                     <div className="mb-1 w-fit">
                                                                         {t('responses-from-categories')}
@@ -728,6 +736,23 @@ export const FiltersPanel = () => {
                                                                             id={`select-genders-${id}`}
                                                                             dashboard={dashboard}
                                                                             options={genderOptions}
+                                                                            control={form.control}
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                            )}
+
+                                                            {/* Filter years */}
+                                                            {showSelectYears && (
+                                                                <div className="flex">
+                                                                    <div className="flex w-full flex-col">
+                                                                        <div className="mb-1">
+                                                                            {t('filter-by-year')}
+                                                                        </div>
+                                                                        <SelectYears
+                                                                            id={`select-years-${id}`}
+                                                                            dashboard={dashboard}
+                                                                            options={yearOptions}
                                                                             control={form.control}
                                                                         />
                                                                     </div>
@@ -986,6 +1011,18 @@ const SelectAges = ({ id, options, control }: ISelectProps) => {
     return (
         <Controller
             name="ages"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+                <SelectMultiValues id={id} options={options} controllerRenderOnChange={onChange} value={value} />
+            )}
+        />
+    )
+}
+
+const SelectYears = ({ id, options, control }: ISelectProps) => {
+    return (
+        <Controller
+            name="years"
             control={control}
             render={({ field: { onChange, value } }) => (
                 <SelectMultiValues id={id} options={options} controllerRenderOnChange={onChange} value={value} />
