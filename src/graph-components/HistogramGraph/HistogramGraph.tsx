@@ -99,7 +99,7 @@ export const HistogramGraph = () => {
     })
 
     // Watch field
-    const showBreakdownByField = form.watch('show_breakdown_by')
+    const displayBreakdownByField = form.watch('show_breakdown_by')
 
     // Set default value for show_breakdown_by
     useEffect(() => {
@@ -110,8 +110,8 @@ export const HistogramGraph = () => {
 
     // Container height
     const containerHeight = useMemo(() => {
-        if (!showBreakdownByField) return 0
-        switch (showBreakdownByField) {
+        if (!displayBreakdownByField) return 0
+        switch (displayBreakdownByField) {
             case 'breakdown-age':
                 if (dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT) {
                     return 550
@@ -124,7 +124,7 @@ export const HistogramGraph = () => {
             default:
                 return 1100
         }
-    }, [dashboard, showBreakdownByField])
+    }, [dashboard, displayBreakdownByField])
 
     // Set bars fill
     let bar1Fill: string
@@ -162,9 +162,9 @@ export const HistogramGraph = () => {
 
     // Set histogram data
     useEffect(() => {
-        if (data && showBreakdownByField) {
+        if (data && displayBreakdownByField) {
             let histogramData: IHistogramData[]
-            switch (showBreakdownByField) {
+            switch (displayBreakdownByField) {
                 case 'breakdown-age':
                     histogramData = data.histogram.ages
                     setParagraph(t('number-ages-respondents'))
@@ -201,14 +201,14 @@ export const HistogramGraph = () => {
 
             setCurrentHistogramData(histogramData)
         }
-    }, [dashboard, data, showBreakdownByField, t])
+    }, [dashboard, data, displayBreakdownByField, t])
 
     // Set form value
     function setFormValue(form: UseFormReturn<TFilter>, payload: any) {
         const data = payload?.payload as IHistogramData
         if (data?.value) {
             let currentFormValues: string[] = []
-            switch (showBreakdownByField) {
+            switch (displayBreakdownByField) {
                 case 'breakdown-age':
                     currentFormValues = form.getValues('ages')
                     if (!currentFormValues.includes(data.value)) {
@@ -308,7 +308,7 @@ export const HistogramGraph = () => {
         setShowTooltip((prev) => !prev)
     }
 
-    const displayGraph = !!data && !isLoading && !isRefetching && !!currentHistogramData && !!showBreakdownByField
+    const displayGraph = !!data && !isLoading && !isRefetching && !!currentHistogramData && !!displayBreakdownByField
 
     // Nothing to show
     if (

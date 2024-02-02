@@ -68,8 +68,8 @@ export const Header = () => {
             menuButtonItemClasses = 'hover:text-defaultColors-font'
     }
 
-    // Set show PMNCH logo
-    const showPmnchLogo = dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
+    // Set display PMNCH logo
+    const displayPmnchLogo = dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
 
     // Set hide header logos
     const hideHeaderLogos =
@@ -131,7 +131,7 @@ export const Header = () => {
                                         )
                                     }
                                 })}
-                                {showPmnchLogo && <PmnchLogo />}
+                                {displayPmnchLogo && <PmnchLogo />}
                             </nav>
 
                             {/* Button to display mobile dropdown */}
@@ -186,7 +186,7 @@ export const Header = () => {
                                             )
                                         }
                                     })}
-                                    {showPmnchLogo && <PmnchLogo />}
+                                    {displayPmnchLogo && <PmnchLogo />}
                                 </ul>
                             </Disclosure.Panel>
                         </Transition>

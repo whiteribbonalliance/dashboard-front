@@ -36,6 +36,9 @@ export const Footer = () => {
         case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
             footerLinkClasses = 'text-pmnchColors-secondary'
             break
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            footerLinkClasses = 'text-dataExchangeColors-secondary'
+            break
         default:
             footerLinkClasses = 'text-defaultColors-secondary'
     }
@@ -107,7 +110,7 @@ export const Footer = () => {
     }
 
     // Dashboard links
-    const DashboardLinks = () => {
+    const OtherDashboardLinks = () => {
         type TDashboardLinksData = {
             path: string
             title: string
@@ -209,14 +212,14 @@ export const Footer = () => {
     // Set display data displayed survey
     const displayDataDisplayedSurvey = dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
 
-    // Set show informed consent
-    const showInformedConsent = dashboard !== LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
+    // Set display informed consent
+    const displayInformedConsent = dashboard !== LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
 
-    // Set show protect anonymity
-    const showProtectAnonymity = dashboard !== LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
+    // Set display protect anonymity
+    const displayProtectAnonymity = dashboard !== LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
 
-    // Set show data exchange contact
-    const showDataExchangeContact = dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
+    // Set display data exchange contact
+    const displayDataExchangeContact = dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
 
     return (
         <footer className="mx-7 my-7 mt-auto flex flex-col gap-y-5 text-lg">
@@ -294,7 +297,7 @@ export const Footer = () => {
                 )}
 
                 {/* Informed consent */}
-                {showInformedConsent && (
+                {displayInformedConsent && (
                     <div>
                         <p>* {informedConsentText}</p>
                     </div>
@@ -304,7 +307,7 @@ export const Footer = () => {
                 {footerNote && <div>{footerNote}</div>}
 
                 {/* Protect anonymity */}
-                {showProtectAnonymity && (
+                {displayProtectAnonymity && (
                     <div>
                         <p>{t('to-protect-anonymity')}</p>
                     </div>
@@ -338,10 +341,10 @@ export const Footer = () => {
             )}
 
             {/* Other dashboards */}
-            <DashboardLinks />
+            <OtherDashboardLinks />
 
             {/* Data exchange contact */}
-            {showDataExchangeContact && (
+            {displayDataExchangeContact && (
                 <div>
                     <p>
                         <span>{t('dataexchange-contact')}</span>

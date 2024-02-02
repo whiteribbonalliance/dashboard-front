@@ -378,9 +378,9 @@ export const FiltersPanel = () => {
     }
 
     // Set active dashboard options
-    const showSelectActiveDashboard = useShowSelectActiveDashboardStore((state) => state.showSelectActiveDashboard)
+    const displaySelectActiveDashboard = useShowSelectActiveDashboardStore((state) => state.showSelectActiveDashboard)
     const allCampaignsActiveDashboardOptions: TOption<string>[] = []
-    if (showSelectActiveDashboard) {
+    if (displaySelectActiveDashboard) {
         for (let i = 0; i < allCampaignsConfigurations.length; i++) {
             const value = allCampaignsConfigurations[i].dashboard_path
             const label = t(`${allCampaignsConfigurations[i].campaign_code}-title`)
@@ -489,7 +489,7 @@ export const FiltersPanel = () => {
             />
 
             {/* Active dashboard within allcampaigns dashboard */}
-            {showSelectActiveDashboard && (
+            {displaySelectActiveDashboard && (
                 <div className="mb-5">
                     <SelectActiveDashboard options={allCampaignsActiveDashboardOptions} />
                 </div>
