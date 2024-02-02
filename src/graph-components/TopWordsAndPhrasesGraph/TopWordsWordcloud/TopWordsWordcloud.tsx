@@ -56,7 +56,7 @@ export const TopWordsWordcloud = ({ dashboard, lang, wordcloudWords }: IWordclou
             case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
                 wordcloudColors = [
                     'var(--dataExchangePrimary)',
-                    'var(--dataExchangeSecondary)',
+                    'var(--dataExchangeQuinary)',
                     'var(--dataExchangeTertiary)',
                     'var(--dataExchangeQuaternary)',
                 ]
