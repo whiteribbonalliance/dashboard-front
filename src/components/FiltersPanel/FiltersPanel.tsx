@@ -448,6 +448,7 @@ export const FiltersPanel = () => {
         showSelectLivingSettings = false
         showSelectProfessions = false
         showSelectQuestionAsked = false
+        showSelectResponseYear = false
     }
 
     // Hide these from the ALL_CAMPAIGNS dashboard
