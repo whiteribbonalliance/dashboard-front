@@ -414,7 +414,6 @@ export const FiltersPanel = () => {
 
     // Hide these from the WORLD_WE_WANT_DATA_EXCHANGE dashboard
     if (dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE) {
-        showSelectAges = false
         showSelectLivingSettings = false
         showSelectProfessions = false
     }
