@@ -99,11 +99,10 @@ export const GraphsWrapper = () => {
         case LegacyDashboardName.ALL_CAMPAIGNS:
             return (
                 <>
-                    <ResponsesBreakdownGraphs />
                     <TopWordsAndPhrasesGraph />
                     <ResponsesSampleTable />
                     <WorldBubbleMap />
-                    <GenderBreakdownGraph />
+                    <ResponsesBreakdownGraphs />
                     <HistogramGraph />
                 </>
             )
