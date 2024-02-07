@@ -96,6 +96,17 @@ export const GraphsWrapper = () => {
                     <HistogramGraph />
                 </>
             )
+        case LegacyDashboardName.ALL_CAMPAIGNS:
+            return (
+                <>
+                    <ResponsesBreakdownGraphs />
+                    <TopWordsAndPhrasesGraph />
+                    <ResponsesSampleTable />
+                    <WorldBubbleMap />
+                    <GenderBreakdownGraph />
+                    <HistogramGraph />
+                </>
+            )
         default:
             return (
                 <>
