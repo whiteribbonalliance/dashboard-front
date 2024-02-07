@@ -383,7 +383,7 @@ export const FiltersPanel = () => {
     if (displaySelectActiveDashboard) {
         for (let i = 0; i < allCampaignsConfigurations.length; i++) {
             const value = allCampaignsConfigurations[i].dashboard_path
-            const label = t(`${allCampaignsConfigurations[i].campaign_code}-title`)
+            const label = allCampaignsConfigurations[i].campaign_title
             allCampaignsActiveDashboardOptions.push({ value, label })
         }
     }
@@ -412,10 +412,21 @@ export const FiltersPanel = () => {
     // Set show select district and provinces
     let showSelectDistrictsAndProvinces = dashboard === LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN
 
+    // Set show select question asked
+    let showSelectQuestionAsked = data && data.all_questions.length > 1
+
     // Hide these from the WORLD_WE_WANT_DATA_EXCHANGE dashboard
     if (dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE) {
         showSelectLivingSettings = false
         showSelectProfessions = false
+        showSelectQuestionAsked = false
+    }
+
+    // Hide these from the ALL_CAMPAIGNS dashboard
+    if (dashboard === LegacyDashboardName.ALL_CAMPAIGNS) {
+        showSelectLivingSettings = false
+        showSelectProfessions = false
+        showSelectQuestionAsked = false
     }
 
     return (
@@ -495,7 +506,7 @@ export const FiltersPanel = () => {
             )}
 
             {/* Questions */}
-            {dashboard !== LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE && data && data.all_questions.length > 1 && (
+            {showSelectQuestionAsked && (
                 <div className="mb-5">
                     <SelectQuestionAsked hideWhileLoading={false} />
                 </div>
