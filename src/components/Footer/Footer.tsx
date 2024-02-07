@@ -172,6 +172,16 @@ export const Footer = () => {
                     url: 'https://explore.whiteribbonalliance.org/en/giz',
                     title: 'Economic Empowerment in Mexico',
                 },
+                {
+                    path: '',
+                    url: 'https://explore.whiteribbonalliance.org/en/allcampaigns',
+                    title: 'Dashboard of Dashboards',
+                },
+                {
+                    path: '',
+                    url: 'https://explore.whiteribbonalliance.org/en/dataexchange',
+                    title: 'World We Want Data Exchange',
+                },
             ]
         } else {
             dashboardLinksData = otherDashboardsConfigurations.map((c) => {
