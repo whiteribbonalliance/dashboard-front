@@ -432,13 +432,16 @@ export const FiltersPanel = () => {
     let showSelectYears = dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
 
     // Set show select only responses from categories
-    let showSelectOnlyResponsesFromCategories = dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
+    let showSelectOnlyResponsesFromCategories = dashboard !== LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
 
     // Set show select district and provinces
     let showSelectDistrictsAndProvinces = dashboard === LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN
 
     // Set show select question asked
     let showSelectQuestionAsked = data && data.all_questions.length > 1
+
+    // Set show select response year
+    let showSelectResponseYear = data && data.all_response_years.length > 1
 
     // Hide these from the WORLD_WE_WANT_DATA_EXCHANGE dashboard
     if (dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE) {
@@ -452,6 +455,8 @@ export const FiltersPanel = () => {
         showSelectLivingSettings = false
         showSelectProfessions = false
         showSelectQuestionAsked = false
+        showSelectResponseYear = false
+        showSelectGenders = false
     }
 
     return (
@@ -538,13 +543,11 @@ export const FiltersPanel = () => {
             )}
 
             {/* Response years */}
-            {dashboard !== LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE &&
-                data &&
-                data.all_response_years.length > 1 && (
-                    <div className="mb-5">
-                        <SelectResponseYear />
-                    </div>
-                )}
+            {showSelectResponseYear && (
+                <div className="mb-5">
+                    <SelectResponseYear />
+                </div>
+            )}
 
             {/* Filters */}
             <div className="mb-5 w-full">
