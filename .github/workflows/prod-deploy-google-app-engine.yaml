@@ -26,6 +26,7 @@ jobs:
           # These env variables can be ignored (only for deployment of legacy campaigns)
           LEGACY_CAMPAIGNS_PROD_DOMAINS: ${{ secrets.LEGACY_CAMPAIGNS_PROD_DOMAINS }}
           LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN: ${{ secrets.LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN }}
+          LEGACY_CAMPAIGNS_EXCHANGE_SUBDOMAIN: ${{ secrets.LEGACY_CAMPAIGNS_EXCHANGE_SUBDOMAIN }}
           LEGACY_CAMPAIGNS_DEPLOYMENT: ${{ secrets.LEGACY_CAMPAIGNS_DEPLOYMENT }}
 
           # Required
