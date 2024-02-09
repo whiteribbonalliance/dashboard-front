@@ -179,7 +179,7 @@ export const Footer = () => {
                 },
                 {
                     path: '',
-                    url: 'https://explore.whiteribbonalliance.org/en/dataexchange',
+                    url: 'https://exchange.worldwewantproject.org',
                     title: 'World We Want Data Exchange',
                 },
             ]
