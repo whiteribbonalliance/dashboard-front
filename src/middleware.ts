@@ -107,15 +107,17 @@ export async function middleware(request: NextRequest) {
         : []
     const NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEV_DOMAIN = process.env.NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEV_DOMAIN || '.localhost'
     const LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN = process.env.LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN || ''
+    const LEGACY_CAMPAIGNS_EXCHANGE_SUBDOMAIN = process.env.LEGACY_CAMPAIGNS_EXCHANGE_SUBDOMAIN
     const PMNCH = process.env.PMNCH?.toLowerCase() === 'true'
     const pmnchLink = 'https://wypw.1point8b.org'
 
     // Extract the subdomain by removing the root URL
     // e.g. from 'whatwomenwant.my-dashboards.org' remove '.my-dashboards.org' to get 'whatwomenwant'
     let extractedSubdomain: string | undefined
+    let prodDomain: string | undefined
     if (process.env.NODE_ENV === 'production') {
         // Find prod domain
-        const prodDomain = LEGACY_CAMPAIGNS_PROD_DOMAINS.find((prodDomain) => {
+        prodDomain = LEGACY_CAMPAIGNS_PROD_DOMAINS.find((prodDomain) => {
             if (hostname.endsWith(prodDomain)) {
                 return prodDomain
             }
@@ -129,6 +131,15 @@ export async function middleware(request: NextRequest) {
         extractedSubdomain = hostname?.replace(prodDomain, '')
     } else {
         extractedSubdomain = hostname?.replace(`${NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEV_DOMAIN}:3000`, '')
+    }
+
+    // Display the dashboard at dataexchange
+    if (extractedSubdomain === LEGACY_CAMPAIGNS_EXCHANGE_SUBDOMAIN && prodDomain === '.worldwewantproject.org') {
+        // e.g. '/dataexchange/en'
+        nextUrl.pathname = `${nextUrl.pathname}/dataexchange`
+
+        // Rewrite to the current hostname
+        return NextResponse.rewrite(nextUrl)
     }
 
     // Redirect to new link for PMNCH

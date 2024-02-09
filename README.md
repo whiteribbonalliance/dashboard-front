@@ -3,8 +3,9 @@
 Front-end for displaying dashboards for campaigns defined in the back-end. You can find the back-end repo
 at https://github.com/whiteribbonalliance/dashboard-api.
 
-There's currently six dashboards deployed with this project, you can visit them at:
+There's currently seven dashboards deployed with this project, you can visit them at:
 
+- https://exchange.worldwewantproject.org/en
 - https://explore.whiteribbonalliance.org/en/whatwomenwant
 - https://explore.whiteribbonalliance.org/en/midwivesvoices
 - https://explore.whiteribbonalliance.org/en/wwwpakistan
@@ -150,6 +151,8 @@ Additional environment variables:
 - `LEGACY_CAMPAIGNS_PROD_DOMAINS=` The domains allowed in production e.g. `.whiteribbonalliance.org`.
 - `LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN=` Subdomain used for displaying dashboards e.g. using `explore` as subdomain will
   allow accessing the dashboard `healthwellbeing` at `explore.whiteribbonalliance.local:3000/healthwellbeing`.
+- `LEGACY_CAMPAIGNS_EXCHANGE_SUBDOMAIN=` Subdomain used for dashboard at `dataexchange` with new
+  domain for `World We Want`.
 
 For the dashboard at `whatyoungpeoplewant`, also include the environment variables:
 
@@ -172,16 +175,28 @@ dispatch:
   - url: "*whatyoungpeoplewant.whiteribbonalliance.org/*"
     service: dashboardfrontend
 
+  # Data exchange
+  - url: "*exchange.worldwewantproject.org/*"
+    service: dashboardfrontend
+
   # All new clients which don't have their own subdomain
   - url: "*explore.whiteribbonalliance.org/*"
     service: dashboardfrontend
 
-  # The admin dashboard
+  # The admin dashboard (old)
   - url: "*admin.whiteribbonalliance.org/*"
     service: admindashboard
 
-  # The API
+  # The admin dashboard (new)
+  - url: "*admin.worldwewantproject.org/*"
+    service: admindashboard
+
+  # The API (old)
   - url: "*api.whiteribbonalliance.org/*"
+    service: www-dashboard-api
+
+  # The API (new)
+  - url: "*api.worldwewantproject.org/*"
     service: www-dashboard-api
 ```
 
