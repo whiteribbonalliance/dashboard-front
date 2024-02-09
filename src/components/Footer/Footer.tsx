@@ -51,9 +51,9 @@ export const Footer = () => {
     }
 
     // Other dashboard configurations
-    const otherDashboardsConfigurations = allCampaignsConfigurations.filter(
-        (configuration) => configuration.dashboard_path !== dashboard
-    )
+    const otherDashboardsConfigurations = allCampaignsConfigurations.filter((configuration) => {
+        return configuration.dashboard_path !== dashboard
+    })
 
     // Set footer link classes
     let footerLinkClasses: string
@@ -144,43 +144,21 @@ export const Footer = () => {
 
         let dashboardLinksData: TDashboardLinksData[]
         if (dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT) {
-            // The dashboard at whatyoungpeoplewant is deployed separately from the other five dashboards
+            // The dashboard at whatyoungpeoplewant is deployed separately from the other dashboards
             // So the links to the other dashboards should be added manually here
             dashboardLinksData = [
                 {
                     path: '',
-                    url: 'https://explore.whiteribbonalliance.org/en/whatwomenwant',
-                    title: 'What Women Want',
-                },
-                {
-                    path: '',
-                    url: 'https://explore.whiteribbonalliance.org/en/midwivesvoices',
-                    title: 'What Midwives Want',
-                },
-                {
-                    path: '',
-                    url: 'https://explore.whiteribbonalliance.org/en/wwwpakistan',
-                    title: 'What Women Want Pakistan',
-                },
-                {
-                    path: '',
-                    url: 'https://explore.whiteribbonalliance.org/en/healthwellbeing',
-                    title: "Women's Health and Well Being",
-                },
-                {
-                    path: '',
-                    url: 'https://explore.whiteribbonalliance.org/en/giz',
-                    title: 'Economic Empowerment in Mexico',
-                },
-                {
-                    path: '',
-                    url: 'https://explore.whiteribbonalliance.org/en/allcampaigns',
-                    title: 'Dashboard of Dashboards',
-                },
-                {
-                    path: '',
                     url: 'https://exchange.worldwewantproject.org',
                     title: 'World We Want Data Exchange',
+                },
+            ]
+        } else if (dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE) {
+            dashboardLinksData = [
+                {
+                    path: '',
+                    url: 'https://wypw.1point8b.org',
+                    title: 'What Young People Want',
                 },
             ]
         } else {
@@ -194,9 +172,20 @@ export const Footer = () => {
                 <p>
                     {t('other-dashboards')}:{' '}
                     {dashboardLinksData.map((d, index) => {
+                        // Set link
                         let link
                         if (d.url) link = d.url
                         else link = `/en/${d.path}`
+
+                        // Set title
+                        let title: string
+                        if (d.url === 'https://wypw.1point8b.org') {
+                            // PMNCH has the title 'Results Dashboard', change this to a more recognizable name
+                            title = 'What Young People Want'
+                        } else {
+                            title = d.title
+                        }
+
                         return (
                             <span key={d.path}>
                                 <Link
@@ -204,7 +193,7 @@ export const Footer = () => {
                                     target="_blank"
                                     className={classNames('underline', footerLinkClasses)}
                                 >
-                                    {d.title}
+                                    {title}
                                 </Link>
                                 {index + 1 < dashboardLinksData.length && <> • </>}
                             </span>
