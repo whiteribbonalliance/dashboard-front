@@ -291,7 +291,7 @@ export const Footer = () => {
                         <span>{removeLastCharIfDot(t('dataexchange-learn-more-about-categories'))}</span>
                         &nbsp;
                         <span className="font-bold">
-                            <Link href="https://worldwewantproject.com" target="_blank">
+                            <Link href="https://worldwewantproject.org" target="_blank">
                                 {t('here-capitalized')}
                             </Link>
                             <span>.</span>
@@ -366,7 +366,7 @@ export const Footer = () => {
                         <span>{t('dataexchange-explore-initiatives')}</span>
                         &nbsp;
                         <span className="font-bold">
-                            <Link href="https://worldwewantproject.com" target="_blank">
+                            <Link href="https://worldwewantproject.org" target="_blank">
                                 {t('here-capitalized')}
                             </Link>
                             <span>.</span>
@@ -385,7 +385,7 @@ export const Footer = () => {
                         <span>{t('dataexchange-contact')}</span>
                         &nbsp;
                         <span className="font-bold">
-                            <Link href="https://worldwewantproject.com" target="_blank">
+                            <Link href="https://worldwewantproject.org" target="_blank">
                                 {t('here-capitalized')}
                             </Link>
                             <span>.</span>
