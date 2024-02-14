@@ -74,6 +74,9 @@ export const Footer = () => {
         case LegacyDashboardName.WHAT_WOMEN_WANT:
             informedConsentText = t('women-informed-consent')
             break
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            informedConsentText = t('dataexchange-respondents-informed-consent')
+            break
         default:
             informedConsentText = t('respondents-informed-consent')
     }
@@ -149,18 +152,32 @@ export const Footer = () => {
             dashboardLinksData = [
                 {
                     path: '',
-                    url: 'https://exchange.worldwewantproject.org',
-                    title: 'World We Want Data Exchange',
+                    url: 'https://explore.whiteribbonalliance.org/en/whatwomenwant',
+                    title: 'What Women Want',
+                },
+                {
+                    path: '',
+                    url: 'https://explore.whiteribbonalliance.org/en/midwivesvoices',
+                    title: 'What Midwives Want',
+                },
+                {
+                    path: '',
+                    url: 'https://explore.whiteribbonalliance.org/en/wwwpakistan',
+                    title: 'What Women Want Pakistan',
+                },
+                {
+                    path: '',
+                    url: 'https://explore.whiteribbonalliance.org/en/healthwellbeing',
+                    title: "Women's Health and Well Being",
+                },
+                {
+                    path: '',
+                    url: 'https://explore.whiteribbonalliance.org/en/giz',
+                    title: 'Economic Empowerment in Mexico',
                 },
             ]
         } else if (dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE) {
-            dashboardLinksData = [
-                {
-                    path: '',
-                    url: 'https://wypw.1point8b.org',
-                    title: 'What Young People Want',
-                },
-            ]
+            dashboardLinksData = []
         } else {
             dashboardLinksData = otherDashboardsConfigurations.map((c) => {
                 return { path: c.dashboard_path, url: c.dashboard_url, title: c.campaign_title }
@@ -221,9 +238,7 @@ export const Footer = () => {
         dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
 
     // Set display AI constantly improved
-    const displayAiConstantlyImproved =
-        dashboard === LegacyDashboardName.HEALTHWELLBEING ||
-        dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
+    const displayAiConstantlyImproved = dashboard === LegacyDashboardName.HEALTHWELLBEING
 
     // Set display export dataset
     const displayExportDataset =
@@ -245,6 +260,9 @@ export const Footer = () => {
     // Set display data exchange contact
     const displayDataExchangeContact = dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
 
+    // Set display learn more heading
+    const displayLearnMoreHeading = dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
+
     return (
         <footer className="mx-7 my-7 mt-auto flex flex-col gap-y-5 text-lg">
             {/* Logo */}
@@ -252,6 +270,12 @@ export const Footer = () => {
                 <div className="mx-3 flex items-center justify-center xl:mx-0">
                     <OrganizationLogos dashboard={dashboard} />
                 </div>
+            )}
+
+            {displayLearnMoreHeading && (
+                <h4 className="text-dataExchangeColors-secondary mt-5 flex w-full justify-center text-2xl font-bold">
+                    Learn More
+                </h4>
             )}
 
             {/* Learn more about categories for healthwellbeing */}

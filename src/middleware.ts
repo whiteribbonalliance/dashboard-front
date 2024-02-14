@@ -107,7 +107,7 @@ export async function middleware(request: NextRequest) {
         : []
     const NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEV_DOMAIN = process.env.NEXT_PUBLIC_LEGACY_CAMPAIGNS_DEV_DOMAIN || '.localhost'
     const LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN = process.env.LEGACY_CAMPAIGNS_MAIN_SUBDOMAIN || ''
-    const LEGACY_CAMPAIGNS_EXCHANGE_SUBDOMAIN = process.env.LEGACY_CAMPAIGNS_EXCHANGE_SUBDOMAIN
+    const LEGACY_CAMPAIGNS_EXCHANGE_SUBDOMAIN = process.env.LEGACY_CAMPAIGNS_EXCHANGE_SUBDOMAIN || ''
     const PMNCH = process.env.PMNCH?.toLowerCase() === 'true'
     const pmnchLink = 'https://wypw.1point8b.org'
 
