@@ -218,9 +218,7 @@ export const Footer = () => {
                     })}
                 </p>
             </div>
-        ) : (
-            <div></div>
-        )
+        ) : null
     }
 
     // Set display footer logos
@@ -336,31 +334,29 @@ export const Footer = () => {
                 </div>
             )}
 
-            <div>
-                {/* Data displayed survey */}
-                {displayDataDisplayedSurvey && (
-                    <div className="max-w-5xl">
-                        <p>{t('pmn01a-data-displayed-survey')}</p>
-                    </div>
-                )}
+            {/* Data displayed survey */}
+            {displayDataDisplayedSurvey && (
+                <div className="max-w-5xl">
+                    <p>{t('pmn01a-data-displayed-survey')}</p>
+                </div>
+            )}
 
-                {/* Informed consent */}
-                {displayInformedConsent && (
-                    <div>
-                        <p>* {informedConsentText}</p>
-                    </div>
-                )}
+            {/* Informed consent */}
+            {displayInformedConsent && (
+                <div>
+                    <p>* {informedConsentText}</p>
+                </div>
+            )}
 
-                {/* Footer note */}
-                {footerNote && <div>{footerNote}</div>}
+            {/* Footer note */}
+            {footerNote && <div>{footerNote}</div>}
 
-                {/* Protect anonymity */}
-                {displayProtectAnonymity && (
-                    <div>
-                        <p>{t('to-protect-anonymity')}</p>
-                    </div>
-                )}
-            </div>
+            {/* Protect anonymity */}
+            {displayProtectAnonymity && (
+                <div>
+                    <p>{t('to-protect-anonymity')}</p>
+                </div>
+            )}
 
             {/* Export dataset */}
             {displayExportDataset && (
