@@ -230,10 +230,11 @@ export const Footer = () => {
     // Set display learn more about categories for dataexchange
     const displayLearnMoreAboutCategoriesForDataexchange = dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
 
-    // Set display results analyzed
-    const displayResultsAnalyzed =
-        dashboard === LegacyDashboardName.HEALTHWELLBEING ||
-        dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
+    // Set display results analyzed healthwellbeing
+    const displayResultsAnalyzedHealthWellbeing = dashboard === LegacyDashboardName.HEALTHWELLBEING
+
+    // Set display results analyzed data-exchange
+    const displayResultsAnalyzedDataExchange = dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
 
     // Set display AI constantly improved
     const displayAiConstantlyImproved = dashboard === LegacyDashboardName.HEALTHWELLBEING
@@ -311,10 +312,17 @@ export const Footer = () => {
                 </div>
             )}
 
-            {/* Results analyzed */}
-            {displayResultsAnalyzed && (
+            {/* Results analyzed healthwellbeing */}
+            {displayResultsAnalyzedHealthWellbeing && (
                 <div className="max-w-5xl">
                     <p>{t('healthwellbeing-results-analyzed')}</p>
+                </div>
+            )}
+
+            {/* Results analyzed data exchange */}
+            {displayResultsAnalyzedDataExchange && (
+                <div className="max-w-5xl">
+                    <p>{t('dataexchange-results-analyzed')}</p>
                 </div>
             )}
 
@@ -361,10 +369,10 @@ export const Footer = () => {
             {/* Export dataset */}
             {displayExportDataset && (
                 <div>
-                    <p className="cursor-pointer font-bold" onClick={onExportDatasetClick}>
+                    <p className="w-fit cursor-pointer font-bold" onClick={onExportDatasetClick}>
                         {exportDatasetText}
                     </p>
-                    {exportingDataset && <p>{t('download-start-shortly')}</p>}
+                    {exportingDataset && <p className="w-fit">{t('download-start-shortly')}</p>}
                 </div>
             )}
 
