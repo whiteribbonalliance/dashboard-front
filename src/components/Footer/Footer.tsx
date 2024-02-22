@@ -35,12 +35,14 @@ import { ParamsContext } from '@contexts/params'
 import { downloadCampaignPublicData } from 'services/dashboard-api'
 import { ConfigurationsContext } from '@contexts/configurations'
 import { SettingsContext } from '@contexts/settings'
+import { ICampaignConfiguration } from '@interfaces'
 
 export const Footer = () => {
     const { params } = useContext(ParamsContext)
     const { dashboard, lang, filters, responseYear, config } = params
     const { allCampaignsConfigurations } = useContext(ConfigurationsContext)
     const [exportingDataset, setExportingDataset] = useState<boolean>(false)
+    const [exportingSpecificDataset, setExportingSpecificDataset] = useState<boolean>(false)
     const { t } = useTranslation(lang)
     const { settings } = useContext(SettingsContext)
 
@@ -117,22 +119,28 @@ export const Footer = () => {
 
     // On export dataset click
     async function onExportDatasetClick() {
-        if (
-            dashboard !== LegacyDashboardName.HEALTHWELLBEING &&
-            dashboard !== LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
-        ) {
-            return
-        }
-
         if (!exportingDataset) {
             setExportingDataset(true)
-            const campaignRequest = getCampaignRequest(dashboard, filters)
-
+            const campaignRequest = getCampaignRequest(config.dashboard_path, filters)
             try {
                 await downloadCampaignPublicData(config.campaign_code, campaignRequest, responseYear)
                 setExportingDataset(false)
             } catch (error) {
                 setExportingDataset(false)
+            }
+        }
+    }
+
+    // On export specific dataset click
+    async function onExportSpecificDatasetClick(campaignConfig: ICampaignConfiguration) {
+        if (!exportingSpecificDataset) {
+            setExportingSpecificDataset(true)
+            const campaignRequest = getCampaignRequest(campaignConfig.dashboard_path, {})
+            try {
+                await downloadCampaignPublicData(campaignConfig.campaign_code, campaignRequest, '')
+                setExportingSpecificDataset(false)
+            } catch (error) {
+                setExportingSpecificDataset(false)
             }
         }
     }
@@ -244,8 +252,8 @@ export const Footer = () => {
         dashboard === LegacyDashboardName.HEALTHWELLBEING ||
         dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
 
-    // Set display explore initiatives
-    const displayExploreInitiatives = dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
+    // Set display specific datasets
+    const displaySpecificDataSets = dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
 
     // Set display data displayed survey
     const displayDataDisplayedSurvey = dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
@@ -376,23 +384,43 @@ export const Footer = () => {
                     <p className="w-fit cursor-pointer font-bold" onClick={onExportDatasetClick}>
                         {exportDatasetText}
                     </p>
-                    {exportingDataset && <p className="w-fit">{t('download-start-shortly')}</p>}
+                    {exportingDataset && <p className="w-fit italic">{t('download-start-shortly')}</p>}
                 </div>
             )}
 
-            {/* Explore initiatives */}
-            {displayExploreInitiatives && (
+            {/* Specific datasets */}
+            {displaySpecificDataSets && (
                 <div>
                     <p>
-                        <span>{t('dataexchange-explore-initiatives')}</span>
+                        <span>{t('dataexchange-explore-initiatives')}:</span>
                         &nbsp;
-                        <span className="font-bold">
-                            <Link href="" target="_blank">
-                                {t('here-capitalized')}
-                            </Link>
-                            <span>.</span>
-                        </span>
+                        {allCampaignsConfigurations
+                            .filter(
+                                (config) =>
+                                    // Do not include these dashboards
+                                    config.campaign_code !== 'allcampaigns' && config.campaign_code !== 'dataexchange'
+                            )
+                            .map((config, index) => {
+                                let title
+                                if (config.dashboard_path === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT) {
+                                    title = 'What Young People Want'
+                                } else {
+                                    title = config.campaign_title
+                                }
+                                return (
+                                    <span key={config.campaign_code}>
+                                        {index !== 0 && <>&nbsp;&nbsp;-&nbsp;&nbsp;</>}
+                                        <span
+                                            className="w-fit cursor-pointer font-bold"
+                                            onClick={() => onExportSpecificDatasetClick(config)}
+                                        >
+                                            {title}
+                                        </span>
+                                    </span>
+                                )
+                            })}
                     </p>
+                    {exportingSpecificDataset && <p className="w-fit italic">{t('download-start-shortly')}</p>}
                 </div>
             )}
 
