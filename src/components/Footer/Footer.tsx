@@ -271,6 +271,7 @@ export const Footer = () => {
                 </div>
             )}
 
+            {/* Learn more heading */}
             {displayLearnMoreHeading && (
                 <h4 className="text-dataExchangeColors-secondary mt-5 flex w-full justify-center text-2xl font-bold">
                     Learn More
@@ -303,7 +304,10 @@ export const Footer = () => {
                         <span>{removeLastCharIfDot(t('dataexchange-learn-more-about-categories'))}</span>
                         &nbsp;
                         <span className="font-bold">
-                            <Link href="https://worldwewantproject.org" target="_blank">
+                            <Link
+                                href="https://github.com/worldwewant/codebooks/raw/main/World%20We%20Want_Data%20Exchange_Universal%20Codebook.xlsx"
+                                target="_blank"
+                            >
                                 {t('here-capitalized')}
                             </Link>
                             <span>.</span>
@@ -383,7 +387,7 @@ export const Footer = () => {
                         <span>{t('dataexchange-explore-initiatives')}</span>
                         &nbsp;
                         <span className="font-bold">
-                            <Link href="https://worldwewantproject.org" target="_blank">
+                            <Link href="" target="_blank">
                                 {t('here-capitalized')}
                             </Link>
                             <span>.</span>
@@ -402,7 +406,7 @@ export const Footer = () => {
                         <span>{t('dataexchange-contact')}</span>
                         &nbsp;
                         <span className="font-bold">
-                            <Link href="https://worldwewantproject.org" target="_blank">
+                            <Link href="https://www.worldwewantproject.org/about" target="_blank">
                                 {t('here-capitalized')}
                             </Link>
                             <span>.</span>
