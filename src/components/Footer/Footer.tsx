@@ -57,17 +57,27 @@ export const Footer = () => {
         return configuration.dashboard_path !== dashboard
     })
 
+    // Set export text classes
+    let exportTextClasses: string
+    switch (dashboard) {
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            exportTextClasses = 'hover:text-dataExchangeColors-secondary w-fit cursor-pointer font-bold'
+            break
+        default:
+            exportTextClasses = 'hover:text-defaultColors-secondary w-fit cursor-pointer font-bold'
+    }
+
     // Set footer link classes
     let footerLinkClasses: string
     switch (dashboard) {
         case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
-            footerLinkClasses = 'text-pmnchColors-secondary'
+            footerLinkClasses = 'underline text-pmnchColors-secondary'
             break
         case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
-            footerLinkClasses = 'text-dataExchangeColors-secondary'
+            footerLinkClasses = 'underline text-dataExchangeColors-secondary'
             break
         default:
-            footerLinkClasses = 'text-defaultColors-secondary'
+            footerLinkClasses = 'underline text-defaultColors-secondary'
     }
 
     // Set informed consent text
@@ -292,8 +302,9 @@ export const Footer = () => {
                     <p>
                         <span>{removeLastCharIfDot(t('healthwellbeing-learn-more-about-categories'))}</span>
                         &nbsp;
-                        <span className="font-bold">
+                        <span>
                             <Link
+                                className={footerLinkClasses}
                                 href="https://docs.google.com/spreadsheets/d/1pd5bjiZpU_j082LRMJ1OFDk3FVjT7HqzqV9eYtLi48w/edit?usp=sharing"
                                 target="_blank"
                             >
@@ -311,8 +322,9 @@ export const Footer = () => {
                     <p>
                         <span>{removeLastCharIfDot(t('dataexchange-learn-more-about-categories'))}</span>
                         &nbsp;
-                        <span className="font-bold">
+                        <span>
                             <Link
+                                className={footerLinkClasses}
                                 href="https://github.com/worldwewant/codebooks/raw/main/World%20We%20Want_Data%20Exchange_Universal%20Codebook.xlsx"
                                 target="_blank"
                             >
@@ -344,8 +356,12 @@ export const Footer = () => {
                     <p>
                         <span>{removeLastCharIfDot(t('healthwellbeing-ai-constantly-improved'))}</span>
                         &nbsp;
-                        <span className="font-bold">
-                            <Link href="https://forms.gle/1zebtW3hBxGgZX2K6" target="_blank">
+                        <span>
+                            <Link
+                                className={footerLinkClasses}
+                                href="https://forms.gle/1zebtW3hBxGgZX2K6"
+                                target="_blank"
+                            >
                                 {t('here-capitalized')}
                             </Link>
                             <span>.</span>
@@ -381,7 +397,7 @@ export const Footer = () => {
             {/* Export dataset */}
             {displayExportDataset && (
                 <div>
-                    <p className="w-fit cursor-pointer font-bold" onClick={onExportDatasetClick}>
+                    <p className={exportTextClasses} onClick={onExportDatasetClick}>
                         {exportDatasetText}
                     </p>
                     {exportingDataset && <p className="w-fit italic">{t('download-start-shortly')}</p>}
@@ -411,7 +427,7 @@ export const Footer = () => {
                                     <span key={config.campaign_code}>
                                         {index !== 0 && <>&nbsp;&nbsp;-&nbsp;&nbsp;</>}
                                         <span
-                                            className="w-fit cursor-pointer font-bold"
+                                            className={exportTextClasses}
                                             onClick={() => onExportSpecificDatasetClick(config)}
                                         >
                                             {title}
@@ -433,8 +449,12 @@ export const Footer = () => {
                     <p>
                         <span>{t('dataexchange-contact')}</span>
                         &nbsp;
-                        <span className="font-bold">
-                            <Link href="https://www.worldwewantproject.org/about" target="_blank">
+                        <span>
+                            <Link
+                                className={footerLinkClasses}
+                                href="https://www.worldwewantproject.org/about"
+                                target="_blank"
+                            >
                                 {t('here-capitalized')}
                             </Link>
                             <span>.</span>
@@ -469,7 +489,7 @@ export const Footer = () => {
                                 <Link
                                     href={settings.company_url}
                                     target="_blank"
-                                    className={classNames('underline', footerLinkClasses)}
+                                    className={classNames(footerLinkClasses)}
                                 >
                                     {settings.company_name}
                                 </Link>
