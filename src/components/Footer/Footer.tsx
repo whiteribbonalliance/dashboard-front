@@ -35,14 +35,13 @@ import { ParamsContext } from '@contexts/params'
 import { downloadCampaignPublicData } from 'services/dashboard-api'
 import { ConfigurationsContext } from '@contexts/configurations'
 import { SettingsContext } from '@contexts/settings'
-import { ICampaignConfiguration } from '@interfaces'
 
 export const Footer = () => {
     const { params } = useContext(ParamsContext)
     const { dashboard, lang, filters, responseYear, config } = params
     const { allCampaignsConfigurations } = useContext(ConfigurationsContext)
     const [exportingDataset, setExportingDataset] = useState<boolean>(false)
-    const [exportingSpecificDataset, setExportingSpecificDataset] = useState<boolean>(false)
+    // const [exportingSpecificDataset, setExportingSpecificDataset] = useState<boolean>(false)
     const { t } = useTranslation(lang)
     const { settings } = useContext(SettingsContext)
 
@@ -142,18 +141,18 @@ export const Footer = () => {
     }
 
     // On export specific dataset click
-    async function onExportSpecificDatasetClick(campaignConfig: ICampaignConfiguration) {
-        if (!exportingSpecificDataset) {
-            setExportingSpecificDataset(true)
-            const campaignRequest = getCampaignRequest(campaignConfig.dashboard_path, {})
-            try {
-                await downloadCampaignPublicData(campaignConfig.campaign_code, campaignRequest, '')
-                setExportingSpecificDataset(false)
-            } catch (error) {
-                setExportingSpecificDataset(false)
-            }
-        }
-    }
+    // async function onExportSpecificDatasetClick(campaignConfig: ICampaignConfiguration) {
+    //     if (!exportingSpecificDataset) {
+    //         setExportingSpecificDataset(true)
+    //         const campaignRequest = getCampaignRequest(campaignConfig.dashboard_path, {})
+    //         try {
+    //             await downloadCampaignPublicData(campaignConfig.campaign_code, campaignRequest, '')
+    //             setExportingSpecificDataset(false)
+    //         } catch (error) {
+    //             setExportingSpecificDataset(false)
+    //         }
+    //     }
+    // }
 
     // Dashboard links
     const OtherDashboardLinks = () => {
@@ -284,7 +283,7 @@ export const Footer = () => {
     let footerClasses: string
     switch (dashboard) {
         case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
-            footerClasses = 'bg-grayLight mt-7 mt-auto flex flex-col gap-y-5 p-4 text-lg'
+            footerClasses = 'bg-grayLight mt-7 mt-auto flex flex-col gap-y-5 p-4 pt-0 text-lg'
             break
         default:
             footerClasses = 'mx-7 my-7 mt-auto flex flex-col gap-y-5 p-4 text-lg'
@@ -418,51 +417,19 @@ export const Footer = () => {
             {displaySpecificDataSetsDownload && (
                 <div>
                     <p>
-                        <span>{t('dataexchange-explore-initiatives')}:</span>
+                        <span>{t('dataexchange-explore-initiatives')}</span>
                         &nbsp;
-                        {allCampaignsConfigurations
-                            .filter(
-                                (config) =>
-                                    // Do not include these dashboards
-                                    config.campaign_code !== 'allcampaigns' && config.campaign_code !== 'dataexchange'
-                            )
-                            .map((config, index) => {
-                                // Set title
-                                let title
-                                switch (config.dashboard_path) {
-                                    case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
-                                        title = 'Young People'
-                                        break
-                                    case LegacyDashboardName.HEALTHWELLBEING:
-                                        title = 'Women’s Health and Well-being'
-                                        break
-                                    case LegacyDashboardName.MIDWIVES_VOICES:
-                                        title = 'Midwives'
-                                        break
-                                    case LegacyDashboardName.WHAT_WOMEN_WANT:
-                                        title = 'Maternal and Reproductive Health'
-                                        break
-                                    case LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
-                                        title = 'Economics (SP)'
-                                        break
-                                    case LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN:
-                                        title = 'Pakistan'
-                                        break
-                                    default:
-                                        title = config.campaign_title
-                                }
-
-                                return (
-                                    <span key={config.campaign_code}>
-                                        {index !== 0 && <>&nbsp;&nbsp;-&nbsp;&nbsp;</>}
-                                        <Link className={exportTextClasses} href={'/'}>
-                                            {title}
-                                        </Link>
-                                    </span>
-                                )
-                            })}
+                        <span>
+                            <Link
+                                className={footerLinkClasses}
+                                href="https://worldwewant.z13.web.core.windows.net"
+                                target="_blank"
+                            >
+                                {t('here-capitalized')}
+                            </Link>
+                            <span>.</span>
+                        </span>
                     </p>
-                    {exportingSpecificDataset && <p className="w-fit italic">{t('download-start-shortly')}</p>}
                 </div>
             )}
 
