@@ -300,7 +300,7 @@ export const Footer = () => {
 
             {/* Learn more heading */}
             {displayLearnMoreHeading && (
-                <h4 className="text-dataExchangeColors-secondary mt-5 flex w-full justify-center text-2xl font-bold">
+                <h4 className="text-dataExchangeColors-secondary mb-3 mt-5 flex w-full justify-center text-2xl font-bold">
                     Learn More
                 </h4>
             )}
