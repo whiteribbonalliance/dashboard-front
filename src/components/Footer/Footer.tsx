@@ -283,10 +283,10 @@ export const Footer = () => {
     let footerClasses: string
     switch (dashboard) {
         case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
-            footerClasses = 'bg-grayLight mt-7 mt-auto flex flex-col gap-y-5 p-4 pt-0 text-lg'
+            footerClasses = 'bg-grayLight mt-14 flex flex-col gap-y-5 p-4 pt-0 text-lg'
             break
         default:
-            footerClasses = 'mx-7 my-7 mt-auto flex flex-col gap-y-5 p-4 text-lg'
+            footerClasses = 'mx-7 my-7 flex flex-col gap-y-5 p-4 text-lg'
     }
 
     return (
