@@ -280,8 +280,18 @@ export const Footer = () => {
     // Set display learn more heading
     const displayLearnMoreHeading = dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
 
+    // Set footer classes
+    let footerClasses: string
+    switch (dashboard) {
+        case LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE:
+            footerClasses = 'bg-grayLight mt-7 mt-auto flex flex-col gap-y-5 p-4 text-lg'
+            break
+        default:
+            footerClasses = 'mx-7 my-7 mt-auto flex flex-col gap-y-5 p-4 text-lg'
+    }
+
     return (
-        <footer className="mx-7 my-7 mt-auto flex flex-col gap-y-5 text-lg">
+        <footer className={footerClasses}>
             {/* Logo */}
             {displayFooterLogos && (
                 <div className="mx-3 flex items-center justify-center xl:mx-0">
