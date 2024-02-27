@@ -308,7 +308,7 @@ export const Footer = () => {
 
             {/* Learn more about categories for healthwellbeing */}
             {displayLearnMoreAboutCategoriesForHealthWellbeing && (
-                <div className="max-w-7xl">
+                <div>
                     <p>
                         <span>{removeLastCharIfDot(t('healthwellbeing-learn-more-about-categories'))}</span>
                         &nbsp;
@@ -328,7 +328,7 @@ export const Footer = () => {
 
             {/* Learn more about categories for dataexchange */}
             {displayLearnMoreAboutCategoriesForDataexchange && (
-                <div className="max-w-7xl">
+                <div>
                     <p>
                         <span>{removeLastCharIfDot(t('dataexchange-learn-more-about-categories'))}</span>
                         &nbsp;
@@ -348,21 +348,21 @@ export const Footer = () => {
 
             {/* Results analyzed healthwellbeing */}
             {displayResultsAnalyzedHealthWellbeing && (
-                <div className="max-w-5xl">
+                <div>
                     <p>{t('healthwellbeing-results-analyzed')}</p>
                 </div>
             )}
 
             {/* Results analyzed data exchange */}
             {displayResultsAnalyzedDataExchange && (
-                <div className="max-w-5xl">
+                <div>
                     <p>{t('dataexchange-results-analyzed')}</p>
                 </div>
             )}
 
             {/* Our AI is constantly being improved */}
             {displayAiConstantlyImproved && (
-                <div className="max-w-5xl">
+                <div>
                     <p>
                         <span>{removeLastCharIfDot(t('healthwellbeing-ai-constantly-improved'))}</span>
                         &nbsp;
@@ -382,7 +382,7 @@ export const Footer = () => {
 
             {/* Data displayed survey */}
             {displayDataDisplayedSurvey && (
-                <div className="max-w-5xl">
+                <div>
                     <p>{t('pmn01a-data-displayed-survey')}</p>
                 </div>
             )}
