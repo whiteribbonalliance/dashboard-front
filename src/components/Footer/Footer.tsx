@@ -452,7 +452,7 @@ export const Footer = () => {
                         <span>
                             <Link
                                 className={footerLinkClasses}
-                                href="https://www.worldwewantproject.org/about"
+                                href="https://www.worldwewantproject.org/contact"
                                 target="_blank"
                             >
                                 {t('here-capitalized')}
