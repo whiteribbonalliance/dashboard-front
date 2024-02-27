@@ -262,8 +262,8 @@ export const Footer = () => {
         dashboard === LegacyDashboardName.HEALTHWELLBEING ||
         dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
 
-    // Set display specific datasets
-    const displaySpecificDataSets = dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
+    // Set display specific datasets download
+    const displaySpecificDataSetsDownload = dashboard === LegacyDashboardName.WORLD_WE_WANT_DATA_EXCHANGE
 
     // Set display data displayed survey
     const displayDataDisplayedSurvey = dashboard === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT
@@ -414,8 +414,8 @@ export const Footer = () => {
                 </div>
             )}
 
-            {/* Specific datasets */}
-            {displaySpecificDataSets && (
+            {/* Specific datasets download */}
+            {displaySpecificDataSetsDownload && (
                 <div>
                     <p>
                         <span>{t('dataexchange-explore-initiatives')}:</span>
@@ -427,21 +427,37 @@ export const Footer = () => {
                                     config.campaign_code !== 'allcampaigns' && config.campaign_code !== 'dataexchange'
                             )
                             .map((config, index) => {
+                                // Set title
                                 let title
-                                if (config.dashboard_path === LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT) {
-                                    title = 'What Young People Want'
-                                } else {
-                                    title = config.campaign_title
+                                switch (config.dashboard_path) {
+                                    case LegacyDashboardName.WHAT_YOUNG_PEOPLE_WANT:
+                                        title = 'Young People'
+                                        break
+                                    case LegacyDashboardName.HEALTHWELLBEING:
+                                        title = 'Women’s Health and Well-being'
+                                        break
+                                    case LegacyDashboardName.MIDWIVES_VOICES:
+                                        title = 'Midwives'
+                                        break
+                                    case LegacyDashboardName.WHAT_WOMEN_WANT:
+                                        title = 'Maternal and Reproductive Health'
+                                        break
+                                    case LegacyDashboardName.ECONOMIC_EMPOWERMENT_MEXICO:
+                                        title = 'Economics (SP)'
+                                        break
+                                    case LegacyDashboardName.WHAT_WOMEN_WANT_PAKISTAN:
+                                        title = 'Pakistan'
+                                        break
+                                    default:
+                                        title = config.campaign_title
                                 }
+
                                 return (
                                     <span key={config.campaign_code}>
                                         {index !== 0 && <>&nbsp;&nbsp;-&nbsp;&nbsp;</>}
-                                        <span
-                                            className={exportTextClasses}
-                                            onClick={() => onExportSpecificDatasetClick(config)}
-                                        >
+                                        <Link className={exportTextClasses} href={'/'}>
                                             {title}
-                                        </span>
+                                        </Link>
                                     </span>
                                 )
                             })}
